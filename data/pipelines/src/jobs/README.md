@@ -73,6 +73,16 @@ against the cap, so it is the day's, not the run's.
 It asks nothing, stops at once when rejestr.io refuses the account (exit 1), leaves what the cap or a failed call
 left for the next run (exit 75), and writes a run summary to the shared cache (`jobs/krs_scrape_paid/runs/`).
 
+## wikidata_people
+1. Reads the people with a pl.wikipedia link (`KorytaNodes`, or `--people-file`)
+1. Maps their titles to Wikidata items off the `page` and `page_props` dumps, fetched again only when Wikimedia has
+   newer ones (ETag); the dumps' misses from wbgetentities by sitelink, then pl.wikipedia, which tells dead links apart
+1. Reads each item's P569, P102, P39, P106 and P27 once, and again only when its `lastrevid` moved; the labels of what
+   they name once each
+1. Keeps it all in `downloaded/wikidata/` (`stores.wikidata`), which `WikidataPeople` folds over the night's people
+1. One request a second at most, Retry-After honoured, `--max-requests` (100) a run; exit 75 leaves the rest to the
+   next run. Runs nightly as the step `wikidata` - see [data/nightly/README.md](../../../nightly/README.md)
+
 ## krs_register_owners
 1. Rebuilds `KRSRegisterQueue` from the bulletin (`KRSUpdates`) and the fold of its own log (`KRSRegisterEntries`): the numbers registered since the log began that have no answer yet, then failed reads, then answers the register has moved on from, then the numbers never read, oldest first
 1. Asks api-krs for the odpis aktualny of each: with `--new-registrations` every new registration, then `--reads N` more; without it, `--reads N` from the head

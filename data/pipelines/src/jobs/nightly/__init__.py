@@ -40,6 +40,10 @@ The steps, in order (`STEPS`):
                 and the companies whose odpis did not come - at most
                 --paid-max-calls a day; before the reprocess, so what it buys
                 reaches tonight's people, who send those pages first
+    wikidata    koryta_wikidata_people --max-requests --wikidata-max-requests:
+                the Wikidata items of the people with a pl.wikipedia link,
+                read again only where their revision moved, for the
+                reprocess's WikidataPeople
     rebuild_held
                 `koryta <Name> --refresh <Name>`, one at a time, for each
                 pipeline the reprocess holds whose code has changed since
@@ -523,6 +527,9 @@ STEPS = (
     Step("krs_register", "rejestr KRS", 30),
     Step("krs_odpis", "odpisy", 45),
     Step("krs_paid", "rejestr.io", 30),
+    # 17-19 requests and half a minute on a night when nothing changed; the
+    # first, with the two dumps (195 MB), a minute and a half.
+    Step("wikidata", "Wikidata", 10),
     # Nothing to do on most nights, a few git calls. The first night after it
     # landed rebuilds all six, PeoplePKW perhaps after downloading PKW's files.
     Step("rebuild_held", "stałe potoki", 30),
@@ -1333,6 +1340,14 @@ class Night:
         # night's log prints.
         return self.judge_job(*self.process(step, argv, {"REJESTR_KEY": key}))
 
+    def step_wikidata(self, step: Step) -> tuple[str, str, int | None]:
+        argv = [
+            bin_path("koryta_wikidata_people"),
+            "--max-requests",
+            str(self.args.wikidata_max_requests),
+        ]
+        return self.judge_job(*self.process(step, argv))
+
     def step_rebuild_held(self, step: Step) -> tuple[str, str, int | None]:
         """Rebuild, one by one, the held pipelines whose code changed since
         their last build here; partial, never failed, when one is not."""
@@ -1684,6 +1699,9 @@ class Night:
             ),
             "krs_paid": "koryta_scrape_krs_paid --scope fallback --max-calls "
             f"{self.args.paid_max_calls} (the key from {REJESTR_SECRET})",
+            "wikidata": "koryta_wikidata_people --max-requests "
+            f"{self.args.wikidata_max_requests}: tonight's people's Wikidata "
+            "items, those whose revision moved",
             "reprocess": "koryta " + " ".join(reprocess_argv()[1:]),
             "tests": "pytest src/tests/pipelines",
             "outputs": "pytest -m e2e src/tests/e2e",
@@ -2015,6 +2033,13 @@ def parser() -> argparse.ArgumentParser:
         default=50,
         help="rejestr.io calls bought at most a day, at 0.05 PLN each; 0 buys "
         "nothing. Default: %(default)s.",
+    )
+    parser.add_argument(
+        "--wikidata-max-requests",
+        type=positive_int,
+        default=100,
+        help="Requests to Wikimedia the wikidata step makes at most; what it "
+        "leaves waits for the next night. Default: %(default)s.",
     )
     parser.add_argument(
         "--export-max-age",

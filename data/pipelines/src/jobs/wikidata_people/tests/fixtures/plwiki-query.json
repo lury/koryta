@@ -1,0 +1,17 @@
+{
+ "batchcomplete": true,
+ "query": {
+  "pages": [
+   {
+    "ns": 0,
+    "title": "Piotr Chęciek",
+    "missing": true
+   },
+   {
+    "ns": 0,
+    "title": "Shivan Fate",
+    "missing": true
+   }
+  ]
+ }
+}

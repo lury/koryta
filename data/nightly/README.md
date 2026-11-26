@@ -34,6 +34,7 @@ order, each with a time limit and its output in the night's log:
 | `krs_register`    | `koryta_krs_register_owners --new-registrations --reads 0 --max-minutes 25`: who owns each newly registered company                                |
 | `krs_odpis`       | `koryta_krs_odpis --graph --changed-since <yesterday> --queue --missing site --max 300`: odpisy pełne, see below                                   |
 | `krs_paid`        | `koryta_scrape_krs_paid --scope fallback --max-calls 50`: rejestr.io for what the free sources could not give                                      |
+| `wikidata`        | `koryta_wikidata_people --max-requests 100`: the Wikidata items of the people with a pl.wikipedia link, those whose revision moved                 |
 | `rebuild_held`    | `koryta <Name> --refresh <Name>` for each held pipeline whose code changed since this VM last built it (below)                                     |
 | `reprocess`       | `koryta --all-pipelines --refresh all`, as the CI nightly, less the article branch, the BIP documents and the slow static sources (`HELD`)         |
 | `tests`           | `pytest src/tests/pipelines` over the night's outputs                                                                                              |
@@ -107,6 +108,45 @@ new ones included, fit the step's 30 minutes; it stops itself five minutes
 short and leaves the rest to the next night. A company registered before the
 log began on 2026-09-28 - 0001192039 among them - is in the backlog, not among
 the new ones.
+
+## Wikidata
+
+`wikidata` runs after `krs_paid` and before the reprocess, which builds
+`WikidataPeople` (`versioned/wikidata_people/`) from what it leaves: for every
+person with a pl.wikipedia link the item's QID, birth date with its precision,
+parties and positions with their dates and qualifiers, occupations and
+citizenship, whether the birth date agrees with the site's (`birth_check`:
+exact, year_only, different) and which links are dead (`link_status`).
+Nothing goes up to the site; the step holds nothing back, and a failed one
+leaves last night's cache for the reprocess.
+
+`koryta_wikidata_people` (`data/pipelines/src/jobs/wikidata_people`) keeps its
+cache in `downloaded/wikidata/` on the VM's disk, under 0.5 MB for the 752
+people linked on 2026-11-26:
+
+- title -> QID comes off two dumps, `plwiki-latest-page.sql.gz` (147 MB) and
+  `plwiki-latest-page_props.sql.gz` (48 MB): `page_props` names pages by id
+  only, so it needs `page` to get to a title. A night asks for both with their
+  ETag and gets a 304 until Wikimedia publishes new ones, twice a month;
+  mapping 751 titles off them takes 6 s. What the dumps lack goes to
+  wbgetentities by sitelink, then to pl.wikipedia, which tells a dead link
+  from an article without an item;
+- an item is read again only when its `lastrevid` moved: wbgetentities
+  props=info, 50 items a request, about 7 KB each;
+- requests go one at a time, a second apart, as `koryta-pipelines/<version>`,
+  and a 429 or 503 waits out its Retry-After. `--wikidata-max-requests` (100)
+  caps the step; what it leaves is the next night's (exit 75, partial).
+
+Measured on 2026-11-26 over the public copy's 752 people:
+
+| Run                          | Requests                                      | Over the wire   | Time  |
+| ---------------------------- | --------------------------------------------- | --------------- | ----- |
+| first (no cache, no dumps)   | 25: 2 dumps, 15 items, 6 labels, 2 dead links | 195 MB + 9.6 MB | 92 s  |
+| a night when nothing changed | 19: 2 × 304, 15 revision checks, 2 dead links | 0.11 MB         | 27 s  |
+| again inside 20 h            | 0                                             | 0               | 0.5 s |
+
+So 30 seconds most nights, a minute and a half the night after a new dump;
+the step may take 10 minutes.
 
 ## Odpisy pełne
 

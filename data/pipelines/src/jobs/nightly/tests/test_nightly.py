@@ -33,6 +33,7 @@ GOOD = {
     "koryta_krs_register_owners": 0,
     "koryta_krs_odpis": 0,
     "koryta_scrape_krs_paid": 0,
+    "koryta_wikidata_people": 0,
     "koryta": 0,
     # The companies step runs the people import too, with one flag more.
     "koryta_people_import --companies-only": 0,
@@ -281,6 +282,7 @@ def test_a_good_night_runs_every_step_in_order_and_exits_0(world):
         "koryta_krs_register_owners",
         "koryta_krs_odpis",
         "koryta_scrape_krs_paid",
+        "koryta_wikidata_people",
         "koryta",
         "pytest tests",
         "pytest outputs",

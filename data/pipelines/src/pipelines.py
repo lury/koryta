@@ -23,6 +23,7 @@ from analysis.scores import (
 from analysis.scores.coverage import PeopleScoreCoverage
 from analysis.stats import Statistics
 from analysis.utils.names import FirstNameFreq, NamesCountByRegion
+from analysis.wikidata_people import WikidataPeople
 from scrapers.article.pipelines import (
     ArticleAnalyzed,
     ArticleDomainSelectors,
@@ -139,6 +140,7 @@ PIPELINES = [
     Regions,
     ScrapeRejestrIO,
     Statistics,
+    WikidataPeople,
 ]
 
 
