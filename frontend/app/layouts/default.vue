@@ -1,4 +1,7 @@
 <template>
+  <!-- The first stop of Tab (WCAG 2.4.1): past the bar, the search and the
+       contributor toolbar straight to the page. Off screen until focused. -->
+  <a href="#tresc" class="skip-link">Przejdź do treści</a>
   <v-app-bar :height="APP_BAR_HEIGHT">
     <NuxtLink to="/">
       <NuxtImg
@@ -76,7 +79,12 @@
       </ClientOnly>
     </template>
   </v-app-bar>
-  <v-main class="d-flex flex-column" :style="ssrLayoutTop">
+  <v-main
+    id="tresc"
+    class="d-flex flex-column"
+    tabindex="-1"
+    :style="ssrLayoutTop"
+  >
     <ClientOnly>
       <v-toolbar
         v-if="user"

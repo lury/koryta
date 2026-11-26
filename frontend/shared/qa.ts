@@ -59,6 +59,18 @@ export const qaAreaConfig: Record<QaArea, { title: string; color: string }> = {
  * before the list could be read at all. */
 export const QA_ITEMS: QaItem[] = [
   {
+    id: "przejdz-do-tresci",
+    title: "Pierwszy Tab na stronie przenosi prosto do treści",
+    description:
+      "Na początku każdej strony jest ukryty link „Przejdź do treści”, widoczny dopiero po naciśnięciu Tab. Enter przeskakuje pasek, wyszukiwarkę i pasek zespołu.",
+    steps: [
+      "Otwórz /eksploruj/tabela i naciśnij Tab: w lewym górnym rogu pojawia się „Przejdź do treści”.",
+      "Naciśnij Enter, potem Tab: fokus trafia w treść strony (filtry tabeli), a nie w menu.",
+    ],
+    link: "/eksploruj/tabela",
+    area: "public",
+  },
+  {
     id: "partie-pelne-nazwy-legenda",
     title:
       "Partie mają pełne nazwy i legendę, a firmy w tabeli pełne nazwy bez dymków",

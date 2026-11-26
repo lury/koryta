@@ -54,6 +54,28 @@ html {
   box-shadow: 0 0 0 2px rgb(var(--v-theme-focus-halo));
 }
 
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 3000;
+  padding: 8px 16px;
+  background: rgb(var(--v-theme-focus-halo));
+  color: rgb(var(--v-theme-focus-ink));
+  font-weight: 500;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* The skip link's target takes focus only to move the caret there. */
+#tresc:focus {
+  outline: none !important;
+  box-shadow: none;
+}
+
 .v-field :focus-visible {
   outline: none !important;
   box-shadow: none;
