@@ -1,0 +1,17 @@
+.git
+.gitignore
+.dockerignore
+Dockerfile
+.env*
+.claude/
+.idea/
+.vscode/
+*.md
+*.prof
+*.pprof
+*.out
+*.test
+/compressor
+local_artifacts/
+node_modules/
+.venv/

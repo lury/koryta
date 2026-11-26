@@ -11,6 +11,12 @@ writes, and Cloud Scheduler starts it. The image is the one `data/pipelines/Dock
 builds for the capture extractor: it already carries the base dependencies every
 job imports, so a job is that image with another command.
 
+The image runs as `koryta` (uid 10001), not root. The code under `/app` is
+read-only; a job may write its home (`/home/koryta`, which holds `~/.cache/koryta`
+and `~/.config`), `/tmp`, and `/app/versioned`, `/app/downloaded`,
+`/app/crawler_output` and `/app/log`. A volume mounted anywhere else must be
+writable by uid 10001.
+
 Nothing here deploys itself. These are the commands to run once, by hand, as the
 project owner: `dev-workflow` can list Cloud Run jobs and executions, but cannot
 create service accounts, grant roles, push images or touch Cloud Scheduler.

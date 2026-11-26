@@ -1,10 +1,37 @@
-downloaded/
-versioned/
+.git
+.gitignore
+.gcloudignore
+.dockerignore
+.env*
+koryta-pl*.json
+.claude/
+CLAUDE.md
+docker-compose.yml
+# Local data: `downloaded` may be a symlink into the crawl mirror.
+downloaded*
+versioned*
+models/
+logs/
+log/
+crawler_output/
+local_artifacts/
 .venv/
+node_modules/
+# Tool caches.
+.mypy_cache/
+.dmypy.json
+.ruff_cache/
 .pytest_cache/
+.pytest-runtimes
+.hypothesis/
+htmlcov/
+.coverage
+*.egg-info/
 **/__pycache__/
 *.pyc
+# Not copied by the Dockerfile.
 tests/
 src/tests/
 notebooks/
 *.ipynb
+.ipynb_checkpoints/
