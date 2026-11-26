@@ -44,7 +44,12 @@
         >
           <v-avatar :image="pictureURL" size="32" />
         </v-btn>
-        <v-btn v-if="user && !pictureURL" icon to="/profil" aria-label="Twój profil">
+        <v-btn
+          v-if="user && !pictureURL"
+          icon
+          to="/profil"
+          aria-label="Twój profil"
+        >
           <v-icon :icon="mdiAccount" />
         </v-btn>
         <v-btn

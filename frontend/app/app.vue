@@ -38,7 +38,14 @@ html {
    dark ring round a white halo stands out on every fill the palette has -
    tests/shared/colors.test.ts measures it. Fields keep Vuetify's own focus
    state, which redraws their outline. */
-:where(a, button, summary, [role="button"], [role="tab"], [tabindex]):focus-visible,
+:where(
+  a,
+  button,
+  summary,
+  [role="button"],
+  [role="tab"],
+  [tabindex]
+):focus-visible,
 .v-btn:focus-visible,
 .v-chip:focus-visible,
 .v-list-item:focus-visible {

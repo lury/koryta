@@ -486,7 +486,10 @@ describe("ExploreTable's party chips", () => {
   it("paints them with PartyChip", async () => {
     const wrapper = await mountTable();
 
-    const chips = wrapper.findAllComponents(PartyChip);
+    // In the rows; the legend over the table draws its own.
+    const chips = wrapper
+      .findAllComponents(PartyChip)
+      .filter((chip) => chip.element.closest?.("tbody"));
     expect(chips.map((chip) => chip.props("party"))).toEqual([
       "PiS",
       "Konfederacja",

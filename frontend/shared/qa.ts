@@ -59,8 +59,24 @@ export const qaAreaConfig: Record<QaArea, { title: string; color: string }> = {
  * before the list could be read at all. */
 export const QA_ITEMS: QaItem[] = [
   {
+    id: "partie-pelne-nazwy-legenda",
+    title:
+      "Partie mają pełne nazwy i legendę, a firmy w tabeli pełne nazwy bez dymków",
+    description:
+      "Nad tabelą w /eksploruj/tabela i /eksploruj/nowe jest legenda: skrót partii i jej pełna nazwa, oraz wyjaśnienie, co znaczy wypełniona firma i „grupa”. Czytnik ekranu odczytuje pełną nazwę partii zamiast skrótu. Polska 2050 i Bezpartyjni Samorządowcy mają w etykiecie krótkie formy (PL2050, BS). Nazwy firm w wierszu nie są już ucinane wielokropkiem, tylko zawijane, więc nie trzeba najeżdżać, żeby je przeczytać.",
+    steps: [
+      "Otwórz /eksploruj/tabela?teryt=0206: nad tabelą jest linijka „Partie:” z pełnymi nazwami partii z tej strony.",
+      "Sprawdź, że długie nazwy firm w kolumnie „Firmy” są w całości, w razie potrzeby w dwóch linijkach.",
+      "Najedź na etykietę partii przy nazwisku: dymek podaje pełną nazwę.",
+      "Otwórz /eksploruj/nowe: ta sama legenda jest nad wierszem osoby.",
+    ],
+    link: "/eksploruj/tabela?teryt=0206",
+    area: "public",
+  },
+  {
     id: "nazwy-przyciskow-ikon",
-    title: "Przyciski-ikony mają nazwy, a nazwisko w tabeli jest osiągalne z klawiatury",
+    title:
+      "Przyciski-ikony mają nazwy, a nazwisko w tabeli jest osiągalne z klawiatury",
     description:
       "Strzałki głosowania, ikony (i) przy nagłówkach, przycisk wyszukiwarek, lupa i ikona profilu mają teraz nazwy odczytywane przez czytnik ekranu. Nazwisko w /eksploruj/tabela jest prawdziwym linkiem: Tab do niego trafia, Enter otwiera panel boczny, a Ctrl/środkowy klik otwiera stronę osoby w nowej karcie. Strona logowania ma jeden nagłówek główny.",
     steps: [
@@ -73,7 +89,8 @@ export const QA_ITEMS: QaItem[] = [
   },
   {
     id: "dymki-jasne-fokus-esc",
-    title: "Jasne dymki, Esc je chowa, widoczny fokus klawiatury, czytelne komunikaty",
+    title:
+      "Jasne dymki, Esc je chowa, widoczny fokus klawiatury, czytelne komunikaty",
     description:
       "Dymki są białe z cienką ramką zamiast ciemnoszarych, więc szary tekst w nich da się przeczytać. Esc chowa otwarty dymek. Element wybrany klawiszem Tab ma wyraźną ciemną obwódkę. Niebieskie, zielone i pomarańczowe komunikaty (np. „Wybierz miejsce…” na /graf) mają ciemniejszy, czytelny tekst. Przy systemowym ustawieniu „ogranicz ruch” animacje są wyłączone.",
     steps: [
@@ -87,7 +104,8 @@ export const QA_ITEMS: QaItem[] = [
   },
   {
     id: "dymki-z-opoznieniem",
-    title: "Dymki podpowiedzi otwierają się po chwili i bez animacji powiększania",
+    title:
+      "Dymki podpowiedzi otwierają się po chwili i bez animacji powiększania",
     description:
       "Dymek pokazuje się po pół sekundy zatrzymania kursora, a nie od razu, i pojawia się płynnym przenikaniem zamiast wyrastania z kropki. Można na niego najechać kursorem, żeby go przeczytać, a domyślnie stoi nad elementem. Listy wyboru (np. filtry w /eksploruj/tabela) mają teraz wszędzie ten sam obrysowany, zwarty wygląd.",
     steps: [
