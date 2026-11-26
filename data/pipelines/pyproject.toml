@@ -225,6 +225,20 @@ requires-dist = [
 [tool.mypy]
 python_version = "3.13"
 mypy_path = "src"
+check_untyped_defs = true
+
+# Tests still have ~480 errors in untyped bodies (issue #232), so they keep
+# the default until they are cleaned up.
+[[tool.mypy.overrides]]
+module = [
+    "tests.*",
+    "*.tests.*",
+    "*.test.*",
+    "*.conftest",
+    # A test module that sits next to the code it tests.
+    "scrapers.article.pipelines.test_article_analyzed_dedup",
+]
+check_untyped_defs = false
 
 [[tool.mypy.overrides]]
 module = [
