@@ -9,8 +9,85 @@
 <style scoped></style>
 
 <style>
+/* The site has one, light, theme. Saying so keeps a reader's dark system
+   setting from repainting scrollbars and native form controls under it. */
 html {
+  color-scheme: light;
   scroll-behavior: smooth;
+}
+
+/* Reduced motion (WCAG 2.3.3): transitions and animations finish at once,
+   tooltips and menus included, and anchors jump instead of gliding. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/* Keyboard focus (WCAG 2.4.7, 2.4.11). Vuetify marks a focused button only by
+   a 12% tint of its own colour, which on a white row is next to nothing. A
+   dark ring round a white halo stands out on every fill the palette has -
+   tests/shared/colors.test.ts measures it. Fields keep Vuetify's own focus
+   state, which redraws their outline. */
+:where(a, button, summary, [role="button"], [role="tab"], [tabindex]):focus-visible,
+.v-btn:focus-visible,
+.v-chip:focus-visible,
+.v-list-item:focus-visible {
+  outline: 2px solid rgb(var(--v-theme-focus-ink)) !important;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px rgb(var(--v-theme-focus-halo));
+}
+
+.v-field :focus-visible {
+  outline: none !important;
+  box-shadow: none;
+}
+
+/* Tooltips: the page's white with a hairline instead of Vuetify's #424242,
+   so ink a caller puts inside - `text-medium-emphasis` was 2.09:1 on the
+   grey - reads as it does on a card. */
+.v-tooltip > .v-overlay__content {
+  background: rgb(var(--v-theme-tooltip));
+  color: rgb(var(--v-theme-on-tooltip));
+  border: 1px solid rgb(var(--v-theme-tooltip-edge));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Escape hides an open tooltip (WCAG 1.4.13) - plugins/tooltip-escape.client.ts
+   sets the attribute, and the next pointer or focus move clears it. */
+html[data-tooltips-dismissed] .v-tooltip > .v-overlay__content {
+  visibility: hidden;
+}
+
+/* Vuetify writes `color="info"` on a tonal, outlined or text variant as the
+   fill colour used for text - #2196f3 on its own 12% tint is 2.74:1, #fb8c00
+   2.37:1, #4caf50 2.78:1 - and those are most of the site's 135 alerts. The
+   status inks are the same hues dark enough to read; the filled variants keep
+   `bg-*` and are not affected. */
+.text-info {
+  color: rgb(var(--v-theme-ink-info)) !important;
+}
+
+.text-success {
+  color: rgb(var(--v-theme-ink-success)) !important;
+}
+
+.text-warning {
+  color: rgb(var(--v-theme-ink-warning)) !important;
+}
+
+/* Vuetify's #9e9e9e as text is 2.68:1 on white. */
+.text-grey {
+  color: rgb(var(--v-theme-ink-neutral)) !important;
 }
 
 /* Vuetify tints disabled filled buttons by laying a dark overlay over the

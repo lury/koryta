@@ -23,6 +23,7 @@ describe("vuetifyDefaults", () => {
 
   it("names only the components it sets something for", () => {
     expect(Object.keys(vuetifyDefaults).sort()).toEqual([
+      "VAlert",
       "VAutocomplete",
       "VSelect",
       "VTooltip",

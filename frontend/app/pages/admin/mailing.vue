@@ -9,7 +9,7 @@
       dopiero potem rozesłać szerzej.
     </p>
 
-    <v-alert v-if="loadError" type="error" variant="tonal" class="mb-4">
+    <v-alert v-if="loadError" type="error" class="mb-4">
       {{ loadError }}
     </v-alert>
     <v-progress-linear v-if="pending" indeterminate class="mb-4" />
@@ -153,7 +153,6 @@
             <v-alert
               v-if="preview.error"
               type="error"
-              variant="tonal"
               density="compact"
             >
               {{ preview.error }}

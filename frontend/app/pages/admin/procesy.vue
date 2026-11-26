@@ -92,14 +92,13 @@
       </div>
     </div>
 
-    <v-alert v-if="error" type="error" variant="tonal" class="mb-4">
+    <v-alert v-if="error" type="error" class="mb-4">
       {{ error }}
     </v-alert>
     <v-alert
       v-for="(problem, index) in overview?.problems ?? []"
       :key="index"
       type="warning"
-      variant="tonal"
       density="compact"
       class="mb-2"
       data-jobs-problem

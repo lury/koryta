@@ -8,7 +8,6 @@
   <v-alert
     type="info"
     color="ink-info"
-    variant="tonal"
     class="mb-4 login-banner"
     :icon="mdiAccountLock"
   >

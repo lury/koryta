@@ -82,7 +82,6 @@
         v-if="showsFlagOnlyNotice"
         type="info"
         color="ink-info"
-        variant="tonal"
         density="compact"
         class="mb-3"
       >
@@ -96,7 +95,6 @@
         v-if="queue?.truncated"
         type="warning"
         color="ink-warning"
-        variant="tonal"
         density="compact"
         class="mb-3"
         :text="
@@ -109,7 +107,6 @@
       <v-alert
         v-if="queueFailed"
         type="error"
-        variant="tonal"
         density="compact"
         class="mb-3"
         text="Nie udało się wczytać kolejki."
@@ -143,7 +140,6 @@
         v-if="isEmptyDefaultQueue"
         type="success"
         color="ink-success"
-        variant="tonal"
         density="compact"
         :icon="mdiCheckDecagramOutline"
         text="Kolejka jest pusta — nic nie czeka na rozpatrzenie."
@@ -253,7 +249,6 @@
       <v-alert
         v-if="edgesFailed"
         type="error"
-        variant="tonal"
         density="compact"
         class="mb-3"
         text="Nie udało się wczytać zmian powiązań."
@@ -329,7 +324,6 @@
       <v-alert
         v-if="nodesFailed"
         type="error"
-        variant="tonal"
         density="compact"
         class="mb-3"
         text="Nie udało się wczytać wpisów."

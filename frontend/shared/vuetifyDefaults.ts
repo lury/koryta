@@ -34,7 +34,14 @@ export const vuetifyDefaults = {
     // read or select it without it closing underneath.
     interactive: true,
   },
-  // 22 of 36 selects and 8 of 10 autocompletes already asked for these.
+  // 128 of 135 alerts were tonal already. Tonal also draws the text in the
+  // status ink (app.vue maps `text-info` and its siblings onto `ink.*`), where
+  // a flat alert put white on #2196f3 at 3.12:1.
+  VAlert: {
+    variant: "tonal",
+  },
+  // Most call sites already asked for these: 25 of 36 selects outlined, 26
+  // compact, and 8 of 10 autocompletes outlined.
   VSelect: {
     variant: "outlined",
     density: "compact",

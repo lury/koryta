@@ -39,7 +39,6 @@
     <v-alert
       v-if="error"
       type="error"
-      variant="tonal"
       class="mb-4"
       :text="error"
     />
@@ -81,7 +80,6 @@
             <template v-else-if="summary && summary.feedback.needsAction === 0">
               <v-alert
                 type="success"
-                variant="tonal"
                 density="compact"
                 :icon="mdiCheckCircleOutline"
                 text="Brak nowych zgłoszeń."
@@ -161,7 +159,6 @@
             <template v-else-if="summary && summary.notes.needsAction === 0">
               <v-alert
                 type="success"
-                variant="tonal"
                 density="compact"
                 :icon="mdiCheckCircleOutline"
                 text="Brak nierozwiązanych zgłoszeń."
@@ -277,7 +274,6 @@
             >
               <v-alert
                 type="success"
-                variant="tonal"
                 density="compact"
                 :icon="mdiCheckCircleOutline"
                 text="Brak ręcznych rewizji do akceptacji."

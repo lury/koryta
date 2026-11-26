@@ -56,7 +56,6 @@
           <v-alert
             v-if="choices.length === 0"
             type="info"
-            variant="tonal"
             density="compact"
             class="mt-2"
             data-testid="add-relation-no-verbs"
@@ -92,7 +91,6 @@
         <v-alert
           v-if="error"
           type="error"
-          variant="tonal"
           density="compact"
           class="mt-3"
           data-testid="add-relation-error"

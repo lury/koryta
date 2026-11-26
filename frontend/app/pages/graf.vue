@@ -8,7 +8,7 @@
     :focus-node-id="focusNodeId"
     height="calc(100vh - 295px)"
   />
-  <v-alert v-else type="info" variant="tonal" class="ma-4">
+  <v-alert v-else type="info" class="ma-4">
     Wybierz miejsce, by zobaczyć jego graf powiązań.
   </v-alert>
 </template>

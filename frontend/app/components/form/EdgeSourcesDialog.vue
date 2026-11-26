@@ -48,7 +48,6 @@
         <v-alert
           v-else
           type="info"
-          variant="tonal"
           density="compact"
           data-testid="edge-sources-empty"
         >
@@ -70,7 +69,6 @@
         <v-alert
           v-if="error"
           type="error"
-          variant="tonal"
           density="compact"
           class="mt-3"
           data-testid="edge-sources-error"

@@ -54,7 +54,6 @@
           <v-alert
             type="error"
             color="ink-danger"
-            variant="tonal"
             density="compact"
             data-testid="declaration-finds-error"
           >

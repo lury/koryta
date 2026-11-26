@@ -39,7 +39,6 @@
     <v-alert
       v-if="error"
       type="error"
-      variant="tonal"
       class="mb-6"
       data-overview-error
     >

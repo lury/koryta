@@ -143,7 +143,6 @@
       <v-alert
         v-if="submittedRevisionId && previewUrl"
         type="info"
-        variant="tonal"
         density="compact"
         class="flex-1-1-100"
         data-testid="propose-confirmation"

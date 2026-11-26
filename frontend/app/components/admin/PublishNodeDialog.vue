@@ -11,7 +11,6 @@
         <v-alert
           v-if="autoApproveDate"
           type="info"
-          variant="tonal"
           density="compact"
           class="mb-4"
           data-testid="publish-auto-approve"
@@ -30,7 +29,6 @@
         <v-alert
           v-else-if="loadError"
           type="warning"
-          variant="tonal"
           class="mb-2"
           data-testid="publish-relations-error"
         >
@@ -198,7 +196,6 @@
         <v-alert
           v-if="clashesAfterPublish.length > 0"
           type="error"
-          variant="tonal"
           density="compact"
           class="mt-4"
           data-testid="publish-clash-after"
@@ -218,7 +215,6 @@
         <v-alert
           v-if="relationsFailed"
           type="error"
-          variant="tonal"
           class="mt-4"
           data-testid="publish-relations-failed"
         >

@@ -64,7 +64,6 @@
     <v-alert
       v-if="error"
       type="error"
-      variant="tonal"
       density="compact"
       class="mt-3"
       :text="error"

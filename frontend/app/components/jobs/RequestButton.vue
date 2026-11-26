@@ -85,7 +85,6 @@
             <v-alert
               v-if="error"
               type="error"
-              variant="tonal"
               density="compact"
               class="mt-3"
               data-testid="job-request-error"
@@ -98,7 +97,6 @@
           <v-alert
             v-else
             type="success"
-            variant="tonal"
             data-testid="job-request-done"
           >
             <p class="mb-2">

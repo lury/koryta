@@ -24,7 +24,6 @@
       v-if="singleNote"
       class="mb-4"
       type="info"
-      variant="tonal"
       density="compact"
     >
       <div class="d-flex align-center justify-space-between flex-wrap ga-2">

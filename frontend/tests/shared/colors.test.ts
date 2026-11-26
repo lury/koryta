@@ -208,6 +208,30 @@ describe("roles", () => {
     });
   });
 
+  it("keeps tooltips and the focus ring readable", () => {
+    expect(ratio(role.onTooltip, role.tooltip)).toBeGreaterThanOrEqual(AA_TEXT);
+    // `text-medium-emphasis` is black at 60% - composited on white, #666666.
+    expect(ratio("#666666", role.tooltip)).toBeGreaterThanOrEqual(AA_TEXT);
+    expect(ratio(role.tooltipEdge, surface.white)).toBeGreaterThanOrEqual(
+      AA_LARGE_TEXT,
+    );
+    // One of the ring's two colours has to stand out on every fill it can
+    // be drawn over.
+    for (const fill of [
+      surface.white,
+      brand.primary,
+      brand.secondary,
+      role.cta,
+      role.ctaDeep,
+      role.tally,
+      ...Object.values(surface),
+    ]) {
+      expect(
+        Math.max(ratio(role.focusInk, fill), ratio(role.focusHalo, fill)),
+      ).toBeGreaterThanOrEqual(AA_LARGE_TEXT);
+    }
+  });
+
   it("keeps the call to action's bar segments visible on their strip", () => {
     // Fills, not text: 3:1 is what a segment needs to be seen against the
     // groove it sits in.

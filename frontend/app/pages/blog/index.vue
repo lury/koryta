@@ -9,7 +9,6 @@
     <v-alert
       v-if="error"
       type="error"
-      variant="tonal"
       text="Nie udało się pobrać wpisów. Spróbuj odświeżyć stronę."
     />
 

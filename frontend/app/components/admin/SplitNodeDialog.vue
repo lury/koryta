@@ -78,7 +78,6 @@
           <v-alert
             v-else-if="loadError"
             type="warning"
-            variant="tonal"
             class="mb-2"
             data-testid="split-relations-error"
           >
@@ -168,7 +167,6 @@
           <v-alert
             v-if="plan"
             type="info"
-            variant="tonal"
             class="mt-4"
             data-testid="split-plan"
           >
@@ -207,7 +205,6 @@
         <v-alert
           v-if="done"
           type="success"
-          variant="tonal"
           class="mt-4"
           data-testid="split-done"
         >
@@ -220,7 +217,6 @@
         <v-alert
           v-if="error"
           type="error"
-          variant="tonal"
           class="mt-4"
           data-testid="split-error"
         >

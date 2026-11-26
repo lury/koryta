@@ -27,7 +27,7 @@
           persistent-hint
         />
 
-        <v-alert v-if="error" type="error" variant="tonal" class="mt-4">
+        <v-alert v-if="error" type="error" class="mt-4">
           {{ error }}
         </v-alert>
       </v-card-text>

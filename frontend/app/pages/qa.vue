@@ -20,7 +20,6 @@
       v-if="counts.issue > 0"
       class="mb-4"
       type="error"
-      variant="tonal"
       density="compact"
       data-issue-banner
     >
@@ -75,7 +74,6 @@
         <v-alert
           v-else-if="reportsError"
           type="error"
-          variant="tonal"
           density="compact"
           class="mb-6"
         >
@@ -123,7 +121,6 @@
           v-if="visibleItems.length === 0"
           type="success"
           color="ink-success"
-          variant="tonal"
           density="compact"
         >
           {{ emptyText }}

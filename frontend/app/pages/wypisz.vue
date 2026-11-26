@@ -15,7 +15,7 @@
       <!-- A reader without an account has no profile and no team mail, so
            their copy names neither (shared/newsletterSignup.ts). -->
       <v-card-text v-else-if="done && subscriber" class="text-body-1">
-        <v-alert type="success" variant="tonal" data-unsubscribe-done>
+        <v-alert type="success" data-unsubscribe-done>
           Gotowe. Nie wyślemy już na ten adres newslettera na temat „{{
             label
           }}”.
@@ -27,7 +27,7 @@
       </v-card-text>
 
       <v-card-text v-else-if="done" class="text-body-1">
-        <v-alert type="success" variant="tonal" data-unsubscribe-done>
+        <v-alert type="success" data-unsubscribe-done>
           Gotowe. Nie dostaniesz już wiadomości na temat „{{ label }}” ani maili
           dla zespołu.
         </v-alert>
@@ -53,7 +53,6 @@
           <v-alert
             v-if="error"
             type="error"
-            variant="tonal"
             class="mt-4"
             data-unsubscribe-error
           >

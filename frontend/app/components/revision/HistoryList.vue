@@ -10,7 +10,6 @@
     <v-alert
       v-else-if="failed && !data"
       type="error"
-      variant="tonal"
       density="compact"
       class="flex-1-1-100"
     >

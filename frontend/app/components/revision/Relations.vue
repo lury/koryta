@@ -38,7 +38,6 @@
     <v-alert
       v-else-if="failed && !data"
       type="error"
-      variant="tonal"
       density="compact"
     >
       Nie udało się wczytać powiązań.
@@ -154,7 +153,6 @@
             <v-alert
               v-if="clashOf(relation)"
               type="error"
-              variant="tonal"
               density="compact"
               class="mb-3"
             >

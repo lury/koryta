@@ -52,7 +52,6 @@
           <v-alert
             v-if="row.status === 'rejected'"
             type="error"
-            variant="tonal"
             density="compact"
             class="mt-2"
             :text="

@@ -48,7 +48,6 @@
           <v-alert
             v-if="!user.emailVerified"
             type="warning"
-            variant="tonal"
             density="compact"
             class="mb-4"
           >

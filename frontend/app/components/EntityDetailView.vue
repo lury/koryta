@@ -24,7 +24,7 @@
         </v-btn>
       </v-card-text>
       <v-card-text v-else class="pt-0">
-        <v-alert type="warning" variant="tonal" class="mb-4">
+        <v-alert type="warning" class="mb-4">
           <p class="mb-2">Strona nie mogła zostać załadowana.</p>
           <p class="text-caption">
             Prawdopodobnie strona nie istnieje, została usunięta lub nie masz do
@@ -101,7 +101,7 @@
     </template>
     <v-card v-else width="100%" style="overflow: visible">
       <div class="pa-4">
-        <v-alert v-if="revision" type="info" variant="tonal" class="mb-4">
+        <v-alert v-if="revision" type="info" class="mb-4">
           Wyświetlasz podgląd zaproponowanej zmiany na tej stronie.
           <br />
           <nuxt-link :to="`/admin/rewizje/${node}?revisionId=${revisionId}`"

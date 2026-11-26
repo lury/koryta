@@ -55,7 +55,6 @@
     data-testid="home-timeline-empty"
     text="Nie mamy jeszcze dość dat, żeby narysować ten wykres."
     type="info"
-    variant="tonal"
   />
   <v-skeleton-loader v-else type="image" height="340" />
 </template>

@@ -133,7 +133,6 @@
             <v-alert
               v-if="user && !user.emailVerified"
               type="warning"
-              variant="tonal"
               density="compact"
               class="mb-4"
               text="Dopóki nie potwierdzisz adresu email, nie wyślemy na niego żadnej wiadomości."

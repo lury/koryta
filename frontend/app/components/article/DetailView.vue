@@ -10,7 +10,7 @@
           Niezaakceptowane strony są widoczne tylko dla zalogowanych
           użytkowników.
         </p>
-        <v-alert v-else type="warning" variant="tonal" class="mb-4">
+        <v-alert v-else type="warning" class="mb-4">
           Prawdopodobnie artykuł nie istnieje, został usunięty lub nie masz do
           niego dostępu.
         </v-alert>
@@ -31,7 +31,7 @@
 
     <v-card v-else width="100%">
       <div class="pa-4">
-        <v-alert v-if="revisionId" type="info" variant="tonal" class="mb-4">
+        <v-alert v-if="revisionId" type="info" class="mb-4">
           Wyświetlasz podgląd zaproponowanej zmiany na tej stronie.
           <br />
           <nuxt-link :to="`/admin/rewizje/${nodeId}?revisionId=${revisionId}`">
@@ -124,7 +124,6 @@
         <v-alert
           v-if="topicError"
           type="error"
-          variant="tonal"
           density="compact"
           class="mt-2"
         >
@@ -195,7 +194,7 @@
                 </template>
               </ExtractionCard>
             </div>
-            <v-alert v-else type="info" variant="tonal" density="compact">
+            <v-alert v-else type="info" density="compact">
               Z tego artykułu nie wydobyto jeszcze żadnych faktów.
             </v-alert>
           </div>
@@ -217,7 +216,6 @@
           <v-alert
             v-if="mentionError"
             type="error"
-            variant="tonal"
             density="compact"
             class="mt-2"
           >

@@ -35,7 +35,6 @@
     <v-alert
       v-if="loadError"
       type="error"
-      variant="tonal"
       class="tasks-page__note mb-4"
     >
       {{ loadError }}
@@ -43,7 +42,6 @@
     <v-alert
       v-if="missingTarget"
       type="info"
-      variant="tonal"
       density="compact"
       class="tasks-page__note mb-4"
     >
@@ -333,7 +331,6 @@
     <v-alert
       v-if="!pending && !loadError && tasks.length === 0"
       type="info"
-      variant="tonal"
       class="tasks-page__note"
     >
       Nie ma jeszcze żadnych zadań. Dodaj pierwsze albo poproś agenta, żeby

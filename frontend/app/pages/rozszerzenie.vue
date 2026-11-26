@@ -8,7 +8,7 @@
         tylko zajawkę.
       </p>
 
-      <v-alert v-if="!user" type="info" variant="tonal" class="mb-4">
+      <v-alert v-if="!user" type="info" class="mb-4">
         Zaloguj się, żeby połączyć rozszerzenie.
         <template #append>
           <v-btn variant="text" to="/login?redirect=/rozszerzenie">
@@ -20,7 +20,6 @@
       <v-alert
         v-else-if="isDatascience === false"
         type="warning"
-        variant="tonal"
         class="mb-4"
       >
         Twoje konto nie ma uprawnień do wysyłania artykułów. Napisz do nas,
@@ -30,7 +29,6 @@
       <template v-else>
         <v-alert
           :type="alertType"
-          variant="tonal"
           class="mb-4"
           :icon="alertType === 'success' ? mdiCheckCircle : undefined"
         >

@@ -180,12 +180,12 @@
       </template>
 
       <v-col v-if="isSelfEdge" cols="12">
-        <v-alert type="warning" variant="tonal" density="compact">
+        <v-alert type="warning" density="compact">
           Nie można połączyć wpisu z nim samym.
         </v-alert>
       </v-col>
       <v-col v-if="error" cols="12">
-        <v-alert type="error" variant="tonal" density="compact">
+        <v-alert type="error" density="compact">
           {{ error }}
         </v-alert>
       </v-col>

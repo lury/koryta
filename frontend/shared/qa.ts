@@ -59,6 +59,20 @@ export const qaAreaConfig: Record<QaArea, { title: string; color: string }> = {
  * before the list could be read at all. */
 export const QA_ITEMS: QaItem[] = [
   {
+    id: "dymki-jasne-fokus-esc",
+    title: "Jasne dymki, Esc je chowa, widoczny fokus klawiatury, czytelne komunikaty",
+    description:
+      "Dymki są białe z cienką ramką zamiast ciemnoszarych, więc szary tekst w nich da się przeczytać. Esc chowa otwarty dymek. Element wybrany klawiszem Tab ma wyraźną ciemną obwódkę. Niebieskie, zielone i pomarańczowe komunikaty (np. „Wybierz miejsce…” na /graf) mają ciemniejszy, czytelny tekst. Przy systemowym ustawieniu „ogranicz ruch” animacje są wyłączone.",
+    steps: [
+      "Na /eksploruj/tabela najedź na liczbę w kolumnie „Twój głos”: dymek jest biały, a szara linijka „Skala od -5 do +5” jest czytelna.",
+      "Przy otwartym dymku naciśnij Esc: dymek znika, a kursor może zostać na miejscu.",
+      "Naciśnij kilka razy Tab od góry strony: każdy przycisk i link ma wyraźną obwódkę.",
+      "Otwórz /graf bez parametrów: niebieski komunikat ma ciemnoniebieski tekst.",
+    ],
+    link: "/eksploruj/tabela",
+    area: "public",
+  },
+  {
     id: "dymki-z-opoznieniem",
     title: "Dymki podpowiedzi otwierają się po chwili i bez animacji powiększania",
     description:

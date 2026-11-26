@@ -221,6 +221,19 @@ export const role = {
    * the ask to sign in is not missed beside the Oliwka pane. White on it:
    * 6.54:1 */
   tallySignIn: ink.danger,
+  /** A tooltip's bubble: the page's own white with a hairline in
+   * `tooltipEdge`, so whatever ink a caller puts inside - `ink.*`,
+   * `text-medium-emphasis` - reads as it does on a card. Vuetify's stock
+   * #424242 put `text-medium-emphasis` at 2.09:1. Body ink on it: 19.68:1 */
+  tooltip: surface.white,
+  onTooltip: ink.strong,
+  /** The bubble's edge against the white page: 6.50:1, over the 3:1 a
+   * component boundary needs. */
+  tooltipEdge: ink.neutral,
+  /** The keyboard focus ring: a dark outline round a white halo, so one of
+   * the two clears 3:1 on any fill the site has, from white to `ctaDeep`. */
+  focusInk: ink.strong,
+  focusHalo: surface.white,
 } as const;
 
 /** Colours that belong to somebody else and are used as theirs. */
@@ -301,6 +314,11 @@ export const themeColors = {
   "tally-pale": role.tallyPale,
   "tally-sign-in": role.tallySignIn,
   "on-tally-sign-in": surface.white,
+  tooltip: role.tooltip,
+  "on-tooltip": role.onTooltip,
+  "tooltip-edge": role.tooltipEdge,
+  "focus-ink": role.focusInk,
+  "focus-halo": role.focusHalo,
   "ink-sage": ink.sage,
   "ink-success": ink.success,
   "ink-warning": ink.warning,

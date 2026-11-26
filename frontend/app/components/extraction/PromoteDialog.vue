@@ -81,7 +81,6 @@
         <v-alert
           v-if="fact.articleNodeId"
           type="info"
-          variant="tonal"
           density="compact"
           class="mt-3"
         >
@@ -90,7 +89,6 @@
         <v-alert
           v-else
           type="warning"
-          variant="tonal"
           density="compact"
           class="mt-3"
           data-testid="promote-fact-no-source"
@@ -102,7 +100,6 @@
         <v-alert
           v-if="error"
           type="error"
-          variant="tonal"
           density="compact"
           class="mt-3"
           data-testid="promote-fact-error"
@@ -118,7 +115,6 @@
         <v-alert
           v-if="outcome === 'exists'"
           type="info"
-          variant="tonal"
           density="compact"
           class="mt-3"
           data-testid="promote-fact-exists"
@@ -132,7 +128,6 @@
         <v-alert
           v-else-if="outcome === 'deleted'"
           type="warning"
-          variant="tonal"
           density="compact"
           class="mt-3"
           data-testid="promote-fact-deleted"
