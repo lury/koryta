@@ -311,7 +311,31 @@ def process_pkw(ctx: Context, csv_headers, limit: int | None, year: str | None):
     # Column by column: the same frame as from_records over asdict, in less
     # than half the time and memory for the 2M candidacies.
     columns = [f.name for f in dataclasses.fields(Person)]
-    return pd.DataFrame({c: [getattr(r, c) for r in outputs] for c in columns})
+    return pd.DataFrame(
+        {
+            c: [as_text(getattr(r, c)) for r in outputs]
+            if c in TEXT_FIELDS
+            else [getattr(r, c) for r in outputs]
+            for c in columns
+        }
+    )
+
+
+#: The fields `Person` declares as text. Some workbooks hand them over as
+#: numbers - the age everywhere but 2010 and 2024, the TERYT of 77,984
+#: candidacies in 2010 and 2024 - which a column of one type cannot hold.
+TEXT_FIELDS = frozenset(
+    name
+    for name, hint in typing.get_type_hints(Person).items()
+    if hint in (str, str | None)
+)
+
+
+def as_text(value):
+    """An integer as the digits it is, anything else as it was."""
+    if isinstance(value, int) and not isinstance(value, bool):
+        return str(value)
+    return value
 
 
 def local_offices(rows: pd.DataFrame, gmina_kinds: typing.Mapping[str, str]) -> list:
@@ -333,6 +357,9 @@ def local_offices(rows: pd.DataFrame, gmina_kinds: typing.Mapping[str, str]) -> 
 
 class PeoplePKW(Pipeline[Person]):
     filename = "person_pkw"
+    # 2M candidacies: 800 MB of JSONL, 33 MB of Parquet, read back with the
+    # types written instead of the ones `read_json` guesses.
+    format = "parquet"
     # Written zero-padded and only meaningful zero-padded. Without the pin a
     # restore from the shared cache re-infers the column as an integer and the
     # leading zeros are gone -- see scrapers/krs/columns.py for the two read

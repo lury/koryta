@@ -2,6 +2,7 @@ import csv
 import json
 import os
 
+import pyarrow.parquet as pq
 import pytest
 
 from stores.config import VERSIONED_DIR
@@ -27,7 +28,7 @@ COLUMNS_IN_FILE = {
         "name",
         "city",
     ],
-    "person_pkw.jsonl": [
+    "person_pkw.parquet": [
         "election_year",
         "party",
         "pkw_name",
@@ -72,6 +73,11 @@ def test_pipeline_output(filename, column):
 
     should_exist = not column.startswith("-")
     column = column.removeprefix("-")
+
+    if filename.endswith(".parquet"):
+        names = pq.read_schema(path).names
+        assert (column in names) == should_exist, f"{filename}: {names}"
+        return
 
     with open(path, "r") as f:
         # Check first 10 lines

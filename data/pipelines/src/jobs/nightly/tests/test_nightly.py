@@ -148,8 +148,8 @@ class World:
         night.write_built_from(str(self.state / night.BUILT_FROM), record)
 
     def output(self, name: str):
-        filename = night.REBUILT_ON_CHANGE[name].filename
-        return self.versioned / filename / f"{filename}.jsonl"
+        spec = night.REBUILT_ON_CHANGE[name]
+        return self.versioned / spec.filename / f"{spec.filename}.{spec.format}"
 
     def hold(self, name: str) -> None:
         """A copy of the pipeline's output on disk, as the nights keep it."""
@@ -1122,7 +1122,10 @@ def test_every_rebuildable_pipeline_is_held_and_its_sources_exist():
     for name, spec in night.REBUILT_ON_CHANGE.items():
         assert name in night.HELD, name
         pipeline = by_name[name]
-        assert (pipeline.filename, pipeline.format) == (spec.filename, "jsonl"), name
+        assert (pipeline.filename, pipeline.format) == (
+            spec.filename,
+            spec.format,
+        ), name
         for path in spec.sources:
             assert os.path.exists(os.path.join(top, path)), path
     assert "ProcessWiki" not in night.REBUILT_ON_CHANGE

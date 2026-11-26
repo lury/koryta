@@ -296,11 +296,13 @@ HELD = (
 class Rebuildable:
     """A held pipeline the night rebuilds when its code changes."""
 
-    #: Its output, versioned/<filename>/<filename>.jsonl.
+    #: Its output, versioned/<filename>/<filename>.<format>.
     filename: str
     #: The paths in the repository its rows are computed from: its own module
     #: and what decides what goes in them, not the framework that writes them.
     sources: tuple[str, ...]
+    #: The pipeline's `format`.
+    format: str = "jsonl"
 
 
 #: The held pipelines the VM can rebuild in minutes, cheapest first, so that a
@@ -344,6 +346,7 @@ REBUILT_ON_CHANGE: dict[str, Rebuildable] = {
             "data/pipelines/src/util/polish.py",
             "data/pipelines/src/entities/person.py",
         ),
+        format="parquet",
     ),
 }
 
@@ -634,8 +637,8 @@ def state_dir() -> str:
     return os.path.join(PROJECT_ROOT, "nightly-state")
 
 
-def held_output(filename: str) -> str:
-    return os.path.join(VERSIONED_DIR, filename, f"{filename}.jsonl")
+def held_output(filename: str, format: str = "jsonl") -> str:
+    return os.path.join(VERSIONED_DIR, filename, f"{filename}.{format}")
 
 
 def source_trees(
@@ -1338,7 +1341,7 @@ class Night:
         record = read_built_from(path)
         rebuilt, missed = self.summary.rebuilt, self.summary.not_rebuilt
         for name, spec in REBUILT_ON_CHANGE.items():
-            output = held_output(spec.filename)
+            output = held_output(spec.filename, spec.format)
             if put_back_aside(output):
                 self.log(
                     f"{name}: put back the copy a killed night moved aside", step.name
