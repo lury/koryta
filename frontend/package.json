@@ -89,6 +89,8 @@
     "@modelcontextprotocol/sdk": "^1.29.0",
     "@nuxt/test-utils": "^4.1.0",
     "@nuxtjs/seo": "^5.3.6",
+    "@opentelemetry/exporter-trace-otlp-http": "0.221.0",
+    "@opentelemetry/sdk-trace": "2.10.0",
     "@plausible-analytics/tracker": "^0.4.5",
     "@playwright/test": "^1.62.0",
     "@types/d3-force": "^3.0.10",

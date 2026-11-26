@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import type { Event } from "@sentry/nuxt";
 import { withoutPrivateHeaders } from "../../sentry.server.config";
+import { localTracingOptions } from "../../sentry.localTracing";
 
 const { init } = vi.hoisted(() => ({ init: vi.fn() }));
 // Hoisted above the import, so the config initialises against this.
@@ -59,5 +60,41 @@ describe("sentry.server.config", () => {
   it("leaves an event with no request alone", () => {
     const event: Event = { message: "boom" };
     expect(withoutPrivateHeaders(event)).toEqual({ message: "boom" });
+  });
+});
+
+describe("localTracingOptions", () => {
+  const LOCAL = { OTEL_EXPORTER_OTLP_ENDPOINT: "http://127.0.0.1:4318" };
+
+  it("is not in the options the config hands Sentry without the variable", () => {
+    expect(options).not.toHaveProperty("openTelemetrySpanProcessors");
+    expect(options).not.toHaveProperty("transport");
+  });
+
+  it("adds nothing when the variable is not set", () => {
+    expect(localTracingOptions(false, {})).toEqual({});
+  });
+
+  it("sends every span of a local run to it", () => {
+    const local = localTracingOptions(false, LOCAL);
+
+    expect(local.openTelemetrySpanProcessors).toHaveLength(1);
+    expect(local.tracesSampleRate).toBe(1);
+  });
+
+  it("sends nothing to Sentry from a local run", async () => {
+    const fetch = vi.spyOn(globalThis, "fetch");
+    const local = localTracingOptions(false, LOCAL);
+
+    // Enabled so that its integrations run, with a transport that drops all.
+    expect(local.enabled).toBe(true);
+    const transport = local.transport!({} as never);
+    await expect(transport.send([{}, []])).resolves.toEqual({});
+    expect(fetch).not.toHaveBeenCalled();
+    fetch.mockRestore();
+  });
+
+  it("is ignored by a deployed backend", () => {
+    expect(localTracingOptions(true, LOCAL)).toEqual({});
   });
 });
