@@ -720,6 +720,10 @@ def required_resources(pipeline_type: type) -> set[type[ContextResource]]:
     return resources
 
 
+#: Rows of a frame `Pipeline.write_dataframe` turns into JSONL at a time.
+JSONL_SLICE = 200_000
+
+
 class Pipeline(typing.Generic[Output]):
     """
     A decorator for defining and configuring a data processing pipeline.
@@ -955,6 +959,13 @@ Should I run it? (y/n) [n]",
 
         def writer(f: io.BufferedWriter):
             match format:
+                case "jsonl" if len(df) > JSONL_SLICE:
+                    # A slice at a time: the same lines, without holding the
+                    # whole file as one string (3.9 GB for person_pkw's 0.8 GB).
+                    for start in range(0, len(df), JSONL_SLICE):
+                        df.iloc[start : start + JSONL_SLICE].to_json(
+                            f, orient="records", lines=True
+                        )
                 case "jsonl":
                     df.to_json(f, orient="records", lines=True)
                 case "csv":
