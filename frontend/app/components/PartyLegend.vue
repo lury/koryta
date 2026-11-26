@@ -16,14 +16,21 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { partyFullName, sortParties } from "~~/shared/misc";
+import { parties as knownParties, partyFullName } from "~~/shared/misc";
 
 const { parties } = defineProps<{
   /** The parties to explain - the ones on the page, repeats allowed. */
   parties: string[];
 }>();
 
-const shown = computed(() => sortParties(new Set(parties.filter(Boolean))));
+/** In the order of `parties` in shared/misc - the graph legend's rank, „Inne”
+ * last - and any name it does not know after those. */
+const shown = computed(() => {
+  const present = new Set(parties.filter(Boolean));
+  const known = knownParties.filter((party) => present.has(party));
+  const rest = [...present].filter((party) => !knownParties.includes(party));
+  return [...known, ...rest.sort()];
+});
 </script>
 
 <style scoped>
