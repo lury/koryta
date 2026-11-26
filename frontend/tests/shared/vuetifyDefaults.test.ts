@@ -14,6 +14,7 @@ describe("vuetifyDefaults", () => {
       location: "top",
       maxWidth: 320,
       interactive: true,
+      eager: false,
     });
     // Zero was Vuetify's own, and the reason a row of a table lit up with
     // bubbles as the pointer crossed it.

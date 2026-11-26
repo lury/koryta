@@ -14,6 +14,7 @@
     class="hidden-party"
     :style="paint"
     tabindex="0"
+    role="img"
     :aria-label="explanation"
     data-testid="hidden-party"
     data-nosnippet

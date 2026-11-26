@@ -33,6 +33,10 @@ export const vuetifyDefaults = {
     // Hoverable content (WCAG 1.4.13): the pointer can move onto the bubble to
     // read or select it without it closing underneath.
     interactive: true,
+    // Rendered when opened rather than up front. Eager, every closed tooltip
+    // was an empty `role="tooltip"` in the page - 187 of them on one page of
+    // /eksploruj/tabela, each an axe `aria-tooltip-name` failure.
+    eager: false,
   },
   // 128 of 135 alerts were tonal already. Tonal also draws the text in the
   // status ink (app.vue maps `text-info` and its siblings onto `ink.*`), where

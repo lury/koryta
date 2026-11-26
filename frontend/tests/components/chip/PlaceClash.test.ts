@@ -5,6 +5,7 @@ import PlaceClash from "../../../app/components/chip/PlaceClash.vue";
 import { useAuthState } from "~/composables/auth";
 import type { EdgeNode } from "../../../app/composables/edges";
 import type { PlaceClash as Clash } from "../../../shared/twoPlaces";
+import { TOOLTIP_OPEN_DELAY } from "../../../shared/vuetifyDefaults";
 
 vi.mock("~/composables/auth", () => ({
   useAuthState: vi.fn(),
@@ -53,7 +54,8 @@ async function tooltip(wrapper: Awaited<ReturnType<typeof mountChip>>) {
   await wrapper
     .find("[data-testid^='place-clash-chip-']")
     .trigger("mouseenter");
-  await new Promise((resolve) => setTimeout(resolve, 50));
+  // Past the global open delay (shared/vuetifyDefaults.ts).
+  await new Promise((resolve) => setTimeout(resolve, TOOLTIP_OPEN_DELAY + 50));
   return document.body.querySelector(".v-tooltip")?.textContent ?? "";
 }
 
