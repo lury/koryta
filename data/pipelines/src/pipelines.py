@@ -71,6 +71,7 @@ from scrapers.krs.scrape import KRSAlreadyScraped, KRSNeedsRefresh, ScrapeRejest
 from scrapers.krs.updates import KRSUpdates
 from scrapers.map.postal_codes import PostalCodes
 from scrapers.map.teryt import Regions
+from scrapers.news.changes import NewsWatchChanges
 from scrapers.pkw.process import PeoplePKW
 from scrapers.wiki.process_articles import ProcessWiki
 from scrapers.wiki.process_articles_ner import ProcessWikiNer
@@ -139,6 +140,7 @@ PIPELINES = [
     KorytaPeopleCreated,
     KorytaVotes,
     NamesCountByRegion,
+    NewsWatchChanges,
     PeopleEnriched,
     PeopleKRS,
     PeopleKRSCombined,

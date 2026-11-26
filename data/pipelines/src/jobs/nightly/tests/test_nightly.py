@@ -41,6 +41,7 @@ GOOD = {
     "koryta_people_import": 0,
     "koryta_company_import": 0,
     "koryta_score_import": 0,
+    "koryta_news_watch": 0,
     "koryta_bip_declarations": 0,
     "koryta_uploader": 0,
     "compressor": 0,
@@ -293,6 +294,7 @@ def test_a_good_night_runs_every_step_in_order_and_exits_0(world):
         "koryta_people_import",
         "koryta_company_import",
         "koryta_score_import",
+        "koryta_news_watch",
         "koryta_bip_declarations",
         "koryta_uploader",
     ]
@@ -1346,10 +1348,11 @@ def test_the_scores_do_not_wait_on_how_the_people_went(world):
     assert world.steps()["people"] == ("failed", "kod wyjścia 1")
     assert world.steps()["company_updates"] == ("succeeded", "")
     assert world.steps()["scores"] == ("succeeded", "")
-    assert world.ran()[-5:] == [
+    assert world.ran()[-6:] == [
         "koryta_people_import",
         "koryta_company_import",
         "koryta_score_import",
+        "koryta_news_watch",
         "koryta_bip_declarations",
         "koryta_uploader",
     ]
@@ -1406,6 +1409,48 @@ def test_the_site_recounts_on_autopush_after_everything_the_night_sent(world):
         "--submit",
     ]
     assert world.steps()["compute_nodes"] == ("succeeded", "")
+
+
+def test_the_news_are_searched_for_yesterday_s_board_changes(world):
+    assert night.main([]) == 0
+
+    argv, _ = world.command("koryta_news_watch")
+    yesterday = (night.warsaw_now() - timedelta(days=1)).date().isoformat()
+    assert argv[1:] == [
+        "--since",
+        yesterday,
+        "--max-queries",
+        "20",
+        "--max-minutes",
+        "19",
+    ]
+    assert world.steps()["news_watch"] == ("succeeded", "")
+
+
+def test_the_news_wait_for_the_reprocess_and_hold_nothing(world):
+    world.codes["koryta"] = 1
+
+    night.main([])
+
+    assert world.steps()["news_watch"][0] == "held"
+    assert "koryta_news_watch" not in world.ran()
+
+    world.commands.clear()
+    world.objects.clear()
+    world.codes["koryta"] = 0
+    world.codes["koryta_news_watch"] = 1
+
+    assert night.main([]) == night.EXIT_FAILED
+
+    assert world.steps()["news_watch"] == ("failed", "kod wyjścia 1")
+    assert world.steps()["declarations"] == ("succeeded", "")
+
+
+def test_no_news_searches_when_the_limit_is_0(world):
+    assert night.main(["--news-max-queries", "0"]) == 0
+
+    assert world.steps()["news_watch"] == ("skipped", "limit zapytań 0")
+    assert "koryta_news_watch" not in world.ran()
 
 
 def test_a_held_night_still_recounts(world):

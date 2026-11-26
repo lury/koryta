@@ -86,6 +86,11 @@ The steps, in order (`STEPS`):
     scores      koryta_score_import: every scoring model rebuilt over the
                 day's newest export and the pages the people step has just
                 created, and its votes reconciled with the site's
+    news_watch  koryta_news_watch --since <yesterday>: the news searched for
+                the board changes the bulletin showed at the site's
+                companies since yesterday, at most --news-max-queries (20)
+                searches, and the articles found handed to the crawl's url
+                store; held when the reprocess did not come through
     declarations
                 koryta_bip_declarations send-facts: the newest facts part
                 predator wrote after a crawl chunk, a cut or an upload, with
@@ -560,6 +565,9 @@ STEPS = (
     # and the hand uploads' pace: 290 companies in 3 minutes on 2026-10-29.
     Step("company_updates", "zmiany firm", 30),
     Step("scores", "oceny", 30),
+    # GDELT takes a call every 30 s and 10-20 s to answer it: 20 queries,
+    # about 15 minutes; the job stops asking a minute short of the limit.
+    Step("news_watch", "wiadomości", 20),
     # The list, PESEL's tables and one request, which the site answers once it
     # has counted: two tries at most, which end inside this limit
     # (`jobs.bip_declarations.FACTS_BACKOFF_S`).
@@ -1176,7 +1184,9 @@ class Night:
             and not self.summary.export
         ):
             return "wstrzymane: brak kopii bazy"
-        if step.name in ("tests", "outputs") and not self.came_through("reprocess"):
+        if step.name in ("tests", "outputs", "news_watch") and not self.came_through(
+            "reprocess"
+        ):
             return "wstrzymane: potoki się nie przeliczyły"
         if step.name in ("companies", "company_updates") and (
             held := self.why_not_upload()
@@ -1648,6 +1658,26 @@ class Night:
             argv += ["--refresh", name]
         return self.judge_job(*self.process(step, argv))
 
+    def step_news_watch(self, step: Step) -> tuple[str, str, int | None]:
+        if not self.args.news_max_queries:
+            return SKIPPED, "limit zapytań 0", None
+        yesterday = (warsaw_now() - timedelta(days=1)).date().isoformat()
+        argv = [
+            bin_path("koryta_news_watch"),
+            *self.news_watch_args(yesterday),
+            "--max-minutes",
+            f"{max(1.0, self.minutes_for(step) - 1):.0f}",
+        ]
+        return self.judge_job(*self.process(step, argv))
+
+    def news_watch_args(self, since: str) -> list[str]:
+        return [
+            "--since",
+            since,
+            "--max-queries",
+            str(self.args.news_max_queries),
+        ]
+
     def step_declarations(self, step: Step) -> tuple[str, str, int | None]:
         argv = [bin_path("koryta_bip_declarations"), "send-facts"]
         return self.judge_job(*self.process(step, argv))
@@ -1748,6 +1778,10 @@ class Night:
             "those turning public first; none made private",
             "scores": "koryta_score_import: every scoring model, tonight's new "
             "pages included",
+            "news_watch": "koryta_news_watch "
+            + " ".join(self.news_watch_args("<yesterday>"))
+            + ": the news for the board changes the bulletin showed, to the "
+            "crawl's url store",
             "declarations": "koryta_bip_declarations send-facts: predator's newest "
             "facts part, with tonight's list, to the site, which counts the "
             "declarations in people",
@@ -2072,6 +2106,13 @@ def parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Buy nothing from rejestr.io that the free KRS index already "
         "knows (koryta_scrape_krs_paid --free-index).",
+    )
+    parser.add_argument(
+        "--news-max-queries",
+        type=positive_int,
+        default=20,
+        help="news searches at most a night, each one person at one company; "
+        "0 asks none. Default: %(default)s.",
     )
     parser.add_argument(
         "--paid-max-calls",

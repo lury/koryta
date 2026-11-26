@@ -45,6 +45,7 @@ order, each with a time limit and its output in the night's log:
 | `people`          | `koryta_people_import --scope priority --max-uploads 100 --max-odpis-only-current 10 --max-rejestrio-current 50 --max-published 10 --refresh none` |
 | `company_updates` | `koryta_company_import --max-uploads 200 --max-renames 0`: what tonight's data changes on the companies the export has (below)                     |
 | `scores`          | `koryta_score_import`: the scoring models rebuilt, tonight's new pages included, and their votes reconciled                                        |
+| `news_watch`      | `koryta_news_watch --since <yesterday> --max-queries 20`: the news for the board changes the bulletin showed, to the crawl's url store (below)     |
 | `declarations`    | `koryta_bip_declarations send-facts`: predator's newest facts, with tonight's list, to the site, which counts the declarations in people (below)   |
 | `compute_nodes`   | `koryta_uploader --type computeNodes --endpoint https://autopush.koryta.pl --submit`: the site recounts every page's stats (below)                 |
 | `tidy`            | export shards and day-named outputs older than a week off the disk                                                                                 |
@@ -465,9 +466,57 @@ many Poles carry each surname (`koryta_bip_declarations send-facts`); the site
 counts everybody then, and moves them between stages during the day as pages
 are published or readings settle (decision on 2026-11-17).
 
+News: the bulletin names a company whose entry changed, and the seats of
+its people say what changed - somebody joined or left the management or the
+supervisory board on the day of the entry. `NewsWatchChanges` (built by the
+reprocess) lists those changes at the companies the site has a page for:
+`PeopleKRSCombined`'s seats dated on, or up to three days before, a bulletin
+day of their company (`KRSUpdates`), the companies off `KorytaNodes`. The
+`news_watch` step (`koryta_news_watch`, `data/pipelines/src/jobs/news_watch`)
+takes the changes of the bulletin days since yesterday and asks the news for
+each person and company, `"<Imię Nazwisko>" "<company>"`, over the 14 days
+either side of the change: the company by the name a reporter writes - no
+legal form, no town - or by its town where the name is one every town has
+("Przedsiębiorstwo Energetyki Cieplnej"). One query per person and company;
+two changes whose windows overlap share one. At most `--news-max-queries`
+(20) a night, and none asked in the step's last minute (`--max-minutes`);
+0 switches the step off.
+
+The searches: GDELT DOC 2.0, free and keyless, Polish sources only
+(`sourcelang:polish`), one call every 30 seconds - its 429 asks for 5, but on
+2026-11-26 calls 20 s apart, each answered in 10-20 s, drew a 429 on every
+other query - and
+the Brave Search news API once `BRAVE_SEARCH_API_KEY` is in the environment
+(metered; its answers are not kept on disk, as its standard plans allow no
+storing). Google News RSS is there by hand only (`--sources google_news`):
+news.google.com's robots.txt disallows `/rss`, its feed says it is for
+personal, non-commercial readers, and its links are Google's redirects, not
+the publishers' URLs - so none of its hits is queued. Bing's Search API
+(retired 2025-08-11) and Google's Custom Search JSON API (no new customers,
+off on 2027-01-01) are not used. Every call says who asks
+(`koryta-pipelines/<version> (https://github.com/SzymonPajzert/koryta)`), waits
+at least a second after the source's last, and backs off on 429 and 5xx
+(10, 20, 40 s). Each answer is kept under `versioned/news_watch/cache/<source>/day=<day>/`,
+so a rerun the same day asks nothing again.
+
+What it found goes to the crawl, which does the rest as for every page: each
+URL in one spelling (https, no `www.`, no tracking parameters, no AMP), less
+the articles the site has a page for, into the url store (`URL_STORE_URL`,
+`source=news_watch`, with the person, the company and the queries as its
+context), where the crawler's `--custom-pipeline` door fetches it and
+`ArticleDoneUrls` reads it; `--queue postgres` puts them at the front of
+predator's queue instead. Without `URL_STORE_URL` nothing is queued and the run
+says so. The run's queries, candidates and summary are in
+`versioned/news_watch/runs/<day>.jsonl`. A source that did not answer makes
+the step partial (75); the next night asks for the next day's changes, so a
+change whose search failed is searched again only by hand
+(`koryta_news_watch --since <its bulletin day>`), which the cache makes cheap.
+
 A failed step does not end the night; the steps that depend on it are held:
 
-- `invariants` needs the export; `tests` and `outputs` the reprocess.
+- `invariants` needs the export; `tests`, `outputs` and `news_watch` the
+  reprocess, which builds the changes `news_watch` reads. `news_watch` holds
+  nothing back.
 - `people` needs tonight's export, a reprocess that succeeded, and checks with
   nothing new failing. "New" is against the last night that ran the check: a
   test that passed then and fails now - most likely after the last upload -

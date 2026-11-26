@@ -1,0 +1,17 @@
+{
+  "_fixture": "Written by hand to the shape of Brave's news search documentation; no key was at hand to record one.",
+  "type": "news",
+  "query": {"original": "\"Rafał Kudas\" \"Krakowski Holding Komunalny\""},
+  "results": [
+    {
+      "type": "news_result",
+      "title": "Rafał Kudas odchodzi z zarządu Krakowskiego Holdingu Komunalnego",
+      "url": "https://www.example.pl/krakow/rafal-kudas-odchodzi",
+      "description": "Rada nadzorcza KHK odwołała Rafała Kudasa z zarządu spółki.",
+      "age": "6 days ago",
+      "page_age": "2026-11-20T09:15:00",
+      "meta_url": {"scheme": "https", "netloc": "example.pl", "hostname": "www.example.pl", "path": "› krakow"}
+    },
+    {"type": "news_result", "title": "no url"}
+  ]
+}
