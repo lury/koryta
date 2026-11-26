@@ -488,10 +488,15 @@ The searches: GDELT DOC 2.0, free and keyless, Polish sources only
 other query - and
 the Brave Search news API once `BRAVE_SEARCH_API_KEY` is in the environment
 (metered; its answers are not kept on disk, as its standard plans allow no
-storing). Google News RSS is there by hand only (`--sources google_news`):
-news.google.com's robots.txt disallows `/rss`, its feed says it is for
-personal, non-commercial readers, and its links are Google's redirects, not
-the publishers' URLs - so none of its hits is queued. Bing's Search API
+storing), and Google News RSS search, one call every 2 seconds, as
+low-volume discovery - about 20 searches a night (decision on 2026-11-26).
+What gets crawled is the publishers' pages: a Google News link is resolved to
+the publisher's URL first (the article page's signature, then its
+`batchexecute` call; two calls a link, at most `--max-resolve` (40) a run,
+those naming the person in the title first, each answer kept for good). A link
+Google does not resolve is not queued; on 2026-11-26 Google answered the
+article page with 429 ("automated queries"), so until it resolves, Google News
+adds titles to the run's record and nothing to the crawl. Bing's Search API
 (retired 2025-08-11) and Google's Custom Search JSON API (no new customers,
 off on 2027-01-01) are not used. Every call says who asks
 (`koryta-pipelines/<version> (https://github.com/SzymonPajzert/koryta)`), waits

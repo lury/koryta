@@ -33,7 +33,7 @@ from typing import Any
 
 from jobs.news_watch.google_resolve import GoogleNewsResolver
 from jobs.news_watch.handoff import hand_off, known_article_keys
-from jobs.news_watch.http import DiskCache, PoliteClient
+from jobs.news_watch.http import RETRIES, DiskCache, PoliteClient
 from jobs.news_watch.models import Candidate, NewsHit, NewsQuery
 from jobs.news_watch.queries import WINDOW_DAYS, build_queries, fold
 from jobs.news_watch.sources import (
@@ -259,6 +259,12 @@ def parse_args(argv: Sequence[str] | None) -> argparse.Namespace:
     )
     parser.add_argument("--max-queries", type=int, default=20)
     parser.add_argument(
+        "--retries",
+        type=int,
+        default=RETRIES,
+        help="tries again after a 429, a 5xx or no answer, backing off",
+    )
+    parser.add_argument(
         "--max-resolve",
         type=int,
         default=40,
@@ -309,6 +315,8 @@ def run(args: argparse.Namespace) -> int:
         f"sources: {', '.join(s.name for s in sources) or 'none'}"
     )
 
+    for source in sources:
+        getattr(source, "client").retries = args.retries
     deadline = time.monotonic() + args.max_minutes * 60 if args.max_minutes else None
     logs, found, errors = collect(
         queries, sources, today.isoformat(), deadline=deadline
@@ -320,6 +328,7 @@ def run(args: argparse.Namespace) -> int:
             cache=DiskCache(args.cache),
         )
     )
+    resolver.client.retries = args.retries
     found, resolved = resolve_redirects(found, resolver, args.max_resolve)
     known = known_article_keys(args.known_articles)
     candidates, known_count, redirects = candidates_from(found, known)
