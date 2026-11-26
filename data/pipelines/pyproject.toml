@@ -245,6 +245,9 @@ check_untyped_defs = false
 module = [
     "duckdb",
     "duckdb.*",
+    # pyarrow ships no stubs (pandas-stubs types only pandas' side of it).
+    "pyarrow",
+    "pyarrow.*",
     "firebase_admin.*",
     "google.*",
     "scipy.*",

@@ -18,6 +18,8 @@ from typing import TYPE_CHECKING, Any, Callable, List, NewType, Union, overload
 
 import numpy as np
 import pandas as pd
+import pyarrow as pa
+import pyarrow.parquet as pq
 from dacite import Config, from_dict  # type: ignore[import-not-found]
 
 from entities.ner import NEREntities
@@ -723,6 +725,26 @@ def required_resources(pipeline_type: type) -> set[type[ContextResource]]:
 #: Rows of a frame `Pipeline.write_dataframe` turns into JSONL at a time.
 JSONL_SLICE = 200_000
 
+#: What every output was written as before a pipeline moved to Parquet. Still
+#: read, locally and from the shared cache, while the Parquet one is not there:
+#: the night after the switch reads the old file instead of rebuilding.
+LEGACY_FORMAT: Formats = "jsonl"
+
+
+def backup_key(filename: str, format: Formats) -> str:
+    """The shared cache's name for an output in a format.
+
+    JSONL and CSV keep the bare filename they always had. Parquet gets its own
+    name, so a checkout from before the switch, reading the bare name as JSONL,
+    never downloads a Parquet file.
+    """
+    return f"{filename}.parquet" if format == "parquet" else filename
+
+
+def parquet_table(df: pd.DataFrame) -> "pa.Table":
+    """The frame as an Arrow table, ready to be written as Parquet."""
+    return pa.Table.from_pandas(df, preserve_index=False)
+
 
 class Pipeline(typing.Generic[Output]):
     """
@@ -786,18 +808,29 @@ class Pipeline(typing.Generic[Output]):
             if token is not None:
                 _tree.reset(token)
 
+    def stored_formats(self) -> list[Formats]:
+        """The formats an output of this pipeline may be in, preferred first:
+        its own, then the one it was written in before (`LEGACY_FORMAT`)."""
+        if self.format in (LEGACY_FORMAT, "csv"):
+            return [self.format]
+        return [self.format, LEGACY_FORMAT]
+
+    def _read_local(self, ctx: Context, fmt: Formats) -> pd.DataFrame:
+        local = LocalFile(self.output_path(format=fmt), "versioned")
+        return ctx.io.read_data(local).read_dataframe(fmt, dtype=self.dtype)
+
     def read(self, ctx: Context):
         """Attempts to read the output of the pipeline from storage (local or bucket).
 
         Raises FileNotFoundError if not found."""
         assert self.filename
         filenotfound: Exception | None = None
-        local = LocalFile(self.output_path(), "versioned")
-        try:
-            return ctx.io.read_data(local).read_dataframe(self.format, dtype=self.dtype)
-        except FileNotFoundError as e:
-            print("File doesn't exist, continuing: ", e)
-            filenotfound = e
+        for fmt in self.stored_formats():
+            try:
+                return self._read_local(ctx, fmt)
+            except FileNotFoundError as e:
+                print("File doesn't exist, continuing: ", e)
+                filenotfound = filenotfound or e
 
         if self.backup_to_shared_cache and not backup_disabled():
             # Put on disk byte for byte, then read as a local output is. Read
@@ -805,20 +838,20 @@ class Pipeline(typing.Generic[Output]):
             # downloaded it again, and of a pipeline it had declined to run -
             # ProcessWiki - asked again, and rebuilt what reads it as if the
             # missing output had been refreshed.
-            if self.restore_output_from_shared_cache(ctx):
+            for fmt in self.stored_formats():
+                if self.restore_output_from_shared_cache(ctx, fmt):
+                    try:
+                        return self._read_local(ctx, fmt)
+                    except FileNotFoundError as e:
+                        print("Restored output not found, continuing: ", e)
+            for fmt in self.stored_formats():
                 try:
-                    return ctx.io.read_data(local).read_dataframe(
-                        self.format, dtype=self.dtype
-                    )
-                except FileNotFoundError as e:
-                    print("Restored output not found, continuing: ", e)
-            try:
-                return ctx.io.read_data(VersionedBackup(self.filename)).read_dataframe(
-                    self.format, dtype=self.dtype
-                )
-            except Exception as e:
-                print("Versioned backup read failed, continuing: ", e)
-                filenotfound = e
+                    return ctx.io.read_data(
+                        VersionedBackup(backup_key(self.filename, fmt))
+                    ).read_dataframe(fmt, dtype=self.dtype)
+                except Exception as e:
+                    print("Versioned backup read failed, continuing: ", e)
+                    filenotfound = e
 
         # If there was any exception, raise the last one
         if filenotfound is not None:
@@ -826,8 +859,15 @@ class Pipeline(typing.Generic[Output]):
         return None
 
     def output_time(self, ctx: Context):
-        self_ref = LocalFile(self.output_path(), "versioned") if self.filename else None
-        return ctx.io.get_mtime(self_ref) if self_ref else None
+        if not self.filename:
+            return None
+        for fmt in self.stored_formats():
+            mtime = ctx.io.get_mtime(
+                LocalFile(self.output_path(format=fmt), "versioned")
+            )
+            if mtime is not None:
+                return mtime
+        return None
 
     @staticmethod
     def confirm_if_big(func):
@@ -905,9 +945,7 @@ Should I run it? (y/n) [n]",
                 and self._shared_cache_active(ctx, force_download=True)
             ):
                 try:
-                    df = ctx.io.read_data(
-                        VersionedBackup(self.filename)
-                    ).read_dataframe(self.format, dtype=self.dtype)
+                    df = self._read_backup(ctx)
                     if df is not None:
                         self._cached_result = df
                         # Save locally so the next run finds the file on disk.
@@ -934,6 +972,21 @@ Should I run it? (y/n) [n]",
             self._cached_result = df
 
         return df
+
+    def _read_backup(self, ctx: Context) -> pd.DataFrame:
+        """The shared cache's copy, in memory: the current format's, else the
+        legacy one's. Raises what the last attempt raised."""
+        assert self.filename
+        failed: Exception | None = None
+        for fmt in self.stored_formats():
+            try:
+                return ctx.io.read_data(
+                    VersionedBackup(backup_key(self.filename, fmt))
+                ).read_dataframe(fmt, dtype=self.dtype)
+            except Exception as e:
+                failed = e
+        assert failed is not None
+        raise failed
 
     def write_dataframe(
         self,
@@ -970,14 +1023,26 @@ Should I run it? (y/n) [n]",
                     df.to_json(f, orient="records", lines=True)
                 case "csv":
                     df.to_csv(f, index=False)
+                case "parquet":
+                    pq.write_table(table, f, compression="zstd")
                 case _:
                     raise ValueError(f"Not supported export format - {self.format}")
 
+        # Converted once, for the local file and the backup alike.
+        table = parquet_table(df) if format == "parquet" else None
         ctx.io.write_file(
             LocalFile(self.output_path(filename, format), "versioned"), writer
         )
+        if format == "parquet":
+            # Left there, the old file is what a rebuild that moved the new
+            # one aside would find, and read as up to date.
+            legacy = os.path.join(
+                VERSIONED_DIR, self.output_path(filename, LEGACY_FORMAT)
+            )
+            if os.path.exists(legacy):
+                os.remove(legacy)
         if not local_only and self._shared_cache_active(ctx, force_upload=True):
-            ctx.io.write_file(VersionedBackup(filename), writer)
+            ctx.io.write_file(VersionedBackup(backup_key(filename, format)), writer)
 
     def _shared_cache_active(
         self, ctx: Context, force_download: bool = False, force_upload: bool = False
@@ -999,7 +1064,9 @@ Should I run it? (y/n) [n]",
             return ctx.refresh_policy.force_upload_shared_cache
         return False
 
-    def restore_output_from_shared_cache(self, ctx: Context) -> bool:
+    def restore_output_from_shared_cache(
+        self, ctx: Context, format: Formats | None = None
+    ) -> bool:
         """Restore this pipeline's local output from the shared GCS cache.
 
         Streams the latest backup for ``filename`` to the local output path, so
@@ -1014,9 +1081,10 @@ Should I run it? (y/n) [n]",
         ):
             return False
 
-        dest_path = os.path.join(VERSIONED_DIR, self.output_path())
+        format = format or self.format
+        dest_path = os.path.join(VERSIONED_DIR, self.output_path(format=format))
         try:
-            ctx.io.restore_backup_to_path(self.filename, dest_path)
+            ctx.io.restore_backup_to_path(backup_key(self.filename, format), dest_path)
         except Exception as e:
             print(
                 f"Restore from shared cache failed for {self.pipeline_name}, "
@@ -1052,7 +1120,7 @@ Should I run it? (y/n) [n]",
             )
             return False
 
-        ctx.io.upload_backup_from_path(self.filename, src_path)
+        ctx.io.upload_backup_from_path(backup_key(self.filename, self.format), src_path)
         return True
 
     def read_list(self, ctx: Context) -> typing.Iterable[Output]:

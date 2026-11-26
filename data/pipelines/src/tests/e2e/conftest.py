@@ -21,6 +21,7 @@ import pytest
 
 # Importing this is also what creates versioned/ and downloaded/.
 from stores.config import VERSIONED_DIR
+from stores.file import read_parquet_frame
 
 BASELINE_PATH = Path(__file__).parent / "baseline.json"
 
@@ -132,6 +133,8 @@ def read_output():
             df = pd.read_json(path, lines=True, dtype=dtype or True)
         elif fmt == "csv":
             df = pd.read_csv(path, dtype=dtype)
+        elif fmt == "parquet":
+            df = read_parquet_frame(str(path))
         else:
             raise ValueError(f"Unsupported format {fmt}")
 

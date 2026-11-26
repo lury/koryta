@@ -56,6 +56,17 @@ what the pipelines read - it asks an upstream API, buys, uploads - and running
 it twice is not running it once. Jobs may read pipelines; no pipeline imports a
 job (import-linter enforces it, and pipelines may not import `requests`).
 
+An output is `versioned/<filename>/<filename>.<format>`, where `format` is
+the pipeline's own: `jsonl` by default, `parquet` (zstd) for a large output
+only pipelines read. That is `PeoplePKW` today: 36 MB instead of 800 MB, with
+the types it was written with. Read it with `pd.read_parquet`,
+`stores.file.read_parquet_frame` (which gives lists as lists, as the JSONL
+reader does) or DuckDB's `read_parquet`. Its shared-cache copy is named
+`<filename>.parquet`, so a checkout from before the switch never takes it for
+JSONL. While a Parquet pipeline has no Parquet output, locally or in the
+shared cache, it reads the JSONL one it wrote before, and its first Parquet
+write takes that file away.
+
 A job's state is what it wrote, never a pipeline output it keeps up to date:
 
 | Job | Script | Writes |

@@ -7,6 +7,8 @@ from typing import Any, Literal
 from zipfile import ZipFile
 
 import pandas as pd
+import pyarrow as pa
+import pyarrow.parquet as pq
 
 from scrapers.stores import File
 
@@ -51,7 +53,7 @@ class FromBytesIO(File):
                     convert_dates=False,
                 )
         elif fmt == "parquet":
-            return pd.read_parquet(self.raw_bytes)
+            return read_parquet_frame(self.raw_bytes)
         else:
             raise NotImplementedError(f"Format {fmt} not supported for FromBytesIO")
 
@@ -90,7 +92,7 @@ class FromPath(FromBytesIO):
         self.path = path
 
     def read_parquet(self):
-        return pd.read_parquet(self.path)
+        return read_parquet_frame(self.path)
 
     def read_jsonl(self):
         with open(self.path, "r", encoding="utf-8") as f:
@@ -141,9 +143,25 @@ class FromPath(FromBytesIO):
         elif fmt == "csv":
             return pd.read_csv(self.path, sep=csv_sep)
         elif fmt == "parquet":
-            return pd.read_parquet(self.path)
+            return read_parquet_frame(self.path)
 
         return super().read_dataframe(fmt, csv_sep)
+
+
+def read_parquet_frame(source: str | typing.IO[bytes]) -> pd.DataFrame:
+    """A Parquet output as a frame shaped like the JSONL one it replaces.
+
+    Flat columns convert as pyarrow converts them. Lists and structs come back
+    as Python lists and dicts, with None for null, as `read_json` gives them:
+    `to_pandas` makes them numpy arrays, and code written against the JSONL
+    outputs tests `isinstance(x, list)` and `x == []`.
+    """
+    table = pq.read_table(source)
+    nested = [f.name for f in table.schema if pa.types.is_nested(f.type)]
+    df = table.drop_columns(nested).to_pandas()
+    for name in nested:
+        df[name] = pd.Series(table.column(name).to_pylist(), dtype=object)
+    return df[table.column_names]
 
 
 def read_xls(
