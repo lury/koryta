@@ -43,6 +43,7 @@ from stores.storage import CRAWLED_BUCKET, BatchClient
 from stores.storage import Client as CloudStorageClient
 from stores.utils import UtilsImpl
 from stores.web import WebImpl
+from tracing import setup_tracing, traced
 
 
 class Conductor(IO):
@@ -74,6 +75,7 @@ class Conductor(IO):
         assert self.progress_bar is not None
         self.progress_bar.update(1)
 
+    @traced("conductor.read_data")
     def read_data(self, fs: DataRef) -> File:
         if isinstance(fs, DownloadableFile):
             dfs = FileSource(fs)
@@ -256,6 +258,7 @@ class Conductor(IO):
             print(entity)
             raise
 
+    @traced("conductor.write_file")
     def write_file(
         self, fs: DataRef, content: str | typing.Callable[[io.BufferedWriter], None]
     ):
@@ -280,6 +283,7 @@ class Conductor(IO):
             with open(path, "wb") as f:
                 content(f)
 
+    @traced("conductor.upload")
     def upload(
         self, source, data, content_type, include_query=False, verbose=True
     ) -> bool:
@@ -287,6 +291,7 @@ class Conductor(IO):
             source, data, content_type, include_query=include_query, verbose=verbose
         )
 
+    @traced("conductor.batch_upload")
     def batch_upload(
         self, source, data, content_type, include_query=False, verbose=True
     ) -> str:
@@ -351,6 +356,7 @@ def setup_context(
     about to run, so what a run sets up follows from what the pipelines declare
     rather than from a list kept in step by hand.
     """
+    setup_tracing()
     required = set(requires)
     if CrawlQueue in required and crawl_queue is None:
         raise ValueError(

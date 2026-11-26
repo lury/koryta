@@ -203,6 +203,12 @@ test = [
 render = [
     "playwright==1.62.0",
 ]
+tracing = [
+    "opentelemetry-exporter-otlp-proto-http>=1.45.2,<2",
+    "opentelemetry-instrumentation-httpx==0.66b2",
+    "opentelemetry-instrumentation-requests==0.66b2",
+    "opentelemetry-sdk>=1.45.2,<2",
+]
 
 # rapidocr-onnxruntime 1.4.4 declares Python <3.13 and the GUI opencv-python,
 # but runs fine on this headless 3.13 host (that is what tools/ocrenv proved).
