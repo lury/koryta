@@ -6,6 +6,7 @@
 .cache
 dist
 .eslintcache
+storybook-static
 
 # Written by @nuxt/test-utils, which stamps its own version into it and
 # rewrites it whenever the installed copy disagrees with the stamp. It carries
