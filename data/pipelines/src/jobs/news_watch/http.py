@@ -1,4 +1,4 @@
-"""Polite GETs: a pause between calls per source, backoff on 429, a disk cache."""
+"""Polite requests: a pause between calls per source, backoff on 429, a disk cache."""
 
 from __future__ import annotations
 
@@ -31,6 +31,8 @@ TIMEOUT_S = 45.0
 
 class Session(Protocol):
     def get(self, url: str, **kwargs: Any) -> Any: ...
+
+    def post(self, url: str, **kwargs: Any) -> Any: ...
 
 
 def _session() -> Session:
@@ -69,7 +71,7 @@ class DiskCache:
 
 @dataclass
 class PoliteClient:
-    """GETs for one source, at most one every `min_interval_s`."""
+    """Requests to one source, at most one every `min_interval_s`."""
 
     source: str
     min_interval_s: float = MIN_INTERVAL_S
@@ -96,21 +98,53 @@ class PoliteClient:
         cache_key: str,
         day: str,
         headers: dict[str, str] | None = None,
+        cookies: dict[str, str] | None = None,
+    ) -> Response:
+        return self._send(
+            "get", url, {"params": params}, cache_key, day, headers, cookies
+        )
+
+    def post(
+        self,
+        url: str,
+        data: dict[str, str],
+        cache_key: str,
+        day: str,
+        headers: dict[str, str] | None = None,
+        cookies: dict[str, str] | None = None,
+    ) -> Response:
+        return self._send("post", url, {"data": data}, cache_key, day, headers, cookies)
+
+    def _send(
+        self,
+        method: str,
+        url: str,
+        payload: dict[str, Any],
+        cache_key: str,
+        day: str,
+        headers: dict[str, str] | None,
+        cookies: dict[str, str] | None,
     ) -> Response:
         if self.cache is not None:
             body = self.cache.get(self.source, cache_key, day)
             if body is not None:
                 return Response(200, body, 0.0, cached=True)
         all_headers = {"User-Agent": user_agent(), **(headers or {})}
+        send = getattr(self.session, method)
         attempt = 0
         while True:
             self._wait()
             started = self.clock()
             self.calls += 1
             try:
-                reply = self.session.get(
-                    url, params=params, headers=all_headers, timeout=TIMEOUT_S
-                )
+                kwargs: dict[str, Any] = {
+                    **payload,
+                    "headers": all_headers,
+                    "timeout": TIMEOUT_S,
+                }
+                if cookies:
+                    kwargs["cookies"] = cookies
+                reply = send(url, **kwargs)
                 status, text = int(reply.status_code), str(reply.text)
             except requests.RequestException as e:
                 status, text = 0, str(e)

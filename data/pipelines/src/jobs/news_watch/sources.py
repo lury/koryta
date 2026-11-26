@@ -3,9 +3,10 @@
 - GDELT DOC 2.0 (`gdelt`): free, keyless, Polish sources by `sourcelang`, the
   last three months. Its 429 says "one every 5 seconds"; it gets 30
   (`GDELT_INTERVAL_S`).
-- Google News RSS (`google_news`): free and keyless, but news.google.com's
-  robots.txt disallows `/rss` to every agent, and its links are Google
-  redirects, not the publisher's URL. Never on by default.
+- Google News RSS (`google_news`): free and keyless, a call every 2 s. Its
+  links are Google's; `google_resolve` swaps them for the publishers' URLs,
+  which are what the crawl fetches. Used as low-volume discovery: about 20
+  searches a night (decision on 2026-11-26).
 - Brave Search news (`brave`): a key in `BRAVE_SEARCH_API_KEY`, metered. Its
   standard plans allow no storing of results, so its answers are not cached.
 
@@ -37,6 +38,7 @@ MAX_RECORDS = 50
 #: GDELT's 429 asks for one call in 5 s; measured on 2026-11-26, sequential
 #: calls 20 s apart (10-20 s each) still drew a 429 on every other query.
 GDELT_INTERVAL_S = 30.0
+GOOGLE_NEWS_INTERVAL_S = 2.0
 
 
 class SourceError(Exception):
@@ -240,7 +242,7 @@ class BraveSource:
 
 # -- the set ----------------------------------------------------------------
 
-DEFAULT_SOURCES = ("gdelt", "brave")
+DEFAULT_SOURCES = ("gdelt", "google_news", "brave")
 ALL_SOURCES = ("gdelt", "google_news", "brave")
 
 
@@ -256,7 +258,9 @@ def build_sources(
             )
             sources.append(GdeltSource(client))
         elif name == "google_news":
-            client = PoliteClient("google_news", max(2.0, min_interval_s), cache=cache)
+            client = PoliteClient(
+                "google_news", max(GOOGLE_NEWS_INTERVAL_S, min_interval_s), cache=cache
+            )
             sources.append(GoogleNewsSource(client))
         elif name == "brave":
             key = os.environ.get(BRAVE_KEY_ENV, "")

@@ -6,11 +6,18 @@ from pathlib import Path
 import pytest
 
 from jobs import news_watch
+from jobs.news_watch.google_resolve import (
+    GoogleNewsResolver,
+    article_id,
+    page_params,
+    parse_batch,
+)
 from jobs.news_watch.handoff import hand_off, keys_of
 from jobs.news_watch.http import DiskCache, PoliteClient, Response, user_agent
 from jobs.news_watch.models import Candidate, NewsHit, NewsQuery
 from jobs.news_watch.queries import build_queries, company_phrase, person_phrase
 from jobs.news_watch.sources import (
+    DEFAULT_SOURCES,
     GdeltSource,
     SearchResult,
     SourceError,
@@ -148,6 +155,10 @@ def test_brave_news_results_are_read():
 def test_brave_runs_only_with_a_key(monkeypatch, tmp_path):
     monkeypatch.delenv("BRAVE_SEARCH_API_KEY", raising=False)
     assert [s.name for s in build_sources(("gdelt", "brave"), None)] == ["gdelt"]
+    assert [s.name for s in build_sources(DEFAULT_SOURCES, None)] == [
+        "gdelt",
+        "google_news",
+    ]
     monkeypatch.setenv("BRAVE_SEARCH_API_KEY", "k")
     assert [s.name for s in build_sources(("gdelt", "brave"), None)] == [
         "gdelt",
@@ -171,8 +182,14 @@ class FakeSession:
         self.replies = list(replies)
         self.calls: list[tuple[str, dict, dict]] = []
 
-    def get(self, url, params=None, headers=None, timeout=None):
+    def get(self, url, params=None, headers=None, timeout=None, cookies=None):
         self.calls.append((url, params, headers))
+        self.cookies = cookies
+        return self.replies.pop(0)
+
+    def post(self, url, data=None, headers=None, timeout=None, cookies=None):
+        self.calls.append((url, data, headers))
+        self.cookies = cookies
         return self.replies.pop(0)
 
 
@@ -417,3 +434,62 @@ def test_past_the_deadline_no_query_is_asked():
     )
     assert logs == [] and found == [] and errors == {"not_asked": 2}
     assert source.client.calls == 0
+
+
+# -- Google News links to the publishers' ---------------------------------
+
+LINK = "https://news.google.com/rss/articles/CBMilAFBVV95cUxOclo1VXZvTDlKejFBRkNm?oc=5"
+AID = "CBMilAFBVV95cUxOclo1VXZvTDlKejFBRkNm"
+
+
+def test_the_article_id_is_read_off_the_link():
+    assert article_id(LINK) == AID
+    assert article_id("https://example.pl/articles/x") is None
+
+
+def test_the_page_s_signature_buys_the_publisher_s_url():
+    """The page and the answer are written to the shape the live ones have in
+    the published decoders: Google answered this client 429 on 2026-11-26."""
+    page = (FIXTURES / "google_news_article_page.html").read_text()
+    answer = (FIXTURES / "google_news_batchexecute.txt").read_text()
+    assert page_params(page) == ("AZ5r3eQsig", "1764150000")
+    polite, session, _ = client([Reply(200, page), Reply(200, answer)], interval=2.0)
+
+    url = GoogleNewsResolver(polite).resolve(LINK)
+
+    assert url == "https://gazetawroclawska.pl/zaglebie-lubin-zarzad/ar/c2-1234"
+    page_call, batch_call = session.calls
+    assert page_call[0] == f"https://news.google.com/rss/articles/{AID}"
+    assert session.cookies == {"SOCS": "CAI"}
+    request = json.loads(json.loads(batch_call[1]["f.req"])[0][0][1])
+    assert request[0] == "garturlreq"
+    assert request[2:] == [AID, 1764150000, "AZ5r3eQsig"]
+
+
+def test_a_refusal_leaves_the_link_unresolved():
+    polite, _, _ = client([Reply(429, "Sorry...")] * 4, interval=2.0)
+    assert GoogleNewsResolver(polite).resolve(LINK) is None
+    assert parse_batch(")]}'\n\n[]") is None
+
+
+def test_resolved_links_are_queued_as_the_publishers_urls():
+    class Resolver:
+        def __init__(self):
+            self.calls = []
+
+        def resolve(self, link):
+            self.calls.append(link)
+            return "https://www.wroclaw.pl/a?utm_source=gn"
+
+    q = query()
+    found = [
+        (q, hit(LINK, source="google_news", title="Mecz Zagłębia", redirect=True)),
+        (q, hit(LINK + "&x", source="google_news", redirect=True)),
+    ]
+    resolver = Resolver()
+    resolved_found, resolved = news_watch.resolve_redirects(found, resolver, limit=1)
+    # The one naming the person goes first.
+    assert resolver.calls == [LINK + "&x"] and resolved == 1
+    candidates, _, redirects = news_watch.candidates_from(resolved_found, set())
+    assert [c.url for c in candidates] == ["https://wroclaw.pl/a"]
+    assert candidates[0].domain == "wroclaw.pl" and redirects == 1

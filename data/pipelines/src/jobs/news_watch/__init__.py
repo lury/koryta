@@ -26,23 +26,25 @@ import json
 import sys
 import time
 from collections.abc import Iterable, Sequence
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
+from jobs.news_watch.google_resolve import GoogleNewsResolver
 from jobs.news_watch.handoff import hand_off, known_article_keys
-from jobs.news_watch.http import DiskCache
+from jobs.news_watch.http import DiskCache, PoliteClient
 from jobs.news_watch.models import Candidate, NewsHit, NewsQuery
 from jobs.news_watch.queries import WINDOW_DAYS, build_queries, fold
 from jobs.news_watch.sources import (
     ALL_SOURCES,
     DEFAULT_SOURCES,
+    GOOGLE_NEWS_INTERVAL_S,
     NewsSource,
     SourceError,
     build_sources,
 )
-from jobs.news_watch.urls import normalize_url, url_key
+from jobs.news_watch.urls import domain_of, normalize_url, url_key
 from scrapers.news.changes import BoardChange
 from stores.storage import warsaw_tz
 
@@ -77,7 +79,10 @@ class RunSummary:
     hits: int = 0
     candidates: int = 0
     known: int = 0
+    #: Google News links left unresolved, so not queued.
     redirects: int = 0
+    #: Google News links resolved to the publisher's URL.
+    resolved: int = 0
     queued: int = 0
     queue: str = "none"
 
@@ -139,6 +144,29 @@ def collect(
             found.extend((query, hit) for hit in result.hits)
         logs.append(entry)
     return logs, found, errors
+
+
+def resolve_redirects(
+    found: Sequence[tuple[NewsQuery, NewsHit]],
+    resolver: GoogleNewsResolver,
+    limit: int,
+) -> tuple[list[tuple[NewsQuery, NewsHit]], int]:
+    """Google's links swapped for the publishers', at most `limit` of them;
+    those naming the person first. The rest stay links, which are not queued."""
+    order = sorted(
+        (i for i, (_, hit) in enumerate(found) if hit.redirect),
+        key=lambda i: not names_person(found[i][1], found[i][0]),
+    )
+    chosen = set(order[:limit])
+    result: list[tuple[NewsQuery, NewsHit]] = []
+    resolved = 0
+    for index, (query, hit) in enumerate(found):
+        url = resolver.resolve(hit.url) if index in chosen else None
+        if url:
+            resolved += 1
+            hit = replace(hit, url=url, domain=domain_of(url), redirect=False)
+        result.append((query, hit))
+    return result, resolved
 
 
 def candidates_from(
@@ -227,9 +255,16 @@ def parse_args(argv: Sequence[str] | None) -> argparse.Namespace:
         "--sources",
         default=",".join(DEFAULT_SOURCES),
         help=f"comma-separated, of {', '.join(ALL_SOURCES)}; brave runs only "
-        "with a key, google_news only when named",
+        "with a key",
     )
     parser.add_argument("--max-queries", type=int, default=20)
+    parser.add_argument(
+        "--max-resolve",
+        type=int,
+        default=40,
+        help="Google News links resolved to the publisher's URL at most, two "
+        "calls each; those naming the person first",
+    )
     parser.add_argument(
         "--max-minutes",
         type=float,
@@ -269,11 +304,6 @@ def run(args: argparse.Namespace) -> int:
     queries = build_queries(chosen, today, args.window_days)[: args.max_queries]
     names = tuple(s.strip() for s in args.sources.split(",") if s.strip())
     sources = build_sources(names, DiskCache(args.cache), args.min_interval)
-    if "google_news" in names:
-        print(
-            "google_news: its robots.txt disallows /rss and its feed is for "
-            "personal, non-commercial readers only"
-        )
     print(
         f"{len(chosen)} board changes since {since}, {len(queries)} queries, "
         f"sources: {', '.join(s.name for s in sources) or 'none'}"
@@ -283,6 +313,14 @@ def run(args: argparse.Namespace) -> int:
     logs, found, errors = collect(
         queries, sources, today.isoformat(), deadline=deadline
     )
+    resolver = GoogleNewsResolver(
+        PoliteClient(
+            "google_news_resolve",
+            max(GOOGLE_NEWS_INTERVAL_S, args.min_interval),
+            cache=DiskCache(args.cache),
+        )
+    )
+    found, resolved = resolve_redirects(found, resolver, args.max_resolve)
     known = known_article_keys(args.known_articles)
     candidates, known_count, redirects = candidates_from(found, known)
     queue, queued = hand_off(candidates, args.queue)
@@ -290,7 +328,10 @@ def run(args: argparse.Namespace) -> int:
     summary = RunSummary(
         changes=len(chosen),
         queries=len(queries),
-        requests={s.name: getattr(s, "client").calls for s in sources},
+        requests={
+            **{s.name: getattr(s, "client").calls for s in sources},
+            "google_news_resolve": resolver.client.calls,
+        },
         errors=errors,
         queries_with_hits={
             s.name: sum(1 for q in logs if q.sources.get(s.name, {}).get("hits"))
@@ -300,6 +341,7 @@ def run(args: argparse.Namespace) -> int:
         candidates=len(candidates),
         known=known_count,
         redirects=redirects,
+        resolved=resolved,
         queued=queued,
         queue=queue,
     )
