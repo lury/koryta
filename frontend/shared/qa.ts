@@ -59,6 +59,19 @@ export const qaAreaConfig: Record<QaArea, { title: string; color: string }> = {
  * before the list could be read at all. */
 export const QA_ITEMS: QaItem[] = [
   {
+    id: "nazwy-przyciskow-ikon",
+    title: "Przyciski-ikony mają nazwy, a nazwisko w tabeli jest osiągalne z klawiatury",
+    description:
+      "Strzałki głosowania, ikony (i) przy nagłówkach, przycisk wyszukiwarek, lupa i ikona profilu mają teraz nazwy odczytywane przez czytnik ekranu. Nazwisko w /eksploruj/tabela jest prawdziwym linkiem: Tab do niego trafia, Enter otwiera panel boczny, a Ctrl/środkowy klik otwiera stronę osoby w nowej karcie. Strona logowania ma jeden nagłówek główny.",
+    steps: [
+      "Na /eksploruj/tabela przejdź Tabem do nazwiska w pierwszym wierszu i naciśnij Enter: otwiera się panel boczny.",
+      "Kliknij nazwisko środkowym przyciskiem myszy: strona osoby otwiera się w nowej karcie.",
+      "Na /login sprawdź, że całość działa jak dotąd.",
+    ],
+    link: "/eksploruj/tabela",
+    area: "public",
+  },
+  {
     id: "dymki-jasne-fokus-esc",
     title: "Jasne dymki, Esc je chowa, widoczny fokus klawiatury, czytelne komunikaty",
     description:

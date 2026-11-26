@@ -111,12 +111,16 @@
                  `.cursor-pointer` on it. The stylesheet below repaints it -
                  sage as ink measures 1.85:1 on white, which is the name of
                  every person in the table at 14px. -->
-            <NuxtLink
+            <!-- A real href, so the name is in the tab order and a
+                 ctrl/middle click opens the person's page; a plain click or
+                 Enter opens the drawer as before. -->
+            <a
               class="person-name text-primary cursor-pointer font-weight-bold"
-              @click="$emit('focus', item)"
+              :href="personPath(item)"
+              @click="onNameClick($event, item)"
             >
               {{ item.name }}
-            </NuxtLink>
+            </a>
           </template>
           <!-- „szkic”, and nothing at all for the other 90-odd percent of the
                rows. This is what is left of the „Widoczność” column: a
@@ -203,6 +207,7 @@
               <v-btn
                 v-bind="searchProps"
                 :icon="mdiOpenInNew"
+                :aria-label="`Otwórz wyszukiwarki: ${item.name}`"
                 variant="text"
                 color="ink-neutral"
                 size="small"
@@ -437,6 +442,7 @@
             <v-btn
               v-bind="searchProps"
               :icon="mdiOpenInNew"
+              :aria-label="`Otwórz wyszukiwarki: ${item.name}`"
               variant="text"
               color="ink-neutral"
               @click.stop="
@@ -454,6 +460,7 @@
         <v-btn
           v-if="!disableFocus"
           :icon="mdiMagnify"
+          :aria-label="`Szczegóły: ${item.name}`"
           variant="text"
           color="ink-sage"
           @click.stop="$emit('focus', item)"
@@ -529,6 +536,15 @@ const VOTES_SORT_OPTIONS = [
 /** The person's own page, for the name where there is no drawer to open. */
 const personPath = (item: PersonRich) =>
   generateEntityUrl("person", item.id, item.name);
+
+/** A plain click on the name opens the drawer; one with a modifier or the
+ * middle button is left to the browser, which opens the page itself. */
+function onNameClick(event: MouseEvent, item: PersonRich) {
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0)
+    return;
+  event.preventDefault();
+  emit("focus", item);
+}
 
 function countsCaption(item: PersonRich): string {
   const parts: string[] = [];

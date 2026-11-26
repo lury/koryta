@@ -35,20 +35,35 @@
            linked from the bottom of it for everything else. -->
       <v-btn v-if="mdAndUp" text to="/oswiadczenia">Działaj z nami</v-btn>
       <ClientOnly>
-        <v-btn v-if="user && pictureURL" icon to="/profil" size="32">
+        <v-btn
+          v-if="user && pictureURL"
+          icon
+          to="/profil"
+          size="32"
+          aria-label="Twój profil"
+        >
           <v-avatar :image="pictureURL" size="32" />
         </v-btn>
-        <v-btn v-if="user && !pictureURL" icon to="/profil">
+        <v-btn v-if="user && !pictureURL" icon to="/profil" aria-label="Twój profil">
           <v-icon :icon="mdiAccount" />
         </v-btn>
-        <v-btn v-if="!user" :icon="!mdAndUp" @click="loginDialog = true">
+        <v-btn
+          v-if="!user"
+          :icon="!mdAndUp"
+          aria-label="Zaloguj się"
+          @click="loginDialog = true"
+        >
           <v-icon v-if="!mdAndUp" :icon="mdiAccount" />
           <span class="d-none d-md-inline">Zaloguj się</span>
         </v-btn>
         <v-btn v-if="user && mdAndUp" text @click="logout">Wyloguj</v-btn>
         <DialogLogin v-model="loginDialog" hide-activator />
         <template #fallback>
-          <v-btn :icon="!mdAndUp" @click="loginDialog = true">
+          <v-btn
+            :icon="!mdAndUp"
+            aria-label="Zaloguj się"
+            @click="loginDialog = true"
+          >
             <v-icon v-if="!mdAndUp" :icon="mdiAccount" />
             <span class="d-none d-md-inline">Zaloguj się</span>
           </v-btn>

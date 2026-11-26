@@ -5,6 +5,7 @@
         <v-icon
           :icon="mdiInformationOutline"
           v-bind="tipProps"
+          :aria-label="`Co oznacza kolumna ${column.title}`"
           size="small"
           class="mr-2"
           color="grey-darken-1"

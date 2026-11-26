@@ -123,6 +123,9 @@ describe("ExploreTable's merged person and history cells", () => {
     const link = wrapper.get("tbody td a.text-primary.cursor-pointer");
     expect(link.text()).toContain("Jan Kowalski");
 
+    // A real href keeps it in the tab order (it was an <a> without one).
+    expect(link.attributes("href")).toBe("/osoba/jan-kowalski-p1");
+
     await link.trigger("click");
     expect(wrapper.emitted("focus")?.[0]?.[0]).toMatchObject({ id: "p1" });
   });
@@ -131,8 +134,7 @@ describe("ExploreTable's merged person and history cells", () => {
    * as the ink of every name in the table it measured 1.85:1 against the white
    * row. `.person-name` is what the scoped stylesheet repaints in `ink.sage`
    * (6.43:1); the weight is the second half of the treatment, and there is no
-   * third - the underline is on the hover and the focus ring only, because the
-   * name carries no `to` and is not a link. A class assertion rather than a
+   * third - the underline is on the hover and the focus ring only. A class assertion rather than a
    * colour one: the test environment has no viewport and applies no scoped
    * CSS. */
   it("paints the name with the ink token rather than the fill", async () => {
