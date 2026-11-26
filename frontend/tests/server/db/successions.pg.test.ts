@@ -20,6 +20,7 @@ import {
 } from "./pgHarness";
 import { syncStored, type StoredDocs } from "./storedDocs";
 import type { LoggedQuery } from "./queryLog";
+import { validatedQuery } from "../h3Validation";
 
 /** /api/edges/successions on Postgres: who came before and after whom at a
  * company, from either side, over rows arranged per test.
@@ -97,6 +98,12 @@ const { mockGetQuery } = vi.hoisted(() => {
   return { mockGetQuery };
 });
 
+// h3's own, on what `mockGetQuery` hands back: a refused query is a 400.
+(globalThis as Record<string, unknown>).getValidatedQuery = (
+  _event: unknown,
+  parse: (query: unknown) => unknown,
+) => validatedQuery(mockGetQuery(), parse);
+
 const asPaths = (collection: string, docs: Record<string, unknown>) =>
   Object.fromEntries(
     Object.entries(docs).map(([id, data]) => [`${collection}/${id}`, data]),
@@ -166,6 +173,25 @@ describe.runIf(PG_TEST_DATABASE_URL)(
         expect(successions).toHaveLength(1);
         expect(successions[0]?.role).toBe("Rada Społeczna");
         expect(current.map((post) => post.role)).toEqual(["Rada Społeczna"]);
+      });
+
+      it("takes a blank id for none", async () => {
+        const { successions } = await call<CompanySuccessions>({
+          companyId: "szpital",
+          personId: "",
+        });
+        expect(successions).toHaveLength(1);
+      });
+
+      it("refuses an id that is a list or a path, and a request naming neither or both", async () => {
+        for (const query of [
+          { companyId: ["szpital", "orlen"] },
+          { personId: "nodes/anna" },
+          {},
+          { companyId: "szpital", personId: "anna" },
+        ]) {
+          await expect(call(query)).rejects.toMatchObject({ statusCode: 400 });
+        }
       });
 
       it("names it the same way from the person's side", async () => {

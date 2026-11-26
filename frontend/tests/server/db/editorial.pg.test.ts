@@ -652,9 +652,17 @@ describe.runIf(PG_TEST_DATABASE_URL)("editorial writes on Postgres", () => {
         published: true,
         exists: true,
       });
-      expect(await statusOf(callAs(byNodeGet, READER, { query: {} }))).toBe(
-        400,
-      );
+      // No page, a blank one, several, or a path: refused before a query.
+      for (const query of [
+        {},
+        { nodeId: "" },
+        { nodeId: ["kowalski", "nowak"] },
+        { nodeId: "nodes/kowalski" },
+      ]) {
+        expect(
+          await statusOf(callAs(byNodeGet, READER, { query } as never)),
+        ).toBe(400);
+      }
       expect(
         await statusOf(
           callAs(byNodeGet, undefined, { query: { nodeId: "x" } }),

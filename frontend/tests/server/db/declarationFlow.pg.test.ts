@@ -66,6 +66,8 @@ vi.hoisted(() => {
     event.headers[name.toLowerCase()];
   g.getRouterParam = (event: E, name: string) => event.params[name];
   g.getQuery = (event: E) => event.query;
+  g.getValidatedQuery = async (event: E, parse: (q: unknown) => unknown) =>
+    parse(event.query);
   g.setResponseHeader = () => {};
   g.readValidatedBody = async (event: E, parse: (raw: unknown) => unknown) =>
     parse(event.body);

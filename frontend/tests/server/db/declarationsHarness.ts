@@ -22,6 +22,10 @@ function installGlobals() {
   g.defineCachedFunction = (fn: unknown) => fn;
   g.getRouterParam = (event: Event, name: string) => event.params?.[name];
   g.getQuery = (event: Event) => event.query ?? {};
+  // A query the parser refuses throws its ZodError, which `statusOf` reads
+  // as the 400 h3 answers.
+  g.getValidatedQuery = async (event: Event, parse: (q: unknown) => unknown) =>
+    parse(event.query ?? {});
   g.getRequestHeader = (event: Event, name: string) =>
     event.headers[name.toLowerCase()];
   g.readValidatedBody = async (event: Event, parse: (b: unknown) => unknown) =>

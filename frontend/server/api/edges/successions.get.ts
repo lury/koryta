@@ -18,6 +18,8 @@ import {
 import { displayRole } from "~~/shared/companyBodies";
 import { withoutRedundantRoleless } from "~~/shared/rolelessSpells";
 import type { H3Event } from "h3";
+import { z } from "zod";
+import { optionalDocumentId } from "~~/server/utils/requestIds";
 
 /** One end of a handover, named. */
 export type SuccessionSide = {
@@ -434,6 +436,11 @@ async function personSuccessions(
   return { posts, hidden };
 }
 
+const queryValidator = z.object({
+  companyId: optionalDocumentId,
+  personId: optionalDocumentId,
+});
+
 /** Who took over from whom, for one company or for one person.
  *
  * Two shapes behind one route because they are one question asked from either
@@ -443,9 +450,11 @@ async function personSuccessions(
  * gives them their employers but not the other people at those employers.
  */
 async function successions(event: H3Event) {
-  const query = getQuery(event);
-  const companyId = typeof query.companyId === "string" ? query.companyId : "";
-  const personId = typeof query.personId === "string" ? query.personId : "";
+  const query = await getValidatedQuery(event, (query) =>
+    queryValidator.parse(query),
+  );
+  const companyId = query.companyId ?? "";
+  const personId = query.personId ?? "";
 
   // One end or the other, never both: the two answer the same question from
   // opposite sides and a request naming both has not decided what it wants.

@@ -1,20 +1,21 @@
+import { z } from "zod";
 import { getLocalGraph } from "~~/server/utils/localGraph";
 import {
   editorFreshCachedEventHandler,
   wantsLatest,
 } from "~~/server/utils/handlers";
-import { getQuery, getRouterParam, type H3Event } from "h3";
+import { graphDistance, graphIdList } from "~~/server/utils/localGraphRequest";
+import { getRouterParam, getValidatedQuery, type H3Event } from "h3";
+
+const queryValidator = z.object({
+  distance: graphDistance,
+  expand: graphIdList,
+});
 
 async function localGraph(event: H3Event) {
-  const query = getQuery(event);
-  // Clamped: the url is the reader's to type, and every hop past the second
-  // multiplies both the fetch and what lands on the canvas.
-  const distance = Math.min(
-    Math.max(
-      query.distance ? parseInt(query.distance as string, 10) || 1 : 1,
-      1,
-    ),
-    3,
+  // Clamped: the url is the reader's to type. See `MAX_GRAPH_DISTANCE`.
+  const query = await getValidatedQuery(event, (query) =>
+    queryValidator.parse(query),
   );
   const focusNodeId = getRouterParam(event, "id");
 
@@ -22,16 +23,11 @@ async function localGraph(event: H3Event) {
     throw createError({ statusCode: 400, statusMessage: "id is required" });
   }
 
-  let expansions: string[] = [];
-  if (query.expand) {
-    expansions = (query.expand as string).split(",");
-  }
-
   return getLocalGraph(
     focusNodeId,
     await wantsLatest(event),
-    distance,
-    expansions,
+    query.distance,
+    query.expand,
   );
 }
 
