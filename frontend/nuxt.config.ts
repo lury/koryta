@@ -2,6 +2,7 @@
 import { bundleSharpBinaries } from "./build/sharp-binaries";
 import { serveSitemapIndexAtSitemapXml, sitemapOptions } from "./build/sitemap";
 import { themeColors } from "./shared/colors";
+import { vuetifyDefaults } from "./shared/vuetifyDefaults";
 
 // Force IPv4 for emulators to avoid Node 17+ IPv6 issues
 process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
@@ -288,6 +289,8 @@ export default defineNuxtConfig({
       icons: {
         defaultSet: "mdi-svg",
       },
+      // One home for the defaults, shared with the Storybook preview.
+      defaults: vuetifyDefaults,
       theme: {
         defaultTheme: "light",
         themes: {

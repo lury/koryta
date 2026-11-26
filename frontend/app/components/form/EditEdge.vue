@@ -126,7 +126,6 @@
             v-model="newEdge.party"
             :items="parties"
             label="Partia polityczna"
-            density="compact"
             hide-details="auto"
             data-testid="edge-party-select"
           />
@@ -145,7 +144,6 @@
             v-model="newEdge.position"
             :items="electionPositions"
             label="Typ wyborów"
-            density="compact"
             hide-details="auto"
             data-testid="edge-position-select"
           />
@@ -155,7 +153,6 @@
             v-model="newEdge.term"
             :items="electionTerms"
             label="Kadencja"
-            density="compact"
             hide-details="auto"
             data-testid="edge-term-select"
           />

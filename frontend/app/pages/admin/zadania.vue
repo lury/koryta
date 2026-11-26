@@ -102,8 +102,6 @@
         v-model="tag"
         :items="allTags"
         placeholder="Tag"
-        density="compact"
-        variant="outlined"
         hide-details
         clearable
         class="tasks-page__tag"
@@ -116,8 +114,6 @@
         item-value="id"
         placeholder="Cel"
         :prepend-inner-icon="taskKindConfig.goal.icon"
-        density="compact"
-        variant="outlined"
         hide-details
         clearable
         class="tasks-page__goal"

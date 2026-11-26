@@ -192,8 +192,6 @@
         :model-value="item.adminStatus"
         :items="statusOptions"
         label="Status"
-        density="compact"
-        variant="outlined"
         hide-details
         :loading="saving"
         @update:model-value="(value: FeedbackStatus) => emit('status', value)"

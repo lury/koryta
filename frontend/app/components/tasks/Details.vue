@@ -185,7 +185,6 @@
       chips
       closable-chips
       density="compact"
-      variant="outlined"
       :disabled="saving"
       class="mb-2"
       data-task-depends-on
@@ -223,7 +222,6 @@
       chips
       closable-chips
       density="compact"
-      variant="outlined"
       class="mb-2"
       data-task-dependents
       @update:model-value="changeDependents"

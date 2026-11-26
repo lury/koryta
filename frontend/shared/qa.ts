@@ -59,6 +59,19 @@ export const qaAreaConfig: Record<QaArea, { title: string; color: string }> = {
  * before the list could be read at all. */
 export const QA_ITEMS: QaItem[] = [
   {
+    id: "dymki-z-opoznieniem",
+    title: "Dymki podpowiedzi otwierają się po chwili i bez animacji powiększania",
+    description:
+      "Dymek pokazuje się po pół sekundy zatrzymania kursora, a nie od razu, i pojawia się płynnym przenikaniem zamiast wyrastania z kropki. Można na niego najechać kursorem, żeby go przeczytać, a domyślnie stoi nad elementem. Listy wyboru (np. filtry w /eksploruj/tabela) mają teraz wszędzie ten sam obrysowany, zwarty wygląd.",
+    steps: [
+      "Na /eksploruj/tabela przesuń kursor szybko w poprzek wiersza: po drodze nie zapalają się dymki.",
+      "Zatrzymaj kursor na ikonie (i) przy nagłówku kolumny: dymek pojawia się po ok. pół sekundy, bez efektu powiększania.",
+      "Przesuń kursor z ikony na sam dymek: dymek nie znika.",
+    ],
+    link: "/eksploruj/tabela",
+    area: "public",
+  },
+  {
     id: "wyszukiwanie-stron-z-serwera",
     title:
       "Wizualizacje, wybór artykułu i ostrzeżenie o duplikacie szukają na serwerze",

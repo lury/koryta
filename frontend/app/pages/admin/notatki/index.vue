@@ -58,8 +58,6 @@
             v-model="filterNodeType"
             :items="nodeTypeFilterOptions"
             label="Typ węzła"
-            density="compact"
-            variant="outlined"
             hide-details
             clearable
           />
@@ -69,8 +67,6 @@
             v-model="filterKind"
             :items="kindFilterOptions"
             label="Rodzaj"
-            density="compact"
-            variant="outlined"
             hide-details
             clearable
           />
@@ -80,8 +76,6 @@
             v-model="filterAdminType"
             :items="adminTypeFilterOptions"
             label="Typ zgłoszenia"
-            density="compact"
-            variant="outlined"
             hide-details
             clearable
           />
@@ -91,8 +85,6 @@
             v-model="filterStatus"
             :items="statusFilterOptions"
             label="Status"
-            density="compact"
-            variant="outlined"
             hide-details
             clearable
           />

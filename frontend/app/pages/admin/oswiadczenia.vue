@@ -155,8 +155,6 @@
               v-model="heldReason"
               :items="reasonOptions"
               label="Powód"
-              density="compact"
-              variant="outlined"
               hide-details
               class="dheld__reason"
               data-held-reason

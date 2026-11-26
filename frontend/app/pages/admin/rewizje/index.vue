@@ -20,8 +20,6 @@
           v-model="status"
           :items="statusOptions"
           label="Status"
-          density="compact"
-          variant="outlined"
           hide-details
           class="rev-filter"
           data-filter="status"
@@ -30,8 +28,6 @@
           v-model="automatic"
           :items="automaticOptions"
           label="Rodzaj"
-          density="compact"
-          variant="outlined"
           hide-details
           class="rev-filter"
           data-filter="automatic"
@@ -43,8 +39,6 @@
           v-model="published"
           :items="publishedOptions"
           label="Strona"
-          density="compact"
-          variant="outlined"
           hide-details
           class="rev-filter"
           data-filter="published"
@@ -229,8 +223,6 @@
             v-model="itemsPerPage"
             :items="PAGE_SIZES"
             label="Na stronę"
-            density="compact"
-            variant="outlined"
             hide-details
             class="rev-per-page ms-auto"
           />
@@ -251,8 +243,6 @@
           v-model="edgeType"
           :items="edgeTypeOptions"
           label="Typ powiązania"
-          density="compact"
-          variant="outlined"
           hide-details
           clearable
           class="rev-filter"
@@ -312,8 +302,6 @@
           v-model="nodeStatus"
           :items="nodeStatusOptions"
           label="Stan"
-          density="compact"
-          variant="outlined"
           hide-details
           clearable
           class="rev-filter rev-filter--wide"
@@ -323,8 +311,6 @@
           v-model="nodeType"
           :items="nodeTypeOptions"
           label="Typ"
-          density="compact"
-          variant="outlined"
           hide-details
           clearable
           class="rev-filter"
@@ -334,8 +320,6 @@
           v-model="nodeSort"
           :items="nodeSortOptions"
           label="Sortuj"
-          density="compact"
-          variant="outlined"
           hide-details
           class="rev-filter rev-filter--wide"
           data-filter="nodeSort"
@@ -388,8 +372,6 @@
           v-model="nodePerPage"
           :items="PAGE_SIZES"
           label="Na stronę"
-          density="compact"
-          variant="outlined"
           hide-details
           class="rev-per-page ms-auto"
         />

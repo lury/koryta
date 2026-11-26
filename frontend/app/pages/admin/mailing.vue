@@ -23,8 +23,6 @@
         label="Kampania"
         placeholder="Nowa, jeszcze niezapisana"
         persistent-placeholder
-        density="compact"
-        variant="outlined"
         hide-details
         class="mailing-page__picker"
         data-campaign-picker
@@ -134,8 +132,6 @@
               item-title="title"
               item-value="uid"
               label="Tak, jak zobaczy"
-              density="compact"
-              variant="outlined"
               hide-details
               class="mb-3"
               data-campaign-preview-as
