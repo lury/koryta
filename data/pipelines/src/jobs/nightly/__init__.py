@@ -17,6 +17,7 @@
                                       # the register's backlog too, not only
                                       # the day's new registrations
     koryta_nightly --company-dry-run  # count the companies' changes; send none
+    koryta_nightly --paid-free-index  # buy nothing the free KRS index knows
 
 The steps, in order (`STEPS`):
 
@@ -34,6 +35,9 @@ The steps, in order (`STEPS`):
                 yesterday, then those the paid queue owes rejestr.io for,
                 then the public companies with no odpis on file -
                 --odpis-max in all
+    krs_index   koryta_krs_full_index --daily: api-krs's odpis pełny JSON of the
+                tracked companies the bulletin named since they were read - the
+                free index of who sat where - and --index-backfill never read
     krs_paid    koryta_scrape_krs_paid --scope fallback: rejestr.io for what the
                 free sources cannot give - the people somebody marked
                 interesting, by rejestr.io's own count of their connections,
@@ -175,6 +179,11 @@ any kind on 2026-11-19. The rest of the private ones wait behind
 `--odpis-missing all`. The service
 slows down after about 1,000 documents a run; `--odpis-max` caps the step,
 queue, gap and all.
+
+`krs_index` holds nothing back, and nothing holds it. It reads the odpis pełny
+JSON of the tracked companies the bulletin named since they were read (about
+55 a day, a minute at 1 a second), and `--index-backfill` of those never read.
+`krs_paid` leaves out what the index knows only with `--paid-free-index`.
 
 `krs_paid` holds nothing back, and nothing holds it: the people go up with or
 without what it bought. It needs the rejestr.io key - REJESTR_KEY, else the
@@ -526,6 +535,9 @@ STEPS = (
     # register's log began, 2,286 of them, about twenty.
     Step("krs_register", "rejestr KRS", 30),
     Step("krs_odpis", "odpisy", 45),
+    # ~55 tracked companies a day at 1 a second; a backfill of 1,000 about 18
+    # minutes.
+    Step("krs_index", "indeks KRS", 30),
     Step("krs_paid", "rejestr.io", 30),
     # 17-19 requests and half a minute on a night when nothing changed; the
     # first, with the two dumps (195 MB), a minute and a half.
@@ -1322,6 +1334,29 @@ class Night:
             return []
         return ["--missing", self.args.odpis_missing]
 
+    def index_argv(self, minutes: float) -> list[str]:
+        return [
+            bin_path("koryta_krs_full_index"),
+            "--daily",
+            "--backfill",
+            str(self.args.index_backfill),
+            "--max-minutes",
+            f"{max(1.0, minutes - REGISTER_MARGIN):.0f}",
+        ]
+
+    def step_krs_index(self, step: Step) -> tuple[str, str, int | None]:
+        argv = self.index_argv(self.minutes_for(step))
+        return self.judge_job(*self.process(step, argv))
+
+    def paid_argv(self) -> list[str]:
+        return [
+            "--scope",
+            "fallback",
+            "--max-calls",
+            str(self.args.paid_max_calls),
+            *(["--free-index"] if self.args.paid_free_index else []),
+        ]
+
     def step_krs_paid(self, step: Step) -> tuple[str, str, int | None]:
         if not self.args.paid_max_calls:
             return SKIPPED, "limit zapytań 0", None
@@ -1329,13 +1364,7 @@ class Night:
         if not key:
             self.log(f"No rejestr.io key: {why}", step.name)
             return SKIPPED, "brak klucza rejestr.io", None
-        argv = [
-            bin_path("koryta_scrape_krs_paid"),
-            "--scope",
-            "fallback",
-            "--max-calls",
-            str(self.args.paid_max_calls),
-        ]
+        argv = [bin_path("koryta_scrape_krs_paid"), *self.paid_argv()]
         # In the job's environment, never on its command line, which the
         # night's log prints.
         return self.judge_job(*self.process(step, argv, {"REJESTR_KEY": key}))
@@ -1697,8 +1726,11 @@ class Night:
                     f"--max {self.args.odpis_max}",
                 ]
             ),
-            "krs_paid": "koryta_scrape_krs_paid --scope fallback --max-calls "
-            f"{self.args.paid_max_calls} (the key from {REJESTR_SECRET})",
+            "krs_index": "koryta_krs_full_index "
+            + " ".join(self.index_argv(step.minutes)[1:]),
+            "krs_paid": "koryta_scrape_krs_paid "
+            + " ".join(self.paid_argv())
+            + f" (the key from {REJESTR_SECRET})",
             "wikidata": "koryta_wikidata_people --max-requests "
             f"{self.args.wikidata_max_requests}: tonight's people's Wikidata "
             "items, those whose revision moved",
@@ -2026,6 +2058,20 @@ def parser() -> argparse.ArgumentParser:
         "then the site's companies the pipeline calls private (site), then "
         "every other private one (all), or none of them (none). "
         "Default: %(default)s.",
+    )
+    parser.add_argument(
+        "--index-backfill",
+        type=positive_int,
+        default=0,
+        help="Tracked companies the free KRS index reads a night besides the "
+        "bulletin's, never read, lowest KRS first. About 1,000 fit the step. "
+        "Default: %(default)s: the backfill is a hand run.",
+    )
+    parser.add_argument(
+        "--paid-free-index",
+        action="store_true",
+        help="Buy nothing from rejestr.io that the free KRS index already "
+        "knows (koryta_scrape_krs_paid --free-index).",
     )
     parser.add_argument(
         "--paid-max-calls",

@@ -3,6 +3,7 @@
 from entities.company import KRS
 from entities.person import RejestrIOKey
 from jobs.krs_scrape_paid import plan
+from scrapers.krs.full_index import IndexCount
 from scrapers.krs.person_counts import PersonCount
 from scrapers.krs.scrape import (
     PEOPLE_QUERIES,
@@ -193,3 +194,41 @@ def test_the_named_then_the_uncounted_then_the_highest_count_first():
         "0000000001",
         "0000000002",
     ]
+
+
+def test_a_feed_the_free_index_counts_as_many_posts_for_is_not_bought():
+    # p1: the index has both of rejestr.io's posts; p2 one of its two past
+    # ones, the other in a company outside the index; p3 it cannot place.
+    queue = [person("p1"), person("p2"), person("p3")]
+    stated = counts(p1=(1, 1), p2=(1, 2), p3=(0, 1))
+    index = {"p1": IndexCount(1, 1), "p2": IndexCount(2, 1)}
+
+    kept, covered = plan.covered_by_index(queue, stated, index)
+
+    assert [(q.subject_id, q.queries) for q in covered] == [
+        ("p1", [CURRENT, PAST]),
+        ("p2", [CURRENT]),
+    ]
+    assert [(q.subject_id, q.queries) for q in kept] == [
+        ("p2", [PAST]),
+        ("p3", [CURRENT, PAST]),
+    ]
+    assert plan.calls(covered) == 3
+
+
+def test_a_named_person_and_one_nobody_counted_are_bought_as_before():
+    queue = [person("v", reason=REASON_INTERESTING_PERSON), person("n")]
+    index = {"v": IndexCount(5, 5), "n": IndexCount(5, 5)}
+
+    kept, covered = plan.covered_by_index(queue, counts(v=(1, 1)), index)
+
+    assert subjects(kept) == ["v", "n"] and covered == []
+
+
+def test_a_company_whose_pdf_says_all_its_json_does_is_not_bought():
+    queue = [company("0000000001"), company("0000000002")]
+
+    kept, covered = plan.covered_by_index(queue, {}, {}, told={"0000000002"})
+
+    assert subjects(kept) == ["0000000001"]
+    assert subjects(covered) == ["0000000002"]

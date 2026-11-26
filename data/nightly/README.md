@@ -33,6 +33,7 @@ order, each with a time limit and its output in the night's log:
 | `krs_free`        | `koryta_scrape_krs_free --max-minutes 60`: the bulletin, then api-krs                                                                              |
 | `krs_register`    | `koryta_krs_register_owners --new-registrations --reads 0 --max-minutes 25`: who owns each newly registered company                                |
 | `krs_odpis`       | `koryta_krs_odpis --graph --changed-since <yesterday> --queue --missing site --max 300`: odpisy pełne, see below                                   |
+| `krs_index`       | `koryta_krs_full_index --daily --backfill 0 --max-minutes 25`: the free KRS index, the bulletin's companies (below)                                |
 | `krs_paid`        | `koryta_scrape_krs_paid --scope fallback --max-calls 50`: rejestr.io for what the free sources could not give                                      |
 | `wikidata`        | `koryta_wikidata_people --max-requests 100`: the Wikidata items of the people with a pl.wikipedia link, those whose revision moved                 |
 | `rebuild_held`    | `koryta <Name> --refresh <Name>` for each held pipeline whose code changed since this VM last built it (below)                                     |
@@ -193,6 +194,75 @@ under, queue, gap and all: while the queue's companies take the nights, the
 gap waits for them. An odpis that does not come is what `krs_paid` buys
 rejestr.io's feeds for, so a gap company the gateway eats can cost two of its
 50 calls.
+
+## The free KRS index
+
+`krs_index` keeps an index of who sat where in the ~12.7k companies the site
+has a page for, free (`koryta_krs_full_index`, `scrapers/krs/full_index.py`).
+It asks api-krs for the odpis pełny **JSON** of every tracked company the
+bulletin named on or after the day it was last read, plus the reads that
+failed: about 55 a day (51 and 57 on 2026-11-24 and 25), one request each
+once the register is known, a minute at 1 request a second. Every answer goes
+verbatim to `gs://koryta-pl-sharedcache/jobs/krs_full_index/reads/` as
+write-once zstd parts the VM's create-only grant adds, and to the disk
+(`downloaded/krs_full_index/`, one file per company and state of its odpis,
+~12 KB compressed), so a night killed mid-step loses no request.
+
+The JSON gives every board, supervisory-board and prokura seat with the
+entries that began and ended it and their days; it masks the people. The
+reprocess lends them the identities of the PDF `krs_odpis` already fetches
+(`KrsOdpisSeats`'s PESEL fingerprints): a seat is matched on the company,
+the role, its first entry, the masked names' initial and length and the
+PESEL's first digit (`KrsPositionsIndex`). `KrsPersonPositions` is one row per
+fingerprint, every post across the indexed companies with its days, and
+`KrsIndexCompanies` says which companies' JSON names somebody their PDF on
+file does not - the ones that owe `krs_odpis` a new PDF.
+
+api-krs sends no `ETag` and no `Last-Modified` and answers `If-Modified-Since`
+with a full 200, uncompressed, whatever `Accept-Encoding` says (measured
+2026-11-26). What saves requests is the bulletin: a company it has not named
+since the read is never asked again, and the disk answers a rerun.
+
+Measured on 2026-11-26 over 30 tracked companies from the site's export (15
+public, the audit's sample), at 1 request a second:
+
+| Run                     | Requests | Bytes in | Waiting on api-krs | Wall time |
+| ----------------------- | -------- | -------- | ------------------ | --------- |
+| cold (empty disk)       | 41       | 2.48 MB  | 6.0 s              | 40.7 s    |
+| warm (the disk current) | 0        | 0        | 0                  | 0.1 s     |
+
+41 for 30: 11 associations, foundations and SPZOZ answered 404 in P before S;
+with the register known, 30. All 30 came back with an odpis, the 5 the odpis
+aktualny answers 204 for among them: the odpis pełny serves a company struck
+off or in liquidation, with its boards. 997 seats, every one dated, 789 ended.
+The log holds them in 124 KB (1.25 MB of JSON). A full pass over the tracked
+companies is 12.7k to 17.4k requests, 3.5 to 4.8 hours, ~1 GB in and ~55 MB
+of log: a hand run on predator or the VM, or `--index-backfill` of them a
+night (default 0; about 1,000 fit the step):
+
+    koryta_krs_full_index --backfill 13000 --max-minutes 300   # resumes where it stops
+
+`--paid-free-index` (off by default) has `krs_paid` buy nothing the index
+already knows (`koryta_scrape_krs_paid --free-index`,
+`plan.covered_by_index`):
+
+- a person feed, current or past, where the index counts at least as many of
+  the person's posts as rejestr.io's own count says the feed lists
+  (`RejestrIOPersonCounts`). The person is placed through `PeopleKRSCombined`,
+  whose rows carry their rejestr.io id and the fingerprint it was matched to;
+- a company whose odpis pełny PDF did not come, where the PDF on file already
+  names everybody its newest JSON does, and no seat the JSON ends stands in
+  the PDF.
+
+What stays paid: a person somebody named (a vote buys them whatever the count
+says), a person the index cannot place or rejestr.io has no count for, and
+**every post in a company outside the index** - where else in the ~1.28m
+numbers somebody sits. api-krs cannot be searched by person and the JSON's
+masking cannot join one company's people to another's, so that is the one
+question nothing free answers. The run summary counts what the index saved
+(`index_covered` calls, `index_pln`); `koryta_scrape_krs_paid --scope fallback
+--free-index --dry-run` on the VM says what it would save tonight, before the
+night switches over.
 
 ## The held pipelines, when their code changes
 

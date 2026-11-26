@@ -52,6 +52,14 @@ from scrapers.koryta.download import (
 )
 from scrapers.krs.censored import KRSCensoredPeople
 from scrapers.krs.coverage import PersonFeedCoverage, RejestrIOCoverage
+from scrapers.krs.full_index import (
+    KrsFullOdpisLedger,
+    KrsFullOdpisSeats,
+    KrsIndexCompanies,
+    KrsIndexQueue,
+    KrsPersonPositions,
+    KrsPositionsIndex,
+)
 from scrapers.krs.list import CompaniesKRS, PeopleKRS
 from scrapers.krs.odpis_attempts import KrsOdpisAttempts
 from scrapers.krs.odpis_history import KrsOdpisEntries, KrsOdpisSeats
@@ -112,6 +120,12 @@ PIPELINES = [
     KrsOdpisAttempts,
     KrsOdpisEntries,
     KrsOdpisSeats,
+    KrsFullOdpisLedger,
+    KrsFullOdpisSeats,
+    KrsIndexQueue,
+    KrsPositionsIndex,
+    KrsIndexCompanies,
+    KrsPersonPositions,
     PersonFeedCoverage,
     RejestrIOCoverage,
     RejestrIOPersonCounts,

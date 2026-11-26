@@ -2776,7 +2776,7 @@ requires-dist = [
     { name = "webencodings", specifier = "==0.5.1" },
     { name = "wrapt", specifier = "==2.2.2" },
     { name = "xlrd", specifier = ">=2.0.2,<3.0.0" },
-    { name = "zstandard", marker = "python_full_version < '3.14'", specifier = ">=0.23" },
+    { name = "zstandard", specifier = ">=0.23,<1" },
 ]
 
 [package.metadata.requires-dev]

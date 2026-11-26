@@ -107,6 +107,18 @@ Then `KrsOdpisSeats` and `KrsOdpisEntries` read the PDFs into dated seats and ea
 the company history `krs_scrape_paid` buys from rejestr.io - and `PeopleKRSCombined` puts the seats in place of
 rejestr.io's for every company where the odpis is the newer of the two, on the way to `PeopleMerged`.
 
+## krs_full_index
+1. Rebuilds `KrsIndexQueue`: the companies the site has a page for (`KorytaCompanies`) against the fold of its own log (`KrsFullOdpisLedger`) and the bulletin (`KRSUpdates`) - failed reads, then the companies the bulletin named on or after the day they were read, then those never read, lowest KRS first
+1. Asks api-krs for the odpis pełny JSON of each: `--daily` the first two, `--backfill N` N of the last, `--krs-file` a list first; at 1 request a second (`--interval`), retrying 5xx and timeouts with a growing wait, the register tried P then S unless known
+1. Takes an answer off the disk instead (`--cache-dir`, keyed by KRS and the state of the odpis) when it was read after the bulletin last named the company - what a killed run leaves behind
+1. Appends every answer, verbatim, to its log as write-once zstd parts (`jobs/krs_full_index/reads/` in the shared cache), and a run summary - requests, bytes, time, cache hits - to `jobs/krs_full_index/runs/`
+1. Stops after the company in hand at `--max-minutes` or `--max-requests` (exit 75), on SIGTERM or Ctrl+C, or after 20 failures in a row (exit 75, failed)
+
+Then `KrsFullOdpisSeats` reads every seat off the newest odpis, `KrsPositionsIndex` lends them the PDF's PESEL
+fingerprints (`KrsOdpisSeats`), `KrsPersonPositions` lists each person's posts across the tracked companies and
+`KrsIndexCompanies` which companies owe a new PDF. `krs_scrape_paid --free-index` buys nothing they already know.
+Runs nightly as the step `krs_index` - see [data/nightly/README.md](../../../nightly/README.md).
+
 ## krs_nip
 1. Reads a file of NIPs, one a line - a source that names bodies by NIP rather than KRS, like a crawl of BIPs
 1. Skips every NIP the crawl bucket already holds an answer for, "not in the register" included
@@ -275,7 +287,7 @@ handed out, `/admin/procesy#przebieg-<runId>`, follows the run from the click to
 
 What reports: `krs_scrape_free` (not `--dry-run`), `score_import` (not `--dry-run`), `krs_scrape_paid` (once the
 bill is accepted; with `--max-calls`, every run but `--dry-run`, a run with
-nothing to buy too), `krs_odpis` (not `--dry-run`), `krs_register_owners` (not
+nothing to buy too), `krs_odpis` (not `--dry-run`), `krs_full_index` (not `--dry-run`), `krs_register_owners` (not
 `--dry-run`, nor `--reads 0` without `--new-registrations`), the article crawl, `koryta_crawl`, `people_import`
 (a `--dry-run` too) and `koryta_uploader --submit`, under `people_import`,
 `company_import`, `score_import` or `extraction_import` by `--type` (not

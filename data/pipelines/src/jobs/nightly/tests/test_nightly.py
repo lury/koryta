@@ -32,6 +32,7 @@ GOOD = {
     "koryta_scrape_krs_free": 0,
     "koryta_krs_register_owners": 0,
     "koryta_krs_odpis": 0,
+    "koryta_krs_full_index": 0,
     "koryta_scrape_krs_paid": 0,
     "koryta_wikidata_people": 0,
     "koryta": 0,
@@ -281,6 +282,7 @@ def test_a_good_night_runs_every_step_in_order_and_exits_0(world):
         "koryta_scrape_krs_free",
         "koryta_krs_register_owners",
         "koryta_krs_odpis",
+        "koryta_krs_full_index",
         "koryta_scrape_krs_paid",
         "koryta_wikidata_people",
         "koryta",
@@ -732,6 +734,37 @@ def test_the_register_reads_the_days_new_registrations_and_no_backlog(world):
 
     argv, _ = world.command("koryta_krs_register_owners")
     assert argv[argv.index("--reads") + 1] == "2000"
+
+
+def test_the_index_reads_the_bulletins_companies_and_the_paid_step_buys_as_before(
+    world,
+):
+    night.main([])
+
+    argv, _ = world.command("koryta_krs_full_index")
+    assert "--daily" in argv
+    assert argv[argv.index("--backfill") + 1] == "0"
+    assert argv[argv.index("--max-minutes") + 1] == "25"
+    argv, _ = world.command("koryta_scrape_krs_paid")
+    assert "--free-index" not in argv
+
+    world.commands.clear()
+    world.objects.clear()
+    night.main(["--index-backfill", "1000", "--paid-free-index"])
+
+    argv, _ = world.command("koryta_krs_full_index")
+    assert argv[argv.index("--backfill") + 1] == "1000"
+    argv, _ = world.command("koryta_scrape_krs_paid")
+    assert "--free-index" in argv
+
+
+def test_what_the_index_step_leaves_or_breaks_holds_nothing(world):
+    world.codes["koryta_krs_full_index"] = 1
+
+    assert night.main([]) == 1
+    assert world.steps()["krs_index"] == ("failed", "kod wyjścia 1")
+    for step in ("krs_paid", "reprocess", "people", "scores"):
+        assert world.steps()[step][0] == "succeeded", step
 
 
 def test_what_the_register_step_leaves_or_breaks_holds_nothing(world):
