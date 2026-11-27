@@ -15,6 +15,7 @@ import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import postgres from "postgres";
+import { connectOptions } from "../../server/db/client";
 import { migrate } from "../../server/db/migrate";
 
 const url = process.env.DATABASE_URL;
@@ -28,7 +29,7 @@ if (!["none", "seed", "public"].includes(mode)) {
   process.exit(1);
 }
 
-const sql = postgres(url, { max: 1, onnotice: () => {} });
+const sql = postgres(url, { ...connectOptions(), max: 1, onnotice: () => {} });
 let nodes: number;
 try {
   const applied = await migrate(sql);

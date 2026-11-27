@@ -11,6 +11,14 @@ export type Db = postgres.Sql;
  * smallest Cloud SQL tier. `PG_POOL_MAX` overrides it. */
 let pool: Db | undefined;
 
+/** Connection options every pool and script shares. When `PGHOST` names a
+ * directory (Cloud SQL's `/cloudsql/<instance>` on Cloud Run), connect through
+ * that Unix socket: the host in `DATABASE_URL` cannot name a socket. */
+export function connectOptions(): { host?: string } {
+  const host = process.env.PGHOST;
+  return host?.startsWith("/") ? { host } : {};
+}
+
 export function useDb(): Db {
   if (pool) return pool;
   const url = process.env.DATABASE_URL;
@@ -18,6 +26,7 @@ export function useDb(): Db {
     throw new Error("DATABASE_URL is not set: there is no Postgres to read");
   }
   pool = postgres(url, {
+    ...connectOptions(),
     max: Number(process.env.PG_POOL_MAX ?? 5),
     idle_timeout: 30,
     max_lifetime: 30 * 60,

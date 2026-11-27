@@ -6,12 +6,17 @@
  *   DATABASE_URL=... npx tsx scripts/mail/drain.ts
  */
 import postgres from "postgres";
+import { connectOptions } from "../../server/db/client";
 import { drainOutbox, mailSettings } from "../../server/utils/mailOutbox";
 
 async function main() {
   const url = process.env.DATABASE_URL;
   if (!url) throw new Error("DATABASE_URL is not set");
-  const sql = postgres(url, { max: 1, onnotice: () => {} });
+  const sql = postgres(url, {
+    ...connectOptions(),
+    max: 1,
+    onnotice: () => {},
+  });
   const settings = mailSettings();
   const total = { sent: 0, retried: 0, failed: 0 };
   try {

@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import postgres from "postgres";
+import { connectOptions } from "../server/db/client";
 import waitOn from "wait-on";
 
 import { collectionTables } from "../server/db/collections";
@@ -70,7 +71,11 @@ async function seedDatabase() {
       "DATABASE_URL is not set: start Postgres (docker compose up -d postgres at the repo root) and export it",
     );
   }
-  const sql = postgres(url, { max: 2, onnotice: () => {} });
+  const sql = postgres(url, {
+    ...connectOptions(),
+    max: 2,
+    onnotice: () => {},
+  });
   try {
     await migrate(sql);
     console.log("Seeding database...");

@@ -5,6 +5,7 @@
  *   DATABASE_URL=... npx tsx scripts/pg/recount.ts [--times N]
  */
 import postgres from "postgres";
+import { connectOptions } from "../../server/db/client";
 import { recountBatch } from "../../server/db/batch";
 
 const url = process.env.DATABASE_URL;
@@ -14,7 +15,7 @@ if (!url) {
 }
 const i = process.argv.indexOf("--times");
 const times = i === -1 ? 1 : Number(process.argv[i + 1]);
-const sql = postgres(url, { max: 2, onnotice: () => {} });
+const sql = postgres(url, { ...connectOptions(), max: 2, onnotice: () => {} });
 try {
   for (let run = 0; run < times; run++) {
     console.log(JSON.stringify(await recountBatch(sql)));

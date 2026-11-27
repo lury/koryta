@@ -13,6 +13,7 @@
  * takes every table rather than the collections the Firestore export names.
  */
 import postgres from "postgres";
+import { connectOptions } from "../../server/db/client";
 import { createWriteStream, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { once } from "node:events";
@@ -97,7 +98,11 @@ async function main() {
     ? (Object.keys(collectionTables) as Collection[])
     : EXPORTED;
   // One snapshot for every collection, as Firestore's export is one moment.
-  const sql = postgres(url, { max: 1, onnotice: () => {} });
+  const sql = postgres(url, {
+    ...connectOptions(),
+    max: 1,
+    onnotice: () => {},
+  });
   const counts: Record<string, number> = {};
   const started = performance.now();
   try {

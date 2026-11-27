@@ -17,6 +17,7 @@
  */
 import { writeFileSync } from "node:fs";
 import postgres from "postgres";
+import { connectOptions } from "../../server/db/client";
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { migrate } from "../../server/db/migrate";
@@ -36,7 +37,7 @@ if (!url) {
 }
 const projectId = arg("project") ?? process.env.GCLOUD_PROJECT ?? "koryta-pl";
 const app = initializeApp({ projectId });
-const sql = postgres(url, { max: 2, onnotice: () => {} });
+const sql = postgres(url, { ...connectOptions(), max: 2, onnotice: () => {} });
 
 try {
   await migrate(sql);

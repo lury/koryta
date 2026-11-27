@@ -8,6 +8,7 @@
  *   DATABASE_URL=... npx tsx scripts/pg/load-seed.ts --dir <dir> [--wipe]
  */
 import postgres from "postgres";
+import { connectOptions } from "../../server/db/client";
 import { createReadStream, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { createInterface } from "node:readline";
@@ -50,7 +51,11 @@ async function main() {
     console.error("usage: DATABASE_URL=... load-seed.ts --dir <dir> [--wipe]");
     process.exit(1);
   }
-  const sql = postgres(url, { max: 2, onnotice: () => {} });
+  const sql = postgres(url, {
+    ...connectOptions(),
+    max: 2,
+    onnotice: () => {},
+  });
   try {
     await migrate(sql);
     const present = readdirSync(dir);
