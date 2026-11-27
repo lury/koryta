@@ -1,4 +1,4 @@
-import { initializeApp, getApps } from "firebase-admin/app";
+import { cert, initializeApp, getApps } from "firebase-admin/app";
 
 export default defineNitroPlugin(() => {
   const config = useRuntimeConfig();
@@ -11,8 +11,13 @@ export default defineNitroPlugin(() => {
       process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
     }
 
+    // A host without Google's metadata server (a VPS) passes the service
+    // account key as JSON in FIREBASE_SERVICE_ACCOUNT_JSON; elsewhere the
+    // default credentials apply (Cloud Run, GOOGLE_APPLICATION_CREDENTIALS).
+    const key = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
     initializeApp({
       projectId: config.public.vuefire.config.projectId,
+      ...(key ? { credential: cert(JSON.parse(key)) } : {}),
     });
   }
 });

@@ -113,6 +113,9 @@ services:
       NUXT_SITE_INDEXABLE: ${NUXT_SITE_INDEXABLE:-false}
       CF_ACCESS_TEAM_DOMAIN: ${CF_ACCESS_TEAM_DOMAIN:-}
       CF_ACCESS_AUD: ${CF_ACCESS_AUD:-}
+      # Admin reads of Firebase Auth (contributor names, roles) on a host
+      # without Google's metadata server: the service account key as JSON.
+      FIREBASE_SERVICE_ACCOUNT_JSON: ${FIREBASE_SERVICE_ACCOUNT_JSON:-}
       SENTRY_ENABLED: "false"
       # Profile `emulator-auth` only (see the top of this file).
       FIREBASE_AUTH_EMULATOR_HOST: ${FIREBASE_AUTH_EMULATOR_HOST:-}
