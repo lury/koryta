@@ -1,0 +1,90 @@
+{
+  "title": "ExtractionDocument",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "url": {
+      "type": "string"
+    },
+    "justification": {
+      "type": "string"
+    },
+    "justification_in_text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "fact_type": {
+      "type": "string",
+      "enum": [
+        "employment",
+        "party_membership",
+        "personal_relation",
+        "affair_involvement"
+      ]
+    },
+    "person": {
+      "type": "string"
+    },
+    "organization": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "party": {
+      "type": "string"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "object": {
+      "type": "string"
+    },
+    "relation": {
+      "type": "string"
+    },
+    "affair": {
+      "type": "string"
+    },
+    "articleUrl": {
+      "type": "string"
+    },
+    "articleDomain": {
+      "type": "string"
+    },
+    "articleNodeId": {
+      "type": "string"
+    },
+    "personNodeId": {
+      "type": "string"
+    },
+    "personNodeName": {
+      "type": "string"
+    },
+    "tag": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "stats": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": {}
+    },
+    "promotedEdgeIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["fact_type", "articleUrl", "tag"],
+  "additionalProperties": {}
+}

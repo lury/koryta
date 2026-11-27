@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "itemId": {
+      "type": "string"
+    },
+    "userUid": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ok", "issue"]
+    },
+    "feedback": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    }
+  },
+  "required": ["itemId", "userUid", "status"],
+  "additionalProperties": {}
+}

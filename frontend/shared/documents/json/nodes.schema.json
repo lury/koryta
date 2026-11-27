@@ -1,0 +1,1866 @@
+{
+  "title": "NodeDocument",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "title": "PersonDocument",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "revision_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "published": {
+          "type": "boolean"
+        },
+        "deleted": {
+          "type": "boolean"
+        },
+        "delete_reason": {
+          "type": "string"
+        },
+        "merged_into": {
+          "type": "string"
+        },
+        "needs_split": {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "at": {
+              "type": "string"
+            },
+            "user": {
+              "type": "string"
+            }
+          },
+          "required": ["reason", "at", "user"],
+          "additionalProperties": {}
+        },
+        "votes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "number"
+              }
+            },
+            "required": ["total"],
+            "additionalProperties": {
+              "type": "number"
+            }
+          }
+        },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "isApproved": {
+              "type": "boolean"
+            },
+            "notesCount": {
+              "type": "number"
+            },
+            "factsCount": {
+              "type": "number"
+            },
+            "votes": {
+              "type": "object",
+              "properties": {
+                "interesting": {
+                  "type": "number"
+                },
+                "quality": {
+                  "type": "number"
+                },
+                "humanVoted": {
+                  "type": "boolean"
+                },
+                "humanCount": {
+                  "type": "number"
+                },
+                "lastVotedAt": {
+                  "type": "string"
+                },
+                "models": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "type": "number"
+                  }
+                }
+              },
+              "additionalProperties": {}
+            },
+            "edges": {
+              "type": "object",
+              "properties": {
+                "all": {
+                  "type": "object",
+                  "properties": {
+                    "experienceMonths": {
+                      "type": "number"
+                    },
+                    "latestEmploymentStart": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "seatNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "currentlyEmployed": {
+                      "type": "boolean"
+                    },
+                    "currentlyEmployedTargetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "elections": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "experienceMonths",
+                    "targetNodeIds",
+                    "currentlyEmployed"
+                  ],
+                  "additionalProperties": {}
+                },
+                "approved": {
+                  "type": "object",
+                  "properties": {
+                    "experienceMonths": {
+                      "type": "number"
+                    },
+                    "latestEmploymentStart": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "seatNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "currentlyEmployed": {
+                      "type": "boolean"
+                    },
+                    "currentlyEmployedTargetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "elections": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "experienceMonths",
+                    "targetNodeIds",
+                    "currentlyEmployed"
+                  ],
+                  "additionalProperties": {}
+                }
+              },
+              "required": ["all", "approved"],
+              "additionalProperties": {}
+            },
+            "nodeGroupSize": {
+              "type": "number"
+            },
+            "people": {
+              "type": "number"
+            },
+            "queueTier": {
+              "type": "number"
+            },
+            "searchLine": {
+              "type": "object",
+              "properties": {
+                "approved": {
+                  "type": "object",
+                  "properties": {
+                    "where": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    },
+                    "when": {
+                      "type": "string"
+                    },
+                    "ties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "election": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                },
+                "all": {
+                  "type": "object",
+                  "properties": {
+                    "where": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    },
+                    "when": {
+                      "type": "string"
+                    },
+                    "ties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "election": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                },
+                "teaser": {
+                  "type": "object",
+                  "properties": {
+                    "where": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    },
+                    "when": {
+                      "type": "string"
+                    },
+                    "ties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "election": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                }
+              },
+              "additionalProperties": {}
+            }
+          },
+          "required": ["isApproved", "notesCount", "votes", "edges"],
+          "additionalProperties": {}
+        },
+        "revisions": {
+          "type": "object",
+          "properties": {
+            "latest_id": {
+              "type": "string"
+            },
+            "latest_time": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "total": {
+              "type": "number"
+            },
+            "has_unapproved": {
+              "type": "boolean"
+            }
+          },
+          "required": ["latest_id", "latest_time", "total", "has_unapproved"],
+          "additionalProperties": {}
+        },
+        "content_changed_at": {
+          "type": "string"
+        },
+        "hide": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string",
+          "const": "person"
+        },
+        "parties": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "partiesSource": {
+          "type": "string",
+          "const": "manual"
+        },
+        "birthDate": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "education": {
+          "type": "string"
+        },
+        "wikipedia": {
+          "type": "string"
+        },
+        "rejestrIo": {
+          "type": "string"
+        },
+        "ktomaco": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "type"],
+      "additionalProperties": {}
+    },
+    {
+      "title": "PlaceDocument",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "revision_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "published": {
+          "type": "boolean"
+        },
+        "deleted": {
+          "type": "boolean"
+        },
+        "delete_reason": {
+          "type": "string"
+        },
+        "merged_into": {
+          "type": "string"
+        },
+        "needs_split": {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "at": {
+              "type": "string"
+            },
+            "user": {
+              "type": "string"
+            }
+          },
+          "required": ["reason", "at", "user"],
+          "additionalProperties": {}
+        },
+        "votes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "number"
+              }
+            },
+            "required": ["total"],
+            "additionalProperties": {
+              "type": "number"
+            }
+          }
+        },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "isApproved": {
+              "type": "boolean"
+            },
+            "notesCount": {
+              "type": "number"
+            },
+            "factsCount": {
+              "type": "number"
+            },
+            "votes": {
+              "type": "object",
+              "properties": {
+                "interesting": {
+                  "type": "number"
+                },
+                "quality": {
+                  "type": "number"
+                },
+                "humanVoted": {
+                  "type": "boolean"
+                },
+                "humanCount": {
+                  "type": "number"
+                },
+                "lastVotedAt": {
+                  "type": "string"
+                },
+                "models": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "type": "number"
+                  }
+                }
+              },
+              "additionalProperties": {}
+            },
+            "edges": {
+              "type": "object",
+              "properties": {
+                "all": {
+                  "type": "object",
+                  "properties": {
+                    "experienceMonths": {
+                      "type": "number"
+                    },
+                    "latestEmploymentStart": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "seatNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "currentlyEmployed": {
+                      "type": "boolean"
+                    },
+                    "currentlyEmployedTargetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "elections": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "experienceMonths",
+                    "targetNodeIds",
+                    "currentlyEmployed"
+                  ],
+                  "additionalProperties": {}
+                },
+                "approved": {
+                  "type": "object",
+                  "properties": {
+                    "experienceMonths": {
+                      "type": "number"
+                    },
+                    "latestEmploymentStart": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "seatNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "currentlyEmployed": {
+                      "type": "boolean"
+                    },
+                    "currentlyEmployedTargetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "elections": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "experienceMonths",
+                    "targetNodeIds",
+                    "currentlyEmployed"
+                  ],
+                  "additionalProperties": {}
+                }
+              },
+              "required": ["all", "approved"],
+              "additionalProperties": {}
+            },
+            "nodeGroupSize": {
+              "type": "number"
+            },
+            "people": {
+              "type": "number"
+            },
+            "queueTier": {
+              "type": "number"
+            },
+            "searchLine": {
+              "type": "object",
+              "properties": {
+                "approved": {
+                  "type": "object",
+                  "properties": {
+                    "where": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    },
+                    "when": {
+                      "type": "string"
+                    },
+                    "ties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "election": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                },
+                "all": {
+                  "type": "object",
+                  "properties": {
+                    "where": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    },
+                    "when": {
+                      "type": "string"
+                    },
+                    "ties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "election": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                },
+                "teaser": {
+                  "type": "object",
+                  "properties": {
+                    "where": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    },
+                    "when": {
+                      "type": "string"
+                    },
+                    "ties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "election": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                }
+              },
+              "additionalProperties": {}
+            }
+          },
+          "required": ["isApproved", "notesCount", "votes", "edges"],
+          "additionalProperties": {}
+        },
+        "revisions": {
+          "type": "object",
+          "properties": {
+            "latest_id": {
+              "type": "string"
+            },
+            "latest_time": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "total": {
+              "type": "number"
+            },
+            "has_unapproved": {
+              "type": "boolean"
+            }
+          },
+          "required": ["latest_id", "latest_time", "total", "has_unapproved"],
+          "additionalProperties": {}
+        },
+        "content_changed_at": {
+          "type": "string"
+        },
+        "hide": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string",
+          "const": "place"
+        },
+        "nameSource": {
+          "type": "string",
+          "const": "manual"
+        },
+        "krsNumber": {
+          "type": "string"
+        },
+        "regonNumber": {
+          "type": "string"
+        },
+        "nipNumber": {
+          "type": "string"
+        },
+        "wikipedia": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "activity": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "categoriesSource": {
+          "type": "string",
+          "const": "manual"
+        },
+        "legalForm": {
+          "type": "string"
+        },
+        "supervisoryOrgan": {
+          "type": "string",
+          "enum": [
+            "rada_nadzorcza",
+            "rada_spoleczna",
+            "komisja_rewizyjna",
+            "inny",
+            "nieznany",
+            "brak"
+          ]
+        },
+        "isPublic": {
+          "type": "boolean"
+        },
+        "isPublicSource": {
+          "type": "string",
+          "const": "manual"
+        },
+        "supervisoryBody": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "type"],
+      "additionalProperties": {}
+    },
+    {
+      "title": "ArticleDocument",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "revision_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "published": {
+          "type": "boolean"
+        },
+        "deleted": {
+          "type": "boolean"
+        },
+        "delete_reason": {
+          "type": "string"
+        },
+        "merged_into": {
+          "type": "string"
+        },
+        "needs_split": {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "at": {
+              "type": "string"
+            },
+            "user": {
+              "type": "string"
+            }
+          },
+          "required": ["reason", "at", "user"],
+          "additionalProperties": {}
+        },
+        "votes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "number"
+              }
+            },
+            "required": ["total"],
+            "additionalProperties": {
+              "type": "number"
+            }
+          }
+        },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "isApproved": {
+              "type": "boolean"
+            },
+            "notesCount": {
+              "type": "number"
+            },
+            "factsCount": {
+              "type": "number"
+            },
+            "votes": {
+              "type": "object",
+              "properties": {
+                "interesting": {
+                  "type": "number"
+                },
+                "quality": {
+                  "type": "number"
+                },
+                "humanVoted": {
+                  "type": "boolean"
+                },
+                "humanCount": {
+                  "type": "number"
+                },
+                "lastVotedAt": {
+                  "type": "string"
+                },
+                "models": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "type": "number"
+                  }
+                }
+              },
+              "additionalProperties": {}
+            },
+            "edges": {
+              "type": "object",
+              "properties": {
+                "all": {
+                  "type": "object",
+                  "properties": {
+                    "experienceMonths": {
+                      "type": "number"
+                    },
+                    "latestEmploymentStart": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "seatNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "currentlyEmployed": {
+                      "type": "boolean"
+                    },
+                    "currentlyEmployedTargetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "elections": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "experienceMonths",
+                    "targetNodeIds",
+                    "currentlyEmployed"
+                  ],
+                  "additionalProperties": {}
+                },
+                "approved": {
+                  "type": "object",
+                  "properties": {
+                    "experienceMonths": {
+                      "type": "number"
+                    },
+                    "latestEmploymentStart": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "seatNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "currentlyEmployed": {
+                      "type": "boolean"
+                    },
+                    "currentlyEmployedTargetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "elections": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "experienceMonths",
+                    "targetNodeIds",
+                    "currentlyEmployed"
+                  ],
+                  "additionalProperties": {}
+                }
+              },
+              "required": ["all", "approved"],
+              "additionalProperties": {}
+            },
+            "nodeGroupSize": {
+              "type": "number"
+            },
+            "people": {
+              "type": "number"
+            },
+            "queueTier": {
+              "type": "number"
+            },
+            "searchLine": {
+              "type": "object",
+              "properties": {
+                "approved": {
+                  "type": "object",
+                  "properties": {
+                    "where": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    },
+                    "when": {
+                      "type": "string"
+                    },
+                    "ties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "election": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                },
+                "all": {
+                  "type": "object",
+                  "properties": {
+                    "where": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    },
+                    "when": {
+                      "type": "string"
+                    },
+                    "ties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "election": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                },
+                "teaser": {
+                  "type": "object",
+                  "properties": {
+                    "where": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    },
+                    "when": {
+                      "type": "string"
+                    },
+                    "ties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "election": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                }
+              },
+              "additionalProperties": {}
+            }
+          },
+          "required": ["isApproved", "notesCount", "votes", "edges"],
+          "additionalProperties": {}
+        },
+        "revisions": {
+          "type": "object",
+          "properties": {
+            "latest_id": {
+              "type": "string"
+            },
+            "latest_time": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "total": {
+              "type": "number"
+            },
+            "has_unapproved": {
+              "type": "boolean"
+            }
+          },
+          "required": ["latest_id", "latest_time", "total", "has_unapproved"],
+          "additionalProperties": {}
+        },
+        "content_changed_at": {
+          "type": "string"
+        },
+        "hide": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string",
+          "const": "article"
+        },
+        "sourceURL": {
+          "type": "string"
+        },
+        "shortName": {
+          "type": "string"
+        },
+        "publishedDate": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "meta": {}
+      },
+      "required": ["name", "type", "sourceURL"],
+      "additionalProperties": {}
+    },
+    {
+      "title": "RegionDocument",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "revision_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "published": {
+          "type": "boolean"
+        },
+        "deleted": {
+          "type": "boolean"
+        },
+        "delete_reason": {
+          "type": "string"
+        },
+        "merged_into": {
+          "type": "string"
+        },
+        "needs_split": {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "at": {
+              "type": "string"
+            },
+            "user": {
+              "type": "string"
+            }
+          },
+          "required": ["reason", "at", "user"],
+          "additionalProperties": {}
+        },
+        "votes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "number"
+              }
+            },
+            "required": ["total"],
+            "additionalProperties": {
+              "type": "number"
+            }
+          }
+        },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "isApproved": {
+              "type": "boolean"
+            },
+            "notesCount": {
+              "type": "number"
+            },
+            "factsCount": {
+              "type": "number"
+            },
+            "votes": {
+              "type": "object",
+              "properties": {
+                "interesting": {
+                  "type": "number"
+                },
+                "quality": {
+                  "type": "number"
+                },
+                "humanVoted": {
+                  "type": "boolean"
+                },
+                "humanCount": {
+                  "type": "number"
+                },
+                "lastVotedAt": {
+                  "type": "string"
+                },
+                "models": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "type": "number"
+                  }
+                }
+              },
+              "additionalProperties": {}
+            },
+            "edges": {
+              "type": "object",
+              "properties": {
+                "all": {
+                  "type": "object",
+                  "properties": {
+                    "experienceMonths": {
+                      "type": "number"
+                    },
+                    "latestEmploymentStart": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "seatNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "currentlyEmployed": {
+                      "type": "boolean"
+                    },
+                    "currentlyEmployedTargetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "elections": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "experienceMonths",
+                    "targetNodeIds",
+                    "currentlyEmployed"
+                  ],
+                  "additionalProperties": {}
+                },
+                "approved": {
+                  "type": "object",
+                  "properties": {
+                    "experienceMonths": {
+                      "type": "number"
+                    },
+                    "latestEmploymentStart": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "seatNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "currentlyEmployed": {
+                      "type": "boolean"
+                    },
+                    "currentlyEmployedTargetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "elections": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "experienceMonths",
+                    "targetNodeIds",
+                    "currentlyEmployed"
+                  ],
+                  "additionalProperties": {}
+                }
+              },
+              "required": ["all", "approved"],
+              "additionalProperties": {}
+            },
+            "nodeGroupSize": {
+              "type": "number"
+            },
+            "people": {
+              "type": "number"
+            },
+            "queueTier": {
+              "type": "number"
+            },
+            "searchLine": {
+              "type": "object",
+              "properties": {
+                "approved": {
+                  "type": "object",
+                  "properties": {
+                    "where": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    },
+                    "when": {
+                      "type": "string"
+                    },
+                    "ties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "election": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                },
+                "all": {
+                  "type": "object",
+                  "properties": {
+                    "where": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    },
+                    "when": {
+                      "type": "string"
+                    },
+                    "ties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "election": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                },
+                "teaser": {
+                  "type": "object",
+                  "properties": {
+                    "where": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    },
+                    "when": {
+                      "type": "string"
+                    },
+                    "ties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "election": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                }
+              },
+              "additionalProperties": {}
+            }
+          },
+          "required": ["isApproved", "notesCount", "votes", "edges"],
+          "additionalProperties": {}
+        },
+        "revisions": {
+          "type": "object",
+          "properties": {
+            "latest_id": {
+              "type": "string"
+            },
+            "latest_time": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "total": {
+              "type": "number"
+            },
+            "has_unapproved": {
+              "type": "boolean"
+            }
+          },
+          "required": ["latest_id", "latest_time", "total", "has_unapproved"],
+          "additionalProperties": {}
+        },
+        "content_changed_at": {
+          "type": "string"
+        },
+        "hide": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string",
+          "const": "region"
+        },
+        "teryt": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "type", "teryt"],
+      "additionalProperties": {}
+    },
+    {
+      "title": "TopicDocument",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "revision_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "published": {
+          "type": "boolean"
+        },
+        "deleted": {
+          "type": "boolean"
+        },
+        "delete_reason": {
+          "type": "string"
+        },
+        "merged_into": {
+          "type": "string"
+        },
+        "needs_split": {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "at": {
+              "type": "string"
+            },
+            "user": {
+              "type": "string"
+            }
+          },
+          "required": ["reason", "at", "user"],
+          "additionalProperties": {}
+        },
+        "votes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "number"
+              }
+            },
+            "required": ["total"],
+            "additionalProperties": {
+              "type": "number"
+            }
+          }
+        },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "isApproved": {
+              "type": "boolean"
+            },
+            "notesCount": {
+              "type": "number"
+            },
+            "factsCount": {
+              "type": "number"
+            },
+            "votes": {
+              "type": "object",
+              "properties": {
+                "interesting": {
+                  "type": "number"
+                },
+                "quality": {
+                  "type": "number"
+                },
+                "humanVoted": {
+                  "type": "boolean"
+                },
+                "humanCount": {
+                  "type": "number"
+                },
+                "lastVotedAt": {
+                  "type": "string"
+                },
+                "models": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "type": "number"
+                  }
+                }
+              },
+              "additionalProperties": {}
+            },
+            "edges": {
+              "type": "object",
+              "properties": {
+                "all": {
+                  "type": "object",
+                  "properties": {
+                    "experienceMonths": {
+                      "type": "number"
+                    },
+                    "latestEmploymentStart": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "seatNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "currentlyEmployed": {
+                      "type": "boolean"
+                    },
+                    "currentlyEmployedTargetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "elections": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "experienceMonths",
+                    "targetNodeIds",
+                    "currentlyEmployed"
+                  ],
+                  "additionalProperties": {}
+                },
+                "approved": {
+                  "type": "object",
+                  "properties": {
+                    "experienceMonths": {
+                      "type": "number"
+                    },
+                    "latestEmploymentStart": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "seatNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "currentlyEmployed": {
+                      "type": "boolean"
+                    },
+                    "currentlyEmployedTargetNodeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "elections": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "experienceMonths",
+                    "targetNodeIds",
+                    "currentlyEmployed"
+                  ],
+                  "additionalProperties": {}
+                }
+              },
+              "required": ["all", "approved"],
+              "additionalProperties": {}
+            },
+            "nodeGroupSize": {
+              "type": "number"
+            },
+            "people": {
+              "type": "number"
+            },
+            "queueTier": {
+              "type": "number"
+            },
+            "searchLine": {
+              "type": "object",
+              "properties": {
+                "approved": {
+                  "type": "object",
+                  "properties": {
+                    "where": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    },
+                    "when": {
+                      "type": "string"
+                    },
+                    "ties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "election": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                },
+                "all": {
+                  "type": "object",
+                  "properties": {
+                    "where": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    },
+                    "when": {
+                      "type": "string"
+                    },
+                    "ties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "election": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                },
+                "teaser": {
+                  "type": "object",
+                  "properties": {
+                    "where": {
+                      "type": "string"
+                    },
+                    "what": {
+                      "type": "string"
+                    },
+                    "when": {
+                      "type": "string"
+                    },
+                    "ties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "election": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                }
+              },
+              "additionalProperties": {}
+            }
+          },
+          "required": ["isApproved", "notesCount", "votes", "edges"],
+          "additionalProperties": {}
+        },
+        "revisions": {
+          "type": "object",
+          "properties": {
+            "latest_id": {
+              "type": "string"
+            },
+            "latest_time": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "total": {
+              "type": "number"
+            },
+            "has_unapproved": {
+              "type": "boolean"
+            }
+          },
+          "required": ["latest_id", "latest_time", "total", "has_unapproved"],
+          "additionalProperties": {}
+        },
+        "content_changed_at": {
+          "type": "string"
+        },
+        "hide": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string",
+          "const": "topic"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "type"],
+      "additionalProperties": {}
+    }
+  ]
+}

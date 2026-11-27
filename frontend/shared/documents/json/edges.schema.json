@@ -1,0 +1,139 @@
+{
+  "title": "EdgeDocument",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "employed",
+        "connection",
+        "mentions",
+        "owns",
+        "seat",
+        "comment",
+        "election",
+        "tagged"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "start_date": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "end_date": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "published": {
+      "type": "boolean"
+    },
+    "deleted": {
+      "type": "boolean"
+    },
+    "revision_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "votes": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": ["total"],
+        "additionalProperties": {
+          "type": "number"
+        }
+      }
+    },
+    "traverse": {},
+    "party": {
+      "type": "string"
+    },
+    "committee": {
+      "type": "string"
+    },
+    "position": {
+      "type": "string"
+    },
+    "elected": {
+      "type": "boolean"
+    },
+    "term": {
+      "type": "string"
+    },
+    "by_election": {
+      "type": "boolean"
+    },
+    "party_member": {
+      "type": "string"
+    },
+    "member_parties": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "supported_by": {
+      "type": "string"
+    },
+    "backing_parties": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "founder": {
+      "type": "boolean"
+    }
+  },
+  "required": ["type", "source", "target"],
+  "additionalProperties": {}
+}

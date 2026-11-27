@@ -1,0 +1,86 @@
+{
+  "title": "ArticlePageDocument",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "url": {
+      "type": "string",
+      "minLength": 1
+    },
+    "normalizedUrl": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domain": {
+      "type": "string"
+    },
+    "title": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "articleNodeId": {
+      "type": "string"
+    },
+    "storagePath": {
+      "type": "string"
+    },
+    "htmlSha256": {
+      "type": "string"
+    },
+    "htmlBytes": {
+      "type": "number"
+    },
+    "selection": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source": {
+      "type": "string",
+      "enum": ["extension", "paste"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["stored", "extracting", "done", "error"]
+    },
+    "capturedBy": {
+      "type": "string"
+    },
+    "capturedAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    },
+    "extraction": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": {}
+    }
+  },
+  "required": [
+    "url",
+    "normalizedUrl",
+    "domain",
+    "title",
+    "storagePath",
+    "htmlSha256",
+    "htmlBytes",
+    "source",
+    "status",
+    "capturedBy",
+    "capturedAt"
+  ],
+  "additionalProperties": {}
+}

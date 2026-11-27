@@ -1,0 +1,57 @@
+{
+  "title": "NoteDocument",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "userUid": {
+      "type": "string"
+    },
+    "nodeId": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": ["source", "change_request", "missing"]
+          },
+          "articleNodeId": {
+            "type": "string"
+          },
+          "adminStatus": {
+            "type": "string",
+            "enum": ["resolved", "unresolved"]
+          },
+          "adminType": {
+            "type": "string"
+          },
+          "adminTypeDeferred": {
+            "type": "boolean"
+          },
+          "declarationExtractId": {
+            "type": "string"
+          }
+        },
+        "required": ["note"],
+        "additionalProperties": {}
+      }
+    }
+  },
+  "required": ["userUid", "nodeId"],
+  "additionalProperties": {}
+}

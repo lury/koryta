@@ -1,14 +1,13 @@
 import { initializeApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
+import postgres from "postgres";
 import waitOn from "wait-on";
-import { readFileSync } from "fs";
-import { resolve } from "path";
 
-import { generateChunksLower } from "../shared/search";
-import { computeEdgeStats } from "../shared/stats";
-import { bodyIsPaidPost } from "../shared/companyBodies";
-import type { Edge } from "../shared/model";
+import { collectionTables } from "../server/db/collections";
+import { TableLoader } from "../server/db/load";
+import { migrate } from "../server/db/migrate";
+import { recountBatch } from "../server/db/batch";
+import { emptyReport } from "../server/db/normalize";
 
 import nodes from "./nodes.json";
 import edges from "./edges.json";
@@ -20,7 +19,6 @@ const projectId =
   process.env.USE_PROD_PROJECT === "true" ? "koryta-pl" : "demo-koryta-pl";
 
 process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
 process.env.GCLOUD_PROJECT = projectId;
 
 const app = initializeApp({
@@ -28,9 +26,10 @@ const app = initializeApp({
 });
 
 /**
- * Seed the emulators with the test data.
- * Always populates auth (but checks that it's test directory).
- * If --empty is passed, don't seed firestore.
+ * Seeds the local stack the dev server and the e2e specs run on: the
+ * fixtures into the Postgres at DATABASE_URL (wiped first, then recounted
+ * as the night recounts), and the two test accounts into the Auth emulator.
+ * With --empty the database is left alone.
  */
 async function seed() {
   const empty = process.argv.includes("--empty");
@@ -39,7 +38,6 @@ async function seed() {
     await seedDatabase();
   }
   await seedAuth();
-  await seedRules();
 }
 
 /** Gives a fixture the `published` flag it predates.
@@ -65,253 +63,114 @@ function defaultPublished(
   return data;
 }
 
-/**
- * `stats.edges` for every node the seeded edges start from, computed here for
- * the same reason `nameChunksLower` is: with the function the real thing uses.
- *
- * `onEdgeWritten` no longer writes this field inline - it marks the node dirty
- * and `sweepEdgeStats` does the work - and the emulator does not run scheduled
- * functions, so nothing would ever fill it in locally. The explore table's
- * filters query `stats.edges.*.currentlyEmployed` and
- * `stats.edges.*.latestEmploymentStart` (`server/utils/nodeFilters.ts`), and
- * Firestore's orderBy drops documents that lack the field, so without this the
- * table comes up empty.
- */
-function edgeStatsBySource(
-  nodesById: Record<string, Record<string, unknown>>,
-  allEdges: Record<string, unknown>[],
-): Record<string, ReturnType<typeof computeEdgeStats>> {
-  const publicPlaceIds = new Set<string>();
-  const unpaidSeatPlaceIds = new Set<string>();
-  for (const [id, node] of Object.entries(nodesById)) {
-    if (node.type !== "place") continue;
-    if (node.isPublic === true) publicPlaceIds.add(id);
-    if (!bodyIsPaidPost(node.supervisoryBody as string | undefined)) {
-      unpaidSeatPlaceIds.add(id);
-    }
-  }
-
-  // Keyed by target across the whole fixture rather than per source node, which
-  // is the same thing to `computeEdgeStats` - it only ever looks up the targets
-  // of the edges it was handed.
-  const transitiveTargets: Record<string, string[]> = {};
-  for (const edge of allEdges) {
-    const { source, target, type } = edge as unknown as Edge;
-    if (type !== "owns" && type !== "seat") continue;
-    if (!source || !target) continue;
-    (transitiveTargets[target] ??= []).push(source);
-  }
-
-  const bySource: Record<string, ReturnType<typeof computeEdgeStats>> = {};
-  for (const source of new Set(
-    allEdges.map((e) => e.source as string).filter(Boolean),
-  )) {
-    bySource[source] = computeEdgeStats(
-      allEdges.filter((e) => e.source === source) as unknown as Edge[],
-      publicPlaceIds,
-      transitiveTargets,
-      unpaidSeatPlaceIds,
-      source,
+async function seedDatabase() {
+  const url = process.env.DATABASE_URL;
+  if (!url) {
+    throw new Error(
+      "DATABASE_URL is not set: start Postgres (docker compose up -d postgres at the repo root) and export it",
     );
   }
-  return bySource;
-}
-
-async function seedDatabase() {
-  await waitOn({
-    resources: ["tcp:127.0.0.1:8080"],
-    timeout: undefined,
-  });
-  const db = getFirestore(app, "koryta-pl");
-
-  console.log("Seeding database...");
-
-  // Clear existing collections
-  const collections = [
-    "nodes",
-    "edges",
-    "revisions",
-    "extractions",
-    "feedback",
-    // Verdicts on the QA changelog. Cleared with the rest so /qa opens on an
-    // unchecked list, which is what its spec - and anybody looking at a fresh
-    // local stack - expects to see.
-    "qaChecks",
-    // Cleared because the seed now writes some, and the admin specs write more
-    // at run time under stamped ids. Left alone, re-seeding a live emulator
-    // would leave every note any earlier run had made sitting on the page
-    // under the fixtures below.
-    "notes",
-  ];
-  for (const col of collections) {
-    const docs = await db.collection(col).listDocuments();
-    if (docs.length > 0) {
-      const deleteBatch = db.batch();
-      docs.forEach((doc) => deleteBatch.delete(doc));
-      await deleteBatch.commit();
-      console.log(`Cleared ${col}`);
+  const sql = postgres(url, { max: 2, onnotice: () => {} });
+  try {
+    await migrate(sql);
+    console.log("Seeding database...");
+    for (const table of Object.values(collectionTables)) {
+      await sql`TRUNCATE ${sql(table)}`;
     }
-  }
 
-  const batch = db.batch();
+    // Notes on Jan Kowalski (1), one of each kind, so the notes section has
+    // something in it to look at.
+    //
+    // Written by somebody else - `seed-notes-author`, an id no seeded account
+    // holds - which is what puts them in `otherSources` rather than in the
+    // reader's own note. A signed in reader therefore sees the whole section
+    // at once: other people's entries, the prompt inviting theirs, and the
+    // three buttons that add one. Owned by the reader it would be their note
+    // in edit mode instead, and the prompt would be gone.
+    //
+    // Only this person. Orlen (2) is deliberately left without any, because
+    // the empty section is a state worth a picture of its own and that is the
+    // page that takes it.
+    const seededNotes = {
+      "1_seed-notes-author": {
+        nodeId: "1",
+        userUid: "seed-notes-author",
+        createdAt: "2026-05-04T09:15:00.000Z",
+        sources: [
+          {
+            kind: "source",
+            url: "https://example.org/kowalski-rada-nadzorcza",
+            note: "Wzmianka o powołaniu do rady nadzorczej - notatka prasowa z maja.",
+          },
+          {
+            kind: "change_request",
+            note: "Data końca zatrudnienia w Orlenie wygląda na przesuniętą o rok.",
+          },
+          {
+            kind: "missing",
+            note: "Brakuje kadencji w radzie miasta sprzed 2019 roku.",
+          },
+        ],
+      },
+    };
 
-  const seededEdges = edges.map((edge) =>
-    defaultPublished({ ...edge } as Record<string, unknown>),
-  );
-  const edgeStatsBySourceId = edgeStatsBySource(
-    nodes as unknown as Record<string, Record<string, unknown>>,
-    seededEdges,
-  );
-
-  // Facts per person, from the same fixture the extractions are seeded from.
-  // Computed here rather than written into nodes.json for the same reason the
-  // edge stats are: production keeps this counter through
-  // /api/ingest/extraction and /api/stats/computeNodes, and a fixture carrying
-  // it by hand would drift from the facts beside it - which for a sort means a
-  // table ordered by a number nothing on the page agrees with.
-  const factsByNodeId: Record<string, number> = {};
-  for (const fact of Object.values(extractions)) {
-    const personNodeId = (fact as { personNodeId?: string }).personNodeId;
-    if (personNodeId) {
-      factsByNodeId[personNodeId] = (factsByNodeId[personNodeId] ?? 0) + 1;
-    }
-  }
-
-  for (const [id, node] of Object.entries(nodes)) {
-    const nodeData = { ...node } as Record<string, unknown>;
-    if (!nodeData.stats) nodeData.stats = {};
-    const stats = nodeData.stats as Record<string, unknown>;
-    // Only default to approved=true if not explicitly set in seed data
-    if (stats.isApproved === undefined) {
-      stats.isApproved = true;
-    }
-    // The search index is computed here rather than written into the fixture,
-    // with the function the trigger in functions/src/nodes.ts uses. The fixture
-    // used to carry it by hand and had drifted to a different scheme entirely,
-    // which is why every spec that searched for a full name found nobody.
-    if (typeof nodeData.name === "string") {
-      nodeData.nameChunksLower = generateChunksLower(
-        nodeData.name,
-        typeof nodeData.type === "string" ? nodeData.type : undefined,
+    const documents: Partial<
+      Record<keyof typeof collectionTables, Record<string, unknown>>
+    > = {
+      nodes: Object.fromEntries(
+        Object.entries(nodes).map(([id, node]) => [
+          id,
+          defaultPublished({ ...node } as Record<string, unknown>),
+        ]),
+      ),
+      // Ids by position, zero-padded so the id order is the file's: ties are
+      // broken on it, and a visual baseline cannot follow a random order.
+      edges: Object.fromEntries(
+        edges.map((edge, i) => [
+          `seededge${String(i).padStart(3, "0")}`,
+          defaultPublished({ ...edge } as Record<string, unknown>),
+        ]),
+      ),
+      revisions,
+      notes: seededNotes,
+      extractions,
+      // The seeded reader has answered the mail question already - no to both
+      // topics - so the one-time prompt signed-in readers are asked it in
+      // (components/mail/OptInPrompt.vue) stays out of every screenshot and
+      // spec that signs in as them. mail_campaign.spec.ts asks a fresh
+      // account instead.
+      users: {
+        "test-user": {
+          newsletter: { callsToAction: false, recentPeople: false },
+        },
+      },
+      // The declarations job's nightly count in people, which the home
+      // explorer's third panel, /oswiadczenia/postep and /admin/oswiadczenia
+      // read. Invented numbers that add up the way the real ones must
+      // (`declarationPeopleSchema`).
+      stats: { declaration_people: declarationPeople },
+    };
+    const report = emptyReport();
+    for (const [collection, docs] of Object.entries(documents)) {
+      const loader = new TableLoader(
+        sql,
+        collection,
+        collectionTables[collection as keyof typeof collectionTables],
+        report,
       );
+      for (const [id, data] of Object.entries(docs!)) {
+        await loader.add(id, data as Record<string, unknown>);
+      }
+      await loader.flush();
+      console.log(collection, loader.report.read);
     }
-    // JSON has no timestamp, and the collection stores one - the same
-    // conversion the extractions below need. Without a date at all an article
-    // is invisible to /zrodla, which sorts on this field: Firestore's orderBy
-    // drops any document that does not carry it, so the table came up empty in
-    // the emulator however many articles had been seeded.
-    if (typeof nodeData.publishedDate === "string") {
-      nodeData.publishedDate = new Date(nodeData.publishedDate);
-    }
-    const seededEdgeStats = edgeStatsBySourceId[id];
-    if (seededEdgeStats) {
-      stats.edges = seededEdgeStats;
-    }
-    // On every person, zero included: `orderBy stats.factsCount` drops a
-    // document that lacks the field, so a seeded person without it would
-    // vanish from the table under that sort rather than sorting last.
-    if (nodeData.type === "person") {
-      stats.factsCount = factsByNodeId[id] ?? 0;
-    }
-    defaultPublished(nodeData);
-    const ref = db.collection("nodes").doc(id);
-    batch.set(ref, nodeData);
+    // The derived statistics the writes keep (node_stats, nodeGroupSize,
+    // searchLine, the queue tiers), which the fixtures carry none of.
+    await recountBatch(sql);
+    console.log("Database seeded successfully!");
+  } finally {
+    await sql.end();
   }
-
-  // Ids by position rather than `.doc()`'s random ones. Firestore lists by id,
-  // and ties are broken on it - the two members sukspolka's board took on the
-  // same day came out in a different order after every seeding, and a visual
-  // baseline cannot follow that. Zero-padded so the id order is the file's.
-  for (const [i, edgeData] of seededEdges.entries()) {
-    const ref = db
-      .collection("edges")
-      .doc(`seededge${String(i).padStart(3, "0")}`);
-    batch.set(ref, edgeData);
-  }
-
-  for (const [id, rev] of Object.entries(revisions)) {
-    const ref = db.collection("revisions").doc(id);
-    batch.set(ref, rev);
-  }
-
-  // Notes on Jan Kowalski (1), one of each kind, so the notes section has
-  // something in it to look at.
-  //
-  // Written by somebody else - `seed-notes-author`, an id no seeded account
-  // holds - which is what puts them in `otherSources` rather than in the
-  // reader's own note. A signed in reader therefore sees the whole section at
-  // once: other people's entries, the prompt inviting theirs, and the three
-  // buttons that add one. Owned by the reader it would be their note in edit
-  // mode instead, and the prompt would be gone.
-  //
-  // Only this person. Orlen (2) is deliberately left without any, because the
-  // empty section is a state worth a picture of its own and that is the page
-  // that takes it.
-  const seededNotes = {
-    "1_seed-notes-author": {
-      nodeId: "1",
-      userUid: "seed-notes-author",
-      createdAt: "2026-05-04T09:15:00.000Z",
-      sources: [
-        {
-          kind: "source",
-          url: "https://example.org/kowalski-rada-nadzorcza",
-          note: "Wzmianka o powołaniu do rady nadzorczej - notatka prasowa z maja.",
-        },
-        {
-          kind: "change_request",
-          note: "Data końca zatrudnienia w Orlenie wygląda na przesuniętą o rok.",
-        },
-        {
-          kind: "missing",
-          note: "Brakuje kadencji w radzie miasta sprzed 2019 roku.",
-        },
-      ],
-    },
-  };
-  for (const [id, note] of Object.entries(seededNotes)) {
-    const ref = db.collection("notes").doc(id);
-    batch.set(ref, note);
-  }
-
-  for (const [id, fact] of Object.entries(extractions)) {
-    const ref = db.collection("extractions").doc(id);
-    // The fixture carries an ISO string because JSON has no timestamp; the
-    // collection stores a Timestamp, which is what /api/extractions orders by.
-    batch.set(ref, { ...fact, createdAt: new Date(fact.createdAt) });
-  }
-
-  // The seeded reader has answered the mail question already - no to both
-  // topics - so the one-time prompt signed-in readers are asked it in
-  // (components/mail/OptInPrompt.vue) stays out of every screenshot and spec
-  // that signs in as them. mail_campaign.spec.ts asks a fresh account instead.
-  batch.set(
-    db.collection("users").doc("test-user"),
-    { newsletter: { callsToAction: false, recentPeople: false } },
-    { merge: true },
-  );
-
-  // The declarations job's nightly count in people, which the home explorer's
-  // third panel, /oswiadczenia/postep and /admin/oswiadczenia read. Invented
-  // numbers that add up the way the real ones must (`declarationPeopleSchema`).
-  batch.set(
-    db.collection("stats").doc("declaration_people"),
-    declarationPeople,
-  );
-
-  await batch.commit();
-  console.log("Database seeded successfully!");
-
-  console.log((await db.collection("nodes").get()).docs.length, "nodes");
-  console.log((await db.collection("edges").get()).docs.length, "edges");
-  console.log(
-    (await db.collection("revisions").get()).docs.length,
-    "revisions",
-  );
-  console.log(
-    (await db.collection("extractions").get()).docs.length,
-    "extractions",
-  );
 }
 
 async function seedAuth() {
@@ -363,33 +222,6 @@ async function seedAuth() {
     } else {
       throw error;
     }
-  }
-}
-
-async function seedRules() {
-  const rulesPath = resolve(process.cwd(), "../firestore.rules");
-  const rulesContent = readFileSync(rulesPath, "utf8");
-
-  const rulesUrl = `http://${process.env.FIRESTORE_EMULATOR_HOST}/emulator/v1/projects/${projectId}:securityRules`;
-
-  const response = await fetch(rulesUrl, {
-    method: "PUT",
-    body: JSON.stringify({
-      rules: {
-        files: [
-          {
-            name: "security.rules",
-            content: rulesContent,
-          },
-        ],
-      },
-    }),
-  });
-
-  if (response.ok) {
-    console.log("Firestore rules updated.");
-  } else {
-    console.error("Failed to update firestore rules", await response.text());
   }
 }
 

@@ -1,0 +1,73 @@
+{
+  "title": "AuditDocument",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": [
+        "approve",
+        "reject",
+        "publish",
+        "unpublish",
+        "delete",
+        "merge",
+        "split"
+      ]
+    },
+    "collection": {
+      "type": "string",
+      "enum": ["nodes", "edges"]
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision_id": {
+      "type": "string"
+    },
+    "user": {
+      "type": "string",
+      "minLength": 1
+    },
+    "at": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "merge": {
+      "type": "object",
+      "properties": {
+        "into": {
+          "type": "string"
+        },
+        "moved": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "collapsed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "enriched": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["into", "moved", "collapsed"],
+      "additionalProperties": {}
+    },
+    "pressed_by": {
+      "type": "string"
+    }
+  },
+  "required": ["action", "collection", "target_id", "user", "at"],
+  "additionalProperties": {}
+}

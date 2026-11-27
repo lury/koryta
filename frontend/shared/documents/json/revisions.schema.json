@@ -1,0 +1,58 @@
+{
+  "title": "RevisionDocument",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "node_id": {
+      "type": "string"
+    },
+    "nodeId": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {}
+    },
+    "update_time": {
+      "type": "string"
+    },
+    "update_user": {
+      "type": "string"
+    },
+    "update_automatic": {
+      "type": "boolean"
+    },
+    "collection": {
+      "type": "string",
+      "enum": ["nodes", "edges"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "approved", "rejected"]
+    },
+    "reject_reason": {
+      "type": "string"
+    },
+    "review_user": {
+      "type": "string"
+    },
+    "review_time": {
+      "type": "string"
+    },
+    "revision_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": ["data", "update_time", "update_user"],
+  "additionalProperties": {}
+}

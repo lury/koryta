@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "kind": {
+      "type": "string",
+      "enum": ["bug", "idea", "data", "other"]
+    },
+    "message": {
+      "type": "string"
+    },
+    "userUid": {
+      "type": "string"
+    },
+    "contact": {
+      "type": "string"
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "route": {
+          "type": "string"
+        }
+      },
+      "required": ["route"],
+      "additionalProperties": {}
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "adminStatus": {
+      "type": "string",
+      "enum": ["new", "in_progress", "resolved", "wont_fix"]
+    },
+    "adminNote": {
+      "type": "string"
+    },
+    "queueRank": {
+      "type": "number"
+    }
+  },
+  "required": ["kind", "message", "context", "createdAt", "adminStatus"],
+  "additionalProperties": {}
+}
