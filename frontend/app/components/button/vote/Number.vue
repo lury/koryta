@@ -13,6 +13,7 @@
             <v-btn
               v-bind="tip"
               :icon="mdiArrowUpBold"
+              :aria-label="stepHint(1)"
               size="x-small"
               variant="text"
               :color="userVoteResult > 0 ? config.color : 'medium-emphasis'"
@@ -47,6 +48,7 @@
             <v-btn
               v-bind="tip"
               :icon="mdiArrowDownBold"
+              :aria-label="stepHint(-1)"
               size="x-small"
               variant="text"
               :color="userVoteResult < 0 ? config.downColor : 'medium-emphasis'"

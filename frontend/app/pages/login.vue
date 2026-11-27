@@ -1,6 +1,7 @@
 <template>
   <div class="login-page w-100 mx-auto">
-    <main v-if="user">
+    <!-- A <div>: the layout's v-main is the page's one main landmark. -->
+    <div v-if="user">
       <!-- Right after signing in or creating an account, a reader outside the
            team who never answered the newsletter question gets it here,
            before going back to where they were. -->
@@ -48,7 +49,6 @@
           <v-alert
             v-if="!user.emailVerified"
             type="warning"
-            variant="tonal"
             density="compact"
             class="mb-4"
           >
@@ -74,13 +74,13 @@
           </div>
         </v-card-text>
       </v-card>
-    </main>
-    <main v-if="!user">
+    </div>
+    <div v-if="!user">
       <v-alert v-if="reason === 'unauthorized'" type="info" class="mb-4">
         Musisz być zalogowany, aby uzyskać dostęp do tej strony.
       </v-alert>
       <v-card rounded="lg" class="pa-2">
-        <v-card-title class="text-h5 text-center">
+        <v-card-title tag="h1" class="text-h5 text-center">
           {{ isLogin ? "Zaloguj się" : "Rejestracja" }}
         </v-card-title>
         <v-card-text>
@@ -101,7 +101,7 @@
           </div>
         </v-card-text>
       </v-card>
-    </main>
+    </div>
   </div>
 </template>
 

@@ -16,7 +16,6 @@
       <v-alert
         v-if="failed"
         type="error"
-        variant="tonal"
         density="compact"
         class="mb-4"
         text="Nie udało się wczytać Twoich interakcji. Odśwież stronę."
@@ -24,7 +23,6 @@
       <v-alert
         v-else-if="votesFailed"
         type="warning"
-        variant="tonal"
         density="compact"
         class="mb-4"
         text="Nie udało się wczytać Twoich głosów. Poniżej są same propozycje."
@@ -75,7 +73,6 @@
       <v-alert
         v-if="loaded && !anyInteractions"
         type="info"
-        variant="tonal"
         density="compact"
       >
         <!-- A pipeline account's newest 300 writes are all automatic, so it
@@ -169,7 +166,6 @@
           <v-alert
             v-if="item.proposal.status === 'rejected'"
             type="error"
-            variant="tonal"
             density="compact"
             class="mt-2"
             :text="

@@ -1,6 +1,6 @@
 <template>
   <div v-if="status !== 'success'">
-    <v-alert type="info" variant="tonal" class="ma-4">
+    <v-alert type="info" class="ma-4">
       Nie znaleźliśmy takiego tematu, albo nie został jeszcze zatwierdzony.
       <template v-if="!user">
         Niezatwierdzone tematy widzą tylko zalogowani.

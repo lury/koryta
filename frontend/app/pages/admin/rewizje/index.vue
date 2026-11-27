@@ -20,8 +20,6 @@
           v-model="status"
           :items="statusOptions"
           label="Status"
-          density="compact"
-          variant="outlined"
           hide-details
           class="rev-filter"
           data-filter="status"
@@ -30,8 +28,6 @@
           v-model="automatic"
           :items="automaticOptions"
           label="Rodzaj"
-          density="compact"
-          variant="outlined"
           hide-details
           class="rev-filter"
           data-filter="automatic"
@@ -43,8 +39,6 @@
           v-model="published"
           :items="publishedOptions"
           label="Strona"
-          density="compact"
-          variant="outlined"
           hide-details
           class="rev-filter"
           data-filter="published"
@@ -88,7 +82,6 @@
         v-if="showsFlagOnlyNotice"
         type="info"
         color="ink-info"
-        variant="tonal"
         density="compact"
         class="mb-3"
       >
@@ -102,7 +95,6 @@
         v-if="queue?.truncated"
         type="warning"
         color="ink-warning"
-        variant="tonal"
         density="compact"
         class="mb-3"
         :text="
@@ -115,7 +107,6 @@
       <v-alert
         v-if="queueFailed"
         type="error"
-        variant="tonal"
         density="compact"
         class="mb-3"
         text="Nie udało się wczytać kolejki."
@@ -149,7 +140,6 @@
         v-if="isEmptyDefaultQueue"
         type="success"
         color="ink-success"
-        variant="tonal"
         density="compact"
         :icon="mdiCheckDecagramOutline"
         text="Kolejka jest pusta — nic nie czeka na rozpatrzenie."
@@ -229,8 +219,6 @@
             v-model="itemsPerPage"
             :items="PAGE_SIZES"
             label="Na stronę"
-            density="compact"
-            variant="outlined"
             hide-details
             class="rev-per-page ms-auto"
           />
@@ -251,8 +239,6 @@
           v-model="edgeType"
           :items="edgeTypeOptions"
           label="Typ powiązania"
-          density="compact"
-          variant="outlined"
           hide-details
           clearable
           class="rev-filter"
@@ -263,7 +249,6 @@
       <v-alert
         v-if="edgesFailed"
         type="error"
-        variant="tonal"
         density="compact"
         class="mb-3"
         text="Nie udało się wczytać zmian powiązań."
@@ -312,8 +297,6 @@
           v-model="nodeStatus"
           :items="nodeStatusOptions"
           label="Stan"
-          density="compact"
-          variant="outlined"
           hide-details
           clearable
           class="rev-filter rev-filter--wide"
@@ -323,8 +306,6 @@
           v-model="nodeType"
           :items="nodeTypeOptions"
           label="Typ"
-          density="compact"
-          variant="outlined"
           hide-details
           clearable
           class="rev-filter"
@@ -334,8 +315,6 @@
           v-model="nodeSort"
           :items="nodeSortOptions"
           label="Sortuj"
-          density="compact"
-          variant="outlined"
           hide-details
           class="rev-filter rev-filter--wide"
           data-filter="nodeSort"
@@ -345,7 +324,6 @@
       <v-alert
         v-if="nodesFailed"
         type="error"
-        variant="tonal"
         density="compact"
         class="mb-3"
         text="Nie udało się wczytać wpisów."
@@ -388,8 +366,6 @@
           v-model="nodePerPage"
           :items="PAGE_SIZES"
           label="Na stronę"
-          density="compact"
-          variant="outlined"
           hide-details
           class="rev-per-page ms-auto"
         />

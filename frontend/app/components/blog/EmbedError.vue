@@ -1,7 +1,6 @@
 <template>
   <v-alert
     type="warning"
-    variant="tonal"
     density="compact"
     class="my-6"
     data-testid="blog-embed-error"

@@ -24,7 +24,6 @@
       v-if="singleNote"
       class="mb-4"
       type="info"
-      variant="tonal"
       density="compact"
     >
       <div class="d-flex align-center justify-space-between flex-wrap ga-2">
@@ -58,8 +57,6 @@
             v-model="filterNodeType"
             :items="nodeTypeFilterOptions"
             label="Typ węzła"
-            density="compact"
-            variant="outlined"
             hide-details
             clearable
           />
@@ -69,8 +66,6 @@
             v-model="filterKind"
             :items="kindFilterOptions"
             label="Rodzaj"
-            density="compact"
-            variant="outlined"
             hide-details
             clearable
           />
@@ -80,8 +75,6 @@
             v-model="filterAdminType"
             :items="adminTypeFilterOptions"
             label="Typ zgłoszenia"
-            density="compact"
-            variant="outlined"
             hide-details
             clearable
           />
@@ -91,8 +84,6 @@
             v-model="filterStatus"
             :items="statusFilterOptions"
             label="Status"
-            density="compact"
-            variant="outlined"
             hide-details
             clearable
           />

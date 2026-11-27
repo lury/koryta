@@ -44,7 +44,6 @@
       v-if="submittedRevisionId"
       type="info"
       color="ink-info"
-      variant="tonal"
       class="mb-4"
     >
       Zaproponowano zmianę.

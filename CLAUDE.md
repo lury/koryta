@@ -13,7 +13,7 @@
 1. Be location dependent
    Claude Code loads the CLAUDE.md of a directory once you work on a file in it.
    - Frontend: `frontend/CLAUDE.md` and the skills in `frontend/.claude/skills`;
-     also `frontend/server/db/CLAUDE.md`.
+     also `frontend/app/CLAUDE.md` and `frontend/server/db/CLAUDE.md`.
    - Pipelines: `data/pipelines/CLAUDE.md` and the skills in `data/pipelines/.claude/skills`.
 
 1. **Failure Protocol**:

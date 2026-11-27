@@ -15,7 +15,6 @@
     <v-alert
       v-if="articleFilter"
       type="info"
-      variant="tonal"
       density="compact"
       class="mb-4"
     >

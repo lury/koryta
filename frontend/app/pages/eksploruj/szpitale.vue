@@ -14,7 +14,6 @@
     <v-alert
       v-if="error"
       type="error"
-      variant="tonal"
       class="mb-4"
       text="Nie udało się pobrać danych o radach nadzorczych szpitali."
     />
@@ -22,7 +21,6 @@
     <v-alert
       v-else-if="empty"
       type="warning"
-      variant="tonal"
       density="compact"
       class="mb-4"
       text="Nie mamy jeszcze w bazie ani jednego miejsca w organie nadzoru szpitala publicznego. Liczby szpitali są prawdziwe, podziału na partie jeszcze nie ma."
@@ -153,7 +151,6 @@
          says „nad wykresem” rather than „poniżej”. -->
     <v-alert
       type="info"
-      variant="tonal"
       density="comfortable"
       class="mb-6"
       :icon="mdiScaleBalance"

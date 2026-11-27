@@ -14,7 +14,6 @@
     <v-alert
       v-if="error"
       type="error"
-      variant="tonal"
       class="mb-4"
       :text="error"
       data-testid="edges-queue-error"

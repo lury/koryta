@@ -182,7 +182,6 @@
           multiple
           chips
           closable-chips
-          variant="outlined"
           density="comfortable"
         />
         <v-combobox

@@ -137,7 +137,6 @@
       <v-alert
         v-if="saveFailed"
         type="error"
-        variant="tonal"
         density="compact"
         class="mt-3"
         data-testid="note-save-error"
@@ -148,7 +147,6 @@
       <v-alert
         v-else-if="promotionFailed"
         type="warning"
-        variant="tonal"
         density="compact"
         class="mt-3"
         data-testid="note-promotion-error"

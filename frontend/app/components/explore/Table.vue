@@ -18,6 +18,22 @@
     @update:sort-by="$emit('update:sortBy', $event)"
     @update:options="$emit('update:options', $event)"
   >
+    <!-- In words, what the chips in the rows mean: the parties by full name,
+         and why a company chip is filled - which used to be said only in a
+         tooltip. -->
+    <template #top>
+      <div class="table-legend d-flex flex-column ga-1 px-4 py-2">
+        <PartyLegend :parties="partiesOnPage" />
+        <div v-if="hasMatchedCompanies" class="text-caption text-ink-neutral">
+          <span class="legend-swatch bg-surface-sage" aria-hidden="true" />
+          Wypełniona firma: {{ MATCH_REASONS.company }} lub
+          {{ MATCH_REASONS.region }}.
+          <span class="font-weight-medium">grupa</span> przed nazwą:
+          {{ MATCH_REASONS.owner }}.
+        </div>
+      </div>
+    </template>
+
     <template #[`header.experience`]="{ column }">
       <ExploreTableColumnHeader
         tooltip="Sumaryczna liczba lat przepracowanych w publicznych spółkach"
@@ -111,12 +127,16 @@
                  `.cursor-pointer` on it. The stylesheet below repaints it -
                  sage as ink measures 1.85:1 on white, which is the name of
                  every person in the table at 14px. -->
-            <NuxtLink
+            <!-- A real href, so the name is in the tab order and a
+                 ctrl/middle click opens the person's page; a plain click or
+                 Enter opens the drawer as before. -->
+            <a
               class="person-name text-primary cursor-pointer font-weight-bold"
-              @click="$emit('focus', item)"
+              :href="personPath(item)"
+              @click="onNameClick($event, item)"
             >
               {{ item.name }}
-            </NuxtLink>
+            </a>
           </template>
           <!-- „szkic”, and nothing at all for the other 90-odd percent of the
                rows. This is what is left of the „Widoczność” column: a
@@ -203,6 +223,7 @@
               <v-btn
                 v-bind="searchProps"
                 :icon="mdiOpenInNew"
+                :aria-label="`Otwórz wyszukiwarki: ${item.name}`"
                 variant="text"
                 color="ink-neutral"
                 size="small"
@@ -258,45 +279,34 @@
                filled - see `companyChips`. A company above the person's
                employer, which the filters reach through ownership, is not
                theirs, so it is a dashed „grupa …” chip and never filled. Why a
-               chip is marked is said twice: under its name in the tooltip, for
-               the pointer, and in a hidden line for a screen reader, which a
-               fill does not reach. -->
+               chip is marked is said in the legend over the table and in a
+               hidden line for a screen reader, which a fill does not reach.
+               The whole name is on the chip, wrapping if it must: it used to
+               be cut with an ellipsis and spelled out only in a tooltip. -->
           <div class="d-flex flex-wrap ga-1 py-1">
             <span
               v-for="employer in companyChips(item)"
               :key="`${employer.match ?? 'own'}:${employer.name}`"
               class="company-slot"
             >
-              <v-tooltip location="top">
-                <template #activator="{ props: shortCompanyProps }">
-                  <v-chip
-                    v-bind="shortCompanyProps"
-                    size="small"
-                    class="mb-1 text-truncate d-flex company-chip"
-                    :class="chipClasses(employer)"
-                    variant="outlined"
-                    :prepend-icon="chipIcon(employer)"
-                    :data-match="employer.match"
-                  >
-                    <span class="company-name">
-                      <span
-                        v-if="employer.match === 'owner'"
-                        class="company-group"
-                      >
-                        grupa
-                      </span>
-                      {{ shortCompanyName(employer.name) }}
-                    </span>
-                    <span v-if="employer.match" class="d-sr-only">
-                      ({{ MATCH_REASONS[employer.match] }})
-                    </span>
-                  </v-chip>
-                </template>
-                <div>{{ shortCompanyName(employer.name) }}</div>
-                <div v-if="employer.match" class="font-weight-medium">
-                  {{ MATCH_REASONS[employer.match] }}
-                </div>
-              </v-tooltip>
+              <v-chip
+                size="small"
+                class="mb-1 d-flex company-chip"
+                :class="chipClasses(employer)"
+                variant="outlined"
+                :prepend-icon="chipIcon(employer)"
+                :data-match="employer.match"
+              >
+                <span class="company-name">
+                  <span v-if="employer.match === 'owner'" class="company-group">
+                    grupa
+                  </span>
+                  {{ shortCompanyName(employer.name) }}
+                </span>
+                <span v-if="employer.match" class="d-sr-only">
+                  ({{ MATCH_REASONS[employer.match] }})
+                </span>
+              </v-chip>
             </span>
           </div>
           <!-- Two facts, two icons, and from md up the date says in words
@@ -437,6 +447,7 @@
             <v-btn
               v-bind="searchProps"
               :icon="mdiOpenInNew"
+              :aria-label="`Otwórz wyszukiwarki: ${item.name}`"
               variant="text"
               color="ink-neutral"
               @click.stop="
@@ -454,6 +465,7 @@
         <v-btn
           v-if="!disableFocus"
           :icon="mdiMagnify"
+          :aria-label="`Szczegóły: ${item.name}`"
           variant="text"
           color="ink-sage"
           @click.stop="$emit('focus', item)"
@@ -526,9 +538,36 @@ const VOTES_SORT_OPTIONS = [
  * nothing when both are. `factsCount` is absent rather than zero on a person
  * ingested before the counter existed - see `NodeStats.factsCount` - which
  * reads the same way here. */
+/** Every party drawn in the rows, for the legend over the table. */
+const partiesOnPage = computed(() =>
+  props.items.flatMap((item) =>
+    Array.isArray(item.parties) ? item.parties : [],
+  ),
+);
+
+/** Whether any row has a company the filters matched, i.e. whether the
+ * legend has a fill to explain. */
+const hasMatchedCompanies = computed(() =>
+  props.items.some(
+    (item) =>
+      Array.isArray(item.companies) &&
+      item.companies.length > 0 &&
+      companyChips(item).some((chip) => chip.match),
+  ),
+);
+
 /** The person's own page, for the name where there is no drawer to open. */
 const personPath = (item: PersonRich) =>
   generateEntityUrl("person", item.id, item.name);
+
+/** A plain click on the name opens the drawer; one with a modifier or the
+ * middle button is left to the browser, which opens the page itself. */
+function onNameClick(event: MouseEvent, item: PersonRich) {
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0)
+    return;
+  event.preventDefault();
+  emit("focus", item);
+}
 
 function countsCaption(item: PersonRich): string {
   const parts: string[] = [];
@@ -955,11 +994,28 @@ a.person-name:focus-visible {
   min-width: 0;
 }
 
+/* The full name, wrapped onto a second line rather than cut. */
+.company-chip {
+  height: auto !important;
+  min-height: 24px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
 .company-name {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.legend-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+  vertical-align: -1px;
+  border: 1px solid rgb(var(--v-theme-ink-sage));
+  border-radius: 3px;
 }
 
 /* A company the page's filters matched: the sage the matched election run

@@ -57,7 +57,6 @@
           <v-alert
             v-if="error"
             type="error"
-            variant="tonal"
             class="mt-4"
             data-confirm-error
           >

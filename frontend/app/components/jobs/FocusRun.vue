@@ -55,7 +55,6 @@
     <v-alert
       v-if="error && !run"
       type="warning"
-      variant="tonal"
       density="compact"
       data-focus-error
     >

@@ -104,7 +104,6 @@
         v-if="region && !company"
         type="warning"
         color="ink-warning"
-        variant="tonal"
         class="mt-4"
         :icon="mdiCash"
       >

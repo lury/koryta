@@ -67,6 +67,37 @@ export function sortParties(held: Iterable<string>): string[] {
   });
 }
 
+/** What a party chip says aloud and in the legend: the name in full. A chip
+ * shows the short form (`partyShortName`) and is never the only place the
+ * party is named - colour alone tells a reader nothing. Parties are named in
+ * text, never by their logos. */
+export const partyFullNames: Record<string, string> = {
+  PO: "Platforma Obywatelska (Koalicja Obywatelska)",
+  PiS: "Prawo i Sprawiedliwość",
+  PSL: "Polskie Stronnictwo Ludowe",
+  "Polska 2050": "Polska 2050",
+  "Nowa Lewica": "Nowa Lewica",
+  SLD: "Sojusz Lewicy Demokratycznej",
+  Konfederacja: "Konfederacja",
+  Razem: "Partia Razem",
+  Nowoczesna: "Nowoczesna",
+  "Bezpartyjni Samorządowcy": "Bezpartyjni Samorządowcy",
+  [OTHER_PARTY]: "Inne ugrupowanie, spoza głównych partii",
+};
+
+/** The two names too long for a chip in a table cell. Every other party is
+ * drawn under the name it is stored as. */
+export const partyShortNames: Record<string, string> = {
+  "Polska 2050": "PL2050",
+  "Bezpartyjni Samorządowcy": "BS",
+};
+
+export const partyShortName = (party: string): string =>
+  partyShortNames[party] ?? party;
+
+export const partyFullName = (party: string): string =>
+  partyFullNames[party] ?? party;
+
 /** Party names that stand for the same thing, folded to one key.
  *
  * SLD and Nowa Lewica are the same lineage - the party renamed in 2021 - and

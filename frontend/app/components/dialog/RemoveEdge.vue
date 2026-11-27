@@ -26,7 +26,6 @@
         <v-alert
           v-if="error"
           type="error"
-          variant="tonal"
           density="compact"
           data-testid="remove-edge-error"
         >

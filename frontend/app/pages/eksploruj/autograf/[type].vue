@@ -9,7 +9,6 @@
       <v-alert
         v-if="region && !company"
         type="warning"
-        variant="tonal"
         class="mb-4"
         :icon="mdiCash"
       >
@@ -80,7 +79,6 @@
       <v-alert
         v-if="totalItems > DATA_LIMIT"
         type="info"
-        variant="tonal"
         class="mb-6"
       >
         Zbyt wiele osób pasuje do aktualnych filtrów ({{ totalItems }}).

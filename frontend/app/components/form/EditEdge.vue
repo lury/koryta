@@ -126,7 +126,6 @@
             v-model="newEdge.party"
             :items="parties"
             label="Partia polityczna"
-            density="compact"
             hide-details="auto"
             data-testid="edge-party-select"
           />
@@ -145,7 +144,6 @@
             v-model="newEdge.position"
             :items="electionPositions"
             label="Typ wyborów"
-            density="compact"
             hide-details="auto"
             data-testid="edge-position-select"
           />
@@ -155,7 +153,6 @@
             v-model="newEdge.term"
             :items="electionTerms"
             label="Kadencja"
-            density="compact"
             hide-details="auto"
             data-testid="edge-term-select"
           />
@@ -183,12 +180,12 @@
       </template>
 
       <v-col v-if="isSelfEdge" cols="12">
-        <v-alert type="warning" variant="tonal" density="compact">
+        <v-alert type="warning" density="compact">
           Nie można połączyć wpisu z nim samym.
         </v-alert>
       </v-col>
       <v-col v-if="error" cols="12">
-        <v-alert type="error" variant="tonal" density="compact">
+        <v-alert type="error" density="compact">
           {{ error }}
         </v-alert>
       </v-col>

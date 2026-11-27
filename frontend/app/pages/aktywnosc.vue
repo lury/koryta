@@ -148,7 +148,6 @@
     <v-alert
       v-if="error && !feed"
       type="error"
-      variant="tonal"
       class="mb-4"
       text="Nie udało się pobrać aktywności."
     />
@@ -157,7 +156,6 @@
       <v-alert
         v-if="widenFailed && !loadingOlder"
         type="warning"
-        variant="tonal"
         density="compact"
         class="mb-4"
         data-testid="activity-widen-failed"
@@ -167,7 +165,6 @@
       <v-alert
         v-if="feed?.truncated.length"
         type="warning"
-        variant="tonal"
         density="compact"
         class="mb-4"
         text="W tym okresie było więcej, niż zdążyliśmy przejrzeć - lista jest niepełna."
@@ -178,7 +175,6 @@
       <v-alert
         v-else-if="filtered.length === 0 && filteredReleases.length === 0"
         type="info"
-        variant="tonal"
         data-testid="activity-empty"
         :text="emptyText"
       />

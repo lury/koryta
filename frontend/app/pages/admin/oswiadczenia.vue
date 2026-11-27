@@ -39,7 +39,6 @@
     <v-alert
       v-if="error"
       type="error"
-      variant="tonal"
       class="mb-6"
       data-overview-error
     >
@@ -155,8 +154,6 @@
               v-model="heldReason"
               :items="reasonOptions"
               label="Powód"
-              density="compact"
-              variant="outlined"
               hide-details
               class="dheld__reason"
               data-held-reason

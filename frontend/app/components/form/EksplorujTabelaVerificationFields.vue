@@ -5,7 +5,6 @@
         v-model="visibility"
         :items="visibilityOptions"
         label="Widoczność"
-        variant="outlined"
         density="comfortable"
         hide-details
       />
@@ -15,7 +14,6 @@
         v-model="hideVoted"
         :items="hideVotedOptions"
         label="Głosy społeczności"
-        variant="outlined"
         density="comfortable"
         hide-details
       />

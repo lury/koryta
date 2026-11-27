@@ -20,17 +20,16 @@
       </v-btn>
     </div>
 
-    <v-alert v-if="loadError" type="error" variant="tonal" class="mb-4">
+    <v-alert v-if="loadError" type="error" class="mb-4">
       {{ loadError }}
     </v-alert>
-    <v-alert v-if="openTruncated" type="warning" variant="tonal" class="mb-4">
+    <v-alert v-if="openTruncated" type="warning" class="mb-4">
       Otwartych zgłoszeń jest ponad {{ OPEN_CAP }} - lista i kolejka są
       niepełne.
     </v-alert>
     <v-alert
       v-if="missingTarget"
       type="info"
-      variant="tonal"
       density="compact"
       class="mb-4"
     >

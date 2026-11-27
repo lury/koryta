@@ -116,7 +116,6 @@
       <v-alert
         v-if="'error' in view.probe"
         type="warning"
-        variant="tonal"
         density="compact"
         class="mb-3"
         data-probe-error

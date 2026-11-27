@@ -10,12 +10,28 @@
        screen reader, a copy and paste. Callers put the chip straight after a
        name, and Google's snippet read "Romuald BosakowskiPO". It is never
        drawn: a space at the start of the chip's own line collapses. -->
-  <span class="chip" :class="kind" :style :title>{{ ` ${party}` }}</span>
+  <!-- `role="img"` with the full name as its label: a screen reader hears
+       „Prawo i Sprawiedliwość”, not „P-i-S”, while the text stays the short
+       form for search snippets and copy and paste. -->
+  <span
+    class="chip"
+    :class="kind"
+    :style
+    :title
+    role="img"
+    :aria-label="label"
+    >{{ ` ${partyShortName(party)}` }}</span
+  >
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { OTHER_PARTY, partyChipPaint } from "~~/shared/misc";
+import {
+  OTHER_PARTY,
+  partyChipPaint,
+  partyFullName,
+  partyShortName,
+} from "~~/shared/misc";
 import { ink } from "~~/shared/colors";
 
 const {
@@ -56,14 +72,13 @@ const style = computed(() => {
   return { borderColor: line, color: ink.strong };
 });
 
-/** „Inne” names no party, so the chip says what it stands for to whoever
- * stops on it. Every other chip is its own explanation. */
-const title = computed(
-  () =>
-    note ??
-    (party === OTHER_PARTY
-      ? "Powiązanie polityczne spoza głównych partii"
-      : undefined),
+/** On hover, the note where the tie is not the plain one and the full name
+ * otherwise. The legend over the table says the same in text. */
+const title = computed(() => note ?? partyFullName(party));
+
+/** What a screen reader hears: always the full name, then the note. */
+const label = computed(() =>
+  note ? `${partyFullName(party)}: ${note}` : partyFullName(party),
 );
 </script>
 

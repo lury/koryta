@@ -34,7 +34,6 @@
       <v-alert
         v-if="rows.length === 0"
         type="info"
-        variant="tonal"
         density="compact"
         :text="EMPTY[tab]"
       />
@@ -170,7 +169,6 @@
         <v-alert
           v-if="!identified && !loading"
           :type="callToAction.type"
-          variant="tonal"
           density="compact"
           class="mt-4"
         >

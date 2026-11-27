@@ -155,7 +155,6 @@
             <v-alert
               type="error"
               color="ink-danger"
-              variant="tonal"
               density="compact"
             >
               <template v-for="(part, i) in loadFailureParts" :key="i">

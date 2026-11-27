@@ -64,7 +64,6 @@
         <v-alert
           v-if="sameNode"
           type="warning"
-          variant="tonal"
           class="mb-2"
           data-testid="merge-same-node"
         >
@@ -85,7 +84,6 @@
         <template v-if="plan">
           <v-alert
             type="info"
-            variant="tonal"
             class="mb-2"
             data-testid="merge-plan"
           >
@@ -137,7 +135,6 @@
         <v-alert
           v-if="error"
           type="error"
-          variant="tonal"
           class="mt-4"
           data-testid="merge-error"
         >

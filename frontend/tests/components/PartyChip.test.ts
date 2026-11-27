@@ -103,11 +103,28 @@ describe("PartyChip", () => {
     );
     expect(chip.text()).toBe("Inne");
     expect(chip.attributes("title")).toContain("spoza głównych partii");
-    expect(
-      mount(PartyChip, { props: { party: "PiS" } })
-        .get(".chip")
-        .attributes("title"),
-    ).toBeUndefined();
+  });
+
+  /** Colour alone names nothing: the chip carries the party's full name as
+   * its accessible name, and shows the short form. */
+  it("names the party in full for a screen reader", () => {
+    const pis = mount(PartyChip, { props: { party: "PiS" } }).get(".chip");
+    expect(pis.attributes("role")).toBe("img");
+    expect(pis.attributes("aria-label")).toBe("Prawo i Sprawiedliwość");
+    expect(pis.text()).toBe("PiS");
+
+    const bs = mount(PartyChip, {
+      props: { party: "Bezpartyjni Samorządowcy" },
+    }).get(".chip");
+    expect(bs.text()).toBe("BS");
+    expect(bs.attributes("aria-label")).toBe("Bezpartyjni Samorządowcy");
+
+    const backing = mount(PartyChip, {
+      props: { party: "PSL", tie: "backing", note: "Poparcie kandydatury" },
+    }).get(".chip");
+    expect(backing.attributes("aria-label")).toBe(
+      "Polskie Stronnictwo Ludowe: Poparcie kandydatury",
+    );
   });
 
   /** The reported chip: near-black ink on near-black navy. White is the only

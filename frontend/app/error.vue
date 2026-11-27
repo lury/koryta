@@ -55,7 +55,6 @@
         <v-alert
           v-if="devMessage"
           type="error"
-          variant="tonal"
           class="mt-10 text-left"
         >
           <pre class="text-caption text-wrap mb-0">{{ devMessage }}</pre>

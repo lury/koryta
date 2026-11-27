@@ -120,6 +120,28 @@ npm run quick-check
 npm run quick-check:failsafe
 ```
 
+## Storybook
+
+The design-system pieces - the palette from `shared/colors.ts` with its
+contrast ratios, typography, `PartyChip` and `PartyLegend`, the chips,
+`IconAction`, `PageSection` and `InfoBubble`, tooltips and form fields - have
+stories in `stories/`. Storybook runs on plain Vite (`.storybook/main.ts`) with
+the same Vuetify theme and global defaults the app gets
+(`shared/vuetifyDefaults.ts`), and without Nuxt: a component that needs Nuxt's
+runtime (`useAuthState`, `NuxtLink`, a fetch) does not get a story here.
+
+```bash
+# dev server on http://localhost:6006
+npm run storybook
+
+# static build into storybook-static/
+npm run build-storybook
+```
+
+Each story has an **Accessibility** panel (`@storybook/addon-a11y`, axe-core)
+checking WCAG 2.2 A and AA; a violation is an error, not a note. A new
+component or a new colour gets a story, and the panel stays empty.
+
 ## QA changelog
 
 Every user visible change gets an entry at the top of `shared/qa.ts`, in the

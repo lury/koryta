@@ -95,8 +95,6 @@
             v-model="filterCategory"
             :items="availableCategories"
             label="Typ podmiotu"
-            variant="outlined"
-            density="compact"
             hide-details
             clearable
             style="min-width: 200px; max-width: 260px"
@@ -109,8 +107,6 @@
             v-model="filterTier"
             :items="tierItems"
             label="Poziom trudności"
-            variant="outlined"
-            density="compact"
             hide-details
             clearable
             data-testid="queue-tier-filter"

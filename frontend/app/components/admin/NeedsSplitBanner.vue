@@ -2,7 +2,6 @@
   <v-alert
     v-if="isAdmin && mark"
     type="warning"
-    variant="tonal"
     class="mb-4"
     data-testid="needs-split-banner"
   >

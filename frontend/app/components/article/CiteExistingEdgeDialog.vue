@@ -73,7 +73,6 @@
           <v-alert
             v-else
             type="info"
-            variant="tonal"
             density="compact"
             class="mt-4"
             data-testid="cite-existing-none"
@@ -86,7 +85,6 @@
         <v-alert
           v-if="error"
           type="error"
-          variant="tonal"
           density="compact"
           class="mt-3"
           data-testid="cite-existing-error"

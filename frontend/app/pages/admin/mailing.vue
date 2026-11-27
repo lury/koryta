@@ -9,7 +9,7 @@
       dopiero potem rozesłać szerzej.
     </p>
 
-    <v-alert v-if="loadError" type="error" variant="tonal" class="mb-4">
+    <v-alert v-if="loadError" type="error" class="mb-4">
       {{ loadError }}
     </v-alert>
     <v-progress-linear v-if="pending" indeterminate class="mb-4" />
@@ -23,8 +23,6 @@
         label="Kampania"
         placeholder="Nowa, jeszcze niezapisana"
         persistent-placeholder
-        density="compact"
-        variant="outlined"
         hide-details
         class="mailing-page__picker"
         data-campaign-picker
@@ -134,8 +132,6 @@
               item-title="title"
               item-value="uid"
               label="Tak, jak zobaczy"
-              density="compact"
-              variant="outlined"
               hide-details
               class="mb-3"
               data-campaign-preview-as
@@ -157,7 +153,6 @@
             <v-alert
               v-if="preview.error"
               type="error"
-              variant="tonal"
               density="compact"
             >
               {{ preview.error }}

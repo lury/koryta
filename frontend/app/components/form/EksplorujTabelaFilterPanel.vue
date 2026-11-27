@@ -41,7 +41,6 @@
           v-model="teryt"
           :items="availableRegions"
           label="Region osoby"
-          variant="outlined"
           density="comfortable"
           hide-details
           clearable
@@ -52,7 +51,6 @@
           v-model="category"
           :items="availableCategories"
           label="Typ podmiotu"
-          variant="outlined"
           density="comfortable"
           hide-details
           clearable
@@ -67,7 +65,6 @@
             { title: 'Teraz w wyszukanych podmiotach', value: 'selected' },
           ]"
           label="Zatrudnienie"
-          variant="outlined"
           density="comfortable"
           hide-details
         />
@@ -87,7 +84,6 @@
           :items="electionOptions"
           :label="electionLabel"
           no-data-text="Nie ma takich wyborów"
-          variant="outlined"
           density="comfortable"
           hide-details
           clearable
@@ -189,7 +185,6 @@
                 v-model="party"
                 :items="availableParties"
                 label="Partia"
-                variant="outlined"
                 density="comfortable"
                 hide-details
                 clearable
@@ -223,7 +218,6 @@
                 v-model="companyTeryt"
                 :items="availableRegions"
                 label="Siedziba spółki"
-                variant="outlined"
                 density="comfortable"
                 hide-details
                 clearable
@@ -236,7 +230,6 @@
                 :items="availableCompanies"
                 :no-filter="serverCompanies"
                 label="Instytucje"
-                variant="outlined"
                 density="comfortable"
                 hide-details
                 clearable

@@ -57,7 +57,6 @@
     <v-alert
       v-if="activityError"
       type="error"
-      variant="tonal"
       class="mb-4"
       text="Nie udało się pobrać aktywności."
     />
@@ -65,7 +64,6 @@
     <v-alert
       v-if="activity?.truncated.length"
       type="warning"
-      variant="tonal"
       density="compact"
       class="mb-4"
       :text="truncatedMessage"
@@ -103,7 +101,6 @@
     <v-alert
       v-if="databaseError"
       type="error"
-      variant="tonal"
       class="mb-4"
       text="Nie udało się pobrać stanu bazy."
     />

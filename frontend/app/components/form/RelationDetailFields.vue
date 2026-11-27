@@ -45,7 +45,6 @@
           v-model="details.position"
           :items="electionKinds"
           label="Typ wyborów"
-          density="compact"
           hide-details
           :data-testid="`${prefix}-position`"
         />
@@ -55,7 +54,6 @@
           v-model="details.party"
           :items="parties"
           label="Partia"
-          density="compact"
           hide-details
           clearable
           :data-testid="`${prefix}-party`"

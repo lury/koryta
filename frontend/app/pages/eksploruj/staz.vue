@@ -68,7 +68,6 @@
       data-testid="milestones-error"
       text="Nie udało się pobrać danych. Spróbuj odświeżyć stronę."
       type="error"
-      variant="tonal"
     />
 
     <!-- `mode` is not a constant, for the reason the home page's feed gives at
@@ -109,7 +108,6 @@
       data-testid="service-milestones-empty"
       text="W tym miesiącu nikomu, o kim wiemy, nie wypada okrągły staż."
       type="info"
-      variant="tonal"
     />
   </div>
 </template>

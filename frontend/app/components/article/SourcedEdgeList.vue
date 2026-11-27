@@ -82,7 +82,7 @@
       </div>
     </div>
 
-    <v-alert v-else type="info" variant="tonal" density="compact">
+    <v-alert v-else type="info" density="compact">
       Żadne powiązanie nie powołuje się jeszcze na ten artykuł.
     </v-alert>
   </div>

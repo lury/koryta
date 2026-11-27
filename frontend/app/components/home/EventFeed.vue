@@ -50,7 +50,6 @@
     data-testid="home-event-feed-empty"
     text="Nie znamy jeszcze żadnego zatrudnienia z datą rozpoczęcia ani okrągłego stażu."
     type="info"
-    variant="tonal"
   />
 </template>
 
