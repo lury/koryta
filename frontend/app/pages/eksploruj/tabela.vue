@@ -44,9 +44,11 @@
         v-model:min-employment-date="filterMinEmploymentDate"
         v-model:min-votes="filterMinVotes"
         v-model:sort-by="sortBy"
+        v-model:company-search="placeSearch"
         :available-parties="availableParties"
         :available-regions="availableRegions"
         :available-companies="availableCompanies"
+        server-companies
         :show-visibility="!!user"
         :total-items="totalItems"
         :page="page"
@@ -140,7 +142,7 @@
 
 <script setup lang="ts">
 import { mdiCash } from "@mdi/js";
-import { computed } from "vue";
+import { computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useListWithStats } from "~/composables/entity/listWithStats";
 import { hiddenTargetCount } from "~/utils/hiddenTargets";
@@ -148,7 +150,7 @@ import { useQueryFilters } from "~/composables/queryFilters";
 import { external } from "~~/shared/colors";
 import { parties } from "~~/shared/misc";
 import { regionFilterOptions } from "~~/shared/teryt";
-import type { PersonRich } from "~~/shared/model";
+import type { Company, PersonRich } from "~~/shared/model";
 import type { Query } from "~~/server/api/nodes/index.get";
 import { useCurrentUser } from "vuefire";
 
@@ -337,17 +339,14 @@ const hiddenCount = computed(() => {
   if (region.value) {
     stats = regions.value?.[region.value[0]]?.stats;
   } else if (company.value) {
-    stats = places.value?.[company.value[0]]?.stats;
+    stats = placeById(company.value[0])?.stats;
   }
 
   return hiddenTargetCount(stats);
 });
 
-// This page's whole template is a <ClientOnly>, so the server renders none of
-// it - but these two fetches still ran during SSR and their results were
-// serialised into __NUXT_DATA__, which is where most of an ~8 MB response came
-// from. Every reader waited on all of it before seeing anything.
-const { entities: places } = useEntities("place", {}, { server: false });
+const { places, placeSearch } = usePlaceOptions();
+const placeById = (id: string): Company | undefined => places.value[id];
 // Shared with the drawer and the table rows, which need the region each company
 // sits in rather than the region nodes themselves.
 const { regions, companyRegions, companyLocations } = useCompanyLocations();
@@ -366,15 +365,15 @@ const region = computed<[string, string] | undefined>(() => {
 
 const company = computed<[string, string] | undefined>(() => {
   const id = filterPlace.value?.[0];
-  const place = id ? places.value?.[id] : undefined;
+  const place = id ? placeById(id) : undefined;
   return id && place ? [id, place.name] : undefined;
 });
 
 const selectedCompaniesData = computed(() => {
-  if (!filterPlace.value || !places.value) return [];
+  if (!filterPlace.value) return [];
   const selected = [];
   for (const id of filterPlace.value) {
-    const place = places.value[id];
+    const place = placeById(id);
     if (place) {
       selected.push({ id, ...place, location: companyLocations.value[id] });
     }

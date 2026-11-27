@@ -1,6 +1,5 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
-import { getReader, settledWithReader } from "~~/server/utils/declarations";
+import { getReader } from "~~/server/utils/declarations";
+import { settledWithReaderPg } from "~~/server/db/declarationReading";
 import type { DeclarationProgress } from "~~/shared/declarations";
 
 /**
@@ -17,9 +16,7 @@ export default defineEventHandler(async (event) => {
   const reader = await getReader(event);
   setResponseHeader(event, "Cache-Control", "private, no-store");
   return {
-    settled: reader.votes
-      ? await settledWithReader(getFirestore(getApp(), "koryta-pl"), reader.uid)
-      : 0,
+    settled: reader.votes ? await settledWithReaderPg(reader.uid) : 0,
     votes: reader.votes,
   } satisfies DeclarationProgress;
 });

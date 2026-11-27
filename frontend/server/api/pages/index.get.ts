@@ -1,9 +1,8 @@
 import { z } from "zod";
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { getUser, requireDatascience } from "~~/server/utils/auth";
 import { toArticleCapture } from "~~/server/utils/captures";
 import { normalizeUrl } from "~~/shared/url";
+import { readCaptures } from "~~/server/db/graph";
 
 const DEFAULT_LIMIT = 200;
 const MAX_LIMIT = 500;
@@ -36,25 +35,12 @@ export default defineEventHandler(async (event) => {
   const query = await getValidatedQuery(event, (q) => queryValidator.parse(q));
   requireDatascience(await getUser(event));
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  let firestoreQuery: FirebaseFirestore.Query = db.collection("articlePages");
-  if (query.status) {
-    firestoreQuery = firestoreQuery.where("status", "==", query.status);
-  }
-  if (query.url) {
-    firestoreQuery = firestoreQuery.where(
-      "normalizedUrl",
-      "==",
-      normalizeUrl(query.url),
-    );
-  }
-
-  const snapshot = await firestoreQuery
-    .orderBy("capturedAt", "desc")
-    .limit(query.limit)
-    .get();
-
+  const rows = await readCaptures({
+    status: query.status,
+    normalizedUrl: query.url ? normalizeUrl(query.url) : undefined,
+    limit: query.limit,
+  });
   return {
-    captures: snapshot.docs.map((doc) => toArticleCapture(doc.id, doc.data())),
+    captures: rows.map((row) => toArticleCapture(row.id, row.data)),
   };
 });

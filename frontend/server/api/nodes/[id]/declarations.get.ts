@@ -1,9 +1,6 @@
-import { getFirestore } from "firebase-admin/firestore";
 import { getRouterParam } from "h3";
-import { confirmedDeclarations } from "~~/server/utils/declarationPublish";
 import { authCachedEventHandler } from "~~/server/utils/handlers";
-import { resolveMergedNode } from "~~/server/utils/merge";
-import { pageIsPublic } from "~~/shared/model";
+import { personDeclarationsPg } from "~~/server/db/declarationPages";
 import type { PersonDeclarations } from "~~/shared/declarations";
 
 /** The asset declarations a published person's page links, and whether the
@@ -28,48 +25,10 @@ export default authCachedEventHandler(
   async (event): Promise<PersonDeclarations> => {
     const id = getRouterParam(event, "id");
     if (!id) throw createError({ statusCode: 400, message: "Missing id" });
-
-    const db = getFirestore("koryta-pl");
-    const { id: personId, snapshot } = await resolveMergedNode(db, id);
-    const person = snapshot?.data();
-    if (!person || person.type !== "person" || !pageIsPublic(person)) {
-      throw createError({ statusCode: 404, message: `No page ${id}` });
-    }
-
-    const record = (
-      await db.collection("declarationPublications").doc(personId).get()
-    ).data();
-    const shown =
-      record?.status === "published" || record?.status === "confirmed";
-    const declarations = shown
-      ? (await confirmedDeclarations(db, record, person)).filter(
-          (declaration) => /^https?:\/\//.test(declaration.url),
-        )
-      : [];
-    if (declarations.length === 0) {
+    const found = await personDeclarationsPg(id);
+    if (!found) {
       throw createError({ statusCode: 404, message: `No declarations ${id}` });
     }
-
-    return {
-      autoPublished:
-        record?.status === "published" && record.autoPublished === true
-          ? { at: isoOf(record.publishedAt) }
-          : null,
-      declarations: declarations.map(({ url, year, unit, office }) => ({
-        url,
-        year,
-        unit,
-        office,
-      })),
-    };
+    return found;
   },
 );
-
-/** A stored instant as ISO: a Firestore Timestamp, a Date or a string. */
-function isoOf(value: unknown): string {
-  if (value && typeof (value as { toDate?: unknown }).toDate === "function") {
-    return (value as { toDate: () => Date }).toDate().toISOString();
-  }
-  if (value instanceof Date) return value.toISOString();
-  return typeof value === "string" ? value : "";
-}

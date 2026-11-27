@@ -1,12 +1,10 @@
-import {
-  decideExtract,
-  type DecidedExtract,
-} from "~~/server/utils/declarationDecisions";
+import type { DecidedExtract } from "~~/server/utils/declarationDecisions";
+import { decideExtractPg } from "~~/server/db/declarationHolds";
 import {
   afterDecision,
   decisionRequest,
 } from "~~/server/utils/declarationDecisionRequest";
-import { restageCropPeople } from "~~/server/utils/declarationPeopleCount";
+import { restageCropPeoplePg } from "~~/server/db/declarationPeopleCount";
 
 /**
  * An admin takes a crop back from /admin/oswiadczenia: it is not the
@@ -17,13 +15,13 @@ import { restageCropPeople } from "~~/server/utils/declarationPeopleCount";
  * move in the people count. Admins only, checked before anything is read.
  */
 export default defineEventHandler(async (event): Promise<DecidedExtract> => {
-  const { uid, id, db } = await decisionRequest(event);
-  const decided = await decideExtract(db, {
+  const { uid, id } = await decisionRequest(event);
+  const decided = await decideExtractPg({
     extractId: id,
     uid,
     decision: { verdict: "withdraw" },
   });
-  await restageCropPeople(db, [id]);
-  await afterDecision(db, id);
+  await restageCropPeoplePg([id]);
+  await afterDecision(id);
   return decided;
 });

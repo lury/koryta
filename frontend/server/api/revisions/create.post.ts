@@ -1,11 +1,11 @@
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { getUser } from "~~/server/utils/auth";
+import { editorialTx, readDoc, storeDoc } from "~~/server/db/editorial";
+import { newDocId } from "~~/server/db/ids";
 import {
-  baseNodeFields,
   proposalId,
   sameStoredValue,
   sanitizeFirestoreData,
+  withoutInternalFields,
   withSeededNodeStats,
 } from "~~/server/utils/revisions";
 import { asArray, revisionIsPending } from "~~/shared/model";
@@ -28,183 +28,184 @@ export default defineEventHandler(async (event) => {
 
   const user = await getUser(event);
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  const nodeRef = isNewNode
-    ? db.collection("nodes").doc()
-    : db.collection("nodes").doc(node_id);
-  const timestamp = Timestamp.now();
+  return editorialTx(async (tx, log) => {
+    const nodeId = node_id ?? newDocId();
 
-  // Fetch the existing node to use as a base layer so that the revision
-  // contains a complete snapshot (type, wikipedia, rejestrIo, etc.).
-  const baseFields: Record<string, unknown> = isNewNode
-    ? { type: proposableType(rawBody) }
-    : await baseNodeFields(nodeRef);
+    // Fetch the existing node to use as a base layer so that the revision
+    // contains a complete snapshot (type, wikipedia, rejestrIo, etc.).
+    const baseFields: Record<string, unknown> = isNewNode
+      ? { type: proposableType(rawBody) }
+      : withoutInternalFields((await readDoc(tx, "nodes", nodeId)) ?? {});
 
-  // Which fields are on offer depends on what is being edited: a place takes a
-  // KRS number and an ownership answer, a person a party and its source links,
-  // an article the URL it lives at. Parsing against the schema also strips
-  // anything not explicitly allowed, so a caller can't smuggle in e.g.
-  // `revision_id` and have it written straight to the node below.
-  const schema = editSchemas[proposableType(baseFields)];
+    // Which fields are on offer depends on what is being edited: a place takes a
+    // KRS number and an ownership answer, a person a party and its source links,
+    // an article the URL it lives at. Parsing against the schema also strips
+    // anything not explicitly allowed, so a caller can't smuggle in e.g.
+    // `revision_id` and have it written straight to the node below.
+    const schema = editSchemas[proposableType(baseFields)];
 
-  // A removal is a revision that changes no field but says the entry should
-  // go. It is reviewed like any other, so its reason travels with it rather
-  // than being stripped by the edit schema as it was until now.
-  const removal = isNewNode ? undefined : removalSchema.safeParse(rawBody).data;
+    // A removal is a revision that changes no field but says the entry should
+    // go. It is reviewed like any other, so its reason travels with it rather
+    // than being stripped by the edit schema as it was until now.
+    const removal = isNewNode
+      ? undefined
+      : removalSchema.safeParse(rawBody).data;
 
-  let dataFields: Record<string, unknown>;
-  if (removal) {
-    dataFields = { ...removal };
-  } else {
-    const parsed = schema.safeParse(rawBody);
-    if (!parsed.success) {
+    let dataFields: Record<string, unknown>;
+    if (removal) {
+      dataFields = { ...removal };
+    } else {
+      const parsed = schema.safeParse(rawBody);
+      if (!parsed.success) {
+        throw createError({
+          statusCode: 400,
+          message: parsed.error.issues[0]?.message || "Invalid request body",
+          data: parsed.error.issues,
+        });
+      }
+      dataFields = { ...parsed.data };
+
+      // A person answering the ownership question outranks the scrapers, which
+      // cannot see it for a spółka akcyjna and have nothing to read for an
+      // institution outside KRS. The marker is what `ingest/company` checks
+      // before writing its own guess over this one.
+      if (dataFields.isPublic !== undefined) {
+        dataFields.isPublicSource = "manual";
+      }
+
+      // Categories work the same way, and for the same reason: the pipelines
+      // derive a default from the company's KRS entry, but a register code says
+      // what a company does rather than what sector it is in - a quarry declares
+      // rail freight because it owns a siding - so a reader who can see the
+      // difference outranks them. Checked against `undefined` rather than for
+      // truthiness: an empty array is a person saying "none of these", and it
+      // has to pin the field just as firmly as a non-empty one.
+      //
+      // What it pins is the sectors. The owner, „Skarb Państwa”, is
+      // Prokuratoria's list's to say, and a status, „W likwidacji” or „W
+      // upadłości”, the register's, so a proposal keeps whatever the entry
+      // carries now, and what it says on the subject is dropped. The form no
+      // longer offers the owner; this is what holds for a tab opened before it
+      // stopped, or a request made by hand.
+      if (dataFields.categories !== undefined) {
+        dataFields.categories = withRegisterFactsFrom(
+          dataFields.categories as string[],
+          asArray<string>(baseFields.categories as string[] | undefined),
+        );
+        dataFields.categoriesSource = "manual";
+      }
+
+      // A person's parties, on the same terms. `ingest/person` unions what it
+      // was handed into what is stored, so without this a removal is undone by
+      // the next run - SLD came back onto a published page 59 minutes after a
+      // reviewer took it off. `undefined` rather than truthiness again: an empty
+      // array is somebody saying "no party", and it has to pin the field as
+      // firmly as a list does.
+      if (dataFields.parties !== undefined) {
+        dataFields.partiesSource = "manual";
+      }
+
+      // A company's name, on the same terms, so that `ingest/company` does not
+      // put the register's capitals back over it. Only when the proposal changes
+      // the name, though: the form always sends one, so stamping every proposal
+      // that states it would pin the register's spelling on every page anybody
+      // has corrected anything on, and a company renamed in KRS would never be
+      // renamed here. A page a person creates is named by them.
+      if (
+        proposableType(baseFields) === "place" &&
+        typeof dataFields.name === "string" &&
+        dataFields.name !== baseFields.name
+      ) {
+        dataFields.nameSource = "manual";
+      }
+    }
+
+    // User-submitted fields override the base node fields. Sanitized here rather
+    // than on the way into the document, because the two guards below compare it
+    // against what is stored, and stored data has already been through this.
+    const mergedData = sanitizeFirestoreData({
+      ...baseFields,
+      ...dataFields,
+    }) as Record<string, unknown>;
+
+    // Nothing to review. The form arrives prefilled from the entry, so
+    // "Zaproponuj" pressed after changing nothing - or after changing something
+    // back - files a revision that says exactly what the page already says, and
+    // a reviewer only finds that out by opening it.
+    if (
+      !isNewNode &&
+      sameStoredValue(mergedData, sanitizeFirestoreData(baseFields))
+    ) {
       throw createError({
         statusCode: 400,
-        message: parsed.error.issues[0]?.message || "Invalid request body",
-        data: parsed.error.issues,
+        message: "Ta propozycja niczego nie zmienia - wpis już to zawiera.",
       });
     }
-    dataFields = { ...parsed.data };
 
-    // A person answering the ownership question outranks the scrapers, which
-    // cannot see it for a spółka akcyjna and have nothing to read for an
-    // institution outside KRS. The marker is what `ingest/company` checks
-    // before writing its own guess over this one.
-    if (dataFields.isPublic !== undefined) {
-      dataFields.isPublicSource = "manual";
+    // A proposal is addressed by what it proposes, the way the pipeline's are -
+    // see `proposeRevisionTransaction`. Nothing on an entry's page showed a
+    // contributor the change they had just made, so they made it again, and the
+    // queue filled up with copies of one correction. The uid is part of the
+    // address because two people proposing the same fix are two proposals, and
+    // folding those together would credit one of them to the other.
+    const restatementId = isNewNode
+      ? undefined
+      : proposalId(`${nodeId}_${user.uid}`, mergedData);
+    const restated = restatementId
+      ? await readDoc(tx, "revisions", restatementId, true)
+      : undefined;
+
+    if (restatementId && restated && revisionIsPending(restated)) {
+      // Idempotent rather than an error: what the caller is asking for is on the
+      // table already, and handing back its id is what lets the page link them
+      // to the proposal they had forgotten making.
+      return { id: restatementId, node_id: nodeId, duplicate: true };
     }
 
-    // Categories work the same way, and for the same reason: the pipelines
-    // derive a default from the company's KRS entry, but a register code says
-    // what a company does rather than what sector it is in - a quarry declares
-    // rail freight because it owns a siding - so a reader who can see the
-    // difference outranks them. Checked against `undefined` rather than for
-    // truthiness: an empty array is a person saying "none of these", and it
-    // has to pin the field just as firmly as a non-empty one.
-    //
-    // What it pins is the sectors. The owner, „Skarb Państwa”, is
-    // Prokuratoria's list's to say, and a status, „W likwidacji” or „W
-    // upadłości”, the register's, so a proposal keeps whatever the entry
-    // carries now, and what it says on the subject is dropped. The form no
-    // longer offers the owner; this is what holds for a tab opened before it
-    // stopped, or a request made by hand.
-    if (dataFields.categories !== undefined) {
-      dataFields.categories = withRegisterFactsFrom(
-        dataFields.categories as string[],
-        asArray<string>(baseFields.categories as string[] | undefined),
-      );
-      dataFields.categoriesSource = "manual";
-    }
+    // Already decided, so that record stays where it is and the restatement gets
+    // a document of its own: a rejected proposal sent again unchanged is a
+    // second ask, not an edit of the first.
+    const revisionId = restatementId && !restated ? restatementId : newDocId();
 
-    // A person's parties, on the same terms. `ingest/person` unions what it
-    // was handed into what is stored, so without this a removal is undone by
-    // the next run - SLD came back onto a published page 59 minutes after a
-    // reviewer took it off. `undefined` rather than truthiness again: an empty
-    // array is somebody saying "no party", and it has to pin the field as
-    // firmly as a list does.
-    if (dataFields.parties !== undefined) {
-      dataFields.partiesSource = "manual";
-    }
+    const revision = {
+      node_id: nodeId,
+      collection: "nodes",
+      data: mergedData,
+      update_time: new Date().toISOString(),
+      update_user: user.uid,
+      update_automatic: false,
+      status: "pending",
+    };
 
-    // A company's name, on the same terms, so that `ingest/company` does not
-    // put the register's capitals back over it. Only when the proposal changes
-    // the name, though: the form always sends one, so stamping every proposal
-    // that states it would pin the register's spelling on every page anybody
-    // has corrected anything on, and a company renamed in KRS would never be
-    // renamed here. A page a person creates is named by them.
-    if (
-      proposableType(baseFields) === "place" &&
-      typeof dataFields.name === "string" &&
-      dataFields.name !== baseFields.name
-    ) {
-      dataFields.nameSource = "manual";
-    }
-  }
-
-  // User-submitted fields override the base node fields. Sanitized here rather
-  // than on the way into the document, because the two guards below compare it
-  // against what is stored, and stored data has already been through this.
-  const mergedData = sanitizeFirestoreData({
-    ...baseFields,
-    ...dataFields,
-  }) as Record<string, unknown>;
-
-  // Nothing to review. The form arrives prefilled from the entry, so
-  // "Zaproponuj" pressed after changing nothing - or after changing something
-  // back - files a revision that says exactly what the page already says, and
-  // a reviewer only finds that out by opening it.
-  if (
-    !isNewNode &&
-    sameStoredValue(mergedData, sanitizeFirestoreData(baseFields))
-  ) {
-    throw createError({
-      statusCode: 400,
-      message: "Ta propozycja niczego nie zmienia - wpis już to zawiera.",
+    await storeDoc(tx, log, "revisions", revisionId, revision, {
+      create: true,
     });
-  }
+    if (isNewNode) {
+      // Create the node itself so the proposal gets an id and can be linked to,
+      // voted on and edited further. Written without a `revision_id`, so nothing
+      // is approved to show, and with `published: false` said out loud: now that
+      // the backfill has run, every document carries the field, and a proposal
+      // that left it absent would be the only place the old ambiguity survived.
+      // `stats` is seeded for the same reason, and it is not cosmetic:
+      // /api/search sorts on `stats.nodeGroupSize`, and Firestore's orderBy drops
+      // any document that does not carry the field at all. See
+      // `withSeededNodeStats`, which is where every other node-creating path gets
+      // the same treatment.
+      await storeDoc(
+        tx,
+        log,
+        "nodes",
+        nodeId,
+        withSeededNodeStats({
+          ...(revision.data as Record<string, unknown>),
+          published: false,
+        }),
+        { create: true },
+      );
+    }
 
-  // A proposal is addressed by what it proposes, the way the pipeline's are -
-  // see `proposeRevisionTransaction`. Nothing on an entry's page showed a
-  // contributor the change they had just made, so they made it again, and the
-  // queue filled up with copies of one correction. The uid is part of the
-  // address because two people proposing the same fix are two proposals, and
-  // folding those together would credit one of them to the other.
-  const restatementRef = isNewNode
-    ? undefined
-    : db
-        .collection("revisions")
-        .doc(proposalId(`${nodeRef.id}_${user.uid}`, mergedData));
-  const restated = await restatementRef?.get();
-
-  if (restated?.exists && revisionIsPending(restated.data() ?? {})) {
-    // Idempotent rather than an error: what the caller is asking for is on the
-    // table already, and handing back its id is what lets the page link them
-    // to the proposal they had forgotten making.
-    return { id: restated.id, node_id: nodeRef.id, duplicate: true };
-  }
-
-  // Already decided, so that record stays where it is and the restatement gets
-  // a document of its own: a rejected proposal sent again unchanged is a
-  // second ask, not an edit of the first.
-  const revisionRef =
-    restatementRef && !restated?.exists
-      ? restatementRef
-      : db.collection("revisions").doc();
-
-  const revision = {
-    node_id: nodeRef.id,
-    collection: "nodes",
-    data: mergedData,
-    update_time: timestamp,
-    update_user: user.uid,
-    update_automatic: false,
-    status: "pending",
-  };
-
-  const batch = db.batch();
-  batch.set(revisionRef, revision);
-  if (isNewNode) {
-    // Create the node itself so the proposal gets an id and can be linked to,
-    // voted on and edited further. Written without a `revision_id`, so nothing
-    // is approved to show, and with `published: false` said out loud: now that
-    // the backfill has run, every document carries the field, and a proposal
-    // that left it absent would be the only place the old ambiguity survived.
-    // `stats` is seeded for the same reason, and it is not cosmetic:
-    // /api/search sorts on `stats.nodeGroupSize`, and Firestore's orderBy drops
-    // any document that does not carry the field at all. See
-    // `withSeededNodeStats`, which is where every other node-creating path gets
-    // the same treatment.
-    batch.set(
-      nodeRef,
-      withSeededNodeStats({
-        ...(revision.data as Record<string, unknown>),
-        published: false,
-      }),
-    );
-  }
-  await batch.commit();
-
-  return { id: revisionRef.id, node_id: nodeRef.id, duplicate: false };
+    return { id: revisionId, node_id: nodeId, duplicate: false };
+  });
 });
 
 /** The kind of node a proposal is for, out of the kinds anyone may propose.

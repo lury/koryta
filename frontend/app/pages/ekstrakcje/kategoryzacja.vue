@@ -191,17 +191,15 @@ import {
   mdiHelpCircleOutline,
 } from "@mdi/js";
 import { useDisplay } from "vuetify";
-import { collection, getFirestore, query, where } from "firebase/firestore";
-import {
-  useCollection,
-  useCurrentUser,
-  useFirebaseApp,
-  useIsCurrentUserLoaded,
-} from "vuefire";
+import { useCurrentUser, useIsCurrentUserLoaded } from "vuefire";
 import { useExtraction, useExtractions } from "~/composables/extractions";
-import { castVoteOnce, saveCommentOnce } from "~/composables/votes";
+import {
+  castVoteOnce,
+  fetchOwnVotes,
+  saveCommentOnce,
+} from "~/composables/votes";
 import { factSubject } from "~/utils/extraction";
-import type { ExtractionFact, VoteDocument } from "~~/shared/model";
+import type { ExtractionFact } from "~~/shared/model";
 
 definePageMeta({
   middleware: "auth",
@@ -243,24 +241,20 @@ const allFacts = computed<ExtractionFact[]>(() =>
 
 const user = useCurrentUser();
 const isAuthLoaded = useIsCurrentUserLoaded();
-const db = getFirestore(useFirebaseApp(), "koryta-pl");
-const votesQuery = computed(() => {
-  // Client-only: the server render has no signed-in Firestore user.
-  if (import.meta.server || !user.value) return null;
-  return query(collection(db, "votes"), where("userUid", "==", user.value.uid));
-});
-const { data: userVotes, pending: votesPending } = useCollection<VoteDocument>(
-  votesQuery,
-  { ssrKey: "kategoryzacja-user-votes" },
+// Client-only: the server render has no signed-in user. Read once - this
+// session's verdicts are added below as they are cast.
+const { data: userVotes, pending: votesPending } = useAsyncData(
+  "kategoryzacja-user-votes",
+  async () => (user.value ? await fetchOwnVotes("extraction") : {}),
+  { server: false, watch: [user], default: () => ({}) },
 );
 
 const serverVotedIds = computed(() => {
   const ids = new Set<string>();
-  for (const vote of userVotes.value) {
-    if (!vote.extractionId) continue;
+  for (const [extractionId, vote] of Object.entries(userVotes.value ?? {})) {
     const categoryVotes = vote.categoryVotes;
     if (categoryVotes.correct || categoryVotes.insufficient) {
-      ids.add(vote.extractionId);
+      ids.add(extractionId);
     }
   }
   return ids;

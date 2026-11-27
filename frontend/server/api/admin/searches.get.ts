@@ -1,18 +1,16 @@
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
 import { defineEventHandler, getQuery, setResponseHeader } from "h3";
 import { z } from "zod";
 import { daysBetween } from "~~/server/utils/activityStats";
 import { requireOwner } from "~~/server/utils/auth";
 import {
   RETENTION_DAYS,
-  SEARCHES_COLLECTION,
   countSearchDays,
   summariseSearches,
   type SearchDay,
   type SearchQuerySummary,
   type StoredSearch,
 } from "~~/shared/searchLog";
-import { OPS_DATABASE } from "~~/shared/tasks";
+import { searchesSincePg } from "~~/server/db/ops";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -84,31 +82,25 @@ export default defineEventHandler(async (event): Promise<SearchesSummary> => {
   const today = new Date().toISOString().slice(0, 10);
   const since = Date.parse(`${today}T00:00:00.000Z`) - (days - 1) * DAY_MS;
 
-  const snapshot = await getFirestore(OPS_DATABASE)
-    .collection(SEARCHES_COLLECTION)
-    .where("at", ">=", Timestamp.fromMillis(since))
-    .orderBy("at", "desc")
-    .limit(MAX_SEARCHES)
-    .get();
+  const rows = await searchesSincePg(
+    new Date(since).toISOString(),
+    MAX_SEARCHES,
+  );
 
-  const searches: StoredSearch[] = snapshot.docs.map((doc) => {
-    const data = doc.data();
+  const searches: StoredSearch[] = rows.map((data) => {
     return {
       query: String(data.query ?? ""),
       results: Number(data.results ?? 0),
       unverified: Number(data.unverified ?? 0),
-      outcome: data.outcome,
-      ...(data.picked ? { picked: data.picked } : {}),
+      outcome: data.outcome as StoredSearch["outcome"],
+      ...(data.picked ? { picked: data.picked as StoredSearch["picked"] } : {}),
       ...(data.pickedUnverified ? { pickedUnverified: true } : {}),
       signedIn: data.signedIn === true,
-      at:
-        data.at instanceof Timestamp
-          ? data.at.toDate().toISOString()
-          : String(data.at ?? ""),
+      at: String(data.at ?? ""),
     };
   });
 
-  const truncated = snapshot.size >= MAX_SEARCHES;
+  const truncated = rows.length >= MAX_SEARCHES;
   return {
     days,
     total: searches.length,

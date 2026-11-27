@@ -2,8 +2,40 @@ import { initializeApp } from "firebase-admin/app";
 import { getFirestore, type Firestore } from "firebase-admin/firestore";
 import { CONTENT_CHANGED_AT, inSitemap } from "../../shared/lastmod";
 import { pageIsPublic } from "../../shared/model";
-import { importedOrReviewed } from "../../server/utils/provenance";
+import { writtenByImportOrReviewed } from "../../server/utils/provenance";
 import { reportRemaining } from "./remaining";
+
+/** Which of `docs` an import wrote first or a reviewer approved, from the
+ * Firestore, which this migration reads: the first revision of each, one
+ * query a document. */
+async function importedOrReviewed(
+  db: Firestore,
+  docs: readonly { id?: string; revision_id?: unknown }[],
+): Promise<Set<string>> {
+  const qualified = new Set<string>();
+  const toCheck: string[] = [];
+  for (const doc of docs) {
+    if (!doc.id) continue;
+    if (doc.revision_id) qualified.add(doc.id);
+    else toCheck.push(doc.id);
+  }
+
+  const firsts = await Promise.all(
+    [...new Set(toCheck)].map(async (id) => {
+      const snapshot = await db
+        .collection("revisions")
+        .where("node_id", "==", id)
+        .orderBy("update_time", "asc")
+        .limit(1)
+        .get();
+      return { id, first: snapshot.docs[0]?.data() };
+    }),
+  );
+  for (const { id, first } of firsts) {
+    if (writtenByImportOrReviewed({ id }, first)) qualified.add(id);
+  }
+  return qualified;
+}
 
 /**
  * Dates the pages a change to the whole site reached, at the instant the change

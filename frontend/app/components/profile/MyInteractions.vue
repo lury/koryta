@@ -367,7 +367,7 @@ const mailWillBeSent = computed(
   () =>
     !!user.value?.emailVerified &&
     notificationKinds.every((kind) =>
-      notificationEnabled(kind, userConfig?.data?.value?.notifications),
+      notificationEnabled(kind, userConfig.data.value?.notifications),
     ),
 );
 

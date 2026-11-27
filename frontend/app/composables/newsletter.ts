@@ -1,6 +1,4 @@
 import { sendEmailVerification } from "firebase/auth";
-import { doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
-import { useFirebaseApp } from "vuefire";
 import { useAuthState } from "@/composables/auth";
 import { trackGoal } from "~/composables/analytics";
 import {
@@ -19,25 +17,18 @@ export function useNewsletterAskedOnSignIn() {
   return useState("newsletter-asked-on-sign-in", () => false);
 }
 
-/** Saves newsletter topics on the reader's own `users/{uid}`, with when and
- * where they changed. The same document /profil's switches show and the
- * server reads before it sends a campaign. */
+/** Saves newsletter topics on the reader's own `users/{uid}` through
+ * PATCH /api/me, which stamps when and where they changed. The same document
+ * /profil's switches show and the server reads before it sends a campaign.
+ * The uid is the token's; the argument stays for the callers. */
 export function useNewsletterChoice() {
-  // Named, like every other client call site - see composables/auth.ts.
-  const firestore = getFirestore(useFirebaseApp(), "koryta-pl");
+  const { userConfig } = useAuthState();
   return async (
-    uid: string,
+    _uid: string,
     topics: Partial<Record<CampaignTopic, boolean>>,
-    via: NewsletterChangeVia,
+    via: Exclude<NewsletterChangeVia, "wypisz">,
   ) => {
-    await setDoc(
-      doc(firestore, "users", uid),
-      {
-        newsletter: topics,
-        newsletterUpdated: { at: serverTimestamp(), via },
-      },
-      { merge: true },
-    );
+    await userConfig.save({ newsletter: topics, newsletterVia: via });
   };
 }
 
@@ -52,8 +43,8 @@ export function useNewsletterQuestion() {
   // to unknown when nobody is signed in, which Firebase always passes through
   // between two accounts.
   const config = computed(() => {
-    if (!user.value || userConfig?.pending?.value) return undefined;
-    const data = userConfig?.data?.value;
+    if (!user.value || userConfig.pending.value) return undefined;
+    const data = userConfig.data.value;
     // A stored document carries its id; one for another account is stale.
     if (data && (data as { id?: string }).id !== user.value.uid) {
       return undefined;

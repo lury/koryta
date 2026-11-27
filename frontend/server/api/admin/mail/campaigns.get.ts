@@ -1,4 +1,3 @@
-import { getFirestore } from "firebase-admin/firestore";
 import { defineEventHandler, setResponseHeader } from "h3";
 import { requireOwner } from "~~/server/utils/auth";
 import { listCampaigns } from "~~/server/utils/mailCampaigns";
@@ -7,5 +6,5 @@ import { listCampaigns } from "~~/server/utils/mailCampaigns";
 export default defineEventHandler(async (event) => {
   await requireOwner(event);
   setResponseHeader(event, "Cache-Control", "private, no-store");
-  return { campaigns: await listCampaigns(getFirestore("koryta-pl")) };
+  return { campaigns: await listCampaigns() };
 });

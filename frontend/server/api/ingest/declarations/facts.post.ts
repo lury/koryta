@@ -1,10 +1,8 @@
-import { getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
 import { getUser, requireDatascience } from "~~/server/utils/auth";
 import {
-  countDeclarationPeople,
-  refuseOlderFacts,
-} from "~~/server/utils/declarationPeopleCount";
+  countDeclarationPeoplePg,
+  refuseOlderFactsPg,
+} from "~~/server/db/declarationPeopleCount";
 import {
   declarationFactsIngestSchema,
   type DeclarationFactsResult,
@@ -13,7 +11,7 @@ import {
 /**
  * What predator knows of each candidacy of the night's list, from the night
  * (`koryta_bip_declarations send-facts`): the site counts the people snapshot
- * from it whole (`countDeclarationPeople`) and moves people during the day
+ * from it whole (`countDeclarationPeoplePg`) and moves people during the day
  * from there. Facts older than the ones counted last are a 409 unless forced,
  * so a late resend does not undo a newer count.
  *
@@ -26,8 +24,7 @@ export default defineEventHandler(
     const body = await readValidatedBody(event, (raw) =>
       declarationFactsIngestSchema.parse(raw),
     );
-    const db = getFirestore(getApp(), "koryta-pl");
-    await refuseOlderFacts(db, body);
-    return countDeclarationPeople(db, body, new Date());
+    await refuseOlderFactsPg(body);
+    return countDeclarationPeoplePg(body, new Date());
   },
 );

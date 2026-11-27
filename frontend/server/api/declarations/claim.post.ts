@@ -1,10 +1,9 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { z } from "zod";
 import { getUser } from "~~/server/utils/auth";
-import { restageCropPeople } from "~~/server/utils/declarationPeopleCount";
+import { restageCropPeoplePg } from "~~/server/db/declarationPeopleCount";
+import { claimAnswersPg } from "~~/server/db/declarationReading";
 import { compareSettled } from "~~/server/utils/declarationSettled";
-import { claimAnswers, readerIdOf } from "~~/server/utils/declarations";
+import { readerIdOf } from "~~/server/utils/declarations";
 import type { DeclarationClaimResult } from "~~/shared/declarations";
 
 const claimSchema = z.object({ readerId: z.string().max(64) });
@@ -58,8 +57,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  const { claimed, settled, left } = await claimAnswers(db, {
+  const { claimed, settled, left } = await claimAnswersPg({
     readerId,
     user,
   });
@@ -71,7 +69,6 @@ export default defineEventHandler(async (event) => {
     .map(({ extractId }) => extractId);
   await compareSettled(
     event,
-    db,
     settledOnDay.slice(0, CROPS_COMPARED_PER_CLAIM),
     PAGES_PER_CLAIM,
   );
@@ -79,7 +76,7 @@ export default defineEventHandler(async (event) => {
     .filter(({ settlement }) => settlement.status === "unreadable")
     .map(({ extractId }) => extractId);
   if (unreadable.length > 0) {
-    await restageCropPeople(db, unreadable.slice(0, CROPS_COMPARED_PER_CLAIM));
+    await restageCropPeoplePg(unreadable.slice(0, CROPS_COMPARED_PER_CLAIM));
   }
   if (left > 0) {
     throw createError({

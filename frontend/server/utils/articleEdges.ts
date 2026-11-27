@@ -1,12 +1,22 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { z } from "zod";
 import type { H3Event } from "h3";
 import { getUser } from "~~/server/utils/auth";
+import { withoutInternalFields } from "~~/server/utils/revisions";
 import {
-  createRevisionTransaction,
-  withoutInternalFields,
-} from "~~/server/utils/revisions";
+  editorialTx,
+  readDoc,
+  readDocs,
+  type Data,
+  type Sql,
+  type Tx,
+  type WriteLog,
+} from "~~/server/db/editorial";
+import { createRevisionPg } from "~~/server/db/revisionWrites";
+import {
+  addArticleEdgePg,
+  articleEdgesOfType,
+  type EdgeRow,
+} from "~~/server/db/articleEdges";
 import { pageIsPublic } from "~~/shared/model";
 import type { EdgeType, NodeType } from "~~/shared/model";
 
@@ -71,81 +81,64 @@ export async function changeArticleEdges(
   }
 
   const user = await getUser(event);
-  const db = getFirestore(getApp(), "koryta-pl");
-
-  const articleSnap = await db.collection("nodes").doc(articleId).get();
-  if (!articleSnap.exists || articleSnap.data()?.type !== "article") {
-    throw createError({
-      statusCode: 404,
-      message: "Nie ma takiego artykułu.",
-    });
-  }
-
-  const targetSnaps = add.length
-    ? await db.getAll(...add.map((id) => db.collection("nodes").doc(id)))
-    : [];
-  for (const snap of targetSnaps) {
-    const type = snap.data()?.type as NodeType | undefined;
-    if (!snap.exists || !type || !kind.targetTypes.includes(type)) {
+  return editorialTx(async (tx, log) => {
+    const article = await readDoc(tx, "nodes", articleId);
+    if (article?.type !== "article") {
       throw createError({
-        statusCode: 422,
-        message: kind.wrongTarget(snap.id),
+        statusCode: 404,
+        message: "Nie ma takiego artykułu.",
       });
     }
-  }
 
-  const existing = await existingEdges(db, articleId, kind);
+    const targets = await readDocs(tx, "nodes", add);
+    for (const id of add) {
+      const type = targets.get(id)?.type as NodeType | undefined;
+      if (!type || !kind.targetTypes.includes(type)) {
+        throw createError({
+          statusCode: 422,
+          message: kind.wrongTarget(id),
+        });
+      }
+    }
 
-  const batch = db.batch();
+    const existing = await existingEdges(tx, articleId, kind, true);
 
-  for (const targetId of add) {
-    if (existing.has(targetId)) continue;
-    const edgeRef = db.collection("edges").doc();
-    createRevisionTransaction(
-      db,
-      batch,
-      user,
-      edgeRef,
-      // No `references`: what an article says, and which story it belongs to,
-      // are claims about the article itself rather than ones resting on some
-      // other source.
-      { source: articleId, target: targetId, type: kind.type },
+    for (const targetId of add) {
+      if (existing.has(targetId)) continue;
       // Live for whoever is signed in, hidden from the public until a reviewer
       // approves it - the same terms as every other relation somebody proposes.
-      { published: false },
-    );
-  }
-
-  for (const targetId of remove) {
-    // Every edge saying it, not just the first: a person the pipeline recorded
-    // and a reader then recorded again is two documents, and removing one of
-    // them would put the chip straight back on the next read.
-    for (const doc of existing.get(targetId) ?? []) {
-      // `deleted` is a field the document owns, so `createRevisionTransaction`
-      // layers whatever `stored` says for it back over the revision. An edge
-      // written by the old client helper carries `deleted: false` outright, and
-      // carrying that across would undo this removal on the way out.
-      // Withholding the key is what lets the revision be the one to state it.
-      const { deleted: _wasDeleted, ...stored } = doc.data();
-      createRevisionTransaction(
-        db,
-        batch,
-        user,
-        doc.ref,
-        { ...withoutInternalFields(doc.data()), deleted: true },
-        { stored, published: false },
-      );
+      await addArticleEdgePg(tx, log, user, articleId, targetId, kind.type);
     }
-  }
 
-  await batch.commit();
+    for (const targetId of remove) {
+      // Every edge saying it, not just the first: a person the pipeline recorded
+      // and a reader then recorded again is two documents, and removing one of
+      // them would put the chip straight back on the next read.
+      for (const doc of existing.get(targetId) ?? []) {
+        // `deleted` is a field the document owns, so `createRevisionPg`
+        // layers whatever `stored` says for it back over the revision. An edge
+        // written by the old client helper carries `deleted: false` outright, and
+        // carrying that across would undo this removal on the way out.
+        // Withholding the key is what lets the revision be the one to state it.
+        const { deleted: _wasDeleted, ...stored } = doc.data;
+        await createRevisionPg(
+          tx,
+          log,
+          user,
+          { collection: "edges", id: doc.id },
+          { ...withoutInternalFields(doc.data), deleted: true },
+          { stored, published: false },
+        );
+      }
+    }
 
-  const after = await existingEdges(db, articleId, kind);
-  return Array.from(after.entries()).map(([nodeId, docs]) => {
-    // The published one is what the public would be shown, so it is the one
-    // that decides whether the caller renders this as a draft.
-    const doc = docs.find((entry) => pageIsPublic(entry.data())) ?? docs[0]!;
-    return { edgeId: doc.id, nodeId, published: pageIsPublic(doc.data()) };
+    const after = await existingEdges(tx, articleId, kind);
+    return Array.from(after.entries()).map(([nodeId, docs]) => {
+      // The published one is what the public would be shown, so it is the one
+      // that decides whether the caller renders this as a draft.
+      const doc = docs.find((entry) => pageIsPublic(entry.data)) ?? docs[0]!;
+      return { edgeId: doc.id, nodeId, published: pageIsPublic(doc.data) };
+    });
   });
 }
 
@@ -160,7 +153,7 @@ export const MENTIONS: ArticleEdgeKind = {
   wrongTarget: (id) => `${id} nie jest osobą ani instytucją w bazie.`,
 };
 
-/** Records that an article names these nodes, on the caller's batch.
+/** Records that an article names these nodes, in the caller's transaction.
  *
  * Split out of `changeArticleEdges` so that a caller which is already writing
  * the article itself - promoting a note's source - can record the mention in the
@@ -177,8 +170,8 @@ export const MENTIONS: ArticleEdgeKind = {
  * Returns the ids it wrote an edge for.
  */
 export async function addArticleMentions(
-  db: FirebaseFirestore.Firestore,
-  batch: FirebaseFirestore.WriteBatch,
+  tx: Tx,
+  log: WriteLog,
   user: { uid: string },
   articleId: string,
   targetIds: string[],
@@ -188,35 +181,22 @@ export async function addArticleMentions(
   );
   if (wanted.length === 0) return [];
 
-  const [existing, snaps] = await Promise.all([
-    existingEdges(db, articleId, MENTIONS),
-    db.getAll(...wanted.map((id) => db.collection("nodes").doc(id))),
+  const [existing, nodes] = await Promise.all([
+    existingEdges(tx, articleId, MENTIONS),
+    readDocs(tx, "nodes", wanted),
   ]);
 
   const mentionable = new Set(
-    snaps
-      .filter((snap) => {
-        const type = snap.data()?.type as NodeType | undefined;
-        return !!type && MENTIONS.targetTypes.includes(type);
-      })
-      .map((snap) => snap.id),
+    wanted.filter((id) => {
+      const type = nodes.get(id)?.type as NodeType | undefined;
+      return !!type && MENTIONS.targetTypes.includes(type);
+    }),
   );
 
   const written: string[] = [];
   for (const targetId of wanted) {
     if (!mentionable.has(targetId) || existing.has(targetId)) continue;
-    const edgeRef = db.collection("edges").doc();
-    createRevisionTransaction(
-      db,
-      batch,
-      user,
-      edgeRef,
-      { source: articleId, target: targetId, type: MENTIONS.type },
-      // A draft, the same terms as a mention added by hand on the article page:
-      // a reader saying "this page is about them" is a claim, not a fact, and
-      // the article node it hangs off may itself be waiting for review.
-      { published: false },
-    );
+    await addArticleEdgePg(tx, log, user, articleId, targetId, MENTIONS.type);
     written.push(targetId);
   }
   return written;
@@ -227,38 +207,23 @@ export async function addArticleMentions(
  * A list rather than one document per node, because two writers who do not know
  * about each other can each have recorded the same thing. */
 async function existingEdges(
-  db: FirebaseFirestore.Firestore,
+  sql: Sql,
   articleId: string,
   kind: ArticleEdgeKind,
+  lock = false,
 ) {
-  const queries = [
-    db
-      .collection("edges")
-      .where("source", "==", articleId)
-      .where("type", "==", kind.type)
-      .get(),
-  ];
-  if (kind.bothDirections) {
-    queries.push(
-      db
-        .collection("edges")
-        .where("target", "==", articleId)
-        .where("type", "==", kind.type)
-        .get(),
-    );
-  }
+  const rows = await articleEdgesOfType(
+    sql,
+    articleId,
+    kind.type,
+    kind.bothDirections === true,
+    lock,
+  );
 
-  const found = new Map<
-    string,
-    FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>[]
-  >();
-  const seen = new Set<string>();
-  for (const snapshot of await Promise.all(queries)) {
-    for (const doc of snapshot.docs) {
-      // A self-edge comes back from both queries.
-      if (seen.has(doc.id)) continue;
-      seen.add(doc.id);
-      const data = doc.data();
+  const found = new Map<string, EdgeRow[]>();
+  for (const doc of rows) {
+    {
+      const data: Data = doc.data;
       if (data.deleted === true) continue;
       const far = data.source === articleId ? data.target : data.source;
       if (typeof far !== "string" || far === articleId) continue;

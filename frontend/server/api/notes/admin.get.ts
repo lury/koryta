@@ -1,8 +1,7 @@
 import { z } from "zod";
-import { getFirestore } from "firebase-admin/firestore";
 import { defineEventHandler, getValidatedQuery } from "h3";
 import { getUser } from "~~/server/utils/auth";
-import { getNoteRows } from "~~/server/utils/notes";
+import { getNoteRowsPg } from "~~/server/db/notes";
 import { nodeTypes, noteNeedsAction } from "~~/shared/model";
 import type { NoteRow } from "~~/shared/model";
 
@@ -39,9 +38,7 @@ const queryValidator = z.object({
 /** The triage queue behind /admin/notatki.
  *
  * Admin-only because it joins every note with its author and with nodes that
- * may not be published yet. The page used to build this in the browser, which
- * meant streaming the whole `notes` collection down and then one request per
- * node to resolve a name.
+ * may not be published yet.
  */
 export default defineEventHandler(async (event) => {
   const user = await getUser(event);
@@ -53,7 +50,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const query = await getValidatedQuery(event, (q) => queryValidator.parse(q));
-  const rows = await getNoteRows(getFirestore("koryta-pl"));
+  const rows = await getNoteRowsPg();
 
   // A link to one entry has to open that entry. Answering it as one more
   // filter would let a `status` or `q` left over in the url quietly empty the

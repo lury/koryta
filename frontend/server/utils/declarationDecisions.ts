@@ -1,14 +1,5 @@
-import type { DocumentData, Firestore } from "firebase-admin/firestore";
-import { FieldValue, Timestamp } from "firebase-admin/firestore";
-import { readingKind, type ExtractStatus } from "~~/shared/declarations";
-import {
-  dataUrl,
-  EXTRACT_IMAGES,
-  EXTRACTS,
-  PUBLICATIONS,
-} from "./declarations";
-import type { StoredPublication } from "./declarationPublish";
-import { restageDeclarationPeople } from "./declarationPeopleCount";
+import type { ExtractStatus } from "~~/shared/declarations";
+import type { StoredPublication } from "./declarationRules";
 
 /**
  * The decisions /admin/oswiadczenia offers on a crop the readers left to an
@@ -26,11 +17,11 @@ import { restageDeclarationPeople } from "./declarationPeopleCount";
  * A date settles the crop as the admin's (`agreed.by` "admin") and is
  * compared with its pages afresh, but the automation publishes nobody on it:
  * a draft born that day is held for somebody to publish by hand
- * (`admin_decision` in declarationPublish.ts), and a public page born that
+ * (`admin_decision` in server/db/declarationPublish.ts), and a public page born that
  * day is left as it is, since the admin chose the date with the pages' dates
  * a click away. A page born on another day is flagged as for any reading. The
  * other two take the crop out of the comparison: an unreadable or withdrawn
- * crop matches no page and holds none (`agreedDay` in declarationPublish.ts
+ * crop matches no page and holds none (`agreedDay` in server/db/declarationPublish.ts
  * reads only an agreed one), and leaves the "different" list. A note the
  * comparison filed on a page stays: it is that page's to resolve. Who decided
  * what, and what it replaced, stays on the crop.
@@ -43,7 +34,7 @@ import { restageDeclarationPeople } from "./declarationPeopleCount";
  *
  * The decisions on a held page are here too: saying it will not be published,
  * taking that back, and what a publication by hand does to a hold. Asking a
- * hold again is a publication, and lives with them in declarationPublish.ts
+ * hold again is a publication, and lives with them in server/db/declarationPublish.ts
  * (`recheckPublication`).
  */
 
@@ -74,324 +65,16 @@ export type DecidedExtract = {
 export type CropImages = { date: string | null; name: string | null };
 
 /** Whether a crop is on one of the overview's lists that ask an admin. */
-export function waitsForAdmin(data: DocumentData | undefined): boolean {
+export function waitsForAdmin(
+  data: Record<string, unknown> | undefined,
+): boolean {
   return (
     data?.status === "disputed" ||
     (data?.status === "agreed" && data.pageMatch === "different")
   );
 }
 
-/** Records of pages read to tell whether any public one links a crop. A crop
- * names the few pages of its candidacies. */
-const LINKED_RECORDS = 50;
-
-/**
- * Whether a public page may be showing the crop's declaration: a published
- * or confirmed record lists it. A decision on such a crop can change what the
- * page shows (`confirmedDeclarations`), whose answer is cached for hours, so
- * the endpoints drop the cached answers after it - and only then, since most
- * crops an admin decides were never linked anywhere.
- *
- * A question that cannot be answered counts as yes: dropping the cache costs
- * reads, keeping it would leave the page vouching for a crop just taken back.
- */
-export async function linkedOnAPage(
-  db: Firestore,
-  extractId: string,
-): Promise<boolean> {
-  try {
-    const records = await db
-      .collection(PUBLICATIONS)
-      .where("extractIds", "array-contains", extractId)
-      .limit(LINKED_RECORDS)
-      .get();
-    return records.docs.some((doc) => {
-      const status = doc.get("status");
-      return status === "published" || status === "confirmed";
-    });
-  } catch (error) {
-    console.error(
-      `[declarations] cannot tell whether a page links ${extractId}`,
-      error,
-    );
-    return true;
-  }
-}
-
-/**
- * Records an admin's decision on a crop, in a transaction: two admins, or
- * two tabs, deciding one crop at once cannot both have their way.
- *
- * Throws a 404 for a crop that does not exist or has nothing to read, and a
- * 409 for one that no longer waits for an admin.
- */
-export async function decideExtract(
-  db: Firestore,
-  args: {
-    extractId: string;
-    uid: string;
-    decision: AdminDecision;
-    now?: Date;
-  },
-): Promise<DecidedExtract> {
-  const now = args.now ?? new Date();
-  const { decision } = args;
-  const value = decision.verdict === "date" ? decision.value : null;
-  const kind = value === null ? null : readingKind(value);
-  if (decision.verdict === "date" && !kind) {
-    throw createError({
-      statusCode: 400,
-      message: "Data musi być dniem (RRRR-MM-DD) albo rokiem (RRRR).",
-    });
-  }
-  const status: ExtractStatus =
-    decision.verdict === "date"
-      ? "agreed"
-      : decision.verdict === "unreadable"
-        ? "unreadable"
-        : "withdrawn";
-  const ref = db.collection(EXTRACTS).doc(args.extractId);
-
-  return db.runTransaction(async (tx) => {
-    const data = (await tx.get(ref)).data();
-    if (!data || data.status === "failed") {
-      throw createError({
-        statusCode: 404,
-        message: "Nie ma takiego wycinka.",
-      });
-    }
-    if (data.status === "open") {
-      throw createError({
-        statusCode: 409,
-        message: "Ten wycinek czeka jeszcze na czytelników.",
-      });
-    }
-    if (!waitsForAdmin(data)) {
-      throw createError({
-        statusCode: 409,
-        message: "Ten wycinek ktoś już rozstrzygnął.",
-      });
-    }
-
-    const at = Timestamp.fromDate(now);
-    tx.update(ref, {
-      status,
-      agreed: kind ? { value, kind, by: "admin", uid: args.uid, at } : null,
-      decision: {
-        verdict: decision.verdict,
-        value,
-        uid: args.uid,
-        at,
-        // What it replaced, which `status` and `agreed` no longer say.
-        before: {
-          status: data.status,
-          agreed: (data.agreed?.value as string | undefined) ?? null,
-        },
-      },
-      // Out of the comparison it was in. A date is compared afresh by the
-      // caller, and `pageMatch` null is what the sweep finds it by should
-      // that fail; the others compare with nothing.
-      pageMatch: null,
-      pageRecheck: false,
-      updatedAt: at,
-    });
-    return { id: args.extractId, status, compare: kind === "date" };
-  });
-}
-
-/** Reads a page's held record in a transaction, refusing a page with none
- * and one not in the state a decision on it starts from (`accepts`): two
- * admins, or two tabs, deciding one page at once cannot both have their way. */
-async function decideRecord(
-  db: Firestore,
-  pageId: string,
-  accepts: (record: StoredPublication) => boolean,
-  refusal: string | ((record: StoredPublication) => string),
-  write: () => Record<string, unknown>,
-): Promise<void> {
-  const ref = db.collection(PUBLICATIONS).doc(pageId);
-  await db.runTransaction(async (tx) => {
-    const record = (await tx.get(ref)).data() as StoredPublication | undefined;
-    if (!record) {
-      throw createError({
-        statusCode: 404,
-        message: "Nie ma takiej publikacji.",
-      });
-    }
-    if (!accepts(record)) {
-      throw createError({
-        statusCode: 409,
-        message: typeof refusal === "string" ? refusal : refusal(record),
-      });
-    }
-    tx.update(ref, write());
-  });
-}
-
 /** Whether a record is a hold an admin said will not be published. */
 export function isDeclined(record: StoredPublication | undefined): boolean {
   return record?.status === "held" && !!record.declinedAt;
-}
-
-/**
- * An admin's „Nie publikuj” on a held page. The page leaves what waits for an
- * admin and goes with the people who will not be published. The record stays
- * `held`, with the reason it was held for, and gains `declinedAt`: no later
- * reading takes it up again (`nextPublication`), a recheck refuses it, and a
- * release that knows nothing of declining keeps it held as well - except an
- * admin's-date hold, which such a release hands to the next readers' crop,
- * and which `claimPublication` then puts back on hold. Nothing on the page
- * changes: it is still a draft, and whoever publishes it by hand may.
- */
-export async function declinePublication(
-  db: Firestore,
-  pageId: string,
-  uid: string,
-  now: Date = new Date(),
-): Promise<void> {
-  const at = Timestamp.fromDate(now);
-  await decideRecord(
-    db,
-    pageId,
-    (record) => record.status === "held" && !record.declinedAt,
-    (record) =>
-      isDeclined(record)
-        ? "Ta osoba jest już odłożona."
-        : "Ta publikacja nie jest już wstrzymana.",
-    () => ({ declinedBy: uid, declinedAt: at, updatedAt: at }),
-  );
-}
-
-/** Takes a „Nie publikuj” back: the page waits for an admin again, for what it
- * was held for. */
-export async function restorePublication(
-  db: Firestore,
-  pageId: string,
-  now: Date = new Date(),
-): Promise<void> {
-  await decideRecord(
-    db,
-    pageId,
-    isDeclined,
-    "Tej publikacji nikt już nie odkłada.",
-    () => ({
-      declinedBy: FieldValue.delete(),
-      declinedAt: FieldValue.delete(),
-      updatedAt: Timestamp.fromDate(now),
-    }),
-  );
-}
-
-/**
- * Closes the hold of a page somebody has just published by hand, whichever
- * screen they pressed on (`afterHandPublication`). The page is public, so
- * there is nothing left to hold or to decline: the record becomes
- * `published`, not by the site on its own (`autoPublished` false), with
- * `handPublished` saying who, when and what it was held for. So the person
- * counts as published wherever a publication from the queue does: the people
- * count, the chain, the recent list.
- *
- * Whether a declaration then shows on the page is still read off the crops
- * (`confirmedDeclarations`), an admin's date included.
- *
- * Returns whether a hold was closed.
- */
-export async function closeHoldOnPublication(
-  db: Firestore,
-  pageId: string,
-  uid: string,
-  now: Date = new Date(),
-): Promise<boolean> {
-  const ref = db.collection(PUBLICATIONS).doc(pageId);
-  return db.runTransaction(async (tx) => {
-    const record = (await tx.get(ref)).data() as StoredPublication | undefined;
-    if (record?.status !== "held") return false;
-    const at = Timestamp.fromDate(now);
-    tx.update(ref, {
-      status: "published",
-      reason: null,
-      publishedAt: at,
-      autoPublished: false,
-      handPublished: { uid, at, held: record.reason ?? null },
-      declinedBy: FieldValue.delete(),
-      declinedAt: FieldValue.delete(),
-      day: FieldValue.delete(),
-      updatedAt: at,
-    });
-    return true;
-  });
-}
-
-/**
- * Puts the hold back on a page taken down again after a publication by hand
- * closed it, for what it was held for: the person returns to the admin's list
- * rather than disappearing from every list with the page. A page the site
- * published itself is not touched: `restoreReverted` and its holds answer for
- * those.
- *
- * Returns whether a hold was put back.
- */
-export async function reopenHoldOnUnpublication(
-  db: Firestore,
-  pageId: string,
-  now: Date = new Date(),
-): Promise<boolean> {
-  const ref = db.collection(PUBLICATIONS).doc(pageId);
-  return db.runTransaction(async (tx) => {
-    const record = (await tx.get(ref)).data() as StoredPublication | undefined;
-    if (record?.status !== "published" || !record.handPublished) return false;
-    const at = Timestamp.fromDate(now);
-    tx.update(ref, {
-      status: "held",
-      reason: record.handPublished.held ?? "kept_hidden",
-      heldAt: at,
-      handPublished: FieldValue.delete(),
-      publishedAt: FieldValue.delete(),
-      updatedAt: at,
-    });
-    return true;
-  });
-}
-
-/**
- * What a publication or unpublication of a person by hand does to the
- * declarations flow, after it is committed: /api/nodes/publish and
- * /api/revisions/approve call it when a person's page went from draft to
- * public, or back. A hold is closed, or put back, and the person moves in the
- * people count. Best effort: a hold left open costs a row on an admin's list,
- * and a publication refused for it would be worse.
- */
-export async function afterHandPublication(
-  db: Firestore,
-  pageId: string,
-  uid: string,
-  published: boolean,
-): Promise<void> {
-  try {
-    const changed = published
-      ? await closeHoldOnPublication(db, pageId, uid)
-      : await reopenHoldOnUnpublication(db, pageId);
-    if (changed) await restageDeclarationPeople(db, [pageId]);
-  } catch (error) {
-    console.error(
-      `[declarations] cannot ${published ? "close" : "reopen"} the hold of ${pageId}`,
-      error,
-    );
-  }
-}
-
-/** The pictures of a crop, or null for a crop that does not exist. */
-export async function cropImages(
-  db: Firestore,
-  extractId: string,
-): Promise<CropImages | null> {
-  const [extract, images] = await db.getAll(
-    db.collection(EXTRACTS).doc(extractId),
-    db.collection(EXTRACT_IMAGES).doc(extractId),
-  );
-  if (!extract?.exists) return null;
-  return {
-    date: dataUrl(images?.get("date")),
-    name: dataUrl(images?.get("name")),
-  };
 }

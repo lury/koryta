@@ -1,19 +1,8 @@
 import { computed } from "vue";
-import {
-  collection,
-  doc,
-  getDocs,
-  getFirestore,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
-import { useFirebaseApp } from "vuefire";
-import { useAuthState } from "./auth";
+import { authRequest, useAuthState } from "./auth";
 import { captureFeedbackContext, submitFeedback } from "./feedback";
-import { normalizeUpdateTime } from "~~/shared/revisions";
 import {
   QA_ITEMS,
-  qaCheckId,
   qaFeedbackKind,
   qaFeedbackMessage,
   qaItemState,
@@ -31,7 +20,7 @@ import {
  * counts as - see `qaItemState`. The rest are what the page shows under "Co
  * napisali inni", so a second checker knows what to look for.
  *
- * Read once per session with `getDocs` rather than a live listener: the badge
+ * Read once per session from /api/qa/checks, not kept live: the badge
  * hangs off the toolbar, so a listener here would be one open subscription per
  * logged in user on every page of the site, for data that changes when somebody
  * clicks a button on /qa. `saveCheck` patches the local copy, so the page the
@@ -41,9 +30,6 @@ import {
 export function useQaChecks() {
   const { user } = useAuthState();
   const route = useRoute();
-  // Named explicitly - `useFirestore()` would hand back `(default)`, a
-  // database this project does not use. See composables/auth.ts.
-  const db = getFirestore(useFirebaseApp(), "koryta-pl");
 
   // Shared across every caller in the page, so the toolbar and the page below
   // it read the same list and only one of them pays for it.
@@ -71,15 +57,11 @@ export function useQaChecks() {
 
     pending.value = true;
     try {
-      const snapshot = await getDocs(collection(db, "qaChecks"));
-      checks.value = snapshot.docs.map((entry) => {
-        const data = entry.data() as QaCheck;
-        return {
-          ...data,
-          createdAt: normalizeUpdateTime(data.createdAt) ?? undefined,
-          updatedAt: normalizeUpdateTime(data.updatedAt) ?? undefined,
-        };
-      });
+      const answer = await authRequest<{ checks: QaCheck[] }>(
+        "/api/qa/checks",
+        { method: "GET" },
+      );
+      checks.value = answer.checks;
       loadedFor.value = uid;
     } catch (error) {
       // Nothing awaits this - it runs from a watcher and from onMounted - so a
@@ -149,31 +131,12 @@ export function useQaChecks() {
     // Read before the write below replaces it: what counts as news is what
     // changed against the verdict that was already there.
     const reported = qaVerdictIsReportable(status, text, existing);
-    const stored: QaCheck = {
-      itemId,
-      userUid: uid,
-      status,
-      feedback: text,
-      // Stamped by firestore, like notes: a wrong clock on one machine should
-      // not reorder everybody else's feedback.
-      updatedAt: serverTimestamp() as unknown as string,
-    };
-    if (!existing) {
-      stored.createdAt = serverTimestamp() as unknown as string;
-    }
-    await setDoc(doc(db, "qaChecks", qaCheckId(itemId, uid)), stored, {
-      merge: true,
-    });
-
-    // The stored value is a sentinel until firestore resolves it, so the local
-    // copy carries this machine's clock instead - it is only used for ordering
-    // and display, and is replaced by the server's value on the next load.
-    const local: QaCheck = {
-      ...stored,
-      feedback: text,
-      createdAt: existing?.createdAt ?? new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+    // Dated by the server, like notes: a wrong clock on one machine should
+    // not reorder everybody else's feedback.
+    const { check: local } = await authRequest<{ check: QaCheck }>(
+      `/api/qa/checks/${encodeURIComponent(itemId)}`,
+      { method: "PUT", body: { status, feedback: text } },
+    );
     checks.value = [
       ...checks.value.filter(
         (check) => !(check.itemId === itemId && check.userUid === uid),

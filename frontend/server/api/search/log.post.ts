@@ -1,16 +1,15 @@
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
 import { defineEventHandler, readBody } from "h3";
 import { z } from "zod";
 import { getOptionalUser } from "~~/server/utils/auth";
 import { SEARCH_PICK_KINDS } from "~~/shared/analytics";
-import { RETENTION_DAYS, SEARCHES_COLLECTION } from "~~/shared/searchLog";
+import { RETENTION_DAYS } from "~~/shared/searchLog";
 import {
   MAX_QUERY_LENGTH,
   MIN_QUERY_LENGTH,
   SEARCH_OUTCOMES,
   normaliseQuery,
 } from "~~/shared/searchSession";
-import { OPS_DATABASE } from "~~/shared/tasks";
+import { recordSearchPg } from "~~/server/db/ops";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -47,23 +46,21 @@ export default defineEventHandler(async (event) => {
 
   const signedIn = !!(await getOptionalUser(event).catch(() => null));
   const now = Date.now();
-  await getFirestore(OPS_DATABASE)
-    .collection(SEARCHES_COLLECTION)
-    .add({
-      query,
-      results: entry.results,
-      // Never more than the hits there were, whatever the browser says.
-      unverified: Math.min(entry.unverified, entry.results),
-      outcome: entry.outcome,
-      ...(entry.outcome === "pick" && entry.picked
-        ? {
-            picked: entry.picked,
-            pickedUnverified: entry.pickedUnverified === true,
-          }
-        : {}),
-      signedIn,
-      at: Timestamp.fromMillis(now),
-      expireAt: Timestamp.fromMillis(now + RETENTION_DAYS * DAY_MS),
-    });
+  await recordSearchPg({
+    query,
+    results: entry.results,
+    // Never more than the hits there were, whatever the browser says.
+    unverified: Math.min(entry.unverified, entry.results),
+    outcome: entry.outcome,
+    ...(entry.outcome === "pick" && entry.picked
+      ? {
+          picked: entry.picked,
+          pickedUnverified: entry.pickedUnverified === true,
+        }
+      : {}),
+    signedIn,
+    at: new Date(now).toISOString(),
+    expireAt: new Date(now + RETENTION_DAYS * DAY_MS).toISOString(),
+  });
   return { recorded: true };
 });

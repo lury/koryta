@@ -1,5 +1,3 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import type { GraphLayout } from "~~/shared/graph/util";
 import {
   editorFreshCachedEventHandler,
@@ -28,9 +26,8 @@ async function topicGraph(event: H3Event): Promise<GraphLayout> {
   }
   const includeDrafts = await wantsLatest(event);
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  const articleIds = await articleIdsForTopic(db, topicId, includeDrafts);
-  return graphForArticles(db, articleIds, includeDrafts, {
+  const articleIds = await articleIdsForTopic(topicId, includeDrafts);
+  return graphForArticles(articleIds, includeDrafts, {
     expand: "people",
   });
 }

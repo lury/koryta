@@ -1,5 +1,4 @@
-import { getApp } from "firebase-admin/app";
-import { getFirestore, type Firestore } from "firebase-admin/firestore";
+import { recordQaReleasesPg } from "~~/server/db/ops";
 import { QA_ITEMS, type QaItem } from "~~/shared/qa";
 
 /** When each entry of the QA changelog reached the people using the site.
@@ -11,12 +10,10 @@ import { QA_ITEMS, type QaItem } from "~~/shared/qa";
  * the server running the build. An entry it serves that nothing has dated yet
  * went live with it, and the first process of a rollout writes that down.
  *
- * One document per backend, because `autopush` rolls out on every push to
+ * One row of `qa_releases` per backend, because `autopush` rolls out on every push to
  * main and reads the same database: sharing one record, it would date every
  * entry for koryta.pl days early.
  */
-const COLLECTION = "qaReleases";
-
 /** What `qaReleases/<backend>` holds: the instant each entry went live, keyed
  * by entry id. Written only by `recordQaReleases`, never edited. */
 export type QaReleaseRecord = { items?: Record<string, string> };
@@ -141,35 +138,21 @@ export function historyDates(
  * record dates yet, as live since `liveSince`, and returns the record as it
  * then stands.
  *
- * A transaction, because every instance of a new rollout starts at about the
- * same moment and each would otherwise stamp the new entries with a start of
- * its own. Only the missing ids are written, merged into the map, so an entry
- * that has since left the list keeps its date. */
+ * One upsert in which a date already recorded wins, because every instance
+ * of a new rollout starts at about the same moment and each would otherwise
+ * stamp the new entries with a start of its own. The record is merged into,
+ * so an entry that has since left the list keeps its date. */
 export async function recordQaReleases(
-  db: Firestore,
   backend: string,
   items: readonly Pick<QaItem, "id">[],
   liveSince: string,
 ): Promise<Record<string, string>> {
-  const ref = db.collection(COLLECTION).doc(backend);
   const history = historyDates(items);
-
-  return db.runTransaction(async (transaction) => {
-    const snapshot = await transaction.get(ref);
-    const recorded = {
-      ...(snapshot.data() as QaReleaseRecord | undefined)?.items,
-    };
-    const added: Record<string, string> = {};
-    for (const item of items) {
-      if (!history.has(item.id) && !(item.id in recorded)) {
-        added[item.id] = liveSince;
-      }
-    }
-    if (Object.keys(added).length > 0) {
-      transaction.set(ref, { items: added }, { merge: true });
-    }
-    return { ...recorded, ...added };
-  });
+  const candidates: Record<string, string> = {};
+  for (const item of items) {
+    if (!history.has(item.id)) candidates[item.id] = liveSince;
+  }
+  return recordQaReleasesPg(backend, candidates);
 }
 
 /** When this process started, which is when every entry it is the first to
@@ -186,7 +169,6 @@ let recording: Promise<Record<string, string>> | null = null;
  * it to the next caller to try again. */
 export function qaReleaseRecord(): Promise<Record<string, string>> {
   recording ??= recordQaReleases(
-    getFirestore(getApp(), "koryta-pl"),
     releaseBackend(),
     QA_ITEMS,
     processStart,

@@ -175,7 +175,7 @@ async function readerRequest<T>(
     });
   }
   const id = storedReaderId(true);
-  return await $fetch<T>(url, {
+  return await $fetch<T, string>(url, {
     method: (options.method || "POST") as "POST",
     body: options.body as Record<string, unknown>,
     query: options.query as Record<string, unknown>,

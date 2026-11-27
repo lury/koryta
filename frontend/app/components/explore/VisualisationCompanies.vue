@@ -70,8 +70,6 @@ import type { PersonRich } from "~~/shared/model";
 import { partyColors } from "~~/shared/misc";
 import { partyRemainder } from "~/utils/chartTheme";
 
-const { entities: places } = useEntities("place");
-
 const props = defineProps<{
   people: PersonRich[];
   allowedCompanies?: string[] | null;
@@ -110,26 +108,18 @@ const companies = computed(() => {
         continue;
       }
       if (!stats.has(companyName)) {
-        let placeId: string | undefined = undefined;
-        if (places.value) {
-          for (const [id, place] of Object.entries(places.value)) {
-            if (place.name === companyName) {
-              placeId = id;
-              break;
-            }
-          }
-        }
-
         stats.set(companyName, {
           name: companyName,
           totalPeople: 0,
           affiliatedPeople: 0,
           partyCounts: {},
-          placeId,
         });
       }
 
       const company = stats.get(companyName)!;
+      // The employer the row names, rather than whichever place in the base
+      // carries the name: the bar links to the company these people work at.
+      company.placeId ??= person.companyIds?.[companyName];
       company.totalPeople++;
 
       if (hasAffiliation) {

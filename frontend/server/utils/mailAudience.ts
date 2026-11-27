@@ -1,7 +1,7 @@
 import { getAuth, type UserRecord } from "firebase-admin/auth";
-import type { Firestore } from "firebase-admin/firestore";
 import { mergeRollups } from "~~/server/utils/activityRollup";
-import { loadActivityRollups } from "~~/server/utils/activityWindow";
+import { loadActivityRollupsFromDb } from "~~/server/db/activity";
+import { readMailPreferencesPg } from "~~/server/db/mail";
 import { isNewAdmin } from "~~/server/utils/contributors";
 import {
   confirmedSubscribers,
@@ -28,15 +28,12 @@ const LIST_USERS_PAGE = 1000;
  * service. */
 const LIST_USERS_MAX_PAGES = 10;
 
-/** `getAll` takes its references as one argument list. */
-const PREFERENCES_CHUNK = 300;
-
 /** Every account the site could write to, with what a campaign needs to know
  * about each: whether it may be written to, how recently it was around and
  * what it did - and the site-wide numbers a message can quote.
  *
  * Built fresh on each call, for the owner's page alone. Two hundred accounts
- * are one page of the auth service, one batched read of `users` and the same
+ * are one page of the auth service, one read of `users` and the same
  * stored days the stats page reads, so there is nothing worth caching, and a
  * cached copy would show a consent somebody withdrew a minute ago.
  *
@@ -44,17 +41,15 @@ const PREFERENCES_CHUNK = 300;
  * passed through to the numbers a message quotes.
  */
 export async function loadAudience(
-  db: Firestore,
   options: { now?: Date; toCheck?: number | null } = {},
 ): Promise<Audience> {
   const now = options.now ?? new Date();
   const [accounts, activity, subscribers] = await Promise.all([
     listAccounts(),
-    loadActivityRollups(db, CAMPAIGN_STATS_DAYS, now),
-    confirmedSubscribers(db),
+    loadActivityRollupsFromDb(CAMPAIGN_STATS_DAYS, now),
+    confirmedSubscribers(),
   ]);
   const preferences = await readMailPreferences(
-    db,
     accounts.map((account) => account.uid),
   );
 
@@ -139,26 +134,17 @@ async function listAccounts(): Promise<UserRecord[]> {
 
 /** The two fields campaigns read off each `users` document, and nothing else.
  *
- * The field mask is not an optimisation: the document is writable by its owner
- * with no constraint on shape, so this takes only booleans where booleans are
+ * Only those two are read: the document is writable by its owner with no
+ * constraint on shape, so this takes only booleans where booleans are
  * expected, and an odd value counts as no answer rather than a yes.
  */
 export async function readMailPreferences(
-  db: Firestore,
   uids: string[],
 ): Promise<Record<string, MailPreferences>> {
-  const found: Record<string, MailPreferences> = {};
-  for (let i = 0; i < uids.length; i += PREFERENCES_CHUNK) {
-    const chunk = uids.slice(i, i + PREFERENCES_CHUNK);
-    const snapshots = await db.getAll(
-      ...chunk.map((uid) => db.collection("users").doc(uid)),
-      { fieldMask: ["newsletter", "teamMail"] },
-    );
-    for (const snapshot of snapshots) {
-      found[snapshot.id] = mailPreferences(snapshot.data());
-    }
-  }
-  return found;
+  const stored = await readMailPreferencesPg(uids);
+  return Object.fromEntries(
+    uids.map((uid) => [uid, mailPreferences(stored.get(uid))]),
+  );
 }
 
 function mailPreferences(

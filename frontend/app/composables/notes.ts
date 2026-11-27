@@ -1,15 +1,4 @@
-import { computed, toValue, type MaybeRef } from "vue";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  where,
-  collection,
-  query,
-  runTransaction,
-  serverTimestamp,
-} from "firebase/firestore";
-import { useCollection, useFirebaseApp } from "vuefire";
+import { computed, ref, toValue, type MaybeRef } from "vue";
 import {
   mdiAlertCircleOutline,
   mdiDotsHorizontalCircleOutline,
@@ -19,8 +8,8 @@ import {
   mdiHelpCircleOutline,
   mdiVectorLink,
 } from "@mdi/js";
-import { useAuthState } from "./auth";
-import { withArticleIds } from "~/utils/notePromotion";
+import { authRequest, useAuthState } from "./auth";
+import { useContributionsTick } from "./votes";
 import type { Note, NoteEntryKind, NodeType } from "~~/shared/model";
 
 /** How each note entry kind presents itself: the label on its chip, the button
@@ -145,25 +134,43 @@ export function noteAdminTypeLabel(type: string | null | undefined): string {
 /** The notes on one page, and the reader's own among them.
  *
  * `nodeType` where the caller knows it: the notes on a person are for signed
- * in readers (firestore.rules), so for anybody else this does not ask - the
- * query would only be refused, as a console error on every person's page.
+ * in readers (server/utils/noteRules.ts), so for anybody else this does not
+ * ask - the answer would be empty anyway.
  */
 export function useNotes(
   nodeID: MaybeRef<string>,
   nodeType?: MaybeRef<NodeType | undefined>,
 ) {
   const { user } = useAuthState();
-  const firebaseApp = useFirebaseApp();
-  const db = getFirestore(firebaseApp, "koryta-pl");
-
+  const tick = useContributionsTick();
   const nodeRef = computed(() => toValue(nodeID));
 
-  const notesQuery = computed(() => {
-    if (!user.value && toValue(nodeType) === "person") return null;
-    return query(collection(db, "notes"), where("nodeId", "==", nodeRef.value));
-  });
+  /** The notes on the page, from GET /api/notes, read again after each save
+   * (decision on 2026-11-26: no Firestore listeners in the browser). */
+  const allNotes = ref<Note[]>([]);
 
-  const allNotes = useCollection<Note>(notesQuery, { wait: true });
+  async function load() {
+    const nodeId = nodeRef.value;
+    if (!nodeId || (!user.value && toValue(nodeType) === "person")) {
+      allNotes.value = [];
+      return;
+    }
+    try {
+      const { notes } = await authRequest<{ notes: Note[] }>("/api/notes", {
+        method: "GET",
+        query: { nodeId },
+      });
+      if (nodeRef.value === nodeId) allNotes.value = notes;
+    } catch (error) {
+      console.error("Nie udało się wczytać notatek", error);
+    }
+  }
+
+  if (import.meta.client) {
+    watch([nodeRef, () => user.value?.uid, () => toValue(nodeType)], load, {
+      immediate: true,
+    });
+  }
 
   const userNote = computed(() => {
     if (!user.value) return null;
@@ -175,61 +182,37 @@ export function useNotes(
     return allNotes.value.filter((n) => n.userUid !== user.value?.uid);
   });
 
+  /** Stores the reader's note. The server stamps both dates, so a wrong
+   * clock on one contributor's machine cannot pin their note to the top of
+   * the admin queue. */
   const saveNote = async (data: Partial<Note>) => {
     if (!user.value) throw new Error("User must be logged in");
-    const docId = `${nodeRef.value}_${user.value.uid}`;
-    const dataTyped: Note = {
-      ...data,
-      userUid: user.value.uid,
-      nodeId: nodeRef.value,
-      // Stamped by firestore rather than by the browser, so a wrong clock on
-      // one contributor's machine cannot pin their note to the top of the
-      // admin queue forever. Reads normalise it back to an ISO string.
-      updatedAt: serverTimestamp() as unknown as string,
-    };
-    // Only when there is no note yet, so coming back to one keeps the date it
-    // was written. Should the note collection not have loaded when this runs,
-    // the worst case is that an existing `createdAt` is moved forward - which
-    // readers do not see, since `updatedAt` is written here too and takes
-    // precedence over it.
-    if (!userNote.value) {
-      dataTyped.createdAt = serverTimestamp() as unknown as string;
-    }
-    await setDoc(doc(db, "notes", docId), dataTyped, {
-      merge: true,
-    });
+    const { note } = await authRequest<{ note: Note }>(
+      `/api/notes/${encodeURIComponent(nodeRef.value)}`,
+      { method: "PUT", body: { sources: data.sources ?? [] } },
+    );
+    allNotes.value = [
+      ...allNotes.value.filter((n) => n.userUid !== user.value?.uid),
+      note,
+    ];
+    tick.value += 1;
   };
 
   /** Points the note's entries at the article nodes their urls became.
    *
-   * A transaction, and it re-reads `sources` rather than being handed them,
-   * because promoting is slow: it fetches every new url to read its title, and
-   * an author who added another entry while that was in flight had it deleted
-   * by this second write. `setDoc(..., {merge: true})` merges *fields*, and
-   * `sources` is one field - so writing back the array as it looked before the
-   * fetch replaces the whole of it. An admin verdict written in the same window
-   * went the same way.
-   *
-   * Entries are matched by url, never by position, so an insert or a deletion
-   * in the meantime attaches the ids to the right entries anyway.
-   *
-   * Writes nothing when nothing changed, which is what keeps a re-save of an
-   * already promoted note from touching the document at all.
+   * The server re-reads `sources` under a lock rather than being handed
+   * them, because promoting is slow: it fetches every new url to read its
+   * title, and an entry the author added while that was in flight would be
+   * lost by writing back the array as it looked before. Entries are matched
+   * by url, never by position. Writes nothing when nothing changed.
    */
   const attachArticleIds = async (articleIds: Map<string, string>) => {
-    if (articleIds.size === 0) return;
-    const docId = `${nodeRef.value}_${user.value?.uid}`;
-    await runTransaction(db, async (transaction) => {
-      const ref = doc(db, "notes", docId);
-      const snapshot = await transaction.get(ref);
-      if (!snapshot.exists()) return;
-      const sources = (snapshot.data() as Note).sources ?? [];
-      const updated = withArticleIds(sources, articleIds);
-      if (!updated) return;
-      // Only `sources`, so the timestamps and anything else the document holds
-      // are left as they are - this is bookkeeping, not the author writing.
-      transaction.update(ref, { sources: updated });
-    });
+    if (articleIds.size === 0 || !user.value) return;
+    const { changed } = await authRequest<{ changed: boolean }>(
+      `/api/notes/${encodeURIComponent(nodeRef.value)}/articles`,
+      { method: "POST", body: { articleIds: Object.fromEntries(articleIds) } },
+    );
+    if (changed) await load();
   };
 
   return {

@@ -1,8 +1,8 @@
-import { FieldValue, getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { z } from "zod";
 import { getUser } from "~~/server/utils/auth";
-import { createRevisionTransaction } from "~~/server/utils/revisions";
+import { editorialTx, readDoc } from "~~/server/db/editorial";
+import { createRevisionPg } from "~~/server/db/revisionWrites";
+import { addPromotedEdge } from "~~/server/db/edgeWrites";
 import { edgeDocumentId } from "~~/server/utils/edges";
 import { edgeTypes } from "~~/shared/model";
 import type { ElectionPosition, ExtractionFact } from "~~/shared/model";
@@ -55,8 +55,6 @@ export default defineEventHandler(async (event) => {
 
   const user = await getUser(event);
 
-  const db = getFirestore(getApp(), "koryta-pl");
-
   const revisionData = {
     source: body.source,
     target: body.target,
@@ -92,21 +90,19 @@ export default defineEventHandler(async (event) => {
   // undefined, null and "" alike, so the two agree on the id either way; this
   // just says so in the types. Every discriminator any edge type declares is
   // here - see `EDGE_SEMANTICS`.
-  const edgeRef = db.collection("edges").doc(
-    edgeDocumentId({
-      source: revisionData.source,
-      target: revisionData.target,
-      type: revisionData.type,
-      name: revisionData.name,
-      content: revisionData.content,
-      start_date: revisionData.start_date ?? undefined,
-      end_date: revisionData.end_date ?? undefined,
-      party: revisionData.party,
-      committee: revisionData.committee,
-      position: revisionData.position || undefined,
-      term: revisionData.term,
-    }),
-  );
+  const edgeId = edgeDocumentId({
+    source: revisionData.source,
+    target: revisionData.target,
+    type: revisionData.type,
+    name: revisionData.name,
+    content: revisionData.content,
+    start_date: revisionData.start_date ?? undefined,
+    end_date: revisionData.end_date ?? undefined,
+    party: revisionData.party,
+    committee: revisionData.committee,
+    position: revisionData.position || undefined,
+    term: revisionData.term,
+  });
 
   // A promotion is checked against the fact before anything is written: the
   // relation has to be the one the fact's kind becomes (`factEdgeRule`, the
@@ -117,67 +113,65 @@ export default defineEventHandler(async (event) => {
   // not stop a signed-in caller from tying a fact to another real relation of
   // that person of the same kind, which costs nothing but the fact's button;
   // a relation it creates is a draft an administrator reviews, as ever.
-  const factRef = body.extraction
-    ? db.collection("extractions").doc(body.extraction)
-    : undefined;
-  if (factRef) {
-    const fact = await factRef.get();
-    const factData = fact.data() as ExtractionFact | undefined;
-    const rule = factData ? factEdgeRule(factData) : undefined;
-    if (
-      !factData ||
-      !rule ||
-      factData.personNodeId !== body.source ||
-      rule.edgeType !== body.type
-    ) {
-      throw createError({
-        statusCode: 400,
-        message: "Z tego faktu nie powstanie takie powiązanie.",
-      });
+  const factId = body.extraction;
+  return editorialTx(async (tx, log) => {
+    if (factId) {
+      const factData = (await readDoc(tx, "extractions", factId)) as
+        ExtractionFact | undefined;
+      const rule = factData ? factEdgeRule(factData) : undefined;
+      if (
+        !factData ||
+        !rule ||
+        factData.personNodeId !== body.source ||
+        rule.edgeType !== body.type
+      ) {
+        throw createError({
+          statusCode: 400,
+          message: "Z tego faktu nie powstanie takie powiązanie.",
+        });
+      }
+      const target = await readDoc(tx, "nodes", body.target);
+      if (!target || target.type !== rule.targetType) {
+        throw createError({
+          statusCode: 400,
+          message: "Nie ma w bazie takiej drugiej strony powiązania.",
+        });
+      }
     }
-    const target = await db.collection("nodes").doc(body.target).get();
-    if (!target.exists || target.data()?.type !== rule.targetType) {
-      throw createError({
-        statusCode: 400,
-        message: "Nie ma w bazie takiej drugiej strony powiązania.",
-      });
-    }
-  }
-  // An array rather than one id: the reader picks the far end, so two readers
-  // can make two different relations of one fact, and each should be findable
-  // from it. /api/edges/delete takes an id back out when it removes the edge.
-  const promoted = { promotedEdgeIds: FieldValue.arrayUnion(edgeRef.id) };
+    // An array rather than one id: the reader picks the far end, so two readers
+    // can make two different relations of one fact, and each should be findable
+    // from it. /api/edges/delete takes an id back out when it removes the edge.
 
-  // Already there: hand back the id rather than writing over it. A `set`
-  // through `createRevisionTransaction` would replace the stored document, and
-  // with it whether the relation is published and everything counted on it - so
-  // re-adding a live relation would quietly take it off the site. The fact
-  // still records a live one: the relation it says is in the graph either way.
-  // One an administrator removed is not in the graph, so the fact is left as
-  // it was and the caller told why nothing happened - recreating it here would
-  // undo the removal without anybody reviewing it.
-  const existing = await edgeRef.get();
-  if (existing.exists) {
-    if (existing.data()?.deleted === true) {
-      return { id: edgeRef.id, created: false, deleted: true };
+    // Already there: hand back the id rather than writing over it. A revision
+    // write would replace the stored document, and with it whether the relation
+    // is published and everything counted on it - so re-adding a live relation
+    // would quietly take it off the site. The fact still records a live one:
+    // the relation it says is in the graph either way. One an administrator
+    // removed is not in the graph, so the fact is left as it was and the caller
+    // told why nothing happened - recreating it here would undo the removal
+    // without anybody reviewing it.
+    const existing = await readDoc(tx, "edges", edgeId, true);
+    if (existing) {
+      if (existing.deleted === true) {
+        return { id: edgeId, created: false, deleted: true };
+      }
+      if (factId) await addPromotedEdge(tx, log, factId, edgeId);
+      return { id: edgeId, created: false };
     }
-    if (factRef) await factRef.update(promoted);
-    return { id: edgeRef.id, created: false };
-  }
 
-  const batch = db.batch();
-  if (factRef) batch.update(factRef, promoted);
-  // `published: false` said out loud rather than left off. Both readings hide
-  // the relation - `pageIsPublic` wants the flag to be `true` - but Firestore
-  // matches no filter against a field a document does not have, so an edge
-  // written without it is invisible to `where("published", "==", false)` and
-  // would never reach the queue in /admin/krawedzie that is supposed to find
-  // it. Same reasoning as /api/revisions/create for a brand new node.
-  createRevisionTransaction(db, batch, user, edgeRef, revisionData, {
-    published: false,
+    if (factId) await addPromotedEdge(tx, log, factId, edgeId);
+    // `published: false` said out loud rather than left off: the queue in
+    // /admin/krawedzie looks for it. Same as /api/revisions/create for a brand
+    // new node.
+    await createRevisionPg(
+      tx,
+      log,
+      user,
+      { collection: "edges", id: edgeId },
+      revisionData,
+      { published: false },
+    );
+
+    return { id: edgeId, created: true };
   });
-
-  await batch.commit();
-
-  return { id: edgeRef.id, created: true };
 });

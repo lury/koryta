@@ -1,12 +1,7 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { requireAdmin } from "~~/server/utils/auth";
 import { OVERVIEW_CACHE } from "~~/server/utils/declarationDecisions";
-import {
-  countTotals,
-  reviewLists,
-  withLists,
-} from "~~/server/utils/declarationOverview";
+import { withLists } from "~~/server/utils/declarationOverview";
+import { countTotalsPg, reviewListsPg } from "~~/server/db/declarationOverview";
 import type { DeclarationOverview } from "~~/shared/declarations";
 
 /**
@@ -27,15 +22,14 @@ export default defineEventHandler(
     const limit = Number(useRuntimeConfig().declarationsDailyPublishLimit) || 0;
     const [totals, lists] = await Promise.all([
       overviewTotals(limit),
-      reviewLists(getFirestore(getApp(), "koryta-pl")),
+      reviewListsPg(),
     ]);
     return withLists(totals, lists, new Date());
   },
 );
 
 const overviewTotals = defineCachedFunction(
-  async (dailyLimit: number) =>
-    countTotals(getFirestore(getApp(), "koryta-pl"), dailyLimit, new Date()),
+  async (dailyLimit: number) => countTotalsPg(dailyLimit, new Date()),
   {
     name: OVERVIEW_CACHE,
     maxAge: 120,

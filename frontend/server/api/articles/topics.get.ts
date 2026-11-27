@@ -1,10 +1,9 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import {
   editorFreshCachedEventHandler,
   wantsLatest,
 } from "~~/server/utils/handlers";
 import { pageIsPublic } from "~~/shared/model";
+import { topicsAndTags } from "~~/server/utils/topics";
 
 /** A story an article belongs to, as a list of articles needs it. */
 export type ArticleTopicLink = {
@@ -36,27 +35,20 @@ export type ArticleTopics = {
  */
 export default editorFreshCachedEventHandler(async (event) => {
   const includeDrafts = await wantsLatest(event);
-  const db = getFirestore(getApp(), "koryta-pl");
-
-  const [topicsSnap, taggedSnap] = await Promise.all([
-    db.collection("nodes").where("type", "==", "topic").get(),
-    db.collection("edges").where("type", "==", "tagged").get(),
-  ]);
+  const { topics: topicRows, tagged } = await topicsAndTags();
 
   const topics = new Map<string, { name: string; published: boolean }>();
-  for (const doc of topicsSnap.docs) {
-    const data = doc.data();
+  for (const data of topicRows) {
     if (data.deleted === true) continue;
     if (!includeDrafts && !pageIsPublic(data)) continue;
-    topics.set(doc.id, {
+    topics.set(data.id, {
       name: typeof data.name === "string" ? data.name : "",
       published: pageIsPublic(data),
     });
   }
 
   const byArticle: Record<string, ArticleTopicLink[]> = {};
-  for (const doc of taggedSnap.docs) {
-    const data = doc.data();
+  for (const data of tagged) {
     if (data.deleted === true) continue;
     if (!includeDrafts && !pageIsPublic(data)) continue;
     const source = data.source as string | undefined;

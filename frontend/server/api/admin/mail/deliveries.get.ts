@@ -1,4 +1,3 @@
-import { getFirestore } from "firebase-admin/firestore";
 import { defineEventHandler, getValidatedQuery, setResponseHeader } from "h3";
 import { z } from "zod";
 import { requireOwner } from "~~/server/utils/auth";
@@ -17,6 +16,6 @@ export default defineEventHandler(async (event) => {
   );
   setResponseHeader(event, "Cache-Control", "private, no-store");
   return {
-    deliveries: await campaignDeliveries(getFirestore("koryta-pl"), id),
+    deliveries: await campaignDeliveries(id),
   };
 });

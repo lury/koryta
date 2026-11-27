@@ -1,5 +1,3 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { z } from "zod";
 import {
   editorFreshCachedEventHandler,
@@ -7,6 +5,7 @@ import {
 } from "~~/server/utils/handlers";
 import { pageIsPublic } from "~~/shared/model";
 import type { Edge, EdgeType, NodeType } from "~~/shared/model";
+import { readEdgesCiting, readNodeDocs } from "~~/server/db/edgeLists";
 
 /** One relation an article is cited by, as the article page lists it. */
 export type SourcedEdge = {
@@ -18,7 +17,7 @@ export type SourcedEdge = {
   sourceName: string | null;
   targetName: string | null;
   /** Needed to build each end's url, which is why this resolves its own
-   * endpoints rather than calling `resolveEdgeEndpoints` - that one answers a
+   * endpoints rather than calling `resolveEdgeEndpointsPg` - that one answers a
    * reviewer's question about publishability and does not carry the type. */
   sourceType: NodeType | null;
   targetType: NodeType | null;
@@ -52,26 +51,19 @@ export default editorFreshCachedEventHandler(async (event) => {
   const query = await getValidatedQuery(event, (q) => queryValidator.parse(q));
   const includeDrafts = await wantsLatest(event);
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  const snapshot = await db
-    .collection("edges")
-    .where("references", "array-contains", query.articleId)
-    .get();
+  const citing = (await readEdgesCiting(query.articleId)) as (Edge & {
+    id: string;
+  })[];
 
-  const edges = snapshot.docs
-    .map((doc) => ({ id: doc.id, ...(doc.data() as Edge) }))
+  const edges = citing
     .filter((edge) => edge.deleted !== true)
     .filter((edge) => (includeDrafts ? true : pageIsPublic(edge)));
 
   const endpointIds = Array.from(
     new Set(edges.flatMap((edge) => [edge.source, edge.target])),
   );
-  const snaps = endpointIds.length
-    ? await db.getAll(
-        ...endpointIds.map((nodeId) => db.collection("nodes").doc(nodeId)),
-      )
-    : [];
-  const nodes = new Map(snaps.map((snap) => [snap.id, snap.data()]));
+  const nodes: Map<string, Record<string, unknown> | undefined> =
+    await readNodeDocs(endpointIds, ["name", "type"]);
 
   const nameOf = (nodeId: string) => {
     const name = nodes.get(nodeId)?.name;

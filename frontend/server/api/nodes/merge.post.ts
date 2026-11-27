@@ -1,13 +1,11 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { requireAdmin } from "~~/server/utils/auth";
+import { mergeRefusal, type MergePlan } from "~~/server/utils/merge";
+import { editorialTx, readDoc } from "~~/server/db/editorial";
 import {
-  applyNodeMerge,
-  mergeRefusal,
-  planNodeMerge,
-  resolveMergedNode,
-  type MergePlan,
-} from "~~/server/utils/merge";
+  applyNodeMergePg,
+  planNodeMergePg,
+  resolveMergedNodePg,
+} from "~~/server/db/nodeMerge";
 import { z } from "zod";
 
 const bodyValidator = z.object({
@@ -53,73 +51,29 @@ export default defineEventHandler(async (event): Promise<NodesMerged> => {
   );
 
   const user = await requireAdmin(event);
-  const db = getFirestore(getApp(), "koryta-pl");
+  const merged = await editorialTx(async (tx, log) => {
+    const survivor = await resolveMergedNodePg(tx, body.survivor_id);
+    const duplicate = await readDoc(tx, "nodes", body.duplicate_id, true);
 
-  const survivor = await resolveMergedNode(db, body.survivor_id);
-  const duplicate = await db.collection("nodes").doc(body.duplicate_id).get();
-
-  const refusal = mergeRefusal(
-    { duplicate_id: body.duplicate_id, survivor_id: survivor.id },
-    duplicate,
-    survivor.snapshot,
-  );
-  if (refusal) throw createError({ statusCode: 400, message: refusal });
-
-  const plan = await planNodeMerge(db, body.duplicate_id, survivor.id);
-
-  if (body.dry_run) return { plan, applied: false };
-
-  // Re-read as one map so `applyNodeMerge` writes from what it planned over,
-  // rather than reading every edge a second time.
-  const storedEdges = new Map<string, Record<string, unknown>>();
-  // Both ends of every verdict: the relation being moved, and - for an
-  // `enriched` one - the survivor's relation that is about to learn from it,
-  // which `applyNodeMerge` has to read before it can write the fuller version.
-  const edgeIds = [
-    ...new Set(
-      plan.edges.flatMap((edge) =>
-        edge.disposition === "enriched" && edge.duplicate_of
-          ? [edge.edge_id, edge.duplicate_of]
-          : [edge.edge_id],
-      ),
-    ),
-  ];
-  if (edgeIds.length > 0) {
-    const docs = await db.getAll(
-      ...edgeIds.map((id) => db.collection("edges").doc(id)),
+    const refusal = mergeRefusal(
+      { duplicate_id: body.duplicate_id, survivor_id: survivor.id },
+      { exists: duplicate !== undefined, data: () => duplicate },
+      { exists: survivor.data !== undefined, data: () => survivor.data },
     );
-    for (const doc of docs) {
-      if (doc.exists) storedEdges.set(doc.id, doc.data() ?? {});
-    }
-  }
+    if (refusal) throw createError({ statusCode: 400, message: refusal });
 
-  const storedVotes = new Map<string, Record<string, unknown>>();
-  if (plan.votes.length > 0) {
-    const docs = await db.getAll(
-      ...plan.votes.map((vote) => db.collection("votes").doc(vote.from_id)),
-    );
-    for (const doc of docs) {
-      if (doc.exists) storedVotes.set(doc.id, doc.data() ?? {});
-    }
-  }
+    const plan = await planNodeMergePg(tx, body.duplicate_id, survivor.id);
+    if (body.dry_run) return { plan, applied: false };
 
-  const batch = db.batch();
-  applyNodeMerge(
-    db,
-    batch,
-    user,
-    plan,
-    body.reason,
-    storedEdges,
-    survivor.snapshot?.data(),
-    storedVotes,
-  );
-  await batch.commit();
+    await applyNodeMergePg(tx, log, user, plan, body.reason);
+    return { plan, applied: true };
+  });
+  if (!merged.applied) return merged;
 
   // The entity and graph endpoints are cached per handler for six hours, so
   // both pages would otherwise keep their old relations for the rest of the
   // day. Same clear as /api/edges/delete.
   await useStorage("cache").clear("nitro:handlers");
 
-  return { plan, applied: true };
+  return merged;
 });

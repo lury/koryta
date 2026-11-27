@@ -63,6 +63,7 @@
             v-model:teryt="teryt"
             v-model:company-teryt="companyTeryt"
             v-model:place="place"
+            v-model:company-search="companySearch"
             v-model:category="category"
             v-model:hide-voted="hideVoted"
             v-model:currently-employed="currentlyEmployed"
@@ -71,6 +72,7 @@
             :available-parties="availableParties"
             :available-regions="availableRegions"
             :available-companies="availableCompanies"
+            :server-companies="serverCompanies"
             :show-visibility="showVisibility"
             :total-items="totalItems"
             show-header
@@ -121,6 +123,7 @@
               v-model:teryt="teryt"
               v-model:company-teryt="companyTeryt"
               v-model:place="place"
+              v-model:company-search="companySearch"
               v-model:category="category"
               v-model:hide-voted="hideVoted"
               v-model:currently-employed="currentlyEmployed"
@@ -129,6 +132,7 @@
               :available-parties="availableParties"
               :available-regions="availableRegions"
               :available-companies="availableCompanies"
+              :server-companies="serverCompanies"
               :show-visibility="showVisibility"
               :total-items="totalItems"
               @close="dialogOpen = false"
@@ -414,6 +418,8 @@ const props = withDefaults(
     availableParties: { title: string; value: string }[] | string[];
     availableRegions: { title: string; value: string }[];
     availableCompanies: { title: string; value: string }[];
+    /** See FormEksplorujTabelaFilterPanel. */
+    serverCompanies?: boolean;
     /** The reader is signed in: the verification filters are theirs to use,
      * and their chips are worth drawing. */
     showVisibility?: boolean;
@@ -443,6 +449,7 @@ const props = withDefaults(
   }>(),
   {
     showVisibility: true,
+    serverCompanies: false,
     totalItems: undefined,
     progressQuery: undefined,
     showProgress: false,
@@ -480,6 +487,8 @@ const teryt = defineModel<string | null>("teryt");
 const companyTeryt = defineModel<string | null>("companyTeryt");
 /** Selected employers, by place node id. */
 const place = defineModel<string[] | null>("place");
+/** What the reader has typed into the employer field. */
+const companySearch = defineModel<string>("companySearch");
 const category = defineModel<string | null>("category");
 const hideVoted = defineModel<"all" | "no_votes" | "has_votes">("hideVoted");
 const currentlyEmployed = defineModel<"all" | "any" | "selected">(

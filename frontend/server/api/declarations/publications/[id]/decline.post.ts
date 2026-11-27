@@ -1,6 +1,6 @@
 import { holdRequest } from "~~/server/utils/declarationDecisionRequest";
-import { declinePublication } from "~~/server/utils/declarationDecisions";
-import { restageDeclarationPeople } from "~~/server/utils/declarationPeopleCount";
+import { declinePublicationPg } from "~~/server/db/declarationHolds";
+import { restageDeclarationPeoplePg } from "~~/server/db/declarationPeopleCount";
 
 /**
  * „Nie publikuj” on /admin/oswiadczenia: the person leaves the held list for
@@ -8,8 +8,8 @@ import { restageDeclarationPeople } from "~~/server/utils/declarationPeopleCount
  * checked before anything is read.
  */
 export default defineEventHandler(async (event): Promise<{ id: string }> => {
-  const { uid, id, db } = await holdRequest(event);
-  await declinePublication(db, id, uid);
-  await restageDeclarationPeople(db, [id]);
+  const { uid, id } = await holdRequest(event);
+  await declinePublicationPg(id, uid);
+  await restageDeclarationPeoplePg([id]);
   return { id };
 });

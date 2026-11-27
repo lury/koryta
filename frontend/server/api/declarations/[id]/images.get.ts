@@ -1,10 +1,6 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { getUser } from "~~/server/utils/auth";
-import {
-  cropImages,
-  type CropImages,
-} from "~~/server/utils/declarationDecisions";
+import type { CropImages } from "~~/server/utils/declarationDecisions";
+import { cropImagesPg } from "~~/server/db/declarationReading";
 import { EXTRACT_ID_PATTERN } from "~~/shared/declarations";
 
 /**
@@ -23,9 +19,7 @@ export default defineEventHandler(async (event): Promise<CropImages> => {
   await getUser(event);
   setResponseHeader(event, "Cache-Control", "private, no-store");
   const id = getRouterParam(event, "id") ?? "";
-  const images = EXTRACT_ID_PATTERN.test(id)
-    ? await cropImages(getFirestore(getApp(), "koryta-pl"), id)
-    : null;
+  const images = EXTRACT_ID_PATTERN.test(id) ? await cropImagesPg(id) : null;
   if (!images) {
     throw createError({ statusCode: 404, message: "Nie ma takiego wycinka." });
   }

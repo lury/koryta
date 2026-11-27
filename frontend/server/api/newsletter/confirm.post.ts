@@ -1,4 +1,3 @@
-import { getFirestore } from "firebase-admin/firestore";
 import { defineEventHandler, readValidatedBody } from "h3";
 import { z } from "zod";
 import { confirmSubscription } from "~~/server/utils/newsletterSubscribers";
@@ -14,7 +13,7 @@ const bodySchema = z.object({
  * authorisation, as the reader is usually not signed in. */
 export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, (raw) => bodySchema.parse(raw));
-  const outcome = await confirmSubscription(getFirestore("koryta-pl"), {
+  const outcome = await confirmSubscription({
     id: body.s,
     token: body.t,
     now: new Date(),

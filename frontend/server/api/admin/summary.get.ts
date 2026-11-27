@@ -1,15 +1,14 @@
-import { getFirestore, FieldPath } from "firebase-admin/firestore";
-import type { Firestore } from "firebase-admin/firestore";
 import { defineEventHandler } from "h3";
 import { getUser } from "~~/server/utils/auth";
-import { noteNeedsAction } from "~~/shared/model";
 import { compareNewest, isQueued, OPEN_CAP } from "~~/shared/feedbackQueue";
-import type {
-  Feedback,
-  FeedbackKind,
-  Note,
-  NoteEntryKind,
-} from "~~/shared/model";
+import type { FeedbackKind, NoteEntryKind } from "~~/shared/model";
+import {
+  newFeedbackPg,
+  nodeNamesPg,
+  noteCountsPg,
+  pendingEdgeRevisionsPg,
+  unapprovedNodesPg,
+} from "~~/server/db/adminSummary";
 
 /** Cap on how many unapproved nodes we inspect to split manual vs automatic.
  * Aggregation gives the exact total cheaply, but deciding "automatic" needs a
@@ -75,8 +74,8 @@ export type AdminSummary = {
   };
 };
 
-/** Dashboard summary for the admin panel. Admin-only: uses the admin SDK
- * (bypasses Firestore rules) after verifying the caller's admin claim. */
+/** Dashboard summary for the admin panel. Admin-only, checked on the
+ * caller's token before anything is read. */
 export default defineEventHandler(async (event): Promise<AdminSummary> => {
   const user = await getUser(event);
   if (!user.admin) {
@@ -86,280 +85,127 @@ export default defineEventHandler(async (event): Promise<AdminSummary> => {
     });
   }
 
-  const db = getFirestore("koryta-pl");
-
-  // --- Notes needing action -------------------------------------------------
-  // Firestore can't query into an array of source objects, so read the notes
-  // (only the fields we need) and count the entries waiting on somebody.
-  const notesSnap = await db
-    .collection("notes")
-    .select("sources", "nodeId")
-    .get();
-
-  let needsAction = 0;
-  let uncategorized = 0;
-  const noteSampleRaw: {
-    noteId: string;
-    nodeId: string;
-    url: string | null;
-    note: string;
-    kind: NoteEntryKind;
-    adminType: string | null;
-  }[] = [];
-
-  for (const doc of notesSnap.docs) {
-    const data = doc.data() as Note;
-    for (const source of data.sources || []) {
-      if (!source.adminType && !source.adminTypeDeferred) uncategorized++;
-      if (noteNeedsAction(source)) {
-        needsAction++;
-        if (noteSampleRaw.length < SAMPLE_SIZE) {
-          noteSampleRaw.push({
-            noteId: doc.id,
-            nodeId: data.nodeId,
-            url: source.url ?? null,
-            note: source.note,
-            kind: source.kind ?? "source",
-            adminType: source.adminType ?? null,
-          });
-        }
-      }
-    }
-  }
-
-  // --- Untriaged feedback ---------------------------------------------------
-  // Putting a report in the queue is triage too, and a missing field is not
-  // something a query can filter on - so the new reports are read and the
-  // queued ones taken off the count. The read is capped: anybody can write a
-  // report, and a flood of them should not turn every visit to /admin into
-  // thousands of reads. Past the cap the count is an upper bound.
-  const newFeedbackQuery = db
-    .collection("feedback")
-    .where("adminStatus", "==", "new");
-
-  const [newFeedbackCountSnap, newFeedbackSnap] = await Promise.all([
-    newFeedbackQuery.count().get(),
-    newFeedbackQuery.orderBy("createdAt", "desc").limit(OPEN_CAP).get(),
+  const [notes, feedback, nodes, edges] = await Promise.all([
+    noteCountsPg(SAMPLE_SIZE),
+    // Putting a report in the queue is triage too, and that is a field no
+    // index answers - so the newest new reports are read and the queued ones
+    // taken off the count. Capped: anybody can write a report, and past the
+    // cap the count is an upper bound.
+    newFeedbackPg(OPEN_CAP),
+    unapprovedNodesPg(MANUAL_INSPECT_CAP),
+    summariseEdgeRevisions(),
   ]);
 
-  const inspectedFeedback = newFeedbackSnap.docs.map((doc) => ({
-    ...(doc.data() as Feedback),
-    id: doc.id,
-  }));
-  const untriagedFeedback = inspectedFeedback
+  // --- Untriaged feedback ---------------------------------------------------
+  const untriagedFeedback = feedback.newest
     .filter((report) => !isQueued(report))
     .sort(compareNewest);
-  const queuedNewFeedback = inspectedFeedback.length - untriagedFeedback.length;
-
-  const feedbackSample = untriagedFeedback.slice(0, SAMPLE_SIZE).map((data) => {
-    return {
+  const queuedNewFeedback = feedback.newest.length - untriagedFeedback.length;
+  const feedbackSample = untriagedFeedback
+    .slice(0, SAMPLE_SIZE)
+    .map((data) => ({
       id: data.id,
       kind: data.kind,
       message: data.message.slice(0, 200),
       route: data.context.route,
       pageTitle: data.context.pageTitle ?? null,
       createdAt: data.createdAt,
-    };
-  });
+    }));
 
   // --- Unapproved revisions -------------------------------------------------
-  const unapprovedQuery = db
-    .collection("nodes")
-    .where("revisions.has_unapproved", "==", true);
+  // A latest revision that cannot be resolved counts as manual, so that it is
+  // not silently dropped from the review queue.
+  const manual = nodes.inspected.filter((node) => !node.automatic);
+  const nodeSample: AdminSummary["revisions"]["sample"] = manual
+    .slice(0, SAMPLE_SIZE)
+    .map((node) => ({
+      kind: "node",
+      id: node.id,
+      name: (node.name as string | null | undefined) ?? null,
+      type: (node.type as string | null | undefined) ?? "",
+    }));
 
-  const [unapprovedCountSnap, unapprovedNodesSnap] = await Promise.all([
-    unapprovedQuery.count().get(),
-    unapprovedQuery.limit(MANUAL_INSPECT_CAP).get(),
-  ]);
-  const unapproved = unapprovedCountSnap.data().count;
-
-  const nodeDocs = unapprovedNodesSnap.docs;
-
-  // Resolve each unapproved node's latest revision to learn if it was
-  // automatic. `latest_id` is a revision doc id (occasionally a path).
-  const latestIdByNode = new Map<string, string>();
-  for (const doc of nodeDocs) {
-    const latestId = doc.get("revisions.latest_id");
-    if (typeof latestId === "string" && latestId) {
-      latestIdByNode.set(doc.id, latestId.split("/").pop() as string);
-    }
-  }
-
-  const revisionRefs = [...new Set(latestIdByNode.values())].map((id) =>
-    db.collection("revisions").doc(id),
-  );
-  const automaticByRevId = new Map<string, boolean>();
-  if (revisionRefs.length > 0) {
-    const revSnaps = await db.getAll(...revisionRefs);
-    for (const snap of revSnaps) {
-      automaticByRevId.set(snap.id, snap.get("update_automatic") === true);
-    }
-  }
-
-  let manualNodes = 0;
-  const nodeSample: AdminSummary["revisions"]["sample"] = [];
-  for (const doc of nodeDocs) {
-    const latestId = latestIdByNode.get(doc.id);
-    // If we can't resolve the latest revision, treat it as manual so it isn't
-    // silently dropped from the review queue.
-    const isAutomatic = latestId
-      ? (automaticByRevId.get(latestId) ?? false)
-      : false;
-    if (!isAutomatic) {
-      manualNodes++;
-      if (nodeSample.length < SAMPLE_SIZE) {
-        nodeSample.push({
-          kind: "node",
-          id: doc.id,
-          name: (doc.get("name") as string | undefined) ?? null,
-          type: (doc.get("type") as string | undefined) ?? "",
-        });
-      }
-    }
-  }
-
-  // --- Unsettled edge revisions ---------------------------------------------
-  // Edges have no `has_unapproved` flag to query - that field is maintained on
-  // the node document - so the proposals themselves are the queue. Same query
-  // as /api/revisions/pendingEdges, and the same composite index.
-  const {
-    total: unapprovedEdges,
-    manual: manualEdges,
-    inspected: inspectedEdges,
-    sample: edgeSample,
-  } = await summariseEdgeRevisions(db);
-
-  // --- Resolve node names for the notes sample ------------------------------
-  const sampleNodeIds = [...new Set(noteSampleRaw.map((n) => n.nodeId))];
-  const names: Record<string, string> = {};
-  if (sampleNodeIds.length > 0) {
-    const namesSnap = await db
-      .collection("nodes")
-      .where(FieldPath.documentId(), "in", sampleNodeIds)
-      .get();
-    for (const doc of namesSnap.docs) {
-      names[doc.id] = doc.data().name;
-    }
-  }
+  // --- Node names for the notes sample --------------------------------------
+  const names = await nodeNamesPg(notes.sample.map((n) => n.nodeId));
 
   return {
     feedback: {
-      needsAction: newFeedbackCountSnap.data().count - queuedNewFeedback,
+      needsAction: feedback.total - queuedNewFeedback,
       sample: feedbackSample,
     },
     notes: {
-      needsAction,
-      uncategorized,
-      sample: noteSampleRaw.map((n) => ({
+      needsAction: notes.needsAction,
+      uncategorized: notes.uncategorized,
+      sample: notes.sample.map((n) => ({
         ...n,
-        name: names[n.nodeId] ?? null,
+        name: names.get(n.nodeId) ?? null,
       })),
     },
     revisions: {
-      unapproved: unapproved + unapprovedEdges,
-      unapprovedManual: manualNodes + manualEdges,
-      inspected: nodeDocs.length + inspectedEdges,
+      unapproved: nodes.total + edges.total,
+      unapprovedManual: manual.length + edges.manual,
+      inspected: nodes.inspected.length + edges.inspected,
       truncated:
-        unapproved > nodeDocs.length || unapprovedEdges > inspectedEdges,
+        nodes.total > nodes.inspected.length || edges.total > edges.inspected,
       // Neither kind is squeezed out of the list by the other having more:
       // each is guaranteed half the slots and may spread into what the other
       // leaves unused.
-      sample: mergeSamples(nodeSample, edgeSample),
+      sample: mergeSamples(nodeSample, edges.sample),
     },
   };
 });
 
 /** How many edge proposals are waiting, how many of them a human filed, and a
- * few to show. Mirrors the node half above: an exact total from aggregation,
- * and a bounded read to split manual from automatic.
+ * few to show. Mirrors the node half above: an exact total, and a bounded
+ * read to split manual from automatic.
  *
  * Counted per revision rather than per edge. An edge can carry more than one
  * proposal - they are addressed by what they assert, so the ingest can file a
  * second about a different field - and the screen this sends a reviewer to
  * lists them one per row, so a per-edge count would not match what they find.
  */
-async function summariseEdgeRevisions(db: Firestore): Promise<{
+async function summariseEdgeRevisions(): Promise<{
   total: number;
   manual: number;
   inspected: number;
   sample: AdminSummary["revisions"]["sample"];
 }> {
-  const pending = db
-    .collection("revisions")
-    .where("collection", "==", "edges")
-    .where("status", "==", "pending");
-
-  const [countSnap, snapshot] = await Promise.all([
-    pending.count().get(),
-    pending.orderBy("update_time", "desc").limit(MANUAL_INSPECT_CAP).get(),
-  ]);
-
+  const { total, inspected } = await pendingEdgeRevisionsPg(MANUAL_INSPECT_CAP);
   // A reader adding a relation leaves `update_automatic` unset; the ingest sets
   // it. Same rule as the node half, so one number can cover both.
-  const manualDocs = snapshot.docs.filter(
-    (doc) => doc.get("update_automatic") !== true,
-  );
-  const sampleDocs = manualDocs.slice(0, SAMPLE_SIZE);
-
-  const result = {
-    total: countSnap.data().count,
-    manual: manualDocs.length,
-    inspected: snapshot.docs.length,
-    sample: [] as AdminSummary["revisions"]["sample"],
-  };
-  if (sampleDocs.length === 0) return result;
+  const manual = inspected.filter((row) => !row.automatic);
+  const sampled = manual.slice(0, SAMPLE_SIZE);
 
   // Both ends of each sampled edge, so the list reads as "Jan Kowalski ->
-  // Powiat kaliski" rather than as a revision id. Bounded by SAMPLE_SIZE, so
-  // this is a handful of reads however long the queue is.
-  const edgeIds = [
-    ...new Set(sampleDocs.map((doc) => String(doc.get("node_id") ?? ""))),
-  ].filter(Boolean);
-  const edges = new Map<string, Record<string, unknown>>();
-  if (edgeIds.length > 0) {
-    for (const doc of await db.getAll(
-      ...edgeIds.map((id) => db.collection("edges").doc(id)),
-    )) {
-      if (doc.exists) edges.set(doc.id, doc.data() ?? {});
-    }
-  }
+  // Powiat kaliski" rather than as a revision id.
+  const ends = sampled.flatMap(({ edge }) =>
+    [edge?.source, edge?.target].filter(
+      (end): end is string => typeof end === "string" && end !== "",
+    ),
+  );
+  const endpointNames = await nodeNamesPg(ends);
 
-  const endpointIds = new Set<string>();
-  for (const edge of edges.values()) {
-    for (const end of [edge.source, edge.target]) {
-      if (typeof end === "string" && end) endpointIds.add(end);
-    }
-  }
-  const endpointNames = new Map<string, string>();
-  if (endpointIds.size > 0) {
-    for (const doc of await db.getAll(
-      ...[...endpointIds].map((id) => db.collection("nodes").doc(id)),
-    )) {
-      const name = doc.get("name");
-      if (typeof name === "string") endpointNames.set(doc.id, name);
-    }
-  }
-
-  for (const doc of sampleDocs) {
-    const edgeId = String(doc.get("node_id") ?? "");
-    const edge = edges.get(edgeId);
-    // The edge was deleted after the proposal was filed. It still counts as
-    // waiting - /admin/rewizje#powiazania is where that gets sorted out - but
-    // there is no pair to name it by.
-    const ends = edge
-      ? [edge.source, edge.target].map((end) =>
-          typeof end === "string" ? (endpointNames.get(end) ?? end) : "?",
-        )
-      : null;
-    result.sample.push({
-      kind: "edge",
-      id: doc.id,
-      name: ends ? `${ends[0]} → ${ends[1]}` : edgeId || null,
-      type: typeof edge?.type === "string" ? edge.type : "",
-    });
-  }
-
-  return result;
+  return {
+    total,
+    manual: manual.length,
+    inspected: inspected.length,
+    sample: sampled.map(({ id, edge_id, edge }) => {
+      // The edge was deleted after the proposal was filed. It still counts as
+      // waiting - /admin/rewizje#powiazania is where that gets sorted out - but
+      // there is no pair to name it by.
+      const pair = edge
+        ? [edge.source, edge.target].map((end) =>
+            typeof end === "string" ? (endpointNames.get(end) ?? end) : "?",
+          )
+        : null;
+      return {
+        kind: "edge" as const,
+        id,
+        name: pair ? `${pair[0]} → ${pair[1]}` : edge_id || null,
+        type: typeof edge?.type === "string" ? edge.type : "",
+      };
+    }),
+  };
 }
 
 function mergeSamples(

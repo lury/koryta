@@ -1,31 +1,16 @@
-import { getFirestore, collection, query, where } from "firebase/firestore";
-import { useCollection, useFirebaseApp } from "vuefire";
 import { useAuthState, authRequest } from "../auth";
+import { useContributionsTick } from "../votes";
 import type { ContributionStats } from "~~/server/api/stats/contributions.get";
 
-/** Live counts of the current user's contributions.
+/** Counts of the current user's contributions, from /api/stats/contributions.
  *
- * Votes and notes are observed directly in Firestore so the counters tick up
- * immediately after the user acts; revisions are not client-readable, so their
- * count comes from /api/stats/contributions.
+ * Read again after every vote and note this reader saves (the tick), so the
+ * counters move right after they act without a Firestore listener (decision
+ * on 2026-11-26).
  */
 export function useMyContributions() {
   const { user } = useAuthState();
-  const firebaseApp = useFirebaseApp();
-  const db = getFirestore(firebaseApp, "koryta-pl");
-
-  const votesQuery = computed(() =>
-    user.value
-      ? query(collection(db, "votes"), where("userUid", "==", user.value.uid))
-      : null,
-  );
-  const notesQuery = computed(() =>
-    user.value
-      ? query(collection(db, "notes"), where("userUid", "==", user.value.uid))
-      : null,
-  );
-  const votes = useCollection(votesQuery);
-  const notes = useCollection(notesQuery);
+  const tick = useContributionsTick();
 
   const { data: serverStats } = useAsyncData(
     "my-contributions",
@@ -35,13 +20,13 @@ export function useMyContributions() {
             method: "GET",
           })
         : null,
-    { watch: [user], server: false },
+    { watch: [user, tick], server: false },
   );
 
   return {
     user,
-    votesCount: computed(() => votes.value.length),
-    notesCount: computed(() => notes.value.length),
+    votesCount: computed(() => serverStats.value?.votes ?? 0),
+    notesCount: computed(() => serverStats.value?.notes ?? 0),
     revisionsCount: computed(() => serverStats.value?.revisions ?? 0),
   };
 }

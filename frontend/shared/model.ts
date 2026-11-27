@@ -1,5 +1,11 @@
 import type { Timestamp } from "firebase-admin/firestore";
 import type { QaCheckStatus } from "./qa";
+import type {
+  NodeRevisionsFields,
+  SearchLineFields,
+  StoredSearchLinesFields,
+  VoteDocumentFields,
+} from "./documents";
 import type { SupervisoryOrgan } from "./companyOrgans";
 
 type PageBase<PageType> = {
@@ -61,12 +67,9 @@ type PageBase<PageType> = {
   content_changed_at?: string;
 };
 
-export interface NodeRevisions {
-  latest_id: string;
-  latest_time: string | null;
-  total: number;
-  has_unapproved: boolean;
-}
+/** Shapes shared/documents.ts defines, by `z.infer` (decision on
+ * 2026-11-26: one definition for the site and the pipelines). */
+export type NodeRevisions = NodeRevisionsFields;
 
 type NodeEdgeStats = {
   /** Years spent employed in public companies, see `Company.isPublic`. */
@@ -101,33 +104,11 @@ type NodeEdgeStats = {
 };
 
 /** The line the search box draws under a person, as stored (see
- * shared/searchLine.ts, which works it out). Declared here rather than there
- * because functions/src links this file and not that one. */
-export type SearchLine = {
-  /** The town the person is active in („Mielec”), or where no town can be
-   * named, the region („powiat sztumski”, „podlaskie”). */
-  where?: string;
-  /** The office won, or the company: „Rada miasta”, „TAURON DYSTRYBUCJA”. */
-  what?: string;
-  /** The year of the election, or when a post ended: „2024”, „do 2025”. */
-  when?: string;
-  /** The far ends of the ties the line names, by id: the tie it is about,
-   * and the one its town came from. Not shown; what the search checks the
-   * person's current ties against. */
-  ties?: string[];
-  /** On a line about a run, the election as the edge stats file it:
-   * „local-2024:won” for a seat won, „local-2024” for a run. */
-  election?: string;
-};
+ * shared/searchLine.ts, which works it out); fields in shared/documents.ts. */
+export type SearchLine = SearchLineFields;
 
-/** The lines stored on a person, one per kind of reader: over the published
- * ties, over every tie, and over the posts an unpublished person's teaser
- * page may show. A scope with nothing to say is absent. */
-export type StoredSearchLines = {
-  approved?: SearchLine;
-  all?: SearchLine;
-  teaser?: SearchLine;
-};
+/** The lines stored on a person, one per kind of reader. */
+export type StoredSearchLines = StoredSearchLinesFields;
 
 export interface NodeStats {
   isApproved: boolean;
@@ -225,17 +206,10 @@ export type Votes = Record<
   }
 >;
 
-export type VoteDocument = {
-  // Either nodeId or extractionId is set.
-  nodeId?: string;
-  extractionId?: string;
-  userUid: string;
-  categoryVotes: Record<string, number>;
-  // Free-text note the reviewer left alongside the verdict. Not aggregated —
-  // it is read back only by whoever reviews the extraction pipeline.
-  comment?: string;
-  updatedAt?: string;
-};
+/** A vote on a node (`nodeId`) or on an extracted fact (`extractionId`),
+ * exactly one of the two; `comment` is the reviewer's free-text note, read
+ * back only by whoever reviews the extraction pipeline. */
+export type VoteDocument = VoteDocumentFields;
 
 export type Node = PageBase<NodeType> & {
   name: string;
@@ -442,6 +416,9 @@ export interface ElectionRich {
 export type PersonRich = Person & {
   id: string;
   companies: (string | undefined)[];
+  /** The place node of each of `companies`, by name: the first employer the
+   * row met under that name. */
+  companyIds?: Record<string, string>;
   elections: ElectionRich[];
   experience: number;
   latestEmploymentStart?: string | null;
@@ -804,7 +781,7 @@ export type NoteSource = {
 
   /** The crop of a BIP asset declaration this entry is about, on an entry the
    * site filed itself because the birth date readers agreed on differs from
-   * the page's (server/utils/declarationPublish.ts). What a second comparison
+   * the page's (server/db/declarationPublish.ts). What a second comparison
    * finds the entry by, so it is filed once however often the crop is
    * compared. */
   declarationExtractId?: string;

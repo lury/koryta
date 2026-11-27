@@ -1,5 +1,3 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import type { GraphLayout } from "~~/shared/graph/util";
 import {
   editorFreshCachedEventHandler,
@@ -28,10 +26,9 @@ async function articleGraph(event: H3Event): Promise<GraphLayout> {
   }
   const includeDrafts = await wantsLatest(event);
 
-  const db = getFirestore(getApp(), "koryta-pl");
   // One hop out from everybody the article names, so that somebody recorded as
   // mentioned arrives with the network they sit in rather than as a lone dot.
-  return graphForArticles(db, [articleId], includeDrafts, {
+  return graphForArticles([articleId], includeDrafts, {
     expand: "mentions",
   });
 }

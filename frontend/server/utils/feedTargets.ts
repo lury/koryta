@@ -1,4 +1,8 @@
-import type { Firestore } from "firebase-admin/firestore";
+import {
+  getterOf,
+  newestRevisionsOfPg,
+  readFieldsPg,
+} from "~~/server/db/activityFeed";
 import { generateEntityUrl } from "~~/shared/slugs";
 import { nodeTypes, type NodeType } from "~~/shared/model";
 import type { FeedTargetType } from "~~/shared/activityFeed";
@@ -67,7 +71,7 @@ export function unreadFeedTarget(ref: FeedTargetRef): UnreadFeedTarget {
   };
 }
 
-/** `getAll` takes any number of refs, but one request has to fit in a call. */
+/** Ids one read asks for at most. */
 const READ_CHUNK = 300;
 
 /** How long what a document said is reused. A name changes when somebody
@@ -84,11 +88,10 @@ const TARGET_CACHE_SIZE = 50_000;
 /** The same bound `resolveMergedNode` puts on a `merged_into` chain. */
 const MAX_MERGE_HOPS = 8;
 
-/** Pages missing from `nodes` are looked up one query each, so they are capped
- * per rebuild. A page that exists only as a proposal is rare; a thousand of
+/** Pages missing from `nodes` are looked up among the revisions, capped per
+ * rebuild. A page that exists only as a proposal is rare; a thousand of
  * them is somebody filing votes on ids that were never pages. */
 const FALLBACK_LOOKUP_CAP = 200;
-const FALLBACK_CONCURRENCY = 20;
 
 const NODE_FIELDS = ["name", "type", "merged_into", "deleted"];
 const EDGE_FIELDS = ["source", "target", "type", "deleted"];
@@ -195,10 +198,9 @@ export function isFeedDocId(id: unknown): id is string {
  * revision queue names it, and links to the page at its source.
  */
 export async function resolveFeedTargets(
-  db: Firestore,
   refs: readonly FeedTargetRef[],
 ): Promise<(ResolvedFeedTarget | null)[]> {
-  const read = new Reads(db, Date.now());
+  const read = new Reads(Date.now());
   const valid = refs.map((ref) => (isFeedDocId(ref.id) ? ref : null));
 
   const nodeIds = new Set<string>();
@@ -263,10 +265,7 @@ class Reads {
    * every hop of a merge chain. */
   private readonly attempted = new Set<string>();
 
-  constructor(
-    private readonly db: Firestore,
-    private readonly now: number,
-  ) {}
+  constructor(private readonly now: number) {}
 
   edgeDocs(ids: Iterable<string>): Promise<void> {
     return this.chunked(
@@ -326,14 +325,17 @@ class Reads {
     await Promise.all(
       chunks.map(async (chunk) => {
         try {
-          const refs = chunk.map((id) =>
-            this.db.collection(collection).doc(id),
+          const docs = new Map(
+            (await readFieldsPg(collection, chunk, fieldMask)).map((doc) => [
+              doc.id,
+              doc.data,
+            ]),
           );
-          const snapshots = await this.db.getAll(...refs, { fieldMask });
-          for (const snapshot of snapshots) {
-            const value = snapshot.exists ? parse(snapshot.data() ?? {}) : null;
-            found.set(snapshot.id, value);
-            cache.set(snapshot.id, value, this.now);
+          for (const id of chunk) {
+            const data = docs.get(id);
+            const value = data ? parse(data) : null;
+            found.set(id, value);
+            cache.set(id, value, this.now);
           }
         } catch (error) {
           console.warn(
@@ -411,33 +413,24 @@ class Reads {
     }
 
     const capped = lookups.slice(0, FALLBACK_LOOKUP_CAP);
-    for (let i = 0; i < capped.length; i += FALLBACK_CONCURRENCY) {
-      await Promise.all(
-        capped.slice(i, i + FALLBACK_CONCURRENCY).map(async (id) => {
-          try {
-            const snapshot = await this.db
-              .collection("revisions")
-              .where("node_id", "==", id)
-              .orderBy("update_time", "desc")
-              .select("data.name", "data.type")
-              .limit(1)
-              .get();
-            const newest = snapshot.docs[0];
-            const value: ProposedInfo | null = newest
-              ? {
-                  name: text(newest.get("data.name")),
-                  type: text(newest.get("data.type")),
-                }
-              : null;
-            this.proposed.set(id, value);
-            caches.proposed.set(id, value, this.now);
-          } catch (error) {
-            console.warn(
-              `activityFeed: could not look up proposal ${id}`,
-              error,
-            );
-          }
-        }),
+    try {
+      const newest = new Map(
+        (await newestRevisionsOfPg(capped, ["data.name", "data.type"])).map(
+          (doc) => [doc.id, getterOf(doc.data)],
+        ),
+      );
+      for (const id of capped) {
+        const get = newest.get(id);
+        const value: ProposedInfo | null = get
+          ? { name: text(get("data.name")), type: text(get("data.type")) }
+          : null;
+        this.proposed.set(id, value);
+        caches.proposed.set(id, value, this.now);
+      }
+    } catch (error) {
+      console.warn(
+        `activityFeed: could not look up ${capped.length} proposals`,
+        error,
       );
     }
   }

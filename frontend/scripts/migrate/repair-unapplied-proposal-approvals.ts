@@ -14,10 +14,8 @@ import {
   withoutInternalFields,
   sameStoredValue,
 } from "../../server/utils/revisions";
-import {
-  edgeRevisionsForMany,
-  publishCandidateRevision,
-} from "../../server/utils/edgePublication";
+import { publishCandidateRevision } from "../../server/utils/edgePublication";
+import { edgeRevisionsForMany } from "./lib/firestoreRevisions";
 
 /**
  * Undo the approvals that publishing an edge gave to proposals it never

@@ -1,5 +1,4 @@
 import { createHash } from "node:crypto";
-import type { DocumentReference, Firestore } from "firebase-admin/firestore";
 import { generateEntityUrl } from "~~/shared/slugs";
 import type { NodeType, Revision } from "~~/shared/model";
 import type {
@@ -10,6 +9,9 @@ import {
   notifyUser,
   type NotificationOutcome,
 } from "~~/server/utils/notifications";
+import { useDb } from "~~/server/db/client";
+import { readDocs } from "~~/server/db/editorial";
+import type { RevisionTarget } from "~~/server/db/revisionWrites";
 
 /** Tells the author of a revision what a reviewer decided about it.
  *
@@ -23,11 +25,10 @@ import {
  * is waiting on the answer.
  */
 export async function notifyRevisionReviewed(
-  db: Firestore,
   args: {
     revisionId: string;
     revision: Partial<Revision>;
-    targetRef: DocumentReference;
+    target: RevisionTarget;
     reviewerUid: string;
     siteUrl: string;
   } & (
@@ -41,18 +42,18 @@ export async function notifyRevisionReviewed(
   const author = args.revision.update_user;
   if (!author || args.revision.update_automatic === true) return "no-recipient";
 
-  // `notifyUser` guards its own work, but resolving the target reads Firestore
-  // before it is ever called, and the review is committed by the time we get
+  // `notifyUser` guards its own work, but resolving the target reads the
+  // database before it is ever called, and the review is committed by the time we get
   // here - letting that read escape would report a successful approval to the
   // admin as a 500.
   try {
-    const target = await revisionTarget(db, args.revision, args.targetRef);
+    const target = await revisionTarget(args.revision, args.target);
     const event: NotificationEvent =
       args.decision === "approved"
         ? { kind: "revisionApproved", target, published: args.published }
         : { kind: "revisionRejected", target, reason: args.reason };
 
-    return await notifyUser(db, author, event, {
+    return await notifyUser(author, event, {
       dedupeKey: dedupeKey(args),
       actorUid: args.reviewerUid,
       siteUrl: args.siteUrl,
@@ -95,26 +96,25 @@ function dedupeKey(args: {
  * at its source.
  */
 async function revisionTarget(
-  db: Firestore,
   revision: Partial<Revision>,
-  targetRef: DocumentReference,
+  target: RevisionTarget,
 ): Promise<NotificationTarget> {
   const data = (revision.data ?? {}) as Record<string, unknown>;
+  const read = async (collection: "nodes" | "edges", id: string) =>
+    (await readDocs(useDb(), collection, [id])).get(id) ?? {};
 
-  if (targetRef.parent.id !== "edges") {
-    return describeNode(targetRef.id, data, () => targetRef.get());
+  if (target.collection !== "edges") {
+    return describeNode(target.id, data, () => read("nodes", target.id));
   }
 
   // An edge revision that changes a date carries no `source`, so fall back to
   // the stored one rather than dropping the link.
-  const stored = (await targetRef.get()).data() ?? {};
+  const stored = await read("edges", target.id);
   const sourceId = stringField(data, "source") ?? stringField(stored, "source");
   if (!sourceId) {
     return { name: stringField(data, "name") ?? "powiązanie" };
   }
-
-  const sourceRef = db.collection("nodes").doc(sourceId);
-  return describeNode(sourceId, {}, () => sourceRef.get());
+  return describeNode(sourceId, {}, () => read("nodes", sourceId));
 }
 
 /** A node's name and page, preferring what the revision says over what is
@@ -127,13 +127,13 @@ async function revisionTarget(
 async function describeNode(
   id: string,
   data: Record<string, unknown>,
-  fetch: () => Promise<{ data(): Record<string, unknown> | undefined }>,
+  fetch: () => Promise<Record<string, unknown>>,
 ): Promise<NotificationTarget> {
   let name = stringField(data, "name");
   let type = stringField(data, "type");
 
   if (!name || !type) {
-    const stored = (await fetch()).data() ?? {};
+    const stored = await fetch();
     name ??= stringField(stored, "name");
     type ??= stringField(stored, "type");
   }

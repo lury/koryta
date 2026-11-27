@@ -21,7 +21,7 @@ import { reportRemaining } from "./remaining";
  * whether they carried a birth date; a draft with no paid public post on it
  * now sits behind both (`readingPriority`), because the automation holds such
  * a page rather than publishing it (`no_public_post` in
- * server/utils/declarationPublish.ts).
+ * server/db/declarationPublish.ts).
  *
  * Crops already uploaded keep the number they were written with - the job
  * uploads incrementally and does not resend them - so without this the queue
@@ -33,7 +33,7 @@ import { reportRemaining } from "./remaining";
  * was true of 1,634 open crops, and moves a crop half a tier back where the
  * job read a full date off it that its page contradicts. A reading that
  * reaches a page moves that page's crops from then on (`requeueCrops` in
- * server/utils/readingQueue.ts); this moves the ones read before.
+ * server/db/readingQueue.ts); this moves the ones read before.
  *
  * Open crops only: `priority` orders the queue, which asks for
  * `status == "open"`, and a settled crop is never offered again. A crop whose

@@ -1,12 +1,6 @@
-import type {
-  DocumentSnapshot,
-  Firestore,
-  QueryDocumentSnapshot,
-} from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
 import { generateEntityUrl } from "~~/shared/slugs";
 import {
-  approvedRevisionId,
   nodeTypes,
   pageIsPublic,
   revisionCollection,
@@ -45,60 +39,30 @@ export interface DescribeOptions {
   allChanges?: boolean;
 }
 
-/**
- * Turns raw revision documents into rows a reviewer or an author can read.
- *
- * The expensive part is the join, and it is done in batches over the *page
- * slice* rather than per row: the distinct targets in one `getAll`, then the
- * revisions those targets point at, then - for edge revisions only - the nodes
- * at their ends, masked to a name, a type and whether they are live. A page of
- * 25 therefore costs a fixed handful of batched reads however many revisions
- * were scanned to find it.
- *
- * Identities come from Firebase Auth, which is not billed as Firestore reads. A
- * uid that no longer resolves keeps its row with null fields - the proposal was
- * still made, and dropping it would quietly shrink a queue.
- */
-export async function describeRevisions(
-  db: Firestore,
-  docs: (QueryDocumentSnapshot | DocumentSnapshot)[],
-  options: DescribeOptions,
-): Promise<Proposal[]> {
-  if (docs.length === 0) return [];
+/** A revision as read: its id and its document. */
+export type RevisionRow = { id: string; data: Record<string, unknown> };
 
-  const targets = await readTargets(db, docs);
-  const [approved, endpoints, authors] = await Promise.all([
-    readApprovedRevisions(db, targets),
-    readEdgeEndpoints(db, docs, targets),
-    options.withAuthors
-      ? readAuthors(docs.map((doc) => doc.get("update_user")))
-      : Promise.resolve(new Map<string, AuthorInfo>()),
-  ]);
-
-  return docs.map((doc) =>
-    describeOne(doc, {
-      targets,
-      approved,
-      endpoints,
-      authors: options.withAuthors ? authors : null,
-      allChanges: options.allChanges === true,
-    }),
-  );
+/** The rows described against what was read for them. */
+export function describeRows(
+  rows: RevisionRow[],
+  ctx: DescribeContext,
+): Proposal[] {
+  return rows.map((row) => describeOne(row, ctx));
 }
 
-type TargetInfo = {
+export type TargetInfo = {
   exists: boolean;
   data: Record<string, unknown>;
   approvedId: string | undefined;
 };
 
-type AuthorInfo = {
+export type AuthorInfo = {
   displayName: string | null;
   email: string | null;
   photoURL: string | null;
 };
 
-type ApprovedRevision = {
+export type ApprovedRevision = {
   /** The snapshot the target is actually serving, which is what a proposal is
    * a change *to*. */
   data: Record<string, unknown>;
@@ -106,7 +70,7 @@ type ApprovedRevision = {
   changedAt: string | null;
 };
 
-type EndpointInfo = {
+export type EndpointInfo = {
   id: string;
   name: string | null;
   type: NodeType | null;
@@ -115,7 +79,7 @@ type EndpointInfo = {
   published: boolean;
 };
 
-type Context = {
+export type DescribeContext = {
   targets: Map<string, TargetInfo>;
   approved: Map<string, ApprovedRevision>;
   endpoints: Map<string, EndpointInfo>;
@@ -126,143 +90,13 @@ type Context = {
 /** The key a revision's target is cached under. `node_id` is the target's id
  * whatever the target is, so the collection has to be part of the key or a node
  * and an edge that happen to share an id would collide. */
-function targetKey(collection: string, id: string): string {
+export function targetKey(collection: string, id: string): string {
   return `${collection}/${id}`;
 }
 
-async function readTargets(
-  db: Firestore,
-  docs: (QueryDocumentSnapshot | DocumentSnapshot)[],
-): Promise<Map<string, TargetInfo>> {
-  const wanted = new Map<string, { collection: string; id: string }>();
-  for (const doc of docs) {
-    const collection = revisionCollection(doc.data() ?? {});
-    const id = targetIdOf(doc);
-    if (!id) continue;
-    wanted.set(targetKey(collection, id), { collection, id });
-  }
-
-  const entries = [...wanted.entries()];
-  if (entries.length === 0) return new Map();
-
-  const snapshots = await db.getAll(
-    ...entries.map(([, { collection, id }]) =>
-      db.collection(collection).doc(id),
-    ),
-  );
-
-  const targets = new Map<string, TargetInfo>();
-  entries.forEach(([key], index) => {
-    const snapshot = snapshots[index];
-    const data = snapshot?.data() ?? {};
-    targets.set(key, {
-      exists: snapshot?.exists ?? false,
-      data,
-      approvedId: approvedRevisionId(data.revision_id),
-    });
-  });
-  return targets;
-}
-
-/** What each target's approved revision says, and when it landed.
- *
- * Two things depend on it. The snapshot is the baseline a proposal is diffed
- * against - the *stored* document cannot be, because four of the five ways a
- * person files a proposal write the proposal's own data onto the target in the
- * same batch, so the stored document already agrees with the revision and every
- * such row would read "the entry already contains this".
- *
- * `changedAt` is when the target last actually moved, which is what answers
- * "has this proposal fallen behind". A revision written pending and approved
- * weeks later changed the entry on its review date, not on the day it was
- * drafted - and `applyRevision` writes `review_time` without ever touching
- * `update_time`. The ~40k pipeline revisions approved as they were written
- * carry no `review_time`, which is what the fallback is for.
- */
-async function readApprovedRevisions(
-  db: Firestore,
-  targets: Map<string, TargetInfo>,
-): Promise<Map<string, ApprovedRevision>> {
-  const ids = [
-    ...new Set(
-      [...targets.values()]
-        .map((target) => target.approvedId)
-        .filter((id): id is string => !!id),
-    ),
-  ];
-  if (ids.length === 0) return new Map();
-
-  const snapshots = await db.getAll(
-    ...ids.map((id) => db.collection("revisions").doc(id)),
-  );
-
-  const approved = new Map<string, ApprovedRevision>();
-  ids.forEach((id, index) => {
-    const snapshot = snapshots[index];
-    if (!snapshot?.exists) return;
-    approved.set(id, {
-      data: (snapshot.get("data") ?? {}) as Record<string, unknown>,
-      changedAt:
-        normalizeUpdateTime(snapshot.get("review_time")) ??
-        normalizeUpdateTime(snapshot.get("update_time")),
-    });
-  });
-  return approved;
-}
-
-/** The nodes at each end of every edge revision on this page.
- *
- * An edge has no name worth reading - `name` on one is a job title, which says
- * nothing about who holds it - and no page of its own. Both ends are read here
- * so a relation can be called what it is, and linked to the entry it will show
- * up on. The stored edge is the fallback for a revision that only changes a
- * date and so carries neither endpoint.
- */
-async function readEdgeEndpoints(
-  db: Firestore,
-  docs: (QueryDocumentSnapshot | DocumentSnapshot)[],
-  targets: Map<string, TargetInfo>,
-): Promise<Map<string, EndpointInfo>> {
-  const wanted = new Set<string>();
-  for (const doc of docs) {
-    const revision = doc.data() ?? {};
-    if (revisionCollection(revision) !== "edges") continue;
-    const id = targetIdOf(doc);
-    const stored = (id && targets.get(targetKey("edges", id))?.data) || {};
-    const proposed = (revision.data ?? {}) as Record<string, unknown>;
-    for (const end of ["source", "target"] as const) {
-      const node = stringField(proposed, end) ?? stringField(stored, end);
-      if (node) wanted.add(node);
-    }
-  }
-
-  const ids = [...wanted];
-  if (ids.length === 0) return new Map();
-
-  const snapshots = await db.getAll(
-    ...ids.map((id) => db.collection("nodes").doc(id)),
-    { fieldMask: ["name", "type", "published", "deleted"] },
-  );
-
-  const endpoints = new Map<string, EndpointInfo>();
-  ids.forEach((id, index) => {
-    const snapshot = snapshots[index];
-    if (!snapshot?.exists) return;
-    const data = snapshot.data() ?? {};
-    const name = stringField(data, "name") ?? null;
-    const type = nodeTypeOf(data);
-    endpoints.set(id, {
-      id,
-      name,
-      type,
-      path: type ? generateEntityUrl(type, id, name ?? undefined) : null,
-      published: pageIsPublic(data),
-    });
-  });
-  return endpoints;
-}
-
-async function readAuthors(uids: unknown[]): Promise<Map<string, AuthorInfo>> {
+export async function readAuthors(
+  uids: unknown[],
+): Promise<Map<string, AuthorInfo>> {
   const wanted = [
     ...new Set(uids.filter((uid): uid is string => typeof uid === "string")),
   ];
@@ -288,20 +122,16 @@ async function readAuthors(uids: unknown[]): Promise<Map<string, AuthorInfo>> {
  * camel-cased variant a handful of older documents carry, which
  * `/api/revisions/byNode` also has to query both ways round for.
  */
-export function targetIdOf(
-  doc: QueryDocumentSnapshot | DocumentSnapshot,
-): string | null {
-  const underscore = doc.get("node_id");
+export function targetIdOf(doc: RevisionRow): string | null {
+  const data = doc.data;
+  const underscore = data.node_id;
   if (typeof underscore === "string" && underscore) return underscore;
-  const camel = doc.get("nodeId");
+  const camel = data.nodeId;
   return typeof camel === "string" && camel ? camel : null;
 }
 
-function describeOne(
-  doc: QueryDocumentSnapshot | DocumentSnapshot,
-  ctx: Context,
-): Proposal {
-  const revision = doc.data() ?? {};
+function describeOne(doc: RevisionRow, ctx: DescribeContext): Proposal {
+  const revision = doc.data;
   const collection = revisionCollection(revision);
   const targetId = targetIdOf(doc) ?? "";
   const target = ctx.targets.get(targetKey(collection, targetId));
@@ -394,8 +224,8 @@ function edgeSubject(
  * What a proposal is a change *to*.
  *
  * Not the stored document. `/api/revisions/create` writes a brand new node from
- * the revision's own data in the batch that files the revision, and
- * `createRevisionTransaction` - behind every relation a reader adds - writes the
+ * the revision's own data in the transaction that files the revision, and
+ * `createRevisionPg` - behind every relation a reader adds - writes the
  * target unconditionally. In both cases the stored document already says exactly
  * what the pending revision says, so diffing against it returns nothing and the
  * row reads "Wpis już to zawiera" for a proposal that is entirely new.

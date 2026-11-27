@@ -1,4 +1,3 @@
-import type { Firestore } from "firebase-admin/firestore";
 import { partyColors } from "~~/shared/misc";
 import {
   getEdges,
@@ -46,7 +45,6 @@ const NEIGHBOUR_EDGE_TYPES: ReadonlySet<EdgeType> = new Set<EdgeType>([
  * traversal - except for the one hop `expand` asks for, below.
  */
 export async function graphForArticles(
-  db: Firestore,
   articleIds: string[],
   includeDrafts: boolean,
   options: {
@@ -78,8 +76,8 @@ export async function graphForArticles(
   } = {},
 ): Promise<GraphLayout> {
   const [cited, mentioned] = await Promise.all([
-    edgesCitingArticles(db, articleIds, includeDrafts),
-    nodesMentionedByArticles(db, articleIds, includeDrafts),
+    edgesCitingArticles(articleIds, includeDrafts),
+    nodesMentionedByArticles(articleIds, includeDrafts),
   ]);
 
   const fromArticles = Array.from(

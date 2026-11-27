@@ -1,8 +1,16 @@
-import { FieldValue, Timestamp } from "firebase-admin/firestore";
-import type { Firestore } from "firebase-admin/firestore";
 import { createError } from "h3";
 import { z } from "zod";
-import { isAlreadyExists, mailToken } from "~~/server/utils/mailTokens";
+import { mailToken } from "~~/server/utils/mailTokens";
+import {
+  campaignIdsLikePg,
+  campaignMailPg,
+  createCampaignPg,
+  listCampaignsPg,
+  queueMailPg,
+  readCampaignPg,
+  recordCampaignSendPg,
+  updateCampaignPg,
+} from "~~/server/db/mail";
 import {
   CAMPAIGN_STATS_DAYS,
   campaignEligibility,
@@ -29,7 +37,7 @@ import { taskSlug, uniqueTaskId } from "~~/shared/tasks";
 export const CAMPAIGNS = "mailCampaigns";
 
 /** How many messages are rendered and queued at once. Each is a token read,
- * maybe a token write and a `mail` create; ten keeps a send of a few hundred
+ * maybe a token write and a `mail` insert; ten keeps a send of a few hundred
  * to seconds without a burst of writes. */
 const SEND_CONCURRENCY = 10;
 
@@ -62,19 +70,15 @@ export const campaignContentSchema = z
     path: ["ctaPath"],
   });
 
-export async function listCampaigns(db: Firestore): Promise<CampaignRecord[]> {
-  const snapshot = await db.collection(CAMPAIGNS).get();
-  return snapshot.docs
-    .map((doc) => toRecord(doc.id, doc.data()))
+export async function listCampaigns(): Promise<CampaignRecord[]> {
+  return (await listCampaignsPg())
+    .map(({ id, data }) => toRecord(id, data))
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-export async function getCampaign(
-  db: Firestore,
-  id: string,
-): Promise<CampaignRecord | null> {
-  const snapshot = await db.collection(CAMPAIGNS).doc(id).get();
-  return snapshot.exists ? toRecord(id, snapshot.data() ?? {}) : null;
+export async function getCampaign(id: string): Promise<CampaignRecord | null> {
+  const data = await readCampaignPg(id);
+  return data ? toRecord(id, data) : null;
 }
 
 /** Creates a campaign, or rewrites the text of one.
@@ -83,30 +87,31 @@ export async function getCampaign(
  * is wrong with a message before everybody gets it. Whoever already had it
  * keeps the old text and is not sent the new one.
  */
-export async function saveCampaign(
-  db: Firestore,
-  args: { id?: string; content: CampaignContent; by: string; now: Date },
-): Promise<CampaignRecord> {
+export async function saveCampaign(args: {
+  id?: string;
+  content: CampaignContent;
+  by: string;
+  now: Date;
+}): Promise<CampaignRecord> {
   const at = args.now.toISOString();
   const content = pickContent(args.content);
 
   if (args.id) {
-    const ref = db.collection(CAMPAIGNS).doc(args.id);
-    const snapshot = await ref.get();
-    if (!snapshot.exists) {
+    const updated = await updateCampaignPg(args.id, {
+      ...content,
+      updatedAt: at,
+    });
+    if (!updated) {
       throw createError({
         statusCode: 404,
         message: "Nie ma takiej kampanii.",
       });
     }
-    await ref.update({ ...content, updatedAt: at });
-    return toRecord(args.id, { ...snapshot.data(), ...content, updatedAt: at });
+    return toRecord(args.id, updated);
   }
 
   const base = `${at.slice(0, 10)}-${taskSlug(content.subject, 40)}`;
-  const taken = new Set(
-    (await db.collection(CAMPAIGNS).get()).docs.map((doc) => doc.id),
-  );
+  const taken = new Set(await campaignIdsLikePg(base));
   const data = {
     ...content,
     createdAt: at,
@@ -116,17 +121,12 @@ export async function saveCampaign(
     unsubscribed: [],
     sends: [],
   };
-  // `create` rather than `set`, so two drafts saved in the same instant under
-  // the same subject cannot overwrite one another.
+  // An insert that skips a taken id, so two drafts saved in the same instant
+  // under the same subject cannot overwrite one another.
   for (let attempt = 0; attempt < 5; attempt++) {
     const id = uniqueTaskId(base, taken);
-    try {
-      await db.collection(CAMPAIGNS).doc(id).create(data);
-      return toRecord(id, data);
-    } catch (error) {
-      if (!isAlreadyExists(error)) throw error;
-      taken.add(id);
-    }
+    if (await createCampaignPg(id, data)) return toRecord(id, data);
+    taken.add(id);
   }
   throw createError({
     statusCode: 409,
@@ -145,12 +145,11 @@ type SendArgs = {
  *
  * Eligibility is decided here again, from `members` the server read itself:
  * the page only offers eligible people, but what it posts is the browser's
- * word. One `mail` document per campaign and person, made with `create`, so a
+ * word. One `mail` row per campaign and person, inserted once, so a
  * second press - or a later send to a wider group - never reaches anybody
  * twice.
  */
 export async function queueCampaign(
-  db: Firestore,
   args: SendArgs & { members: AudienceMember[]; uids: string[]; by: string },
 ): Promise<{
   outcomes: Record<string, SendOutcome>;
@@ -163,7 +162,7 @@ export async function queueCampaign(
   for (let i = 0; i < uids.length; i += SEND_CONCURRENCY) {
     await Promise.all(
       uids.slice(i, i + SEND_CONCURRENCY).map(async (uid) => {
-        outcomes[uid] = await queueOne(db, args, byUid.get(uid));
+        outcomes[uid] = await queueOne(args, byUid.get(uid));
       }),
     );
   }
@@ -175,7 +174,7 @@ export async function queueCampaign(
     test: false,
     outcomes: tally(Object.values(outcomes)),
   };
-  const campaign = await recordSend(db, args.campaign.id, send, queued);
+  const campaign = await recordSend(args.campaign.id, send, queued);
   console.info(
     `Campaign ${args.campaign.id}: queued ${queued.length} of ${uids.length}`,
   );
@@ -183,7 +182,6 @@ export async function queueCampaign(
 }
 
 async function queueOne(
-  db: Firestore,
   args: SendArgs,
   member: AudienceMember | undefined,
 ): Promise<SendOutcome> {
@@ -192,20 +190,19 @@ async function queueOne(
   if (!eligibility.eligible) return eligibility.reason;
 
   try {
-    const mail = await renderFor(db, args, member, eligibility.via);
-    await db
-      .collection("mail")
-      .doc(`campaign_${args.campaign.id}_${member.uid}`)
-      .create({
+    const mail = await renderFor(args, member, eligibility.via);
+    const queued = await queueMailPg(
+      {
         ...mailDocument(member.email!, mail),
         kind: "campaign",
         campaign: args.campaign.id,
         uid: member.uid,
-        created_at: Timestamp.now(),
-      });
-    return "queued";
+        created_at: new Date().toISOString(),
+      },
+      `campaign_${args.campaign.id}_${member.uid}`,
+    );
+    return queued ? "queued" : "duplicate";
   } catch (error) {
-    if (isAlreadyExists(error)) return "duplicate";
     console.error(
       `Failed to queue campaign ${args.campaign.id} for uid=${member.uid}`,
       error,
@@ -218,7 +215,6 @@ async function queueOne(
  * as they like. It goes to their own confirmed address only, and is recorded
  * as a test, so it counts nobody as having received the campaign. */
 export async function queueTest(
-  db: Firestore,
   args: SendArgs & { member: AudienceMember },
 ): Promise<{ outcome: SendOutcome; campaign: CampaignRecord }> {
   const { member } = args;
@@ -229,35 +225,28 @@ export async function queueTest(
   else {
     const eligibility = campaignEligibility(member, args.campaign.topic);
     const mail = await renderFor(
-      db,
       args,
       member,
       eligibility.eligible ? eligibility.via : "team",
     );
-    try {
-      await db
-        .collection("mail")
-        .doc(`campaignTest_${args.campaign.id}_${args.now.getTime()}`)
-        .create({
-          ...mailDocument(member.email, {
-            ...mail,
-            subject: `[Test] ${mail.subject}`,
-          }),
-          kind: "campaignTest",
-          // Not `campaign`: a test must not read as the owner's real delivery.
-          campaignTest: args.campaign.id,
-          uid: member.uid,
-          created_at: Timestamp.now(),
-        });
-      outcome = "queued";
-    } catch (error) {
-      if (!isAlreadyExists(error)) throw error;
-      outcome = "duplicate";
-    }
+    const queued = await queueMailPg(
+      {
+        ...mailDocument(member.email, {
+          ...mail,
+          subject: `[Test] ${mail.subject}`,
+        }),
+        kind: "campaignTest",
+        // Not `campaign`: a test must not read as the owner's real delivery.
+        campaignTest: args.campaign.id,
+        uid: member.uid,
+        created_at: new Date().toISOString(),
+      },
+      `campaignTest_${args.campaign.id}_${args.now.getTime()}`,
+    );
+    outcome = queued ? "queued" : "duplicate";
   }
 
   const campaign = await recordSend(
-    db,
     args.campaign.id,
     {
       at: args.now.toISOString(),
@@ -271,12 +260,11 @@ export async function queueTest(
 }
 
 async function renderFor(
-  db: Firestore,
   args: SendArgs,
   member: AudienceMember,
   via: "optedIn" | "team",
 ): Promise<CampaignMail> {
-  const token = await mailToken(db, member.uid);
+  const token = await mailToken(member.uid);
   const subscriber = member.kind === "subscriber";
   return renderCampaign({
     campaignId: args.campaign.id,
@@ -313,20 +301,13 @@ function mailDocument(email: string, mail: CampaignMail) {
 }
 
 async function recordSend(
-  db: Firestore,
   id: string,
   send: CampaignSend,
   queued: string[],
 ): Promise<CampaignRecord> {
-  const ref = db.collection(CAMPAIGNS).doc(id);
-  await ref.update({
-    ...(queued.length > 0
-      ? { recipients: FieldValue.arrayUnion(...queued) }
-      : {}),
-    sends: FieldValue.arrayUnion(send),
-    updatedAt: send.at,
-  });
-  return toRecord(id, (await ref.get()).data() ?? {});
+  const data = await recordCampaignSendPg(id, send, queued);
+  if (!data) throw new Error(`mailCampaigns/${id} is gone`);
+  return toRecord(id, data);
 }
 
 function tally(outcomes: SendOutcome[]): Partial<Record<SendOutcome, number>> {
@@ -337,25 +318,11 @@ function tally(outcomes: SendOutcome[]): Partial<Record<SendOutcome, number>> {
 
 /** What the extension has done with each message of a campaign, by uid. */
 export async function campaignDeliveries(
-  db: Firestore,
   id: string,
 ): Promise<Record<string, Delivery>> {
-  // Named fields only: the documents also hold the address and the whole text.
-  const snapshot = await db
-    .collection("mail")
-    .where("campaign", "==", id)
-    .select(
-      "uid",
-      "created_at",
-      "delivery.state",
-      "delivery.endTime",
-      "delivery.error",
-    )
-    .get();
-
+  // Named fields only: the rows also hold the address and the whole text.
   const deliveries: Record<string, Delivery> = {};
-  for (const doc of snapshot.docs) {
-    const data = doc.data();
+  for (const data of await campaignMailPg(id)) {
     if (typeof data.uid !== "string") continue;
     const delivery = (data.delivery ?? {}) as Record<string, unknown>;
     const state = (deliveryStates as readonly unknown[]).includes(
@@ -374,9 +341,6 @@ export async function campaignDeliveries(
 }
 
 function isoTime(value: unknown): string | null {
-  if (value && typeof (value as { toDate?: unknown }).toDate === "function") {
-    return (value as { toDate(): Date }).toDate().toISOString();
-  }
   if (typeof value === "string" && !Number.isNaN(Date.parse(value))) {
     return new Date(value).toISOString();
   }

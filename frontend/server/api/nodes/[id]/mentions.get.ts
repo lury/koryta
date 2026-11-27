@@ -1,11 +1,10 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import {
   editorFreshCachedEventHandler,
   wantsLatest,
 } from "~~/server/utils/handlers";
-import { fetchEdgesForNode } from "~~/server/utils/edgePublication";
 import { asArray, pageIsPublic } from "~~/shared/model";
+import type { Edge } from "~~/shared/model";
+import { readEdgesOfNode, readNodeDocs } from "~~/server/db/graph";
 
 /** One article that names this node. */
 export type NodeMention = {
@@ -57,8 +56,9 @@ export default editorFreshCachedEventHandler(async (event) => {
   }
   const includeDrafts = await wantsLatest(event);
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  const visible = (await fetchEdgesForNode(db, id))
+  const visible = (
+    (await readEdgesOfNode(id)) as unknown as (Edge & { id: string })[]
+  )
     .filter((edge) => edge.deleted !== true)
     .filter((edge) => (includeDrafts ? true : pageIsPublic(edge)));
 
@@ -79,12 +79,7 @@ export default editorFreshCachedEventHandler(async (event) => {
   ].filter((entry) => entry.nodeId !== id);
 
   const articleIds = Array.from(new Set(found.map((entry) => entry.nodeId)));
-  const snaps = articleIds.length
-    ? await db.getAll(
-        ...articleIds.map((nodeId) => db.collection("nodes").doc(nodeId)),
-      )
-    : [];
-  const nodes = new Map(snaps.map((snap) => [snap.id, snap.data()]));
+  const nodes = await readNodeDocs(articleIds);
 
   const mentions: NodeMention[] = [];
   for (const { edge, nodeId } of found) {

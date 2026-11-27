@@ -1,6 +1,4 @@
-import { getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
-import { readDeclarationPeople } from "~~/server/utils/declarationPeople";
+import { readDeclarationPeoplePg } from "~~/server/db/declarationReading";
 import type { DeclarationPeople } from "~~/shared/declarations";
 
 /**
@@ -13,7 +11,7 @@ import type { DeclarationPeople } from "~~/shared/declarations";
  */
 export default defineCachedEventHandler(
   async (): Promise<{ people: DeclarationPeople | null }> => ({
-    people: await readDeclarationPeople(getFirestore(getApp(), "koryta-pl")),
+    people: await readDeclarationPeoplePg(),
   }),
   { name: "declarations-people", maxAge: 300, swr: true },
 );

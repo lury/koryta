@@ -1,4 +1,3 @@
-import { getFirestore } from "firebase-admin/firestore";
 import { createError, defineEventHandler, readValidatedBody } from "h3";
 import { z } from "zod";
 import { requireOwner } from "~~/server/utils/auth";
@@ -17,13 +16,12 @@ export default defineEventHandler(async (event) => {
   const { id } = await readValidatedBody(event, (body) =>
     bodySchema.parse(body),
   );
-  const db = getFirestore("koryta-pl");
 
-  const campaign = await getCampaign(db, id);
+  const campaign = await getCampaign(id);
   if (!campaign) {
     throw createError({ statusCode: 404, message: "Nie ma takiej kampanii." });
   }
-  const audience = await loadAudience(db, { toCheck: await queueToCheck() });
+  const audience = await loadAudience({ toCheck: await queueToCheck() });
   const member = audience.members.find((m) => m.uid === user.uid);
   if (!member) {
     throw createError({
@@ -32,7 +30,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  return await queueTest(db, {
+  return await queueTest({
     campaign,
     member,
     community: audience.community,

@@ -1,4 +1,3 @@
-import { getFirestore } from "firebase-admin/firestore";
 import { defineEventHandler, readValidatedBody } from "h3";
 import { z } from "zod";
 import { requireOwner } from "~~/server/utils/auth";
@@ -21,7 +20,7 @@ export default defineEventHandler(async (event) => {
     bodySchema.parse(body),
   );
   return {
-    campaign: await saveCampaign(getFirestore("koryta-pl"), {
+    campaign: await saveCampaign({
       id: input.id,
       content: input.content,
       by: user.uid,

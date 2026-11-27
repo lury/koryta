@@ -1,11 +1,6 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
-import {
-  admitToQueue,
-  getReader,
-  queueFor,
-} from "~~/server/utils/declarations";
+import { getReader } from "~~/server/utils/declarations";
 import { EXTRACT_ID_PATTERN } from "~~/shared/declarations";
+import { admitToQueuePg, queueForPg } from "~~/server/db/declarationReading";
 
 /** Crops a request may name as already on the page. The page names none here
  * and at most ten with an answer (`holding`); each one named is a crop the
@@ -36,8 +31,7 @@ export default defineEventHandler(async (event) => {
       .slice(0, MAX_EXCLUDED),
   );
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  await admitToQueue(db, reader);
+  await admitToQueuePg(reader);
   setResponseHeader(event, "Cache-Control", "private, no-store");
-  return queueFor(db, reader.uid, count, exclude);
+  return queueForPg(reader.uid, count, exclude);
 });

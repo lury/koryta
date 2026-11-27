@@ -29,8 +29,6 @@ export default defineVitestConfig({
       "functions/node_modules",
       "tests/integration/**",
       "tests/e2e/**",
-      // Needs a firestore emulator; see vitest.rules.config.ts.
-      "tests/rules/**",
       "tests/visual/**",
     ],
     coverage: {

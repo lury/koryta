@@ -1,10 +1,13 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import {
   editorFreshCachedEventHandler,
   wantsLatest,
 } from "~~/server/utils/handlers";
-import { importedOrReviewed } from "~~/server/utils/provenance";
+import { importedOrReviewedPg } from "~~/server/db/provenance";
+import {
+  readEmploymentsAt,
+  readEmploymentsOf,
+  readNodeDocs,
+} from "~~/server/db/edgeLists";
 import { pageIsPublic } from "~~/shared/model";
 import type { Company, Edge, Person } from "~~/shared/model";
 import {
@@ -104,9 +107,7 @@ export type PersonSuccessions = {
   hidden: number;
 };
 
-/** How many companies one `in` filter may name. Firestore's limit is 30, and
- * the query is a disjunction of equalities behind the scenes - each one served
- * by the `(target, type)` composite index that already exists. */
+/** How many companies one read names. */
 const COMPANY_CHUNK = 30;
 
 /** The most employment edges one company query will read. A backstop rather
@@ -125,20 +126,16 @@ const SPELLS_PER_COMPANY = 200;
  * site answers it: see `canName`.
  */
 async function employmentEdges(
-  db: FirebaseFirestore.Firestore,
   companyIds: string[],
 ): Promise<(Edge & { id: string })[]> {
   const edges: (Edge & { id: string })[] = [];
   for (let i = 0; i < companyIds.length; i += COMPANY_CHUNK) {
     const chunk = companyIds.slice(i, i + COMPANY_CHUNK);
-    const snap = await db
-      .collection("edges")
-      .where("target", "in", chunk)
-      .where("type", "==", "employed")
-      .limit(SPELLS_PER_COMPANY * chunk.length)
-      .get();
-    for (const doc of snap.docs) {
-      const edge = { id: doc.id, ...(doc.data() as Edge) };
+    const found = (await readEmploymentsAt(
+      chunk,
+      SPELLS_PER_COMPANY * chunk.length,
+    )) as (Edge & { id: string })[];
+    for (const edge of found) {
       if (edge.deleted === true || !edge.source || !edge.target) continue;
       edges.push(edge);
     }
@@ -153,22 +150,9 @@ async function employmentEdges(
  * held ids would cost a request per row.
  */
 async function endpointNodes(
-  db: FirebaseFirestore.Firestore,
   ids: Iterable<string>,
 ): Promise<Map<string, Person | Company>> {
-  const list = Array.from(new Set(ids));
-  const nodes = new Map<string, Person | Company>();
-  for (let i = 0; i < list.length; i += 100) {
-    const refs = list
-      .slice(i, i + 100)
-      .map((id) => db.collection("nodes").doc(id));
-    const snaps = await db.getAll(...refs);
-    for (const snap of snaps) {
-      if (!snap.exists) continue;
-      nodes.set(snap.id, { id: snap.id, ...snap.data() } as Person | Company);
-    }
-  }
-  return nodes;
+  return (await readNodeDocs(ids)) as Map<string, Person | Company>;
 }
 
 /** Whether this reader may be told who somebody is.
@@ -253,16 +237,16 @@ function spellsByCompany(edges: (Edge & { id: string })[]) {
  * kept 28 people out and let 6,820 in. One read per document that has no
  * approved revision, and only for a reader the six-hour cache answers. */
 async function unpublishedHolders(
-  db: FirebaseFirestore.Firestore,
   holders: { spell: SuccessionSpell; person: Person }[],
   edgeById: Map<string, Edge & { id: string }>,
   company: Company,
 ): Promise<CurrentPost[]> {
   if (!holders.length) return [];
-  const shown = await importedOrReviewed(db, [
+  const docs = [
     ...holders.map(({ person }) => person),
     ...holders.flatMap(({ spell }) => edgeById.get(spell.id) ?? []),
-  ]);
+  ];
+  const shown = await importedOrReviewedPg(docs);
   return holders
     .filter(({ spell }) => shown.has(spell.personId) && shown.has(spell.id))
     .map(({ spell, person }) => ({
@@ -278,12 +262,11 @@ async function unpublishedHolders(
 }
 
 async function companySuccessions(
-  db: FirebaseFirestore.Firestore,
   companyId: string,
   showUnapproved: boolean,
 ): Promise<CompanySuccessions> {
-  const edges = await employmentEdges(db, [companyId]);
-  const nodes = await endpointNodes(db, [
+  const edges = await employmentEdges([companyId]);
+  const nodes = await endpointNodes([
     companyId,
     ...edges.map((edge) => edge.source),
   ]);
@@ -363,9 +346,7 @@ async function companySuccessions(
       published: pageIsPublic(person),
     });
   }
-  current.push(
-    ...(await unpublishedHolders(db, unpublished, edgeById, company)),
-  );
+  current.push(...(await unpublishedHolders(unpublished, edgeById, company)));
   current.sort(
     (a, b) =>
       (a.role ?? "").localeCompare(b.role ?? "") ||
@@ -376,24 +357,19 @@ async function companySuccessions(
 }
 
 async function personSuccessions(
-  db: FirebaseFirestore.Firestore,
   personId: string,
   showUnapproved: boolean,
 ): Promise<PersonSuccessions> {
-  const ownSnap = await db
-    .collection("edges")
-    .where("source", "==", personId)
-    .where("type", "==", "employed")
-    .limit(SPELLS_PER_COMPANY)
-    .get();
-  const own = ownSnap.docs
-    .map((doc) => ({ id: doc.id, ...(doc.data() as Edge) }))
-    .filter((edge) => edge.deleted !== true && edge.target);
+  const ownEdges = (await readEmploymentsOf(
+    personId,
+    SPELLS_PER_COMPANY,
+  )) as (Edge & { id: string })[];
+  const own = ownEdges.filter((edge) => edge.deleted !== true && edge.target);
   if (!own.length) return { posts: [], hidden: 0 };
 
   const companyIds = Array.from(new Set(own.map((edge) => edge.target)));
-  const edges = await employmentEdges(db, companyIds);
-  const nodes = await endpointNodes(db, [
+  const edges = await employmentEdges(companyIds);
+  const nodes = await endpointNodes([
     personId,
     ...companyIds,
     ...edges.map((edge) => edge.source),
@@ -480,12 +456,11 @@ async function successions(event: H3Event) {
     });
   }
 
-  const db = getFirestore(getApp(), "koryta-pl");
   const showUnapproved = await wantsLatest(event);
 
   return companyId
-    ? await companySuccessions(db, companyId, showUnapproved)
-    : await personSuccessions(db, personId, showUnapproved);
+    ? await companySuccessions(companyId, showUnapproved)
+    : await personSuccessions(personId, showUnapproved);
 }
 
 /** Six hours, the site default. Unlike the recent-employments feed this does

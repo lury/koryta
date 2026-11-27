@@ -1,13 +1,36 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
+import type { H3Event } from "h3";
 import { getUser, requireDatascience } from "~~/server/utils/auth";
 import {
-  createRevisionTransaction,
-  proposeRevisionTransaction,
-  revisionChangesNothing,
   withoutInternalFields,
   type ProposalOutcome,
+  type RevisionWriteOptions,
 } from "~~/server/utils/revisions";
+import { editorialTx, type Tx, type WriteLog } from "~~/server/db/editorial";
+import { newDocId } from "~~/server/db/ids";
+import {
+  planProposalPg,
+  revisionChangesNothingPg,
+  storeProposalPg,
+} from "~~/server/db/proposals";
+import {
+  edgeRevisionsForManyPg,
+  publishEdgePg,
+  type RevisionTarget,
+} from "~~/server/db/revisionWrites";
+import {
+  createRevisionsPg,
+  type RevisionWrite,
+  type StoredDoc,
+} from "~~/server/db/ingestWrites";
+import {
+  edgesFromPg,
+  namesakesPg,
+  nodeByFieldPg,
+  nodePg,
+  nodesBornPg,
+  resolveMergedPg,
+  type LookupField,
+} from "~~/server/db/personIngest";
 import {
   addsOnlyAnnotations,
   addsOnlyRecordedFacts,
@@ -15,7 +38,7 @@ import {
   edgeIdentity,
   edgeSemantics,
   enrichedEdge,
-  findEdgeMatches,
+  edgeMatches,
   isDistrictOffice,
   isLocalOffice,
   isSameRun,
@@ -26,8 +49,10 @@ import {
   withRecordedFacts,
   type EdgeLike,
 } from "~~/server/utils/edges";
-import { approveWaitingEdge } from "~~/server/utils/edgePublication";
-import { resolveMergedNode } from "~~/server/utils/merge";
+import {
+  settledEdgeRefusal,
+  waitingEdgeRefusal,
+} from "~~/server/utils/edgePublication";
 import { electionPositions } from "~~/shared/misc";
 import { partiesAfterImport } from "~~/shared/partyFloor";
 import type {
@@ -62,11 +87,22 @@ export default defineEventHandler(async (event) => {
     personRequestSchema.parse(body),
   );
   const user = requireDatascience(await getUser(event));
-  const db = getFirestore(getApp(), "koryta-pl");
+  // One transaction: every read sees the database as the request found it,
+  // and every write is queued and made at the end, in order (`Context`).
+  const answer = await editorialTx(async (tx, log) => {
+    const ctx = new Context(tx, user, body.autoapprove ?? false);
+    const result = await ingestPerson(ctx, body, event);
+    await ctx.flush(log);
+    return result;
+  });
+  if (!("message" in answer)) {
+    await useStorage("cache").clear("nitro:handlers");
+    console.info(`Uploaded person ${body.name}`);
+  }
+  return answer;
+});
 
-  const batch = db.batch();
-  const ctx = new Context(db, user, batch, body.autoapprove ?? false);
-
+async function ingestPerson(ctx: Context, body: PersonRequest, event: H3Event) {
   /** What the request did to the person node itself. The edges are reported
    * per company and per election; this is the node. */
   let person: "created" | "updated" | "unchanged" = "unchanged";
@@ -104,37 +140,28 @@ export default defineEventHandler(async (event) => {
     );
   }
 
-  try {
+  {
     // The document, not just its id: the update below needs the visibility
     // stored on it, and this query has already read it - asking again would be
     // a second read of every person in the payload.
     const personDoc = await lookupPersonDoc(ctx, body);
     let personId: string | undefined = personDoc?.id;
     if (!personId) {
-      const personRef = db.collection("nodes").doc();
-      personId = personRef.id;
-      createRevisionTransaction(
-        db,
-        batch,
-        user,
-        personRef,
-        createPerson(body),
-        {
-          automatic: true,
-          approve: ctx.autoapprove,
-          published: ctx.autoapprove,
-        },
-      );
+      personId = newDocId();
+      ctx.revise({ collection: "nodes", id: personId }, createPerson(body), {
+        automatic: true,
+        approve: ctx.autoapprove,
+        published: ctx.autoapprove,
+      });
       person = "created";
     } else {
-      const personRef = db.collection("nodes").doc(personId);
       // The stored document, not just its visibility. A revision is written to
       // its target with `set` and states only the data, so every field the node
       // owns - whether it is published, the counters the listings filter on,
       // the votes - is deleted by an update that does not carry it back. Every
       // re-ingested person came off the site that way, and then out of every
       // listing, which is the one thing a scraper re-run must never do.
-      const stored = personDoc?.data() ?? {};
+      const stored = personDoc?.data ?? {};
       const published = pageIsPublic(stored);
       const revision = updatedPerson(stored, body);
       if (revision) {
@@ -153,15 +180,8 @@ export default defineEventHandler(async (event) => {
         // things: the first is where `parties` become a union and a blank field
         // in the payload is not a deletion, the second covers the bookkeeping
         // the node owns and the write would restate.
-        if (!revisionChangesNothing(personRef, revision, options)) {
-          createRevisionTransaction(
-            db,
-            batch,
-            user,
-            personRef,
-            revision,
-            options,
-          );
+        if (!revisionChangesNothingPg("nodes", revision, options)) {
+          ctx.revise({ collection: "nodes", id: personId }, revision, options);
           person = "updated";
         }
       }
@@ -241,9 +261,6 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    // Invalidate cache
-    await useStorage("cache").clear("nitro:handlers");
-    console.info(`Uploaded person ${body.name}`);
     return {
       personId,
       person,
@@ -268,10 +285,8 @@ export default defineEventHandler(async (event) => {
       ...(ctx.dropped.length > 0 ? { droppedChanges: ctx.dropped } : {}),
       status: "ok",
     };
-  } finally {
-    await batch.commit();
   }
-});
+}
 
 // TODO get rid of this, just use zod,
 function assertArray<T>(vs: T[] | undefined, field: string) {
@@ -425,7 +440,7 @@ class Context {
   /** The person's employment edges as stored, by id - present only when the
    * payload may put the person's jobs on the site without a review. See
    * `verifiedEmployments`. */
-  verifiedEmployments: Map<string, FirebaseFirestore.DocumentData> | undefined;
+  verifiedEmployments: Map<string, Record<string, unknown>> | undefined;
 
   /** What became of each change this request proposed rather than wrote, by
    * outcome. A night re-sends hundreds of people whose candidacies already
@@ -443,16 +458,66 @@ class Context {
    * be either. */
   readonly localRunsByYear = new Map<string, number>();
 
+  /** The writes this request makes, in the order it decided them, made at
+   * the end by `flush`: a lookup never sees what an earlier row wrote, as
+   * nothing in a Firestore batch was visible before its commit, and a later
+   * write to a document wins over an earlier one. */
+  private readonly queue: (
+    | { write: RevisionWrite }
+    | { run: (tx: Tx, log: WriteLog) => Promise<unknown> }
+  )[] = [];
+
   constructor(
-    readonly db: FirebaseFirestore.Firestore,
+    readonly tx: Tx,
     readonly user: { uid: string },
-    readonly batch: FirebaseFirestore.WriteBatch,
     readonly autoapprove: boolean,
-  ) {
-    this.db = db;
-    this.user = user;
-    this.batch = batch;
-    this.autoapprove = autoapprove;
+  ) {}
+
+  /** Files a revision of `target` and writes it there
+   * (`createRevisionTransaction`), at the end. */
+  revise(target: RevisionTarget, data: object, options: RevisionWriteOptions) {
+    this.queue.push({
+      write: { target, data: data as Record<string, unknown>, options },
+    });
+  }
+
+  private readonly edgesBySource = new Map<string, Promise<StoredDoc[]>>();
+
+  /** Every stored edge leaving `source` (removed ones too), by id, read once
+   * for the request: every edge a person payload places leaves the person. */
+  edgesFrom(source: string, type?: string): Promise<StoredDoc[]> {
+    let all = this.edgesBySource.get(source);
+    if (!all) {
+      all = edgesFromPg(this.tx, source);
+      this.edgesBySource.set(source, all);
+    }
+    return type
+      ? all.then((edges) => edges.filter((e) => e.data.type === type))
+      : all;
+  }
+
+  /** Any other write, at the end in its turn. */
+  later(run: (tx: Tx, log: WriteLog) => Promise<unknown>) {
+    this.queue.push({ run });
+  }
+
+  /** Makes the queued writes: each run of revisions in one statement a
+   * table (`createRevisionsPg`). */
+  async flush(log: WriteLog) {
+    let revisions: RevisionWrite[] = [];
+    const writeRevisions = async () => {
+      await createRevisionsPg(this.tx, log, this.user, revisions);
+      revisions = [];
+    };
+    for (const item of this.queue) {
+      if ("write" in item) {
+        revisions.push(item.write);
+        continue;
+      }
+      await writeRevisions();
+      await item.run(this.tx, log);
+    }
+    await writeRevisions();
   }
 }
 
@@ -517,25 +582,17 @@ async function createArticle(
 
   let created = false;
   if (!articleId) {
-    const articleRef = ctx.db.collection("nodes").doc();
-    articleId = articleRef.id;
+    articleId = newDocId();
     const revisionData: Article = {
       name: "",
       type: "article",
       sourceURL: articleURL,
     };
-    createRevisionTransaction(
-      ctx.db,
-      ctx.batch,
-      ctx.user,
-      articleRef,
-      revisionData,
-      {
-        automatic: true,
-        approve: ctx.autoapprove,
-        published: ctx.autoapprove,
-      },
-    );
+    ctx.revise({ collection: "nodes", id: articleId }, revisionData, {
+      automatic: true,
+      approve: ctx.autoapprove,
+      published: ctx.autoapprove,
+    });
     created = true;
   }
 
@@ -785,26 +842,21 @@ async function moveMisfiledCandidacy(
   } else {
     return undefined;
   }
-  const snapshot = await ctx.db
-    .collection("edges")
-    .where("source", "==", edge.source)
-    .where("type", "==", "election")
-    .get();
-  const sameRun = snapshot.docs
-    .filter((doc) => sameRunAs(doc.data() as EdgeLike))
+  const sameRun = (await ctx.edgesFrom(edge.source, "election"))
+    .filter((doc) => sameRunAs(doc.data as EdgeLike))
     // By code point, as `findEdgeMatches` orders its candidates and the
     // pipeline's prediction of this (`_misfiled_candidacy`) does.
     .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   // Already in its district: the ordinary path finds it there.
-  if (sameRun.some((doc) => doc.data().target === edge.target)) {
+  if (sameRun.some((doc) => doc.data.target === edge.target)) {
     return undefined;
   }
 
   for (const doc of sameRun) {
-    const stored = doc.data();
+    const stored = doc.data;
     if (ctx.claimedEdgeIds.has(doc.id)) continue;
-    const region = await ctx.db.collection("nodes").doc(stored.target).get();
-    const teryt = region.data()?.teryt;
+    const region = await nodePg(ctx.tx, String(stored.target));
+    const teryt = region?.data.teryt as string | undefined;
     if (!misfiled(stored as EdgeLike, teryt, edge, districtTeryt)) continue;
 
     const moved = { ...withoutInternalFields(stored), target: edge.target };
@@ -814,11 +866,8 @@ async function moveMisfiledCandidacy(
     // alone (`findEdgeOrCreate`).
     const writeAll =
       vouched || ctx.autoapprove || addsOnlyRecordedFacts(stored, edge);
-    createRevisionTransaction(
-      ctx.db,
-      ctx.batch,
-      ctx.user,
-      ctx.db.collection("edges").doc(doc.id),
+    ctx.revise(
+      { collection: "edges", id: doc.id },
       writeAll
         ? enrichedEdge(moved, edge)
         : (withRecordedFacts(moved, edge) ?? moved),
@@ -854,7 +903,7 @@ async function lookupCompanyIDs(
     employments.map(async (employment) => {
       const node = await lookupNodeDoc(ctx, "krsNumber", employment.krs);
       if (!node) return undefined;
-      ctx.companyPublished.set(node.id, pageIsPublic(node.data() ?? {}));
+      ctx.companyPublished.set(node.id, pageIsPublic(node.data));
       return node.id;
     }),
   );
@@ -876,14 +925,14 @@ function unplacedEmployment(employment: EmploymentRequest): UnplacedEmployment {
 // TODO move this to general utils
 /** Look up a node by the given filtering field and value.
  *
- * @param db
+ * @param ctx
  * @param field
  * @param value
  * @returns
  */
 async function lookupNode(
   ctx: Context,
-  field: string,
+  field: LookupField,
   value: string,
 ): Promise<string | undefined> {
   return (await lookupNodeDoc(ctx, field, value))?.id;
@@ -909,23 +958,20 @@ async function lookupNode(
  */
 async function lookupNodeDoc(
   ctx: Context,
-  field: string,
+  field: LookupField,
   value: string,
   type?: NodeType,
-): Promise<FirebaseFirestore.DocumentSnapshot | undefined> {
-  let query = ctx.db.collection("nodes").where(field, "==", value);
-  if (type) query = query.where("type", "==", type);
-  const snap = await query.limit(1).get();
-  const doc = snap.docs[0];
+): Promise<StoredDoc | undefined> {
+  const doc = await nodeByFieldPg(ctx.tx, field, value, type);
   if (!doc) return undefined;
-  if (!doc.data().merged_into) return doc;
+  if (!doc.data.merged_into) return doc;
 
-  const { snapshot } = await resolveMergedNode(ctx.db, doc.id);
-  if (!snapshot?.exists) return undefined;
+  const survivor = await resolveMergedPg(ctx.tx, doc.id);
+  if (!survivor) return undefined;
   // Type-checked on the way out for the same reason the `korytaId` branch does
   // it: the survivor is a document this query never filtered.
-  if (type && snapshot.data()?.type !== type) return undefined;
-  return snapshot;
+  if (type && survivor.data.type !== type) return undefined;
+  return survivor;
 }
 
 /** The person this payload is about, if the site already has them.
@@ -979,12 +1025,12 @@ async function lookupNodeDoc(
 async function lookupPersonDoc(
   ctx: Context,
   body: PersonRequest,
-): Promise<FirebaseFirestore.DocumentSnapshot | undefined> {
+): Promise<StoredDoc | undefined> {
   if (body.korytaId) {
-    const { snapshot } = await resolveMergedNode(ctx.db, body.korytaId);
+    const snapshot = await resolveMergedPg(ctx.tx, body.korytaId);
     // Type-checked like every other lookup here: an id that has come to name a
     // company since the export would otherwise take a person's parties.
-    if (snapshot?.exists && snapshot.data()?.type === "person") {
+    if (snapshot && snapshot.data.type === "person") {
       refuseAnotherBirthDate(snapshot, body);
       refuseAnotherEntry(snapshot, body, "the page the payload names");
       return snapshot;
@@ -1048,17 +1094,14 @@ async function lookupPersonDoc(
  * than their entry's - four of them a namesake's date, a namesake with an
  * entry of his own - and they are a reviewer's to straighten out.
  */
-function refuseAnotherBirthDate(
-  page: FirebaseFirestore.DocumentSnapshot,
-  body: PersonRequest,
-) {
-  const stored = page.data();
+function refuseAnotherBirthDate(page: StoredDoc, body: PersonRequest) {
+  const stored = page.data;
   const entry = registerEntry(body.rejestrIo);
-  if (entry !== undefined && registerEntry(stored?.rejestrIo) === entry) return;
-  if (!bornAnotherDay(stored?.birthDate, body.birthDate)) return;
+  if (entry !== undefined && registerEntry(stored.rejestrIo) === entry) return;
+  if (!bornAnotherDay(stored.birthDate, body.birthDate)) return;
   throw conflict(
     `${body.name}, born ${body.birthDate}: the page the payload names ` +
-      `(${page.id}) stores ${stored?.birthDate}; held`,
+      `(${page.id}) stores ${stored.birthDate}; held`,
   );
 }
 
@@ -1099,15 +1142,15 @@ function refuseAnotherBirthDate(
  * (`registerEntry`), and the write normalises the link.
  */
 function refuseAnotherEntry(
-  page: FirebaseFirestore.DocumentSnapshot,
+  page: StoredDoc,
   body: PersonRequest,
   reached: string,
 ) {
-  const stored = page.data();
-  if (!linksAnotherEntry(stored?.rejestrIo, body.rejestrIo)) return;
+  const stored = page.data;
+  if (!linksAnotherEntry(stored.rejestrIo, body.rejestrIo)) return;
   throw conflict(
     `${body.name}, rejestr.io entry ${registerEntry(body.rejestrIo)}: ` +
-      `${reached} (${page.id}) links entry ${registerEntry(stored?.rejestrIo)}; held`,
+      `${reached} (${page.id}) links entry ${registerEntry(stored.rejestrIo)}; held`,
   );
 }
 
@@ -1130,7 +1173,7 @@ function refuseAnotherEntry(
 async function lookupByName(
   ctx: Context,
   body: PersonRequest,
-): Promise<FirebaseFirestore.DocumentSnapshot | undefined> {
+): Promise<StoredDoc | undefined> {
   const spaced = spacedSurname(body.name);
   const byName =
     (await lookupNodeDoc(ctx, "name", body.name, "person")) ??
@@ -1139,15 +1182,15 @@ async function lookupByName(
       : await lookupNodeDoc(ctx, "name", spaced, "person"));
   if (!byName) return undefined;
 
-  const stored = byName.data();
+  const stored = byName.data;
   if (
     body.birthDate &&
-    stored?.birthDate &&
+    stored.birthDate &&
     stored.birthDate !== body.birthDate
   ) {
     return undefined;
   }
-  return linksAnotherEntry(stored?.rejestrIo, body.rejestrIo)
+  return linksAnotherEntry(stored.rejestrIo, body.rejestrIo)
     ? undefined
     : byName;
 }
@@ -1179,31 +1222,27 @@ async function lookupByName(
 async function lookupByNameAndBirthDate(
   ctx: Context,
   body: PersonRequest,
-): Promise<FirebaseFirestore.DocumentSnapshot | undefined> {
-  const dated = new Map<string, FirebaseFirestore.DocumentSnapshot>();
+): Promise<StoredDoc | undefined> {
+  const dated = new Map<string, StoredDoc>();
   const undated = new Set<string>();
 
   /** Where a page of the name leaves the payload, followed through a merge. */
-  async function consider(doc: FirebaseFirestore.DocumentSnapshot) {
-    const stored = doc.data();
+  async function consider(doc: StoredDoc) {
+    const stored = doc.data;
     if (!isNamesake(stored, body)) return;
-    let page: FirebaseFirestore.DocumentSnapshot | undefined = doc;
-    if (stored?.merged_into) {
-      page = (await resolveMergedNode(ctx.db, doc.id)).snapshot;
+    let page: StoredDoc | undefined = doc;
+    if (stored.merged_into) {
+      page = await resolveMergedPg(ctx.tx, doc.id);
     }
-    const data = page?.data();
+    const data = page?.data;
     if (!page || data?.type !== "person") return;
     if (linksAnotherEntry(data.rejestrIo, body.rejestrIo)) return;
     if (!data.birthDate) undated.add(page.id);
     else if (data.birthDate === body.birthDate) dated.set(page.id, page);
   }
 
-  const born = await ctx.db
-    .collection("nodes")
-    .where("birthDate", "==", body.birthDate)
-    .get();
-  for (const doc of born.docs) {
-    if (doc.data().birthDate === body.birthDate) await consider(doc);
+  for (const doc of await nodesBornPg(ctx.tx, body.birthDate!)) {
+    if (doc.data.birthDate === body.birthDate) await consider(doc);
   }
   if (dated.size === 1) return [...dated.values()][0];
   if (dated.size > 1) {
@@ -1229,7 +1268,7 @@ async function lookupByNameAndBirthDate(
 
 /** Whether a stored node is a person whose name agrees with the payload's. */
 function isNamesake(
-  stored: FirebaseFirestore.DocumentData | undefined,
+  stored: Record<string, unknown> | undefined,
   body: PersonRequest,
 ): boolean {
   return (
@@ -1286,10 +1325,7 @@ function isoBirthDate(value: unknown): string | undefined {
  * apostrophe or a full stop the way a space would: „D'obyrn” is indexed as „d”
  * and „obyrn”, so the surname as written finds only a page indexed before
  * that, and its last word every page since. */
-async function namesakes(
-  ctx: Context,
-  name: string,
-): Promise<FirebaseFirestore.QueryDocumentSnapshot[]> {
+async function namesakes(ctx: Context, name: string): Promise<StoredDoc[]> {
   const surname = name.trim().toLowerCase().split(/\s+/).at(-1);
   if (!surname) return [];
   const lastPart =
@@ -1303,11 +1339,7 @@ async function namesakes(
       ]),
     ),
   ];
-  const snapshot = await ctx.db
-    .collection("nodes")
-    .where("nameChunksLower", "array-contains-any", spellings)
-    .get();
-  return snapshot.docs;
+  return namesakesPg(ctx.tx, spellings);
 }
 
 function conflict(message: string) {
@@ -1351,9 +1383,11 @@ async function findEdgeOrCreate(
   const occurrence = ctx.edgeOccurrences.get(identity) ?? 0;
   ctx.edgeOccurrences.set(identity, occurrence + 1);
 
-  const { same, enrichable, ids, documents } = await findEdgeMatches(
-    ctx.db,
+  const { same, enrichable, ids, documents } = edgeMatches(
     edge,
+    (await ctx.edgesFrom(edge.source)).filter(
+      ({ data }) => data.target === edge.target && data.type === edge.type,
+    ),
   );
 
   let existing: string | undefined;
@@ -1416,7 +1450,7 @@ async function findEdgeOrCreate(
   // the concurrent employments would.
   if (candidate) {
     ctx.claimedEdgeIds.set(candidate.id, identity);
-    const edgeRef = ctx.db.collection("edges").doc(candidate.id);
+    const target = { collection: "edges", id: candidate.id } as const;
     const enriched = enrichedEdge(
       withoutInternalFields(candidate.stored),
       edge,
@@ -1431,40 +1465,28 @@ async function findEdgeOrCreate(
     // recorded facts go out without it (below).
     const recordedOnly = addsOnlyRecordedFacts(candidate.stored, edge);
     if (vouched || recordedOnly || ctx.autoapprove) {
-      createRevisionTransaction(
-        ctx.db,
-        ctx.batch,
-        ctx.user,
-        edgeRef,
-        enriched,
-        {
-          automatic: true,
-          approve: true,
-          // Carried across rather than decided here, so learning a committee
-          // neither publishes a candidacy that was awaiting review nor hides one
-          // that was live - and does not drop the votes cast on it either.
-          stored: candidate.stored,
-        },
-      );
+      ctx.revise(target, enriched, {
+        automatic: true,
+        approve: true,
+        // Carried across rather than decided here, so learning a committee
+        // neither publishes a candidacy that was awaiting review nor hides one
+        // that was live - and does not drop the votes cast on it either.
+        stored: candidate.stored,
+      });
     } else {
       // A reviewer's answer to this offer stands: the same key is the same
       // ask, so one approved or rejected is left as it is rather than asked
       // again on every send. See `proposeRevisionTransaction`.
-      const { outcome } = await proposeRevisionTransaction(
-        ctx.db,
-        ctx.batch,
-        ctx.user,
-        edgeRef,
-        enriched,
-        {
-          automatic: true,
-          // What the edge would assert, not the text it would say it in: PKW
-          // writes one committee in whatever case that year's file had, and
-          // re-filing the same offer under every spelling is how a review queue
-          // fills up with duplicates of itself.
-          key: identity,
-        },
-      );
+      const plan = await planProposalPg(ctx.tx, ctx.user, target, enriched, {
+        automatic: true,
+        // What the edge would assert, not the text it would say it in: PKW
+        // writes one committee in whatever case that year's file had, and
+        // re-filing the same offer under every spelling is how a review queue
+        // fills up with duplicates of itself.
+        key: identity,
+      });
+      ctx.later((tx, log) => storeProposalPg(tx, log, plan));
+      const { outcome } = plan;
       ctx.proposals[outcome] = (ctx.proposals[outcome] ?? 0) + 1;
 
       // The office and the result do not wait for it. They rode in the one
@@ -1488,18 +1510,15 @@ async function findEdgeOrCreate(
         outcome !== "decided" &&
         candidate.stored.deleted !== true
       ) {
-        createRevisionTransaction(
-          ctx.db,
-          ctx.batch,
-          ctx.user,
-          edgeRef,
-          recorded,
-          { automatic: true, approve: true, stored: candidate.stored },
-        );
+        ctx.revise(target, recorded, {
+          automatic: true,
+          approve: true,
+          stored: candidate.stored,
+        });
       }
     }
     // Written onto with the visibility it had, so nothing went live.
-    return { edgeId: edgeRef.id, created: false, published: false };
+    return { edgeId: candidate.id, created: false, published: false };
   }
 
   // A new document, at an id no stored edge already occupies. Normally
@@ -1510,20 +1529,20 @@ async function findEdgeOrCreate(
   let copy = occurrence;
   while (ids.has(edgeDocumentId(edge, copy))) copy++;
 
-  const edgeRef = ctx.db.collection("edges").doc(edgeDocumentId(edge, copy));
+  const edgeId = edgeDocumentId(edge, copy);
   const published = ctx.autoapprove || verified;
-  createRevisionTransaction(ctx.db, ctx.batch, ctx.user, edgeRef, edge, {
+  ctx.revise({ collection: "edges", id: edgeId }, edge, {
     automatic: true,
     approve: published,
     published,
   });
   if (verified) {
     console.info(
-      `[ingest] approved employment ${edgeRef.id} on its register entry`,
+      `[ingest] approved employment ${edgeId} on its register entry`,
     );
   }
-  ctx.claimedEdgeIds.set(edgeRef.id, identity);
-  return { edgeId: edgeRef.id, created: true, published };
+  ctx.claimedEdgeIds.set(edgeId, identity);
+  return { edgeId, created: true, published };
 }
 
 /** What `findEdgeOrCreate` did with one row.
@@ -1582,11 +1601,8 @@ function fillAnnotations(
   if (!addsOnlyAnnotations(stored, edge)) return;
 
   const document = published ? { ...stored, published: true } : stored;
-  createRevisionTransaction(
-    ctx.db,
-    ctx.batch,
-    ctx.user,
-    ctx.db.collection("edges").doc(edgeId),
+  ctx.revise(
+    { collection: "edges", id: edgeId },
     enrichedEdge(withoutInternalFields(stored), edge),
     {
       automatic: true,
@@ -1672,23 +1688,21 @@ function endOf(value: unknown): string | null {
  */
 async function verifiedEmployments(
   ctx: Context,
-  personDoc: FirebaseFirestore.DocumentSnapshot | undefined,
+  personDoc: StoredDoc | undefined,
   body: PersonRequest,
   companyIDs: (string | undefined)[],
-): Promise<Map<string, FirebaseFirestore.DocumentData> | undefined> {
-  const stored = personDoc?.data();
+): Promise<Map<string, Record<string, unknown>> | undefined> {
+  const stored = personDoc?.data;
   if (!personDoc || !stored || !pageIsPublic(stored)) return undefined;
   if (!body.rejestrIo) return undefined;
   const linked = registerEntry(stored.rejestrIo);
   if (linked && linked !== registerEntry(body.rejestrIo)) return undefined;
 
-  const snapshot = await ctx.db
-    .collection("edges")
-    .where("source", "==", personDoc.id)
-    .where("type", "==", "employed")
-    .get();
-  const employments = new Map<string, FirebaseFirestore.DocumentData>(
-    snapshot.docs.map((doc) => [doc.id, doc.data()]),
+  const employments = new Map<string, Record<string, unknown>>(
+    (await ctx.edgesFrom(personDoc.id, "employed")).map((doc) => [
+      doc.id,
+      doc.data,
+    ]),
   );
 
   const shown = new Set<string>();
@@ -1729,13 +1743,27 @@ async function approveVerifiedEdge(
 ): Promise<boolean> {
   const stored = ctx.verifiedEmployments?.get(edgeId);
   if (!stored) return false;
-  const published = await approveWaitingEdge(
-    ctx.db,
-    ctx.batch,
-    edgeId,
-    stored,
-    ctx.user,
-  );
+  // `approveWaitingEdge`: read now, written in its turn.
+  let published = false;
+  if (!settledEdgeRefusal(stored)) {
+    const revisions =
+      (await edgeRevisionsForManyPg(ctx.tx, [edgeId])).get(edgeId) ?? [];
+    if (!waitingEdgeRefusal(stored, revisions)) {
+      const user = ctx.user;
+      ctx.later((tx, log) =>
+        publishEdgePg(
+          tx,
+          log,
+          edgeId,
+          stored,
+          revisions.slice(0, 1),
+          user,
+          false,
+        ),
+      );
+      published = true;
+    }
+  }
   if (published) console.info(`[ingest] approved waiting employment ${edgeId}`);
   return published;
 }

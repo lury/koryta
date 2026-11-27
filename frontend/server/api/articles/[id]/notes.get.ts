@@ -1,9 +1,8 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { getUser } from "~~/server/utils/auth";
-import { getNoteRows } from "~~/server/utils/notes";
+import { getNoteRowsPg } from "~~/server/db/notes";
 import { normalizeUrl } from "~~/shared/url";
 import type { NoteRow } from "~~/shared/model";
+import { readNodeDocs } from "~~/server/db/graph";
 
 export type ArticleNotes = { notes: NoteRow[] };
 
@@ -26,9 +25,8 @@ export type ArticleNotes = { notes: NoteRow[] };
  * and is exact. The url is matched normalized as well, which catches the two
  * populations the stamp cannot: entries written before the promotion existed,
  * and the corrections and gap reports, which carry urls and are deliberately
- * never promoted. `getNoteRows` reads the collection whole and filters in
- * memory because Firestore can neither order nor filter on a field nested
- * inside an array, which `sources` is - the same reason the admin queue does.
+ * never promoted. The entries are read whole (`getNoteRowsPg`) and filtered
+ * here, as the admin queue does: the collection is small.
  */
 export default defineEventHandler(async (event): Promise<ArticleNotes> => {
   const id = getRouterParam(event, "id");
@@ -37,17 +35,16 @@ export default defineEventHandler(async (event): Promise<ArticleNotes> => {
   }
   await getUser(event);
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  const snapshot = await db.collection("nodes").doc(id).get();
-  if (!snapshot.exists || snapshot.data()?.type !== "article") {
+  const article = (await readNodeDocs([id])).get(id);
+  if (article?.type !== "article") {
     throw createError({ statusCode: 404, message: "Nie ma takiego artykułu." });
   }
 
-  const sourceURL = snapshot.data()?.sourceURL;
+  const sourceURL = article.sourceURL;
   const wanted =
     typeof sourceURL === "string" && sourceURL ? normalizeUrl(sourceURL) : null;
 
-  const rows = await getNoteRows(db);
+  const rows = await getNoteRowsPg();
   const notes = rows.filter((row) => {
     // The article's own notes are the editor on the page; this section is what
     // was written elsewhere.

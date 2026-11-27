@@ -1,15 +1,17 @@
 import { createHash } from "node:crypto";
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { getUser, requireDatascience } from "~~/server/utils/auth";
-import { restageDeclarationPeople } from "~~/server/utils/declarationPeopleCount";
-import { matchAndDrain } from "~~/server/utils/declarationPublish";
-import { resolveMergedNode } from "~~/server/utils/merge";
+import { useDb } from "~~/server/db/client";
 import {
-  pagesReached,
-  pageTiers,
+  resolvePages,
+  restageDeclarationPeoplePg,
+} from "~~/server/db/declarationPeopleCount";
+import { matchAndDrainPg } from "~~/server/db/declarationPublish";
+import {
+  pagesReachedPg,
+  pageTiersPg,
   type QueuedPage,
-} from "~~/server/utils/readingQueue";
+} from "~~/server/db/readingQueue";
+import { textArray } from "~~/server/db/textArray";
 import { pagesTouched } from "~~/shared/declarationPeople";
 import { pageIsPublic } from "~~/shared/model";
 import {
@@ -46,8 +48,12 @@ import {
  * with high confidence, or one OCR read cleanly that is already the birth date
  * of a page the crop is for. A crop settled either way is then compared with
  * its pages, which is where anything is published
- * (server/utils/declarationPublish.ts). The pages of the crops stored, and
+ * (server/db/declarationPublish.ts). The pages of the crops stored, and
  * those the comparison moved, move in the people count after it.
+ *
+ * The request's candidacies, crops and pictures are written in one
+ * transaction, each as Firestore's `set(..., {merge: true})` wrote it: the
+ * fields sent replace, maps merge (`jsonb_merge_deep`).
  */
 export default defineEventHandler(async (event) => {
   // The gate comes before the body: a request with 8 MB of images should not
@@ -70,8 +76,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  const now = Timestamp.now();
+  const now = new Date().toISOString();
   const result: DeclarationIngestResult = {
     status: "ok",
     candidacies: { created: 0, updated: 0, skipped: [] },
@@ -83,21 +88,19 @@ export default defineEventHandler(async (event) => {
    * crops. */
   const pages = new Map<string, QueuedPage>();
   const people = await livePeople(
-    db,
     body.candidacies.flatMap((candidacy) => candidacy.kids),
     pages,
   );
-  const candidacyRefs = body.candidacies.map((candidacy) =>
-    db.collection("declarationCandidacies").doc(candidacy.key),
+  const storedCandidacies = await readRows(
+    "declaration_candidacies",
+    body.candidacies.map((candidacy) => candidacy.key),
   );
-  const storedCandidacies =
-    candidacyRefs.length > 0 ? await db.getAll(...candidacyRefs) : [];
 
-  const writes = new WriteQueue(db);
+  const writes = new Writes();
   /** What each key resolves to, for the extracts of this request. */
   const candidacyByKey = new Map<string, StoredCandidacy>();
 
-  body.candidacies.forEach((candidacy, i) => {
+  body.candidacies.forEach((candidacy) => {
     const personIds = unique(
       candidacy.kids.map((kid) => people.get(kid)).filter(isString),
     );
@@ -108,7 +111,7 @@ export default defineEventHandler(async (event) => {
       });
       return;
     }
-    const exists = storedCandidacies[i]?.exists ?? false;
+    const exists = storedCandidacies.has(candidacy.key);
     const stored: StoredCandidacy = {
       key: candidacy.key,
       personIds,
@@ -124,18 +127,14 @@ export default defineEventHandler(async (event) => {
       files: candidacy.files ?? 0,
     };
     candidacyByKey.set(candidacy.key, stored);
-    writes.set(
-      candidacyRefs[i]!,
-      {
-        ...stored,
-        tag: body.tag,
-        runId: body.runId ?? null,
-        uploaderUid: user.uid,
-        updatedAt: now,
-        ...(exists ? {} : { createdAt: now }),
-      },
-      0,
-    );
+    writes.set("declaration_candidacies", candidacy.key, {
+      ...stored,
+      tag: body.tag,
+      runId: body.runId ?? null,
+      uploaderUid: user.uid,
+      updatedAt: now,
+      ...(exists ? {} : { createdAt: now }),
+    });
     if (exists) result.candidacies.updated += 1;
     else result.candidacies.created += 1;
   });
@@ -148,19 +147,14 @@ export default defineEventHandler(async (event) => {
       .filter((key) => !candidacyByKey.has(key)),
   );
   if (earlierKeys.length > 0) {
-    const earlier = await db.getAll(
-      ...earlierKeys.map((key) =>
-        db.collection("declarationCandidacies").doc(key),
-      ),
-    );
-    for (const snapshot of earlier) {
-      if (!snapshot.exists) continue;
-      const data = snapshot.data() as StoredCandidacy;
+    const earlier = await readRows("declaration_candidacies", earlierKeys);
+    for (const [key, stored] of earlier) {
+      const data = stored as StoredCandidacy;
       const personIds = asStrings(data.personIds);
       // People are re-checked: a page merged or removed since the candidacy
       // was sent must not take the crop.
-      const resolved = await livePeople(db, personIds, pages);
-      candidacyByKey.set(snapshot.id, {
+      const resolved = await livePeople(personIds, pages);
+      candidacyByKey.set(key, {
         ...data,
         personIds: unique(
           personIds.map((id) => resolved.get(id)).filter(isString),
@@ -172,9 +166,8 @@ export default defineEventHandler(async (event) => {
   // Every page this request names is known by now, so the order readers are
   // shown their crops in can be settled once for all of them: each page's
   // tier, and whether a reading has reached the pages the crops are for.
-  const order = await pageTiers(db, pages.values());
-  const reached = await pagesReached(
-    db,
+  const order = await pageTiersPg(pages.values());
+  const reached = await pagesReachedPg(
     body.extracts.flatMap((extract) =>
       extract.candidacies.flatMap(
         (key) => candidacyByKey.get(key)?.personIds ?? [],
@@ -182,13 +175,10 @@ export default defineEventHandler(async (event) => {
     ),
   );
 
-  const extractRefs = body.extracts.map((extract) =>
-    db
-      .collection("declarationExtracts")
-      .doc(extractId(extract.sha256, extract.page)),
+  const storedExtracts = await readRows(
+    "declaration_extracts",
+    body.extracts.map((extract) => extractId(extract.sha256, extract.page)),
   );
-  const storedExtracts =
-    extractRefs.length > 0 ? await db.getAll(...extractRefs) : [];
   /** Crops to compare with their pages once stored: the ones this request
    * settles (`machineSettles`) and the ones settled already that it names
    * more pages or units for. */
@@ -213,12 +203,8 @@ export default defineEventHandler(async (event) => {
     if (extract.outcome === "crop" && !images?.date) return skip("no_images");
     if (extract.outcome !== "failed" && images?.bad) return skip("bad_image");
 
-    const snapshot = storedExtracts[i];
-    const existing = snapshot?.exists
-      ? (snapshot.data() as Record<string, unknown>)
-      : undefined;
+    const existing = storedExtracts.get(id);
     const answered = Number(existing?.answerCount ?? 0) > 0;
-    const ref = extractRefs[i]!;
     const imageHash =
       extract.outcome !== "failed" && images?.date ? hashOf(images) : null;
     // The same picture again costs nothing; a new one replaces the old only
@@ -248,69 +234,65 @@ export default defineEventHandler(async (event) => {
     if (reading.status === "agreed" || widened) toCompare.push(id);
     for (const page of nextPersonIds) cropPages.add(page);
 
-    writes.set(
-      ref,
-      {
-        id,
-        sha256: extract.sha256,
-        page: extract.page,
-        url: extract.url,
-        host: hostOf(extract.url),
-        pageUrl: extract.pageUrl ?? null,
-        label: extract.label ?? null,
-        declarationYear: extract.declarationYear ?? null,
-        candidacyKeys: unique([
-          ...asStrings(existing?.candidacyKeys),
-          ...candidacies.map((c) => c.key),
-        ]),
-        personIds: nextPersonIds,
-        priority: cropPriority(
-          personIds.map((pageId) => ({
-            tier: order.get(pageId) ?? 3,
-            read: reached.has(pageId),
-            birthDate: pages.get(pageId)?.birthDate,
-          })),
-          extract.machine?.birthDate,
-        ),
-        units: nextUnits,
-        linkNamed: extract.linkNamed ?? null,
-        outcome: extract.outcome,
-        failure: extract.outcome === "failed" ? (extract.reason ?? null) : null,
-        machine: extract.machine ?? null,
-        // Answers were given to the picture already stored, so a re-cut
-        // never replaces it under them.
-        ...(!writeImages
-          ? {}
-          : {
-              imageHash,
-              hasNameImage: !!images!.name,
-              imageSize: {
-                date: pngSize(images!.date!),
-                name: images!.name ? pngSize(images!.name) : null,
-              },
-            }),
-        tag: body.tag,
-        runId: body.runId ?? null,
-        uploaderUid: user.uid,
-        updatedAt: now,
-        ...reading,
-        ...(widened ? { pageMatch: null } : {}),
-      },
-      0,
-    );
+    writes.set("declaration_extracts", id, {
+      id,
+      sha256: extract.sha256,
+      page: extract.page,
+      url: extract.url,
+      host: hostOf(extract.url),
+      pageUrl: extract.pageUrl ?? null,
+      label: extract.label ?? null,
+      declarationYear: extract.declarationYear ?? null,
+      candidacyKeys: unique([
+        ...asStrings(existing?.candidacyKeys),
+        ...candidacies.map((c) => c.key),
+      ]),
+      personIds: nextPersonIds,
+      priority: cropPriority(
+        personIds.map((pageId) => ({
+          tier: order.get(pageId) ?? 3,
+          read: reached.has(pageId),
+          birthDate: pages.get(pageId)?.birthDate,
+        })),
+        extract.machine?.birthDate,
+      ),
+      units: nextUnits,
+      linkNamed: extract.linkNamed ?? null,
+      outcome: extract.outcome,
+      failure: extract.outcome === "failed" ? (extract.reason ?? null) : null,
+      machine: extract.machine ?? null,
+      // Answers were given to the picture already stored, so a re-cut
+      // never replaces it under them.
+      ...(!writeImages
+        ? {}
+        : {
+            imageHash,
+            hasNameImage: !!images!.name,
+            imageSize: {
+              date: pngSize(images!.date!),
+              name: images!.name ? pngSize(images!.name) : null,
+            },
+          }),
+      tag: body.tag,
+      runId: body.runId ?? null,
+      uploaderUid: user.uid,
+      updatedAt: now,
+      ...reading,
+      ...(widened ? { pageMatch: null } : {}),
+    });
     if (writeImages) {
-      writes.set(
-        db.collection("declarationExtractImages").doc(id),
-        { date: images!.date, name: images!.name ?? null, updatedAt: now },
-        images!.date!.length + (images!.name?.length ?? 0),
-      );
+      writes.set("declaration_extract_images", id, {
+        date: bytesOf(images!.date!),
+        name: images!.name ? bytesOf(images!.name) : null,
+        updatedAt: now,
+      });
     }
     if (!existing) result.extracts.created += 1;
     else if (answered && extract.outcome === "crop") result.extracts.kept += 1;
     else result.extracts.updated += 1;
   });
 
-  await writes.flush();
+  await writes.commit();
 
   // A crop that arrives settled meets its pages now, the way one settled by
   // readers does after the answer that settles it. Never at the upload's
@@ -318,8 +300,7 @@ export default defineEventHandler(async (event) => {
   // whatever this did not.
   if (toCompare.length > 0) {
     try {
-      const { matched, drain } = await matchAndDrain(
-        db,
+      const { matched, drain } = await matchAndDrainPg(
         toCompare,
         new Date(),
         publishLimitOf(useRuntimeConfig(event)),
@@ -332,7 +313,7 @@ export default defineEventHandler(async (event) => {
       console.error("[declarations] comparing uploaded readings failed", error);
     }
   }
-  await restageDeclarationPeople(db, [...cropPages]);
+  await restageDeclarationPeoplePg([...cropPages]);
   return result;
 });
 
@@ -356,24 +337,18 @@ type StoredCandidacy = {
  * deleted or not a person maps to nothing. Every page found is also put in
  * `pages`. */
 async function livePeople(
-  db: FirebaseFirestore.Firestore,
   ids: readonly string[],
   pages: Map<string, QueuedPage>,
 ): Promise<Map<string, string | undefined>> {
   const wanted = unique(ids);
   const answer = new Map<string, string | undefined>();
   if (wanted.length === 0) return answer;
-  const snapshots = await db.getAll(
-    ...wanted.map((id) => db.collection("nodes").doc(id)),
-  );
-  for (const [i, snapshot] of snapshots.entries()) {
-    let page: FirebaseFirestore.DocumentSnapshot | undefined = snapshot;
-    if (page.exists && page.data()?.merged_into) {
-      page = (await resolveMergedNode(db, page.id)).snapshot;
-    }
-    const data = page?.exists ? page.data() : undefined;
+  const resolved = await resolvePages(wanted);
+  for (const id of wanted) {
+    const page = resolved.get(id);
+    const data = page?.node;
     const live = data?.type === "person" && data.deleted !== true;
-    answer.set(wanted[i]!, live ? page!.id : undefined);
+    answer.set(id, live ? page!.id : undefined);
     if (live) {
       pages.set(page!.id, {
         id: page!.id,
@@ -383,6 +358,18 @@ async function livePeople(
     }
   }
   return answer;
+}
+
+/** The stored documents among `ids`, by id. */
+async function readRows(
+  table: string,
+  ids: readonly string[],
+): Promise<Map<string, Record<string, unknown>>> {
+  if (ids.length === 0) return new Map();
+  const sql = useDb();
+  const rows = await sql<{ id: string; data: Record<string, unknown> }[]>`
+    SELECT id, data FROM ${sql(table)} WHERE id = ANY(${textArray(unique(ids))}::text[])`;
+  return new Map(rows.map((row) => [row.id, row.data]));
 }
 
 /** Whether the crop can be trusted to be the candidate's own page.
@@ -410,7 +397,7 @@ function namesItsPerson(
 function readingState(
   extract: DeclarationExtractInput,
   existing: Record<string, unknown> | undefined,
-  now: Timestamp,
+  now: string,
   pageBirthDates: readonly unknown[],
 ): Record<string, unknown> {
   const settled = machineSettles(extract.machine, pageBirthDates);
@@ -494,40 +481,56 @@ function decodeImages(
   return decoded;
 }
 
-/** Writes in batches that stay under Firestore's limits: 500 operations and
- * 10 MiB a commit, of which the images take most. */
-class WriteQueue {
-  private batch: FirebaseFirestore.WriteBatch;
-  private ops = 0;
-  private bytes = 0;
-  private pending: Promise<unknown>[] = [];
+/** `b` over `a`, maps merged field by field, as `jsonb_merge_deep`. */
+function mergeDeep(
+  a: Record<string, unknown>,
+  b: Record<string, unknown>,
+): Record<string, unknown> {
+  const out = { ...a };
+  for (const [key, value] of Object.entries(b)) {
+    const before = out[key];
+    out[key] = isMap(value) && isMap(before) ? mergeDeep(before, value) : value;
+  }
+  return out;
+}
 
-  constructor(private readonly db: FirebaseFirestore.Firestore) {
-    this.batch = db.batch();
+function isMap(value: unknown): value is Record<string, unknown> {
+  return !!value && typeof value === "object" && !Array.isArray(value);
+}
+
+/** Bytes as the documents store them. */
+function bytesOf(bytes: Buffer): { $bytes: string } {
+  return { $bytes: bytes.toString("base64") };
+}
+
+/** The request's writes, by table, applied in one transaction: each a
+ * `set(..., {merge: true})`, a later write of the same document merged over
+ * an earlier one. */
+class Writes {
+  private readonly tables = new Map<
+    string,
+    Map<string, Record<string, unknown>>
+  >();
+
+  set(table: string, id: string, data: Record<string, unknown>) {
+    const docs = this.tables.get(table) ?? new Map();
+    this.tables.set(table, docs);
+    docs.set(id, mergeDeep(docs.get(id) ?? {}, data));
   }
 
-  set(
-    ref: FirebaseFirestore.DocumentReference,
-    data: Record<string, unknown>,
-    bytes: number,
-  ) {
-    if (this.ops >= 450 || this.bytes + bytes > 6_000_000) this.cut();
-    this.batch.set(ref, data, { merge: true });
-    this.ops += 1;
-    this.bytes += bytes;
-  }
-
-  private cut() {
-    if (this.ops === 0) return;
-    this.pending.push(this.batch.commit());
-    this.batch = this.db.batch();
-    this.ops = 0;
-    this.bytes = 0;
-  }
-
-  async flush() {
-    this.cut();
-    await Promise.all(this.pending);
+  async commit() {
+    if (this.tables.size === 0) return;
+    await useDb().begin(async (tx) => {
+      for (const [table, docs] of this.tables) {
+        const rows = [...docs].map(([id, data]) => ({ id, data }));
+        await tx`
+          INSERT INTO ${tx(table)} AS t (id, data)
+          SELECT x.id, x.data
+          FROM jsonb_to_recordset(${tx.json(rows as never)}) AS x(id text, data jsonb)
+          ON CONFLICT (id) DO UPDATE
+          SET data = jsonb_merge_deep(t.data, EXCLUDED.data), updated_at = clock_timestamp()`;
+      }
+    });
   }
 }
 

@@ -1,9 +1,9 @@
-import { getFirestore } from "firebase-admin/firestore";
-import type { DocumentReference } from "firebase-admin/firestore";
 import { defineEventHandler } from "h3";
 import { z } from "zod";
 import { getUser } from "~~/server/utils/auth";
-import { fetchOptionsValidator, paginate } from "~~/server/utils/fetch";
+import { fetchOptionsValidator, pageOf } from "~~/server/utils/fetch";
+import { useDb } from "~~/server/db/client";
+import { readDocs } from "~~/server/db/editorial";
 import { normalizeUpdateTime } from "~~/shared/revisions";
 import { pageIsPublic } from "~~/shared/model";
 import type { NodeType } from "~~/shared/model";
@@ -59,8 +59,7 @@ export type PendingEdgeRevision = {
  * `node_id` like every other revision, so `collection` is the only thing that
  * tells the two apart.
  *
- * Admin-only, because it reads through the admin SDK and so bypasses the
- * Firestore rules, which deny `/edges` to the client outright.
+ * Admin-only: the rules deny `/edges` to the client outright.
  *
  * Rendered by the „Zmiany powiązań” section of /admin/rewizje (#powiazania).
  * Not to be confused with /admin/krawedzie, which lists edges that are ready
@@ -78,35 +77,39 @@ export default defineEventHandler(async (event) => {
 
   const query = await getValidatedQuery(event, (q) => queryValidator.parse(q));
 
-  const db = getFirestore("koryta-pl");
-  const pending = db
-    .collection("revisions")
-    .where("collection", "==", "edges")
-    .where("status", "==", "pending")
-    .orderBy("update_time", "desc");
-
-  const [snapshot, countSnapshot] = await Promise.all([
-    paginate(pending, { ...query, limit: query.limit ?? DEFAULT_LIMIT }).get(),
-    pending.count().get(),
+  const sql = useDb();
+  const { offset, limit } = pageOf({
+    ...query,
+    limit: query.limit ?? DEFAULT_LIMIT,
+  });
+  // The index of 0701 (`revisions_pending_edges`) serves both.
+  const pendingEdges = sql`
+    (data -> 'collection') = '"edges"'::jsonb AND (data -> 'status') = '"pending"'::jsonb
+    AND update_time IS NOT NULL`;
+  const [docs, [count]] = await Promise.all([
+    sql<{ id: string; data: Record<string, unknown> }[]>`
+      SELECT id, data FROM revisions WHERE ${pendingEdges}
+      ORDER BY update_time DESC, id DESC
+      ${offset ? sql`OFFSET ${offset}` : sql``} ${limit !== undefined ? sql`LIMIT ${limit}` : sql``}`,
+    sql<
+      { n: number }[]
+    >`SELECT count(*)::int AS n FROM revisions WHERE ${pendingEdges}`,
   ]);
 
-  if (snapshot.empty) {
+  if (docs.length === 0) {
     return { revisions: [] as PendingEdgeRevision[], total: 0 };
   }
 
   // The edges the proposals are about, read once. A proposal is only meaningful
   // next to what the edge says now - that difference is the whole review.
-  const edgeIds = [...new Set(snapshot.docs.map((doc) => doc.data().node_id))];
-  const edgeDocs = await db.getAll(
-    ...edgeIds.map((id) => db.collection("edges").doc(String(id))),
+  const edges = await readDocs(
+    sql,
+    "edges",
+    docs.map((doc) => String(doc.data.node_id)),
   );
-  const edges = new Map<string, Record<string, unknown>>();
-  for (const doc of edgeDocs) {
-    if (doc.exists) edges.set(doc.id, doc.data() ?? {});
-  }
 
   // Both ends of every edge, so the queue reads as "Jan Kowalski -> Powiat
-  // leszczyński" rather than as two Firestore ids.
+  // leszczyński" rather than as two ids.
   const nodeIds = new Set<string>();
   for (const edge of edges.values()) {
     if (typeof edge.source === "string") nodeIds.add(edge.source);
@@ -116,17 +119,11 @@ export default defineEventHandler(async (event) => {
     string,
     { name: string | null; type: NodeType | null }
   >();
-  if (nodeIds.size > 0) {
-    const refs: DocumentReference[] = [...nodeIds].map((id) =>
-      db.collection("nodes").doc(id),
-    );
-    for (const doc of await db.getAll(...refs)) {
-      const data = doc.data();
-      nodes.set(doc.id, {
-        name: typeof data?.name === "string" ? data.name : null,
-        type: (data?.type as NodeType | undefined) ?? null,
-      });
-    }
+  for (const [id, data] of await readDocs(sql, "nodes", nodeIds)) {
+    nodes.set(id, {
+      name: typeof data.name === "string" ? data.name : null,
+      type: (data.type as NodeType | undefined) ?? null,
+    });
   }
 
   function endpoint(id: unknown): PendingEdgeEndpoint {
@@ -135,8 +132,8 @@ export default defineEventHandler(async (event) => {
   }
 
   const revisions: PendingEdgeRevision[] = [];
-  for (const doc of snapshot.docs) {
-    const revision = doc.data();
+  for (const doc of docs) {
+    const revision = doc.data;
     const edge = edges.get(String(revision.node_id));
     // The edge has been deleted since the proposal was filed. Nothing left to
     // review, and showing a change to a document that is gone is worse than not
@@ -170,5 +167,5 @@ export default defineEventHandler(async (event) => {
     ? revisions.filter((r) => r.edgeType === query.type)
     : revisions;
 
-  return { revisions: filtered, total: countSnapshot.data().count };
+  return { revisions: filtered, total: count?.n ?? 0 };
 });

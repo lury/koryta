@@ -1,4 +1,3 @@
-import type { Firestore } from "firebase-admin/firestore";
 import {
   activityKinds,
   emptyActivityCounts,
@@ -8,11 +7,9 @@ import {
 } from "~~/shared/activity";
 import {
   aggregateActivity,
-  utcDay,
   type ActivityAggregate,
   type ActivityEvent,
 } from "~~/server/utils/activityStats";
-import { collectActivityEvents } from "~~/server/utils/activityEvents";
 
 /** One finished UTC day of activity, counted once and kept.
  *
@@ -69,9 +66,7 @@ export type DailyRollup = {
  * 5: readings on /oswiadczenia (`reading`). A day stored under 4 never read
  *    `declarationAnswers`, so it would come back as a day nobody read a crop.
  */
-const ROLLUP_VERSION = 5;
-
-const COLLECTION = "activityDaily";
+export const ROLLUP_VERSION = 5;
 
 /** How long a day is left alone after it ends before its count is written down.
  *
@@ -102,22 +97,6 @@ export function splitSettledDays(
     ? { settled: days, live: [] }
     : { settled: days.slice(0, first), live: days.slice(first) };
 }
-
-/** How many days one catch-up scan covers.
- *
- * Missing days are read in ranges rather than one query per day: a cold start
- * on a 90-day window would otherwise be 540 round trips for exactly the
- * documents a single windowed scan already returns. Seven keeps a range well
- * inside the per-collection scan cap on any plausible day, and a range that
- * does hit the cap is redone day by day so the cap applies per day instead. */
-const RANGE_DAYS = 7;
-
-/** Ranges built at once. Enough to make a cold 90-day start a handful of
- * waves, low enough not to open thirty-nine concurrent Firestore scans. */
-const RANGE_CONCURRENCY = 3;
-
-/** Firestore's per-batch write limit is 500; this leaves room to spare. */
-const WRITE_BATCH = 400;
 
 export function dayStartIso(day: string): string {
   return `${day}T00:00:00.000Z`;
@@ -234,114 +213,10 @@ export function mergeTruncated(rollups: Iterable<DailyRollup>): ActivityKind[] {
   return [...kinds];
 }
 
-/** The rollup for every day in `days`, computing and storing the ones that are
- * missing or were written under an older counting rule.
- *
- * Only ever called for *settled* days - see `splitSettledDays`. Today has not
- * stopped happening, so it is scanned live by the caller and never written here:
- * a stored "today" would freeze the page at whatever the first reader of the
- * morning saw.
- *
- * Storing is best effort. If the write fails the computed value is still
- * returned, so a credentials or rules problem degrades to "recounts every time"
- * - which is what the page did before this existed - rather than to a 500.
- */
-export async function ensureDailyRollups(
-  db: Firestore,
-  days: string[],
-): Promise<DailyRollup[]> {
-  if (days.length === 0) return [];
-
-  const stored = await readRollups(db, days);
-  const missing = days.filter((day) => !stored.has(day));
-  if (missing.length === 0) return days.map((day) => stored.get(day)!);
-
-  console.info(
-    `activityDaily: computing ${missing.length} of ${days.length} days ` +
-      `(${missing[0]}..${missing[missing.length - 1]})`,
-  );
-
-  const computed: DailyRollup[] = [];
-  const ranges = chunkContiguous(missing, RANGE_DAYS);
-  for (let i = 0; i < ranges.length; i += RANGE_CONCURRENCY) {
-    const wave = ranges.slice(i, i + RANGE_CONCURRENCY);
-    const results = await Promise.all(
-      wave.map((range) => buildRange(db, range)),
-    );
-    for (const result of results) computed.push(...result);
-  }
-
-  await persist(db, computed);
-
-  for (const rollup of computed) stored.set(rollup.date, rollup);
-  return days.map((day) => stored.get(day)!);
-}
-
-/** One scan over a run of consecutive days, split back out per day.
- *
- * A range that hits a scan cap is redone a day at a time: the cap is
- * per-collection-per-query, so seven days sharing one costs the oldest of them
- * its events, and that undercount would then be written down as if it were the
- * answer. Per day the cap is the same 20,000 a single-day window gets, and a
- * day that still hits it is stored with its `truncated` kinds recorded.
- */
-async function buildRange(
-  db: Firestore,
-  range: string[],
-): Promise<DailyRollup[]> {
-  const first = range[0]!;
-  const last = range[range.length - 1]!;
-
-  const { events, truncated } = await collectActivityEvents(db, {
-    sinceIso: dayStartIso(first),
-    untilIso: dayEndIso(last),
-  });
-
-  if (truncated.length > 0 && range.length > 1) {
-    console.warn(
-      `activityDaily: ${first}..${last} hit the scan cap for ` +
-        `${[...new Set(truncated)].join(", ")}; recounting day by day`,
-    );
-    const perDay = await Promise.all(range.map((day) => buildRange(db, [day])));
-    return perDay.flat();
-  }
-
-  const byDay = new Map<string, ActivityEvent[]>(range.map((day) => [day, []]));
-  for (const event of events) {
-    const day = utcDay(event.at);
-    if (day) byDay.get(day)?.push(event);
-  }
-
-  return range.map((day) => rollupForDay(day, byDay.get(day)!, truncated));
-}
-
-async function readRollups(
-  db: Firestore,
-  days: string[],
-): Promise<Map<string, DailyRollup>> {
-  const found = new Map<string, DailyRollup>();
-
-  // `getAll` takes the whole list, but a 365-day window is 365 refs in one
-  // argument list; 300 at a time keeps that bounded without costing a round
-  // trip on any window the page actually offers.
-  for (let i = 0; i < days.length; i += 300) {
-    const chunk = days.slice(i, i + 300);
-    const snapshots = await db.getAll(
-      ...chunk.map((day) => db.collection(COLLECTION).doc(day)),
-    );
-    for (const snapshot of snapshots) {
-      const rollup = decodeRollup(snapshot.id, snapshot.data());
-      if (rollup) found.set(rollup.date, rollup);
-    }
-  }
-
-  return found;
-}
-
 /** The stored document, or null if it is absent or was counted under an older
  * rule. Anything unreadable is treated as absent and recomputed - a rollup is
  * derived data, so there is nothing to salvage from a malformed one. */
-function decodeRollup(
+export function decodeRollup(
   id: string,
   data: Record<string, unknown> | undefined,
 ): DailyRollup | null {
@@ -399,68 +274,21 @@ function encodeCounts(counts: ActivityCounts): Record<string, number> {
   );
 }
 
-async function persist(db: Firestore, rollups: DailyRollup[]): Promise<void> {
-  if (rollups.length === 0) return;
-
-  // One try per batch, not one around the loop. A commit is atomic, so a batch
-  // that a single unwritable day poisons takes the other 399 down with it -
-  // and a day that can never be written would, from outside the loop, mean no
-  // day in the window is ever stored again. Per batch, the damage is bounded to
-  // the days that share the bad one's commit.
-  for (let i = 0; i < rollups.length; i += WRITE_BATCH) {
-    const slice = rollups.slice(i, i + WRITE_BATCH);
-    try {
-      const batch = db.batch();
-      for (const rollup of slice) {
-        batch.set(db.collection(COLLECTION).doc(rollup.date), {
-          version: ROLLUP_VERSION,
-          date: rollup.date,
-          computedAt: new Date().toISOString(),
-          totals: encodeCounts(rollup.totals),
-          truncated: rollup.truncated,
-          ...(rollup.automatic > 0 ? { automatic: rollup.automatic } : {}),
-          contributors: Object.fromEntries(
-            Object.entries(rollup.contributors).map(([uid, entry]) => [
-              uid,
-              {
-                ...encodeCounts(entry.counts),
-                lastActiveAt: entry.lastActiveAt,
-              },
-            ]),
-          ),
-        });
-      }
-      await batch.commit();
-    } catch (error) {
-      // Deliberately swallowed - see the note on `ensureDailyRollups`. Named,
-      // so a day that never sticks can be found rather than guessed at.
-      console.error(
-        `activityDaily: could not store ${slice[0]?.date}..${slice[slice.length - 1]?.date}`,
-        error,
-      );
-    }
-  }
-}
-
-/** Split a sorted list of days into runs of consecutive dates, each run cut
- * into pieces of at most `size`. A gap in the middle - the usual case, where
- * only the newest days are missing - must not be scanned across, or the scan
- * would re-read days that are already counted. */
-function chunkContiguous(days: string[], size: number): string[][] {
-  const runs: string[][] = [];
-  for (const day of days) {
-    const current = runs[runs.length - 1];
-    const previous = current?.[current.length - 1];
-    if (
-      current &&
-      current.length < size &&
-      previous &&
-      dayEndIso(previous).slice(0, 10) === day
-    ) {
-      current.push(day);
-    } else {
-      runs.push([day]);
-    }
-  }
-  return runs;
+/** The document a settled day is stored as (`activity_daily`), zero counts
+ * left out; `decodeRollup` reads it back. */
+export function encodeRollup(rollup: DailyRollup): Record<string, unknown> {
+  return {
+    version: ROLLUP_VERSION,
+    date: rollup.date,
+    computedAt: new Date().toISOString(),
+    totals: encodeCounts(rollup.totals),
+    truncated: rollup.truncated,
+    ...(rollup.automatic > 0 ? { automatic: rollup.automatic } : {}),
+    contributors: Object.fromEntries(
+      Object.entries(rollup.contributors).map(([uid, entry]) => [
+        uid,
+        { ...encodeCounts(entry.counts), lastActiveAt: entry.lastActiveAt },
+      ]),
+    ),
+  };
 }

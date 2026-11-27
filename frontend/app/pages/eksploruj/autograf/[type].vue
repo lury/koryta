@@ -52,9 +52,11 @@
         v-model:currently-employed="filterCurrentlyEmployed"
         v-model:min-employment-date="filterMinEmploymentDate"
         v-model:min-votes="filterMinVotes"
+        v-model:company-search="placeSearch"
         :available-parties="availableParties"
         :available-regions="availableRegions"
         :available-companies="availableCompanies"
+        server-companies
         :show-visibility="!!user"
         :heading="null"
         @clear="clearFilters"
@@ -137,7 +139,7 @@ const activeVisualisation = computed({
 
 const user = useCurrentUser();
 
-const { entities: places } = useEntities("place");
+const { places, placeSearch } = usePlaceOptions();
 const { entities: regions } = useEntities("region");
 
 const region = computed<[string, string] | undefined>(() => {
@@ -154,7 +156,7 @@ const region = computed<[string, string] | undefined>(() => {
 
 const company = computed<[string, string] | undefined>(() => {
   const id = filterPlace.value?.[0];
-  const place = id ? places.value?.[id] : undefined;
+  const place = id ? places.value[id] : undefined;
   return id && place ? [id, place.name] : undefined;
 });
 
@@ -236,7 +238,7 @@ const clearFilters = () =>
 const allowedCompanyNames = computed(() => {
   if (!filterPlace.value || filterPlace.value.length === 0) return null;
   return filterPlace.value
-    .map((id) => places.value?.[id]?.name)
+    .map((id) => places.value[id]?.name)
     .filter((name): name is string => !!name);
 });
 
@@ -256,7 +258,7 @@ const hiddenCount = computed(() => {
   if (region.value) {
     stats = regions.value?.[region.value[0]]?.stats;
   } else if (company.value) {
-    stats = places.value?.[company.value[0]]?.stats;
+    stats = places.value[company.value[0]]?.stats;
   }
 
   return hiddenTargetCount(stats);

@@ -1,13 +1,13 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { requireAdmin } from "~~/server/utils/auth";
+import { EDGE_PUBLISH_CHUNK } from "~~/server/utils/edgePublication";
+import { editorialTx, type Data } from "~~/server/db/editorial";
 import {
-  EDGE_PUBLISH_CHUNK,
-  edgeRevisionsForMany,
-  publishEdgeInBatch,
-  resolveEdgeEndpoints,
-  unpublishEdgeInBatch,
-} from "~~/server/utils/edgePublication";
+  edgeRevisionsForManyPg,
+  publishEdgePg,
+  resolveEdgeEndpointsPg,
+} from "~~/server/db/revisionWrites";
+import { unpublishEdgesPg } from "~~/server/db/edgeWrites";
+import { textArray } from "~~/server/db/textArray";
 import type { Edge } from "~~/shared/model";
 import { z } from "zod";
 
@@ -38,93 +38,79 @@ export default defineEventHandler(async (event) => {
   );
 
   const user = await requireAdmin(event);
-  const db = getFirestore(getApp(), "koryta-pl");
-
   const ids = Array.from(new Set(body.edge_ids));
-  const refs = ids.map((id) => db.collection("edges").doc(id));
-  const snaps = await db.getAll(...refs);
 
-  const missing = snaps.filter((snap) => !snap.exists).map((snap) => snap.id);
-  if (missing.length > 0) {
-    throw createError({
-      statusCode: 404,
-      message: `Nie ma powiązań o id: ${missing.join(", ")}`,
-    });
-  }
+  const answer = await editorialTx(async (tx, log) => {
+    const rows = await tx<{ id: string; data: Data }[]>`
+      SELECT id, data FROM edges WHERE id = ANY(${textArray(ids)}::text[])
+      ORDER BY id FOR UPDATE`;
+    const byId = new Map(rows.map((row) => [row.id, row.data]));
+    const missing = ids.filter((id) => !byId.has(id));
+    if (missing.length > 0) {
+      throw createError({
+        statusCode: 404,
+        message: `Nie ma powiązań o id: ${missing.join(", ")}`,
+      });
+    }
+    const edges = ids.map((id) => ({
+      ...(byId.get(id) as unknown as Edge),
+      id,
+    }));
 
-  const edges = snaps.map((snap) => ({
-    id: snap.id,
-    ...(snap.data() as Edge),
-  }));
+    if (!body.published) {
+      await unpublishEdgesPg(tx, log, ids, user);
+      return { published: false, edge_ids: ids, approved: [] as string[] };
+    }
 
-  if (!body.published) {
-    const batch = db.batch();
-    for (const edge of edges) {
-      unpublishEdgeInBatch(
-        db,
-        batch,
-        db.collection("edges").doc(edge.id),
+    // Refused as a whole rather than per edge. A partial success would leave
+    // the reviewer reading a list of ids to work out what did and did not
+    // happen, and the form has already filtered these out - reaching this is
+    // a race, not the normal path.
+    const endpoints = await resolveEdgeEndpointsPg(tx, edges);
+    const blocked = edges
+      .map((edge) => endpoints.get(edge.id))
+      .filter((state) => state && !state.publishable);
+    if (blocked.length > 0) {
+      const names = blocked
+        .flatMap((state) => state!.blockedBy)
+        .map((node) => node.name ?? node.id);
+      throw createError({
+        statusCode: 400,
+        message: `Nie można opublikować powiązania, którego druga strona nie jest opublikowana: ${Array.from(
+          new Set(names),
+        ).join(", ")}.`,
+      });
+    }
+
+    const deleted = edges.filter((edge) => edge.deleted === true);
+    if (deleted.length > 0) {
+      throw createError({
+        statusCode: 400,
+        message: `Nie można opublikować usuniętego powiązania: ${deleted
+          .map((edge) => edge.id)
+          .join(", ")}.`,
+      });
+    }
+
+    const revisions = await edgeRevisionsForManyPg(tx, ids);
+    const approved: string[] = [];
+    for (const id of ids) {
+      const result = await publishEdgePg(
+        tx,
+        log,
+        id,
+        byId.get(id)!,
+        revisions.get(id) ?? [],
         user,
       );
+      if (result.approvedRevision) approved.push(result.approvedRevision);
     }
-    await batch.commit();
-    await useStorage("cache").clear("nitro:handlers");
-    return { published: false, edge_ids: ids, approved: [] };
-  }
-
-  // Refused as a whole rather than per edge. A partial success would leave the
-  // reviewer reading a list of ids to work out what did and did not happen,
-  // and the form has already filtered these out - reaching this is a race, not
-  // the normal path.
-  const endpoints = await resolveEdgeEndpoints(db, edges);
-  const blocked = edges
-    .map((edge) => endpoints.get(edge.id))
-    .filter((state) => state && !state.publishable);
-  if (blocked.length > 0) {
-    const names = blocked
-      .flatMap((state) => state!.blockedBy)
-      .map((node) => node.name ?? node.id);
-    throw createError({
-      statusCode: 400,
-      message: `Nie można opublikować powiązania, którego druga strona nie jest opublikowana: ${Array.from(
-        new Set(names),
-      ).join(", ")}.`,
-    });
-  }
-
-  const deleted = edges.filter((edge) => edge.deleted === true);
-  if (deleted.length > 0) {
-    throw createError({
-      statusCode: 400,
-      message: `Nie można opublikować usuniętego powiązania: ${deleted
-        .map((edge) => edge.id)
-        .join(", ")}.`,
-    });
-  }
-
-  const revisions = await edgeRevisionsForMany(
-    db,
-    edges.map((edge) => edge.id),
-  );
-
-  const batch = db.batch();
-  const approved: string[] = [];
-  edges.forEach((edge) => {
-    const result = publishEdgeInBatch(
-      db,
-      batch,
-      db.collection("edges").doc(edge.id),
-      edge as unknown as Record<string, unknown>,
-      revisions.get(edge.id) ?? [],
-      user,
-    );
-    if (result.approvedRevision) approved.push(result.approvedRevision);
+    return { published: true, edge_ids: ids, approved };
   });
-  await batch.commit();
 
   // The graph and entity endpoints are cached per handler, so a relation
   // published now would otherwise stay missing for another six hours.
   await useStorage("cache").clear("nitro:handlers");
 
-  return { published: true, edge_ids: ids, approved };
+  return answer;
 });

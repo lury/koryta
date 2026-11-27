@@ -5,7 +5,7 @@ export interface Node {
   prettyURL?: string;
   /** The node's own id, the same string the layout files it under.
    *
-   * Carried off the database record by `parseNodeDoc` and spread through by
+   * Carried off the database record by the node readers and spread through by
    * `shared/graph/nodes.ts`, so it is there on every node the canvas ever
    * sees - and the canvas needs it, because v-network-graph hands a config
    * callback the node object and nothing else. Optional because the graph

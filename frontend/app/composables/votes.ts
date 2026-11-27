@@ -5,10 +5,9 @@ import {
   mdiHelpCircleOutline,
   mdiLightbulbOutline,
 } from "@mdi/js";
-import { computed, type MaybeRef } from "vue";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { useCurrentUser, useDocument, useFirebaseApp } from "vuefire";
-import { useAuthState } from "./auth";
+import { computed, reactive, type MaybeRef } from "vue";
+import { useCurrentUser } from "vuefire";
+import { authRequest, useAuthState } from "./auth";
 import type { VoteCategory, VoteDocument } from "~~/shared/model";
 
 /** The ink tokens rather than Vuetify's own `success`/`error`/`warning`:
@@ -188,26 +187,110 @@ export function scoreModelLabel(uid: string): string {
  * id field is set, so the id itself never needs inspecting. */
 export type VoteTarget = "node" | "extraction";
 
+type OwnVote = Pick<VoteDocument, "categoryVotes" | "comment" | "updatedAt">;
+
+/** The reader's own votes, by `<kind>:<target>`, for everybody on the page:
+ * `null` once asked for and absent. Browser only, and only ever this
+ * reader's, so it is a module, not request state; a sign-in as somebody else
+ * empties it. Votes are read from /api/votes/mine and written through
+ * PUT /api/votes/:target (decision on 2026-11-26: no Firestore in the
+ * browser). */
+const ownVotes = reactive(new Map<string, OwnVote | null>());
+let ownVotesUid: string | null = null;
+const wanted = new Map<VoteTarget, Set<string>>();
+let flush: Promise<void> | null = null;
+
+const voteKey = (kind: VoteTarget, targetId: string) => `${kind}:${targetId}`;
+
+function forUser(uid: string) {
+  if (ownVotesUid === uid) return;
+  ownVotes.clear();
+  ownVotesUid = uid;
+}
+
+/** Asks for every target wanted in the same tick in one request per kind,
+ * so a table of vote buttons is one read, not one per row. */
+function requestOwnVote(kind: VoteTarget, targetId: string) {
+  if (ownVotes.has(voteKey(kind, targetId))) return;
+  let ids = wanted.get(kind);
+  if (!ids) wanted.set(kind, (ids = new Set()));
+  ids.add(targetId);
+  flush ??= Promise.resolve().then(async () => {
+    flush = null;
+    const batches = [...wanted.entries()];
+    wanted.clear();
+    for (const [batchKind, targets] of batches) {
+      const all = [...targets];
+      for (let start = 0; start < all.length; start += 300) {
+        const chunk = all.slice(start, start + 300);
+        try {
+          const { votes } = await authRequest<{
+            votes: Record<string, OwnVote>;
+          }>("/api/votes/mine", {
+            method: "GET",
+            query: { kind: batchKind, targets: chunk.join(",") },
+          });
+          for (const id of chunk) {
+            ownVotes.set(voteKey(batchKind, id), votes[id] ?? null);
+          }
+        } catch (error) {
+          console.error("Nie udało się wczytać głosów", error);
+        }
+      }
+    }
+  });
+}
+
+/** Bumped after every vote and note this reader saves, for the counters that
+ * show their contributions (`useMyContributions`). */
+export function useContributionsTick() {
+  return useState("my-contributions-tick", () => 0);
+}
+
+async function putVote(
+  targetId: string,
+  target: VoteTarget,
+  body: { categoryVotes?: Record<string, number>; comment?: string },
+): Promise<OwnVote> {
+  const { vote } = await authRequest<{ vote: VoteDocument }>(
+    `/api/votes/${encodeURIComponent(targetId)}`,
+    { method: "PUT", body: { kind: target, ...body } },
+  );
+  const own = {
+    categoryVotes: vote.categoryVotes,
+    comment: vote.comment,
+    updatedAt: vote.updatedAt,
+  };
+  ownVotes.set(voteKey(target, targetId), own);
+  return own;
+}
+
 export function useVotes(
   targetId: MaybeRef<string>,
   category: VoteCategory,
   target: VoteTarget = "node",
 ) {
   const { user } = useAuthState();
-  const firebaseApp = useFirebaseApp();
-  const db = getFirestore(firebaseApp, "koryta-pl");
   const config = voteCategoryConfig[category];
+  const tick = useContributionsTick();
 
   const idValue = computed(() => toValue(targetId));
 
-  const voteNodeUserRef = computed(() => {
-    if (!user.value) return null;
-    return doc(db, "votes", `${idValue.value}_${user.value.uid}`);
-  });
-  const voteNodeUserDoc = useDocument(voteNodeUserRef);
+  if (import.meta.client) {
+    watch(
+      [() => user.value?.uid, idValue],
+      ([uid, id]) => {
+        if (!uid || !id) return;
+        forUser(uid);
+        requestOwnVote(target, id);
+      },
+      { immediate: true },
+    );
+  }
 
-  const userCategoryVotes = computed(() => {
-    return voteNodeUserDoc.value?.categoryVotes || {};
+  const userCategoryVotes = computed<Record<string, number>>(() => {
+    if (!user.value) return {};
+    return ownVotes.get(voteKey(target, idValue.value))?.categoryVotes ?? {};
   });
 
   const router = useRouter();
@@ -224,29 +307,30 @@ export function useVotes(
       return;
     }
 
-    loading.value = true;
     const currentVote = userCategoryVotes.value[category] ?? 0;
     const newValue = Math.max(-5, Math.min(5, currentVote + value));
+    if (newValue === currentVote) return;
 
-    if (newValue === currentVote) {
+    // Shown at once and put back if the server turns it down, as Firestore's
+    // local write showed it before.
+    const key = voteKey(target, idValue.value);
+    const before = ownVotes.get(key) ?? null;
+    ownVotes.set(key, {
+      ...(before ?? {}),
+      categoryVotes: { ...(before?.categoryVotes ?? {}), [category]: newValue },
+    });
+    loading.value = true;
+    try {
+      await putVote(idValue.value, target, {
+        categoryVotes: { [category]: newValue },
+      });
+      tick.value += 1;
+    } catch (error) {
+      ownVotes.set(key, before);
+      console.error("Nie udało się zapisać głosu", error);
+    } finally {
       loading.value = false;
-      return;
     }
-
-    setDoc(
-      doc(db, "votes", `${idValue.value}_${user.value.uid}`),
-      {
-        [target === "extraction" ? "extractionId" : "nodeId"]: idValue.value,
-        userUid: user.value.uid,
-        categoryVotes: {
-          [category]: newValue,
-        },
-        updatedAt: new Date().toISOString(),
-      } as VoteDocument,
-      // Use merge:true to preserve existing votes
-      { merge: true },
-    );
-    loading.value = false;
   };
 
   return {
@@ -257,13 +341,9 @@ export function useVotes(
   };
 }
 
-/** Fire-and-forget vote write that opens no Firestore listeners.
- *
- * `useVotes` sets up live `useDocument`/`useCollection` subscriptions, which
- * are bound to the current effect scope for cleanup. Calling it from an event
- * handler (outside any component setup scope) leaks a listener on every call.
- * Use this for one-shot writes such as the review flow, where the reactive
- * state is not needed. Returns false if there is no signed-in user. */
+/** One vote written from an event handler, such as the review flow, where
+ * the reactive state of `useVotes` is not needed. Returns false if there is
+ * no signed-in user. */
 export async function castVoteOnce(
   targetId: string,
   category: VoteCategory,
@@ -272,29 +352,17 @@ export async function castVoteOnce(
 ): Promise<boolean> {
   const user = useCurrentUser();
   if (!user.value) return false;
-
-  const firebaseApp = useFirebaseApp();
-  const db = getFirestore(firebaseApp, "koryta-pl");
+  forUser(user.value.uid);
   const clamped = Math.max(-5, Math.min(5, value));
-
-  await setDoc(
-    doc(db, "votes", `${targetId}_${user.value.uid}`),
-    {
-      [target === "extraction" ? "extractionId" : "nodeId"]: targetId,
-      userUid: user.value.uid,
-      categoryVotes: { [category]: clamped },
-      updatedAt: new Date().toISOString(),
-    } as VoteDocument,
-    // Use merge:true to preserve existing votes in other categories.
-    { merge: true },
-  );
+  await putVote(targetId, target, { categoryVotes: { [category]: clamped } });
+  useContributionsTick().value += 1;
   return true;
 }
 
 /** Attach a free-text comment to the caller's vote on a target.
  *
- * Shares the one-doc-per-(target, user) layout of `castVoteOnce`, so a comment
- * written before any verdict still lands on the same document. Returns false if
+ * The same one-vote-per-(target, user) document as `castVoteOnce`, so a
+ * comment written before any verdict still lands on it. Returns false if
  * there is no signed-in user. */
 export async function saveCommentOnce(
   targetId: string,
@@ -303,22 +371,19 @@ export async function saveCommentOnce(
 ): Promise<boolean> {
   const user = useCurrentUser();
   if (!user.value) return false;
-
-  const firebaseApp = useFirebaseApp();
-  const db = getFirestore(firebaseApp, "koryta-pl");
-
-  await setDoc(
-    doc(db, "votes", `${targetId}_${user.value.uid}`),
-    {
-      [target === "extraction" ? "extractionId" : "nodeId"]: targetId,
-      userUid: user.value.uid,
-      // The aggregation trigger reads this field unconditionally, so it has to
-      // exist even on the path where the comment arrives before any verdict.
-      categoryVotes: {},
-      comment,
-      updatedAt: new Date().toISOString(),
-    } as VoteDocument,
-    { merge: true },
-  );
+  forUser(user.value.uid);
+  await putVote(targetId, target, { comment });
   return true;
+}
+
+/** Every vote of this reader's on targets of one kind, for a page that has
+ * to know which of a long list they already judged (/ekstrakcje). */
+export async function fetchOwnVotes(
+  target: VoteTarget,
+): Promise<Record<string, OwnVote>> {
+  const { votes } = await authRequest<{ votes: Record<string, OwnVote> }>(
+    "/api/votes/mine",
+    { method: "GET", query: { kind: target } },
+  );
+  return votes;
 }

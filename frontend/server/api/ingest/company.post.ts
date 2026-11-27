@@ -1,18 +1,25 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { getUser, requireDatascience } from "~~/server/utils/auth";
+import { withoutInternalFields } from "~~/server/utils/revisions";
+import { editorialTx, type Tx } from "~~/server/db/editorial";
+import { newDocId } from "~~/server/db/ids";
+import { revisionChangesNothingPg } from "~~/server/db/proposals";
 import {
-  createRevisionTransaction,
-  revisionChangesNothing,
-  withoutInternalFields,
-} from "~~/server/utils/revisions";
+  createRevisionsPg,
+  edgeKey,
+  edgesOfPairsPg,
+  existingNodeIdsPg,
+  placesByKrsPg,
+  regionsByTerytPg,
+  type RevisionWrite,
+  type StoredDoc,
+} from "~~/server/db/ingestWrites";
 import {
   companyRequestSchema,
   type CompanyRequest as Request,
 } from "#shared/api";
 import { asArray, pageIsPublic, type EdgeType } from "#shared/model";
 import { withRegisterFactsFrom } from "#shared/companyCategories";
-import { edgeDocumentId, findEdge } from "~~/server/utils/edges";
+import { edgeDocumentId, sameEdges } from "~~/server/utils/edges";
 
 /** The site's „Skarb Państwa" node.
  *
@@ -40,13 +47,35 @@ export default defineEventHandler(async (event) => {
   // signed-in account could rename or publish a company. The only caller is
   // `data/pipelines/src/uploader.py`, with a datascience token.
   const user = requireDatascience(await getUser(event));
-  const db = getFirestore(getApp(), "koryta-pl");
+  return editorialTx((tx, log) =>
+    ingestCompany(tx, body).then(async ({ writes, answer }) => {
+      await createRevisionsPg(tx, log, user, writes);
+      return answer;
+    }),
+  );
+});
 
-  const {
-    ref: nodeRef,
-    publish,
-    stored,
-  } = await findCompanyByKRS(db, body.krs, true);
+/** Everything one payload writes, read and planned in the request's
+ * transaction: every lookup is one statement for the whole payload. */
+async function ingestCompany(tx: Tx, body: Request) {
+  const ownerKrss = [...(body.owners ?? []), ...(body.founders ?? [])].filter(
+    Boolean,
+  );
+  const [companies, regions, treasury] = await Promise.all([
+    placesByKrsPg(tx, [body.krs, ...ownerKrss]),
+    regionsByTerytPg(tx, [
+      ...(body.teryt ? [body.teryt] : []),
+      ...(body.owner_teryts ?? []),
+      ...(body.founder_teryts ?? []),
+    ]),
+    existingNodeIdsPg(tx, [SKARB_PANSTWA_NODE_ID]),
+  ]);
+  const company = companies.get(body.krs);
+  // An existing company keeps its visibility: a public one stays public, a
+  // pending one is not force-published by a re-ingest. A new one is published.
+  const nodeId = company?.id ?? newDocId();
+  const stored = company?.data;
+  const publish = stored ? pageIsPublic(stored) : true;
   // Layered over what is already stored: a payload carries only the fields the
   // scrapers found, and the revision is written to the node wholesale. Taken
   // from the document the KRS lookup has already read, rather than asking for
@@ -153,7 +182,6 @@ export default defineEventHandler(async (event) => {
     revisionData.isPublic = body.is_public;
   }
 
-  const batch = db.batch();
   // `CompaniesPayloads` re-submits every company the site already has, and most
   // runs learn nothing about most of them - the register has not moved, and the
   // categories are worked out from codes that have not moved either. Layered
@@ -168,21 +196,36 @@ export default defineEventHandler(async (event) => {
     stored,
     published: publish,
   };
-  const changed = !revisionChangesNothing(nodeRef, revisionData, options);
+  const changed = !revisionChangesNothingPg("nodes", revisionData, options);
+  const writes: RevisionWrite[] = [];
   if (changed) {
-    createRevisionTransaction(db, batch, user, nodeRef, revisionData, options);
+    writes.push({
+      target: { collection: "nodes", id: nodeId },
+      data: revisionData,
+      options,
+    });
   }
 
-  const dbb = { db, batch, user, added: new Set<string>() };
+  // The edges this payload asks for, in its order; drawn below once the
+  // stored ones are read.
+  const plan: PlannedEdge[] = [];
 
   // Who holds shares, per dział 1 of the register. A company owner is looked up
   // by KRS; a gmina, powiat or województwo has no KRS and arrives as the TERYT
   // code its register name was resolved to.
-  const unknownOwners = await drawOwners(dbb, body.krs, nodeRef.id, publish, {
-    krss: body.owners,
-    teryts: body.owner_teryts,
-    skarbPanstwa: body.owner_skarb_panstwa,
-  });
+  const unknownOwners = planOwners(
+    plan,
+    companies,
+    treasury,
+    regions,
+    body.krs,
+    nodeId,
+    {
+      krss: body.owners,
+      teryts: body.owner_teryts,
+      skarbPanstwa: body.owner_skarb_panstwa,
+    },
+  );
   // Who set it up, where a public body did: a foundation or an association
   // holds no shares, so its founder is all the register would have to say
   // about who stands behind it, and the register does not say it. The
@@ -191,11 +234,13 @@ export default defineEventHandler(async (event) => {
   // ownership edge marked `founder`, so everything that reads `owns` as "is
   // behind" (the graph, a region's companies, the public flag) reads it so too,
   // and the page lists it under „Właściciele” labelled as the founder.
-  const unknownFounders = await drawOwners(
-    dbb,
+  const unknownFounders = planOwners(
+    plan,
+    companies,
+    treasury,
+    regions,
     body.krs,
-    nodeRef.id,
-    publish,
+    nodeId,
     {
       krss: body.founders,
       teryts: body.founder_teryts,
@@ -210,136 +255,116 @@ export default defineEventHandler(async (event) => {
   // in it and the ones it holds shares in, and only one of those says where a
   // company is.
   let region: "added" | "existing" | "unknown" | undefined;
-  if (body.teryt) {
-    const regionNodeId = await findRegionByTeryt(db, body.teryt);
-    if (regionNodeId) {
-      // A company has one registered seat, so a second one from a different
-      // region is not a second fact - it is a disagreement. 13 companies on the
-      // site have one: their stored seat predates the current register and is
-      // simply wrong (ELZAT of Mikołów is filed under Tarnów, Centrum Medyczne
-      // Żelazna of Warsaw under Olsztyn), and the register now resolves them
-      // correctly.
-      //
-      // The correct one is reported and NOT written, rather than the stale one
-      // being deleted. Deleting takes an edge's revisions with it, and
-      // `functions/src/revisions.ts` creates a typeless phantom node under the
-      // edge's id when the last revision for it goes - so a fix for 13 rows
-      // would introduce a worse problem. They need a hand, or a migration that
-      // knows about revisions; either way not silently, in an ingest.
-      const conflicting = await findSeatFromAnotherRegion(
-        db,
-        nodeRef.id,
-        regionNodeId,
-      );
-      if (conflicting) {
-        console.warn(
-          `Company krs=${body.krs} is already seated in ${conflicting}; the register says ${regionNodeId}. Leaving the stored seat alone.`,
-        );
-        region = "existing";
-      } else {
-        const added = await createEdge(
-          dbb,
-          regionNodeId,
-          nodeRef.id,
-          "seat",
-          publish,
-        );
-        region = added ? "added" : "existing";
+  const regionNodeId = body.teryt ? regions.get(body.teryt) : undefined;
+  if (body.teryt && !regionNodeId) {
+    // A company whose registered seat has no region node is still worth
+    // ingesting for its other fields, so this is reported, not fatal.
+    console.warn(
+      `No region node for TERYT ${body.teryt} (krs=${body.krs}), skipping location`,
+    );
+    region = "unknown";
+  }
+  const seat = regionNodeId
+    ? { source: regionNodeId, target: nodeId, type: "seat" as const }
+    : undefined;
+
+  // Every stored edge the plan could meet, and the company's seats, in one
+  // read each.
+  const [siblings, seats] = await Promise.all([
+    edgesOfPairsPg(tx, [
+      ...plan,
+      ...(seat ? [seat, { ...seat, type: "owns" as const }] : []),
+    ]),
+    tx<StoredDoc[]>`
+      SELECT id, data FROM edges WHERE target = ${nodeId} AND type = 'seat'
+      ORDER BY id`,
+  ]);
+  const added = new Set<string>();
+  const draw = (edge: PlannedEdge): boolean => {
+    const edgeData = {
+      source: edge.source,
+      target: edge.target,
+      type: edge.type,
+      ...edge.extra,
+    };
+    const edgeId = edgeDocumentId(edgeData);
+    if (added.has(edgeId)) return false;
+    if (sameEdges(edgeData, siblings.get(edgeKey(edgeData)) ?? []).length) {
+      return false;
+    }
+    // A seat that predates the `owns`/`seat` split is stored as `owns`, and
+    // `scripts/migrate/split-seat-edges.ts` will retype it. Until that has run
+    // the pair already carries the fact, so writing a `seat` edge beside it
+    // would give the company two seats. Left alone rather than retyped here:
+    // retyping is the migration's job, and it has the revisions to move too.
+    if (edge.type === "seat") {
+      const owns = { ...edgeData, type: "owns" as const };
+      if (sameEdges(owns, siblings.get(edgeKey(owns)) ?? []).length) {
+        return false;
       }
-    } else {
-      // A company whose registered seat has no region node is still worth
-      // ingesting for its other fields, so this is reported, not fatal.
+    }
+    added.add(edgeId);
+    // Only reached when no such edge exists, so there is nothing stored to
+    // carry.
+    writes.push({
+      target: { collection: "edges", id: edgeId },
+      data: edgeData,
+      options: { automatic: true, approve: publish, published: publish },
+    });
+    return true;
+  };
+  for (const edge of plan) draw(edge);
+
+  if (seat) {
+    // A company has one registered seat, so a second one from a different
+    // region is not a second fact - it is a disagreement: a stored seat that
+    // predates the current register. The correct one is reported and NOT
+    // written, rather than the stale one deleted: deleting takes an edge's
+    // revisions with it. A seat an admin removed is not a competing claim.
+    const conflicting = seats.find(
+      ({ data }) =>
+        data.deleted !== true && data.source && data.source !== seat.source,
+    )?.data.source as string | undefined;
+    if (conflicting) {
       console.warn(
-        `No region node for TERYT ${body.teryt} (krs=${body.krs}), skipping location`,
+        `Company krs=${body.krs} is already seated in ${conflicting}; the register says ${seat.source}. Leaving the stored seat alone.`,
       );
-      region = "unknown";
+      region = "existing";
+    } else {
+      region = draw(seat) ? "added" : "existing";
     }
   }
-
-  await batch.commit();
 
   // What the request did to the company itself, so a caller submitting a few
   // thousand of them can tell a run that changed nothing from one that did -
   // the edges are reported separately, and a company can be left alone while a
   // location edge is added beside it.
-  const company = !stored ? "created" : changed ? "updated" : "unchanged";
+  const outcome = !stored ? "created" : changed ? "updated" : "unchanged";
 
   // `unknownOwners` is reported rather than merely counted: a run in which it
   // jumps is a run where the register started naming shareholders the site does
   // not track, and the per-owner warnings above are one line each in a log of
   // 3,928 uploads. Omitted when nought, so the ordinary response is unchanged.
   return {
-    id: nodeRef.id,
-    code: 200,
-    region,
-    company,
-    ...(unknownOwners > 0 ? { unknownOwners } : {}),
-    ...(unknownFounders > 0 ? { unknownFounders } : {}),
+    writes,
+    answer: {
+      id: nodeId,
+      code: 200,
+      region,
+      company: outcome,
+      ...(unknownOwners > 0 ? { unknownOwners } : {}),
+      ...(unknownFounders > 0 ? { unknownFounders } : {}),
+    },
   };
-});
-
-type DBB = {
-  db: FirebaseFirestore.Firestore;
-  batch: FirebaseFirestore.WriteBatch;
-  user: { uid: string };
-  /** Edge ids already added to this request's batch, so a payload listing the
-   * same owner twice does not write the link - and a second revision of it -
-   * twice over. A lookup cannot catch that: the batch is not committed yet. */
-  added: Set<string>;
-};
-
-/** Links two nodes, at most once.
- *
- * The edge id is derived from what the edge represents, matching the scheme the
- * region pipeline already uses (`edge_<source>_<target>_<type>`), so re-running
- * an ingest cannot create a second copy of the same link. Edges written before
- * this carried random ids, so an existing link is looked up by its fields
- * rather than by id - an equality-only query, which Firestore serves by merging
- * single field indexes.
- *
- * Returns whether a new edge was added to the batch.
- */
-async function createEdge(
-  dbb: DBB,
-  source: string,
-  target: string,
-  type: EdgeType,
-  publish: boolean,
-  extra: EdgeExtra = {},
-): Promise<boolean> {
-  const { db, batch, user, added } = dbb;
-  const edgeData = { source, target, type, ...extra };
-
-  const edgeId = edgeDocumentId(edgeData);
-  if (added.has(edgeId)) {
-    return false;
-  }
-  if (await findEdge(db, edgeData)) {
-    return false;
-  }
-  // A seat that predates the `owns`/`seat` split is stored as `owns`, and
-  // `scripts/migrate/split-seat-edges.ts` will retype it. Until that has run
-  // the pair already carries the fact, so writing a `seat` edge beside it would
-  // give 3,939 companies two seats - and the ingest runs nightly, so it would
-  // win the race against the migration. Left alone rather than retyped here:
-  // retyping is the migration's job, and it has the revisions to move too.
-  if (
-    type === "seat" &&
-    (await findEdge(db, { source, target, type: "owns" }))
-  ) {
-    return false;
-  }
-  added.add(edgeId);
-
-  const edgeRef = db.collection("edges").doc(edgeId);
-  // Only reached when no such edge exists, so there is nothing stored to carry.
-  createRevisionTransaction(db, batch, user, edgeRef, edgeData, {
-    automatic: true,
-    approve: publish,
-    published: publish,
-  });
-  return true;
 }
+
+/** An edge a payload asks for, before the stored ones are read. */
+type PlannedEdge = {
+  source: string;
+  target: string;
+  type: EdgeType;
+  extra?: EdgeExtra;
+};
 
 /** What an edge says beyond its two ends and its type. Only `founder` so far,
  * which marks an ownership edge as the one from whoever set up a foundation or
@@ -348,68 +373,51 @@ async function createEdge(
  * it is. */
 type EdgeExtra = { founder?: true };
 
-/** Draws the edges from a company's owners, or from its founders, to it.
+/** Plans the edges from a company's owners, or from its founders, to it.
  *
  * Returns how many company owners it named that the site does not hold.
  */
-async function drawOwners(
-  dbb: DBB,
+function planOwners(
+  plan: PlannedEdge[],
+  companies: Map<string, StoredDoc>,
+  treasury: Set<string>,
+  regions: Map<string, string>,
   krs: string,
   target: string,
-  publish: boolean,
   owners: { krss?: string[]; teryts?: string[]; skarbPanstwa?: boolean },
   extra: EdgeExtra = {},
-): Promise<number> {
-  const { db } = dbb;
+): number {
   const role = extra.founder ? "Founder" : "Owner";
+  const edge = (source: string): PlannedEdge => ({
+    source,
+    target,
+    type: "owns",
+    ...(extra.founder ? { extra } : {}),
+  });
   let unknown = 0;
   for (const parent of owners.krss ?? []) {
     if (!parent) continue;
-    let parentRef;
-    try {
-      ({ ref: parentRef } = await findCompanyByKRS(db, parent, false));
-    } catch {
-      // The register names 238 companies as shareholders that koryta.pl does
-      // not track. `findCompanyByKRS` throws a 404 for those, and the throw
-      // used to escape the handler - so a company whose parent is missing was
-      // rejected whole, losing its categories and its seat along with the one
-      // edge that could not be drawn. 266 of 3,928 in a real run.
-      //
-      // Skipped rather than created: minting a place node as a side effect of
-      // an ownership edge would add those 238 companies to the site, and that
-      // is a decision about what the site covers, not about this request.
+    const parentNode = companies.get(parent);
+    if (!parentNode) {
+      // The register names companies as shareholders that koryta.pl does not
+      // track. Skipped rather than created: minting a place node as a side
+      // effect of an ownership edge is a decision about what the site covers,
+      // not about this request; and the company itself is still written.
       console.warn(
         `${role} KRS ${parent} is not on the site (krs=${krs}), skipping the edge`,
       );
       unknown += 1;
       continue;
     }
-    await createEdge(dbb, parentRef.id, target, "owns", publish, extra);
+    plan.push(edge(parentNode.id));
   }
-  // The Treasury. It owns 110 of the companies the register describes and it is
-  // the one owner that can only be named by a node id: it has no KRS number -
-  // it is not in the register - and it is not a territory, so there is no TERYT
-  // to resolve either. The pipeline therefore sends a flag and the id lives
-  // here, on the side of the wire that already deals in node ids.
+  // The Treasury: it has no KRS number and no TERYT, so the pipeline sends a
+  // flag and the id lives here. Checked rather than assumed - a local stack
+  // has no such node, and an edge to a missing document draws as a nameless
+  // dot.
   if (owners.skarbPanstwa) {
-    // Checked rather than assumed. The id is stable on production, but a local
-    // stack seeded by `scripts/seed-emulator.ts` has no such node, and an edge
-    // pointing at a document that does not exist is worse than no edge: it
-    // draws on the graph as a nameless dot and `computeNodes` folds it into
-    // every employee's `targetNodeIds`.
-    const treasury = await db
-      .collection("nodes")
-      .doc(SKARB_PANSTWA_NODE_ID)
-      .get();
-    if (treasury.exists) {
-      await createEdge(
-        dbb,
-        SKARB_PANSTWA_NODE_ID,
-        target,
-        "owns",
-        publish,
-        extra,
-      );
+    if (treasury.has(SKARB_PANSTWA_NODE_ID)) {
+      plan.push(edge(SKARB_PANSTWA_NODE_ID));
     } else {
       console.warn(
         `No „Skarb Państwa" node (${SKARB_PANSTWA_NODE_ID}); skipping the Treasury ${role.toLowerCase()} edge for krs=${krs}`,
@@ -418,135 +426,16 @@ async function drawOwners(
   }
   for (const owner of owners.teryts ?? []) {
     if (!owner) continue;
-    const regionNodeId = await findRegionByTeryt(db, owner);
+    const regionNodeId = regions.get(owner);
     if (!regionNodeId) {
-      // 985 gminy have a region node because they own something; a code that
-      // resolves to no node is one the region ingest has not reached yet.
-      // Reported rather than fatal, the same way an unknown seat is.
+      // A code that resolves to no node is one the region ingest has not
+      // reached yet. Reported rather than fatal, as an unknown seat is.
       console.warn(
         `No region node for ${role.toLowerCase()} TERYT ${owner} (krs=${krs})`,
       );
       continue;
     }
-    await createEdge(dbb, regionNodeId, target, "owns", publish, extra);
+    plan.push(edge(regionNodeId));
   }
   return unknown;
-}
-
-/** Locate the company node for a KRS number.
- *
- * `publish` tells the caller whether the new revision should be approved and
- * published. To keep a migration safe, an existing company keeps its current
- * visibility: an already-public company stays public, while a still-pending
- * one is not force-published by a re-ingest. A brand-new company is published
- * as before.
- *
- * `stored` is the document as it is now, and is undefined for a company being
- * created. The caller needs it twice over - as the base the payload's fields
- * are layered onto, and as the state to carry through the `set` that writes the
- * revision - and this query has already read it, so returning it saves a second
- * read of every company in the pipeline. */
-async function findCompanyByKRS(
-  db: FirebaseFirestore.Firestore,
-  krs: string,
-  createNew: boolean,
-): Promise<{
-  ref: FirebaseFirestore.DocumentReference;
-  publish: boolean;
-  stored?: Record<string, unknown>;
-}> {
-  // Check if company already exists
-  const existingQuery = await db
-    .collection("nodes")
-    .where("krsNumber", "==", krs)
-    .limit(1)
-    .get();
-
-  if (!existingQuery.empty) {
-    const doc = existingQuery.docs[0];
-    if (!doc) {
-      throw new Error("Unexpected empty docs array");
-    }
-    const stored = doc.data();
-    return { ref: doc.ref, publish: pageIsPublic(stored), stored };
-  } else if (createNew) {
-    return { ref: db.collection("nodes").doc(), publish: true };
-  } else {
-    throw createError({
-      statusCode: 404,
-      message: `Company with KRS ${krs} not found`,
-    });
-  }
-}
-
-/** Region node for a company's TERYT code, or null when there is none.
- *
- * Codes longer than a powiat are truncated to one, which is the level the
- * region nodes are complete at. Returns null rather than throwing so a bulk
- * ingest is not aborted by a single unmappable seat. */
-/** The region already recorded as this company's seat, if it is a different one.
- *
- * Returns null when there is no seat yet or when the stored seat is the region
- * about to be written - the ordinary case, which `createEdge` then skips on its
- * own.
- */
-async function findSeatFromAnotherRegion(
-  db: FirebaseFirestore.Firestore,
-  placeId: string,
-  regionNodeId: string,
-): Promise<string | null> {
-  const snapshot = await db
-    .collection("edges")
-    .where("target", "==", placeId)
-    .where("type", "==", "seat")
-    .get();
-  for (const doc of snapshot.docs) {
-    const data = doc.data();
-    // A seat somebody has removed through /api/edges/delete is not a competing
-    // claim - it is one an admin has already ruled on. Without this the ingest
-    // would keep refusing to write the correct seat on the strength of a
-    // relation that is no longer on the graph.
-    if (data.deleted === true) continue;
-    if (data.source && data.source !== regionNodeId) {
-      return data.source as string;
-    }
-  }
-  return null;
-}
-
-async function findRegionByTeryt(
-  db: FirebaseFirestore.Firestore,
-  terytArg: string,
-): Promise<string | null> {
-  // The exact code first, then the powiat above it. Which one answers depends
-  // on where the code came from, and both callers are real:
-  //
-  //   an owner TERYT is resolved from the register by `scrapers.map.jst` and is
-  //     exact - 7 characters for a gmina, and 706 gminy have a node precisely
-  //     because they own something. Truncating it to 4 would file every gmina
-  //     shareholder under its powiat and collapse the co-owners of a company
-  //     back into one, which is the bug the resolver exists to fix.
-  //
-  //   a seat TERYT comes from `get_teryt`, which reads geonames, and that
-  //     column is six digits: WOJ+POW+GMI with no RODZ. It therefore matches no
-  //     node at all - `Regions` mints gminy as WOJ+POW+GMI+RODZ - and falls
-  //     through to the powiat, which is where the site records a seat anyway.
-  const candidates =
-    terytArg.length > 4 ? [terytArg, terytArg.slice(0, 4)] : [terytArg];
-  for (const teryt of candidates) {
-    const regionNodeId = `teryt${teryt}`;
-    if ((await db.collection("nodes").doc(regionNodeId).get()).exists) {
-      return regionNodeId;
-    }
-    const snapshot = await db
-      .collection("nodes")
-      .where("teryt", "==", teryt)
-      .limit(1)
-      .get();
-    if (!snapshot.empty && snapshot.docs[0]) {
-      return snapshot.docs[0].id;
-    }
-  }
-
-  return null;
 }

@@ -258,7 +258,7 @@ export function millisOf(value: unknown): number | null {
 /** A crop's stored fields as the count reads them. A status or an outcome the
  * site has no word for counts as none, and so does what a crop said of its
  * pages once it is not a full date agreed on: only that is compared with
- * pages (`agreedDay` in server/utils/declarationPublish.ts), and a crop taken
+ * pages (`agreedDay` in server/db/declarationPublish.ts), and a crop taken
  * back, found unreadable or settled on a year alone keeps what it said
  * before. */
 export function cropRecordOf(
@@ -295,7 +295,7 @@ export function pagesNamedBy(crop: CropRecord): string[] {
 }
 
 /** The page's birth date as the site compares it (`birthDateOf` in
- * server/utils/declarationPublish.ts). */
+ * server/db/declarationPublish.ts). */
 export function pageBirthDate(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
 }

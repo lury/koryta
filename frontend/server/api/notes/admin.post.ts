@@ -1,25 +1,11 @@
-import { z } from "zod";
-import { getFirestore } from "firebase-admin/firestore";
 import { defineEventHandler, readValidatedBody } from "h3";
 import { getUser } from "~~/server/utils/auth";
-import type { Note } from "~~/shared/model";
+import { triageNotePg } from "~~/server/db/notes";
+import { triageBody } from "~~/server/utils/noteRules";
 
-const bodyValidator = z.object({
-  noteId: z.string().min(1),
-  sourceIndex: z.number().int().min(0),
-  // `undefined` leaves the field untouched, `null`/"" clears it.
-  adminStatus: z.enum(["resolved", "unresolved"]).nullable().optional(),
-  adminType: z.string().nullable().optional(),
-  /** "the phone queue can't classify this one" - see NoteSource. */
-  adminTypeDeferred: z.boolean().nullable().optional(),
-});
-
-/** Admin-only triage of an individual note source.
- *
- * Firestore rules only let a user write their own notes, so admins can't
- * annotate other users' notes from the client. This runs with the admin SDK
- * (which bypasses rules) after verifying the caller's admin claim.
- */
+/** Admin-only triage of an individual note source: a reader writes only
+ * their own notes, so an admin annotates somebody else's here, after the
+ * admin claim is checked. */
 export default defineEventHandler(async (event) => {
   const user = await getUser(event);
   if (!user.admin) {
@@ -29,45 +15,8 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const body = await readValidatedBody(event, (b) => bodyValidator.parse(b));
-
-  const db = getFirestore("koryta-pl");
-  const noteRef = db.collection("notes").doc(body.noteId);
-
-  await db.runTransaction(async (tx) => {
-    const snap = await tx.get(noteRef);
-    if (!snap.exists) {
-      throw createError({ statusCode: 404, message: "Notatka nie istnieje." });
-    }
-
-    const note = snap.data() as Note;
-    const sources = note.sources ?? [];
-    const source = sources[body.sourceIndex];
-    if (!source) {
-      throw createError({ statusCode: 404, message: "Źródło nie istnieje." });
-    }
-
-    if (body.adminStatus !== undefined) {
-      if (body.adminStatus) source.adminStatus = body.adminStatus;
-      else delete source.adminStatus;
-    }
-    if (body.adminType !== undefined) {
-      if (body.adminType) {
-        source.adminType = body.adminType;
-        // A type answers the question the deferral was asking, whichever view
-        // gave it - so the flag never outlives what it was waiting for.
-        delete source.adminTypeDeferred;
-      } else {
-        delete source.adminType;
-      }
-    }
-    if (body.adminTypeDeferred !== undefined) {
-      if (body.adminTypeDeferred) source.adminTypeDeferred = true;
-      else delete source.adminTypeDeferred;
-    }
-
-    tx.update(noteRef, { sources });
-  });
+  const body = await readValidatedBody(event, (b) => triageBody.parse(b));
+  await triageNotePg(body);
 
   return { ok: true };
 });

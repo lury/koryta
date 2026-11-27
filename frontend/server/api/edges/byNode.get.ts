@@ -1,15 +1,16 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { requireAdmin } from "~~/server/utils/auth";
 import {
-  edgeRevisionsForMany,
-  fetchEdgesForNode,
   hasPendingRevision,
   publishCandidateRevision,
-  resolveEdgeEndpoints,
+  type EdgeEndpoints,
 } from "~~/server/utils/edgePublication";
 import { approvedRevisionId, pageIsPublic } from "~~/shared/model";
-import type { EdgeType } from "~~/shared/model";
+import type { Edge, EdgeType, Revision } from "~~/shared/model";
+import {
+  readEdgesOfNode,
+  readNodeDocs,
+  readRevisionsOf,
+} from "~~/server/db/edgeLists";
 import { z } from "zod";
 
 /** One relation as the publish dialog needs to render it: what it says, who is
@@ -105,14 +106,14 @@ export default defineEventHandler(async (event): Promise<NodeRelations> => {
   const query = await getValidatedQuery(event, (q) => queryValidator.parse(q));
   await requireAdmin(event);
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  const [edges, nodeDoc] = await Promise.all([
-    fetchEdgesForNode(db, query.nodeId),
-    db.collection("nodes").doc(query.nodeId).get(),
+  const reads = postgresReads;
+  const [edges, node] = await Promise.all([
+    reads.edges(query.nodeId),
+    reads.node(query.nodeId),
   ]);
 
   const live = edges.filter((edge) => edge.deleted !== true);
-  const endpoints = await resolveEdgeEndpoints(db, live);
+  const endpoints = await reads.endpoints(live);
 
   // Only the relations a reviewer might act on need their revisions read: one
   // already live, or already pointing at an approved revision, has nothing to
@@ -120,10 +121,7 @@ export default defineEventHandler(async (event): Promise<NodeRelations> => {
   const needRevisions = live.filter(
     (edge) => !pageIsPublic(edge) && !approvedRevisionId(edge.revision_id),
   );
-  const revisions = await edgeRevisionsForMany(
-    db,
-    needRevisions.map((edge) => edge.id),
-  );
+  const revisions = await reads.revisions(needRevisions.map((edge) => edge.id));
 
   const relations = live.map((edge): NodeRelation => {
     const state = endpoints.get(edge.id);
@@ -184,7 +182,74 @@ export default defineEventHandler(async (event): Promise<NodeRelations> => {
 
   return {
     relations,
-    nodePublished: nodeDoc.exists && pageIsPublic(nodeDoc.data() ?? {}),
-    nodeParties: strings(nodeDoc.data()?.parties),
+    nodePublished: !!node && pageIsPublic(node),
+    nodeParties: strings(node?.parties),
   };
 });
+
+type EdgeWithId = Edge & { id: string };
+type Endpoints = Pick<
+  EdgeEndpoints,
+  "sourceName" | "targetName" | "sourcePublished" | "targetPublished"
+>;
+
+/** What the dialog reads. */
+type Reads = {
+  edges: (nodeId: string) => Promise<EdgeWithId[]>;
+  node: (nodeId: string) => Promise<Record<string, unknown> | undefined>;
+  endpoints: (edges: EdgeWithId[]) => Promise<Map<string, Endpoints>>;
+  revisions: (
+    edgeIds: string[],
+  ) => Promise<Map<string, (Revision & { id: string })[]>>;
+};
+
+/** The reads on Postgres. */
+const postgresReads: Reads = {
+  edges: async (nodeId) => (await readEdgesOfNode(nodeId)) as EdgeWithId[],
+  node: async (nodeId) => (await readNodeDocs([nodeId])).get(nodeId),
+  endpoints: async (edges) => {
+    const nodes = await readNodeDocs(
+      edges.flatMap((edge) => [edge.source, edge.target]),
+    );
+    const name = (id: string) => {
+      const value = nodes.get(id)?.name;
+      return typeof value === "string" ? value : null;
+    };
+    const published = (id: string) => {
+      const doc = nodes.get(id);
+      return (
+        !!doc &&
+        pageIsPublic({ published: doc.published, deleted: doc.deleted })
+      );
+    };
+    return new Map(
+      edges.map((edge) => [
+        edge.id,
+        {
+          sourceName: name(edge.source),
+          targetName: name(edge.target),
+          sourcePublished: published(edge.source),
+          targetPublished: published(edge.target),
+        },
+      ]),
+    );
+  },
+  revisions: async (edgeIds) => {
+    const result = new Map<string, (Revision & { id: string })[]>();
+    for (const id of edgeIds) result.set(id, []);
+    // Thirty at a time and by id within each, the order the `in` queries
+    // read them in, so that ties in time sort the same.
+    for (let i = 0; i < edgeIds.length; i += 30) {
+      for (const revision of await readRevisionsOf(edgeIds.slice(i, i + 30))) {
+        const typed = revision as unknown as Revision & { id: string };
+        if (typed.node_id) result.get(typed.node_id)?.push(typed);
+      }
+    }
+    const time = (revision: Revision) =>
+      typeof revision.update_time === "string"
+        ? Date.parse(revision.update_time) || 0
+        : 0;
+    for (const list of result.values()) list.sort((a, b) => time(b) - time(a));
+    return result;
+  },
+};

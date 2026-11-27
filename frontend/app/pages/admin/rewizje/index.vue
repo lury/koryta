@@ -482,7 +482,7 @@ const SECTIONS: readonly SectionId[] = ["kolejka", "powiazania", "wpisy"];
 /** Mirrors `AUTHOR_SCAN_CAP` in `/api/revisions/queue`; the module itself pulls
  * in firebase-admin, so only its type survives into the client bundle. */
 const AUTHOR_SCAN_CAP = 500;
-/** Mirrors `QUEUE_SCAN_CAP` in `server/utils/queueScan`, for the same reason. */
+/** Mirrors `QUEUE_SCAN_CAP` in `server/api/revisions/queue.get.ts`, for the same reason. */
 const QUEUE_SCAN_CAP = 30_000;
 
 /** The page sizes both paged lists offer. `/api/nodes/revisions` takes any

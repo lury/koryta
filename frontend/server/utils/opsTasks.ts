@@ -1,12 +1,4 @@
 import {
-  Timestamp,
-  getFirestore,
-  type DocumentData,
-  type Firestore,
-} from "firebase-admin/firestore";
-import {
-  OPS_DATABASE,
-  TASKS_COLLECTION,
   applyTaskPatch,
   dependencyProblem,
   finishedDecisions,
@@ -24,67 +16,30 @@ import type {
   taskPatchSchema,
 } from "~~/shared/tasks";
 import type { z } from "zod";
+import { listTasksPg, storeTasksPg, withTaskListPg } from "../db/ops";
 
 /** The owner's task list (`shared/tasks.ts`), as /admin/zadania reads and
- * changes it. The MCP tools write the same documents over REST
- * (`scripts/mcp/ops-store.ts`); both keep the times as Timestamps. */
+ * changes it, in `ops.tasks`. Times are ISO strings, as `Task` holds them. */
 
-export const opsDb = (): Firestore => getFirestore(OPS_DATABASE);
-
-/** Timestamps as the ISO strings `Task` holds them in. */
-const plainTime = (value: unknown) =>
-  value instanceof Timestamp ? value.toDate().toISOString() : value;
-
-export function fromDoc(id: string, data: DocumentData): Task {
-  return taskFromData(id, {
-    ...data,
-    createdAt: plainTime(data.createdAt),
-    updatedAt: plainTime(data.updatedAt),
-    closedAt: plainTime(data.closedAt),
-    // A pick's time is a Timestamp like the history's: the MCP store writes
-    // every `at` as one.
-    picked: data.picked
-      ? { ...data.picked, at: plainTime(data.picked.at) }
-      : data.picked,
-    log: Array.isArray(data.log)
-      ? data.log.map((entry: DocumentData | null) => ({
-          ...entry,
-          at: plainTime(entry?.at),
-        }))
-      : data.log,
-  });
+export function fromDoc(id: string, data: Record<string, unknown>): Task {
+  return taskFromData(id, data);
 }
 
-const stamp = (value: string) => Timestamp.fromDate(new Date(value));
-
-/** A task as a document. `id` is the document's name, not a field. */
-export function toDoc(task: Task): DocumentData {
-  const {
-    id: _id,
-    createdAt,
-    updatedAt,
-    closedAt,
-    log,
-    picked,
-    ...rest
-  } = task;
-  const doc: Record<string, unknown> = {
-    ...rest,
-    createdAt: stamp(createdAt),
-    updatedAt: stamp(updatedAt),
-    closedAt: closedAt ? stamp(closedAt) : undefined,
-    log: log.map((entry) => ({ ...entry, at: stamp(entry.at) })),
-    picked: picked ? { ...picked, at: stamp(picked.at) } : undefined,
-  };
-  // Firestore refuses `undefined`; an unset field is left out instead.
-  return Object.fromEntries(
-    Object.entries(doc).filter(([, value]) => value !== undefined),
-  );
+/** A task as a document. `id` is the row's id, not a field; an unset field
+ * is left out. */
+export function toDoc(task: Task): Record<string, unknown> {
+  const { id: _id, closedAt, picked, ...rest } = task;
+  return JSON.parse(
+    JSON.stringify({
+      ...rest,
+      ...(closedAt ? { closedAt } : {}),
+      ...(picked ? { picked } : {}),
+    }),
+  ) as Record<string, unknown>;
 }
 
-export async function listTasks(db = opsDb()): Promise<Task[]> {
-  const snap = await db.collection(TASKS_COLLECTION).get();
-  return snap.docs.map((doc) => fromDoc(doc.id, doc.data()));
+export async function listTasks(): Promise<Task[]> {
+  return (await listTasksPg()).map(({ id, data }) => fromDoc(id, data));
 }
 
 /** Refused with the reason in words, which the page shows as it is. */
@@ -94,14 +49,11 @@ const refuse = (message: string, statusCode = 400) =>
 export async function createTask(
   input: z.output<typeof taskCreateSchema>,
   by: TaskActor,
-  db = opsDb(),
 ): Promise<Task> {
-  const collection = db.collection(TASKS_COLLECTION);
-  // Read everything in the transaction: the id and the dependencies are
-  // judged against the list as it is when the task is written.
-  return db.runTransaction(async (tx) => {
-    const snap = await tx.get(collection);
-    const tasks = snap.docs.map((doc) => fromDoc(doc.id, doc.data()));
+  // The id and the dependencies are judged against the list as it is when
+  // the task is written.
+  return withTaskListPg(async (rows, tx) => {
+    const tasks = rows.map(({ id, data }) => fromDoc(id, data));
     const taken = new Set(tasks.map((task) => task.id));
     if (input.id && taken.has(input.id)) {
       throw refuse(`Jest już zadanie ${input.id}.`, 409);
@@ -112,7 +64,10 @@ export async function createTask(
     const task = newTask(input, id, by, new Date().toISOString());
     const invalid = taskProblem(task);
     if (invalid) throw refuse(invalid);
-    tx.create(collection.doc(id), toDoc(task));
+    if (
+      !(await storeTasksPg(tx, [{ id, data: toDoc(task) }], { create: true }))
+    )
+      throw refuse(`Jest już zadanie ${id}.`, 409);
     return task;
   });
 }
@@ -123,12 +78,9 @@ export async function updateTask(
   id: string,
   patch: z.output<typeof taskPatchSchema>,
   by: TaskActor,
-  db = opsDb(),
 ): Promise<{ task: Task; also: Task[] }> {
-  const collection = db.collection(TASKS_COLLECTION);
-  return db.runTransaction(async (tx) => {
-    const snap = await tx.get(collection);
-    const tasks = snap.docs.map((doc) => fromDoc(doc.id, doc.data()));
+  return withTaskListPg(async (rows, tx) => {
+    const tasks = rows.map(({ id, data }) => fromDoc(id, data));
     const current = tasks.find((task) => task.id === id);
     if (!current) throw refuse(`Nie ma zadania ${id}.`, 404);
     const problem = dependencyProblem(
@@ -142,12 +94,12 @@ export async function updateTask(
     const { task } = applyTaskPatch(current, patch, by, now);
     const invalid = taskProblem(task);
     if (invalid) throw refuse(invalid);
-    tx.set(collection.doc(id), toDoc(task));
     const after = tasks.map((t) => (t.id === id ? task : t));
     const also = finishedDecisions(after, by, now);
-    for (const decision of also) {
-      tx.set(collection.doc(decision.id), toDoc(decision));
-    }
+    await storeTasksPg(
+      tx,
+      [task, ...also].map((t) => ({ id: t.id, data: toDoc(t) })),
+    );
     return { task, also };
   });
 }

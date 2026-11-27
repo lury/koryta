@@ -300,7 +300,7 @@ const onAdminPage = computed(() => {
     !onTeamPage.value
   );
 });
-const pictureURL = computed(() => userConfig?.data?.value?.photoURL);
+const pictureURL = computed(() => userConfig.data.value?.photoURL);
 </script>
 
 <style scoped>

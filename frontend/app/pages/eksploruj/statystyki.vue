@@ -334,7 +334,7 @@ const { isAdmin, user, userConfig } = useAuthState();
  * document rather than from the response: the response deliberately does not
  * say which rows belong to whom, including theirs. */
 const profilePublic = computed(() =>
-  publicProfileEnabled(userConfig?.data?.value?.publicProfile),
+  publicProfileEnabled(userConfig.data.value?.publicProfile),
 );
 
 /** The state of the database does not depend on who is asking or on the

@@ -1,7 +1,6 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { getUser, requireDatascience } from "~~/server/utils/auth";
 import { toArticleCapture } from "~~/server/utils/captures";
+import { readDoc } from "~~/server/db/graph";
 
 /** One capture, which is what the extension popup and `/zrodla` poll while the
  * extractor is working. */
@@ -12,11 +11,10 @@ export default defineEventHandler(async (event) => {
   }
   requireDatascience(await getUser(event));
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  const snapshot = await db.collection("articlePages").doc(id).get();
-  if (!snapshot.exists) {
+  const data = await readDoc("article_pages", id);
+  if (!data) {
     throw createError({ statusCode: 404, message: "Nie ma takiej strony." });
   }
 
-  return { capture: toArticleCapture(snapshot.id, snapshot.data()!) };
+  return { capture: toArticleCapture(id, data) };
 });

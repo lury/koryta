@@ -59,6 +59,46 @@ export const qaAreaConfig: Record<QaArea, { title: string; color: string }> = {
  * before the list could be read at all. */
 export const QA_ITEMS: QaItem[] = [
   {
+    id: "wyszukiwanie-stron-z-serwera",
+    title:
+      "Wizualizacje, wybór artykułu i ostrzeżenie o duplikacie szukają na serwerze",
+    description:
+      "Trzy miejsca pobierały przy otwarciu wszystkie instytucje, artykuły albo osoby z bazy i szukały w przeglądarce. Teraz pytają serwer o to, co wpisano: pole „Instytucje” w /eksploruj/autograf działa jak w tabeli, wybór artykułu przy powiązaniu szuka po tytule albo wklejonym linku, a formularz nowej strony podpowiada podobne wpisy z wyszukiwarki.",
+    steps: [
+      "Otwórz /eksploruj/autograf/spolki-partie, w filtrach wpisz w „Instytucje” fragment nazwy szpitala: podpowiedzi pojawiają się po chwili, a wybrana instytucja zawęża wykres.",
+      "Na wykresie kliknij „(x z y osób)” pod paskiem firmy: otwiera się tabela tej firmy.",
+      "Na stronie artykułu dodaj powiązanie z innym artykułem i wpisz fragment jego tytułu, potem wklej jego link: w obu przypadkach artykuł jest na liście.",
+      "Zalogowany, utwórz nową stronę osoby i wpisz nazwisko kogoś, kto już jest w bazie: pod polem pojawiają się „Podobne wpisy”.",
+    ],
+    area: "contributor",
+  },
+  {
+    id: "tabela-instytucje-z-serwera",
+    title: "Pole „Instytucje” w /eksploruj/tabela podpowiada z serwera",
+    description:
+      "Tabela nie pobiera już listy wszystkich instytucji przy otwarciu strony. Pole „Instytucje” w filtrach podpowiada po wpisaniu co najmniej dwóch liter (do 50 trafień, największe najpierw), a wybrane instytucje i stare linki z `krs=` dalej działają.",
+    steps: [
+      "Otwórz /eksploruj/tabela, w filtrach wpisz w „Instytucje” fragment nazwy szpitala: lista podpowiedzi pojawia się po chwili i zawiera pasujące instytucje.",
+      "Wybierz jedną: tabela zawęża się do jej osób, a chip na pasku i lista „Wybrane firmy” pod tabelą pokazują jej nazwę.",
+      "Odśwież stronę z wybraną instytucją w adresie: chip i nazwa w tabeli wracają bez wpisywania.",
+    ],
+    area: "public",
+  },
+  {
+    id: "glosy-notatki-profil-przez-api",
+    title: "Głosy, notatki, profil i oceny QA zapisują się przez serwer",
+    description:
+      "Przeglądarka nie pisze już sama do bazy: głos, notatka, ustawienia na /profil i ocena na /qa idą przez serwer, który pilnuje tych samych zasad co dotąd (jeden głos na osobę, wartości od -5 do 5, notatkę zmienia tylko autor). Wygląd się nie zmienia; liczniki i strzałki mają działać jak wcześniej.",
+    steps: [
+      "Zaloguj się, otwórz osobę w /eksploruj/nowe i kliknij strzałkę głosu: liczba zmienia się od razu i zostaje po odświeżeniu strony.",
+      "Na stronie osoby dodaj notatkę ze źródłem i zapisz: po odświeżeniu notatka jest na miejscu.",
+      "Na /profil przełącz „Pokaż moją nazwę w statystykach i w aktywności” i jedno powiadomienie: po odświeżeniu przełączniki są tak, jak je zostawiłeś.",
+      "Na /qa oceń dowolny wpis: po odświeżeniu ocena jest zapisana.",
+    ],
+    link: "/profil",
+    area: "contributor",
+  },
+  {
     id: "eksploruj-bez-karty-grafu",
     title: "Na /eksploruj nie ma już karty „Graf połączeń”",
     description:

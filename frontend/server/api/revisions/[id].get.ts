@@ -1,5 +1,4 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
+import { revisionPg } from "~~/server/db/revisionQueue";
 import { setResponseHeader } from "h3";
 import { getUser } from "~~/server/utils/auth";
 
@@ -23,15 +22,13 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  const docSnap = await db.collection("revisions").doc(id).get();
-
-  if (!docSnap.exists) {
+  const revision = await revisionPg(id);
+  if (!revision) {
     throw createError({
       statusCode: 404,
       message: "Revision not found",
     });
   }
 
-  return docSnap.data();
+  return revision;
 });

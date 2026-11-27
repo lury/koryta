@@ -1,5 +1,3 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import {
   editorFreshCachedEventHandler,
   wantsLatest,
@@ -7,6 +5,7 @@ import {
 import { articleIdsForTopic } from "~~/server/utils/topics";
 import { pageIsPublic } from "~~/shared/model";
 import type { Topic } from "~~/shared/model";
+import { readNodeDocs } from "~~/server/db/graph";
 
 export type TopicArticle = {
   id: string;
@@ -31,11 +30,9 @@ export default editorFreshCachedEventHandler(async (event) => {
   }
   const includeDrafts = await wantsLatest(event);
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  const topicSnap = await db.collection("nodes").doc(id).get();
-  const topicData = topicSnap.data();
+  const topicData = (await readNodeDocs([id])).get(id);
 
-  if (!topicSnap.exists || topicData?.type !== "topic") {
+  if (!topicData || topicData.type !== "topic") {
     throw createError({ statusCode: 404, message: "Nie ma takiego tematu." });
   }
   if (!includeDrafts && !pageIsPublic(topicData)) {
@@ -45,34 +42,33 @@ export default editorFreshCachedEventHandler(async (event) => {
   // Both passes, so that a draft tag can be told apart from an approved one on
   // the page rather than merely being absent.
   const [approvedIds, allIds] = await Promise.all([
-    articleIdsForTopic(db, id, false),
+    articleIdsForTopic(id, false),
     includeDrafts
-      ? articleIdsForTopic(db, id, true)
+      ? articleIdsForTopic(id, true)
       : Promise.resolve<string[]>([]),
   ]);
   const approved = new Set(approvedIds);
   const wanted = includeDrafts ? allIds : approvedIds;
 
-  const snaps = wanted.length
-    ? await db.getAll(
-        ...wanted.map((articleId) => db.collection("nodes").doc(articleId)),
-      )
-    : [];
+  const found = await readNodeDocs(wanted);
+  const docs = wanted.flatMap((articleId) => {
+    const data = found.get(articleId);
+    return data ? [{ id: articleId, data }] : [];
+  });
 
-  const articles: TopicArticle[] = snaps
-    .filter((snap) => snap.exists && snap.data()?.type === "article")
-    .filter((snap) => includeDrafts || pageIsPublic(snap.data() ?? {}))
-    .map((snap) => {
-      const data = snap.data() ?? {};
+  const articles: TopicArticle[] = docs
+    .filter(({ data }) => data.type === "article")
+    .filter(({ data }) => includeDrafts || pageIsPublic(data))
+    .map(({ id: articleId, data }) => {
       const date = data.publishedDate;
       return {
-        id: snap.id,
+        id: articleId,
         name: typeof data.name === "string" ? data.name : "",
         sourceURL:
           typeof data.sourceURL === "string" ? data.sourceURL : undefined,
-        // A Firestore Timestamp does not survive JSON, so it is sent as ISO.
-        publishedDate: date?.toDate ? date.toDate().toISOString() : null,
-        taggedPublished: approved.has(snap.id),
+        publishedDate:
+          typeof date === "string" ? new Date(date).toISOString() : null,
+        taggedPublished: approved.has(articleId),
       };
     })
     .sort((a, b) =>
@@ -80,7 +76,7 @@ export default editorFreshCachedEventHandler(async (event) => {
     );
 
   return {
-    topic: { id: topicSnap.id, ...topicData } as Topic & { id: string },
+    topic: { id, ...topicData } as Topic & { id: string },
     articles,
   } satisfies TopicDetail;
 });

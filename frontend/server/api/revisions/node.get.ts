@@ -1,11 +1,12 @@
 import { z } from "zod";
-import {
-  getFirestore,
-  type QueryDocumentSnapshot,
-} from "firebase-admin/firestore";
 import { defineEventHandler, getValidatedQuery, setResponseHeader } from "h3";
 import { getUser } from "~~/server/utils/auth";
-import { describeRevisions } from "~~/server/utils/revisionQueue";
+import { useDb } from "~~/server/db/client";
+import { readDocs } from "~~/server/db/editorial";
+import {
+  describeRevisionsPg,
+  revisionRowsOfNodePg,
+} from "~~/server/db/revisionQueue";
 import { approvedRevisionId, pageIsPublic } from "~~/shared/model";
 import type { Proposal } from "~~/shared/proposals";
 
@@ -51,35 +52,27 @@ export default defineEventHandler(
     const { nodeId } = await getValidatedQuery(event, (q) =>
       queryValidator.parse(q),
     );
-    const db = getFirestore("koryta-pl");
 
     // Uids, emails and display names for an admin. Never cached, never shared.
     setResponseHeader(event, "Cache-Control", "private, no-store");
 
-    const [byUnderscore, byCamel, node] = await Promise.all([
-      db.collection("revisions").where("node_id", "==", nodeId).get(),
-      db.collection("revisions").where("nodeId", "==", nodeId).get(),
-      db.collection("nodes").doc(nodeId).get(),
+    const [rows, nodes] = await Promise.all([
+      revisionRowsOfNodePg(nodeId),
+      readDocs(useDb(), "nodes", [nodeId]),
     ]);
-
-    const docs = new Map<string, QueryDocumentSnapshot>();
-    for (const doc of [...byUnderscore.docs, ...byCamel.docs]) {
-      if (!docs.has(doc.id)) docs.set(doc.id, doc);
-    }
-
-    const revisions = await describeRevisions(db, [...docs.values()], {
+    const revisions = await describeRevisionsPg(rows, {
       withAuthors: caller.admin === true,
       allChanges: true,
     });
 
-    const nodeData = node.data() ?? {};
+    const nodeData = nodes.get(nodeId) ?? {};
     return {
       revisions: revisions.sort(
         (a, b) => timeOf(b.updateTime) - timeOf(a.updateTime),
       ),
       approvedRevisionId: approvedRevisionId(nodeData.revision_id) ?? null,
       published: pageIsPublic(nodeData),
-      exists: node.exists,
+      exists: nodes.has(nodeId),
     };
   },
 );

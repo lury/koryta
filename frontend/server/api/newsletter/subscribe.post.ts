@@ -1,4 +1,3 @@
-import { getFirestore } from "firebase-admin/firestore";
 import { createError, defineEventHandler, readValidatedBody } from "h3";
 import { z } from "zod";
 import { requestSubscription } from "~~/server/utils/newsletterSubscribers";
@@ -45,7 +44,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const outcome = await requestSubscription(getFirestore("koryta-pl"), {
+  const outcome = await requestSubscription({
     email,
     where: body.where,
     siteUrl: config.public.siteUrl,

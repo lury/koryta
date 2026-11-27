@@ -8,6 +8,7 @@ import {
 import type { NodeType } from "~~/shared/model";
 import { listedPosts } from "~~/shared/blog";
 import { blogPosts } from "~~/server/utils/blog";
+import { readSitemapPages } from "~~/server/db/nodes";
 
 export type SitemapEntry = { loc: string; lastmod?: string };
 
@@ -34,9 +35,9 @@ export type SitemapEntry = { loc: string; lastmod?: string };
  * changes when somebody publishes a page and at no other time. The key is the
  * source alone, so a query string cannot make every request a cache miss.
  *
- * `fetchNodes` has an hour-long cache of its own, but only per Cloud Run
- * instance, and a sitemap fetch is exactly the request most likely to land on
- * a cold one.
+ * The pages are read as the fields an entry needs (`readSitemapPages`), not
+ * as whole served documents: a type of a million people at x50 is a heap
+ * the size of the base otherwise.
  *
  * `<lastmod>` added nothing to that bill, and that is a choice about where the
  * work happens rather than luck. Every way of computing the date here has to
@@ -73,16 +74,16 @@ function isSitemapNodeType(source: string | undefined): source is NodeType {
 }
 
 async function nodeUrls(type: NodeType): Promise<SitemapEntry[]> {
-  const nodes = await fetchNodes(type);
+  const nodes = await readSitemapPages(type);
   const urls: SitemapEntry[] = [];
-  for (const [id, data] of Object.entries(nodes)) {
-    if (!inSitemap(data)) continue;
+  for (const [id, page] of Object.entries(nodes)) {
+    if (!inSitemap(page)) continue;
     // Omitted rather than guessed where there is nothing to say: the module
     // keeps the url and drops the element, and a url without a `lastmod` is
     // one Google schedules exactly as it did before.
-    const lastmod = sitemapLastmod(data);
+    const lastmod = sitemapLastmod(nodes[id]!);
     urls.push({
-      loc: generateEntityUrl(data.type, id, data.name),
+      loc: generateEntityUrl(page.type, id, page.name),
       ...(lastmod ? { lastmod } : {}),
     });
   }

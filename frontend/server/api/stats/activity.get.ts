@@ -1,14 +1,11 @@
 import { z } from "zod";
-import { getFirestore } from "firebase-admin/firestore";
 import { defineEventHandler, getValidatedQuery, setResponseHeader } from "h3";
 import { getOptionalUser } from "~~/server/utils/auth";
 import {
   identify,
-  readPublicProfiles,
   type ContributorIdentity,
 } from "~~/server/utils/contributors";
 import { mergeRollups, mergeTruncated } from "~~/server/utils/activityRollup";
-import { loadActivityRollups } from "~~/server/utils/activityWindow";
 import type {
   ActivityAggregate,
   ContributorAggregate,
@@ -24,6 +21,10 @@ import {
   type RankingName,
 } from "~~/shared/activity";
 import { maskedContributorName } from "~~/shared/profile";
+import {
+  loadActivityRollupsFromDb,
+  readPublicProfilesFromDb,
+} from "~~/server/db/activity";
 
 const queryValidator = z.object({
   // One of the three the page offers, not a range. See `activityRanges`: every
@@ -264,8 +265,7 @@ function present(
  */
 const cachedWindow = defineCachedFunction(
   async (days: number): Promise<WindowedActivity> => {
-    const db = getFirestore("koryta-pl");
-    const { window, spanned, rollups } = await loadActivityRollups(db, days);
+    const { window, spanned, rollups } = await loadActivityRollupsFromDb(days);
 
     const aggregate = mergeRollups(spanned, rollups);
     const ranked = Object.fromEntries(
@@ -281,7 +281,7 @@ const cachedWindow = defineCachedFunction(
     ];
     const [identities, publicProfiles] = await Promise.all([
       identify(shown),
-      readPublicProfiles(db, shown),
+      readPublicProfilesFromDb(shown),
     ]);
 
     return {

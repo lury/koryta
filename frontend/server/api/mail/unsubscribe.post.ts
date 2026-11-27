@@ -1,4 +1,3 @@
-import { getFirestore } from "firebase-admin/firestore";
 import { createError, defineEventHandler, getQuery, readBody } from "h3";
 import { z } from "zod";
 import { unsubscribe } from "~~/server/utils/mailTokens";
@@ -40,7 +39,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const { u, t, k, c } = parsed.data;
-  const outcome = await unsubscribe(getFirestore("koryta-pl"), {
+  const outcome = await unsubscribe({
     uid: u,
     token: t,
     topic: k,

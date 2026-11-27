@@ -23,7 +23,7 @@ import { getFirestore, Timestamp } from "firebase-admin/firestore";
  * `getPageMeta` never looked at, which is a large part of how these arrived
  * dateless.
  *
- * The cause is fixed in `ensureArticleNode` (server/utils/articles.ts), which
+ * The cause is fixed in `ensureArticleNodePg` (server/db/articles.ts), which
  * used to write `publishedDate: undefined` - stripped on the way to Firestore,
  * leaving the field absent - whenever the scraped meta carried no date. It now
  * falls back to the time the article was added, so a new article is always in

@@ -1,13 +1,14 @@
-import { getFirestore } from "firebase-admin/firestore";
 import { getEdges } from "~~/shared/graph/util";
 import { fetchNodes, fetchEdges } from "~~/server/utils/fetch";
 import type { Article } from "~~/shared/model";
 import type { SourceStat } from "~~/server/api/nodes/articles/index.get";
+import { writeDomainArticleStatsPg } from "~~/server/db/domainStats";
+import { requireAdmin } from "~~/server/utils/auth";
 
-export default defineEventHandler(async () => {
-  // Only authenticated or authorized actors should trigger a recalculation.
-  // When setting up the Cloud Function later, ensure it passes a valid Identity Token.
-  // TODO await getUser(event);
+export default defineEventHandler(async (event) => {
+  // A recount reads every article and edge: admins only (decision on
+  // 2026-11-27).
+  await requireAdmin(event);
 
   const articles = await fetchNodes("article");
   const [edgesFromDB] = await Promise.all([fetchEdges()]);
@@ -59,28 +60,14 @@ export default defineEventHandler(async () => {
       url: domainMap[domain],
     }));
 
-  const db = getFirestore("koryta-pl");
-
-  // Firestore batches are limited to 500 writes
-  const chunks = [];
-  for (let i = 0; i < sourceStats.length; i += 500) {
-    chunks.push(sourceStats.slice(i, i + 500));
-  }
-
-  for (const chunk of chunks) {
-    const batch = db.batch();
-    for (const stat of chunk) {
-      // Convert domain (e.g. onet.pl) into a safe firestore ID
-      const safeId = stat.domain.replace(/[^a-zA-Z0-9_-]/g, "_");
-      const docRef = db.collection("stats").doc(`domain_articles_${safeId}`);
-      batch.set(docRef, {
-        id: stat.domain,
-        type: "domain_articles",
-        ...stat,
-      });
-    }
-    await batch.commit();
-  }
+  await writeDomainArticleStatsPg(
+    sourceStats.map((stat) => ({
+      // The id Firestore was given: the domain with what an id may not hold
+      // replaced.
+      id: `domain_articles_${stat.domain.replace(/[^a-zA-Z0-9_-]/g, "_")}`,
+      data: { id: stat.domain, type: "domain_articles", ...stat },
+    })),
+  );
 
   return { status: "success", computedDomains: sourceStats.length };
 });

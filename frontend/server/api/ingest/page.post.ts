@@ -1,9 +1,13 @@
 import { gunzipSync } from "node:zlib";
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { z } from "zod";
 import { getUser, requireDatascience } from "~~/server/utils/auth";
-import { ensureArticleNode } from "~~/server/utils/articles";
+import { ensureArticleNodePg } from "~~/server/db/articles";
+import {
+  addCapturePg,
+  capturesOfPg,
+  failCapturePg,
+} from "~~/server/db/articlePages";
+import { editorialTx } from "~~/server/db/editorial";
 import {
   parseCrawlUrl,
   sha256,
@@ -93,7 +97,6 @@ export default defineEventHandler(async (event) => {
   const url = full;
   const normalizedUrl = normalizeUrl(url);
 
-  const db = getFirestore(getApp(), "koryta-pl");
   const htmlSha256 = sha256(html);
 
   // Re-submitting the same bytes is a no-op rather than a second job: the
@@ -111,23 +114,18 @@ export default defineEventHandler(async (event) => {
   // stored as null and not one that is absent, and every capture taken before
   // selections existed has no such field at all — asked as a query, each of
   // those would look like a page nobody had captured.
-  const sameBytes = await db
-    .collection("articlePages")
-    .where("normalizedUrl", "==", normalizedUrl)
-    .where("htmlSha256", "==", htmlSha256)
-    .limit(20)
-    .get();
-  const duplicate = sameBytes.docs.find(
-    (doc) => (doc.data().selection ?? null) === (body.selection ?? null),
+  const sameBytes = await capturesOfPg(normalizedUrl, htmlSha256);
+  const duplicate = sameBytes.find(
+    (doc) => (doc.data.selection ?? null) === (body.selection ?? null),
   );
   if (duplicate) {
     return {
       status: "ok",
       pageId: duplicate.id,
       duplicate: true,
-      captureStatus: duplicate.data().status,
-      articleNodeId: duplicate.data().articleNodeId,
-      storagePath: duplicate.data().storagePath,
+      captureStatus: duplicate.data.status,
+      articleNodeId: duplicate.data.articleNodeId,
+      storagePath: duplicate.data.storagePath,
     };
   }
 
@@ -135,41 +133,41 @@ export default defineEventHandler(async (event) => {
   // this capture is about — so a second extraction over a page already in the
   // bucket points at the copy that is there instead of writing another.
   const storagePath =
-    (sameBytes.docs[0]?.data().storagePath as string | undefined) ??
+    (sameBytes[0]?.data.storagePath as string | undefined) ??
     (await uploadCapturedPage({ url, html })).storagePath;
 
-  const batch = db.batch();
-  const { nodeId, created } = await ensureArticleNode(db, batch, user, {
-    url,
-    // Titles come from the page's own `<title>`/ld+json; a page that reached
-    // here with neither still deserves a node, named after the url.
-    name: body.title?.trim() || url,
-    publishedDate: body.publishedDate,
-    meta: body.meta,
-  });
+  const { nodeId, created, pageId } = await editorialTx(async (tx, log) => {
+    const { nodeId, created } = await ensureArticleNodePg(tx, log, user, {
+      url,
+      // Titles come from the page's own `<title>`/ld+json; a page that reached
+      // here with neither still deserves a node, named after the url.
+      name: body.title?.trim() || url,
+      publishedDate: body.publishedDate,
+      meta: body.meta,
+    });
 
-  const now = Timestamp.now();
-  const pageRef = db.collection("articlePages").doc();
-  batch.set(pageRef, {
-    url,
-    normalizedUrl,
-    domain: hostname,
-    title: body.title?.trim() || null,
-    articleNodeId: nodeId,
-    storagePath,
-    htmlSha256,
-    htmlBytes: html.length,
-    selection: body.selection ?? null,
-    source: body.source,
-    status: "stored",
-    capturedBy: user.uid,
-    capturedAt: now,
-    updatedAt: now,
+    const now = new Date().toISOString();
+    const pageId = await addCapturePg(tx, log, {
+      url,
+      normalizedUrl,
+      domain: hostname,
+      title: body.title?.trim() || null,
+      articleNodeId: nodeId,
+      storagePath,
+      htmlSha256,
+      htmlBytes: html.length,
+      selection: body.selection ?? null,
+      source: body.source,
+      status: "stored",
+      capturedBy: user.uid,
+      capturedAt: now,
+      updatedAt: now,
+    });
+    return { nodeId, created, pageId };
   });
-  await batch.commit();
 
   const { dispatched, error } = await dispatchExtraction({
-    pageId: pageRef.id,
+    pageId,
     url,
     storagePath,
     htmlSha256,
@@ -183,16 +181,12 @@ export default defineEventHandler(async (event) => {
   // recorded on the document rather than raised at the caller, who has nothing
   // useful to do about it.
   if (!dispatched) {
-    await pageRef.update({
-      status: "error",
-      updatedAt: Timestamp.now(),
-      "extraction.error": error ?? "extraction was not dispatched",
-    });
+    await failCapturePg(pageId, error ?? "extraction was not dispatched");
   }
 
   return {
     status: "ok",
-    pageId: pageRef.id,
+    pageId,
     duplicate: false,
     captureStatus: dispatched ? "stored" : "error",
     articleNodeId: nodeId,

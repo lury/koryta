@@ -13,7 +13,7 @@ import { isPublicEmployment } from "./stats";
  * by the declarations automation.
  *
  * Written where a page goes up (`publishPage` in
- * server/utils/declarationPublish.ts) and onto the pages that were up already
+ * server/db/declarationPublish.ts) and onto the pages that were up already
  * (scripts/migrate/inne-for-published-candidates.ts); the night counts any
  * page still without one
  * (`test_a_published_candidate_with_a_paid_post_names_a_party`).

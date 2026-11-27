@@ -14,7 +14,7 @@ import { reportRemaining } from "./remaining";
  * read as nobody's: 260 published pages on the 2026-11-18 export, Anna
  * Jedynak-Rykała's among them, 235 of them put up by the declarations
  * automation. That now files „Inne” as it puts a page up
- * (server/utils/declarationPublish.ts); this does it for the pages up already,
+ * (server/db/declarationPublish.ts); this does it for the pages up already,
  * 244 of the 260.
  *
  * The other 16 have a list a person set (`partiesSource: "manual"`), empty in

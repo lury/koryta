@@ -1,12 +1,8 @@
 import { z } from "zod";
-import { getFirestore } from "firebase-admin/firestore";
 import { defineEventHandler, getValidatedQuery, setResponseHeader } from "h3";
 import { getUser } from "~~/server/utils/auth";
-import {
-  countProposals,
-  MINE_SCAN_CAP,
-  scanMyProposals,
-} from "~~/server/utils/myProposals";
+import { countProposals, MINE_SCAN_CAP } from "~~/server/utils/myProposals";
+import { scanMyProposalsPg } from "~~/server/db/revisionQueue";
 import {
   matchesStoredStatus,
   type Proposal,
@@ -51,13 +47,12 @@ export type MyProposals = {
 export default defineEventHandler(async (event): Promise<MyProposals> => {
   const user = await getUser(event);
   const query = await getValidatedQuery(event, (q) => queryValidator.parse(q));
-  const db = getFirestore("koryta-pl");
 
   setResponseHeader(event, "Cache-Control", "private, no-store");
 
-  const { proposals, truncated } = await scanMyProposals(
-    db,
+  const { proposals, truncated } = await scanMyProposalsPg(
     user.uid,
+    MINE_SCAN_CAP,
     query.nodeId,
   );
 

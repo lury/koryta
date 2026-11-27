@@ -1,22 +1,18 @@
-import type { Timestamp } from "firebase-admin/firestore";
 import type { ArticleCapture } from "~~/shared/capture";
 
+/** A stored instant, which is ISO text; anything else reads as none. */
 function iso(value: unknown): string {
-  if (value && typeof (value as Timestamp).toDate === "function") {
-    return (value as Timestamp).toDate().toISOString();
-  }
   return typeof value === "string" ? value : "";
 }
 
 /** A stored capture in the shape the client reads.
  *
- * Timestamps become ISO strings here rather than crossing as Firestore's
- * `{_seconds}` shape, which `/zrodla` already has one workaround for and does
- * not need a second of.
+ * Instants cross as ISO strings.
  */
 export function toArticleCapture(
   id: string,
-  data: FirebaseFirestore.DocumentData,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: Record<string, any>,
 ): ArticleCapture {
   return {
     id,

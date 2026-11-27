@@ -1,4 +1,3 @@
-import { getFirestore } from "firebase-admin/firestore";
 import { defineEventHandler, setResponseHeader } from "h3";
 import { requireOwner } from "~~/server/utils/auth";
 import { loadAudience, queueToCheck } from "~~/server/utils/mailAudience";
@@ -9,7 +8,7 @@ import { loadAudience, queueToCheck } from "~~/server/utils/mailAudience";
 export default defineEventHandler(async (event) => {
   await requireOwner(event);
   setResponseHeader(event, "Cache-Control", "private, no-store");
-  return await loadAudience(getFirestore("koryta-pl"), {
+  return await loadAudience({
     toCheck: await queueToCheck(),
   });
 });

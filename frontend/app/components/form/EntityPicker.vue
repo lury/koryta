@@ -121,11 +121,13 @@ const pendingCreateType = ref<NodeType>("person");
 /** The kinds `/api/search` cannot find.
  *
  * It matches on `nameChunksLower`, which a trigger writes for people, places
- * and regions only, and its query names those three types outright. Articles
- * and topics are therefore listed in full and filtered in the browser - there
- * are few enough of either for that to be the cheaper answer anyway.
+ * and regions only, and its query names those three types outright. Topics
+ * are therefore listed in full and filtered in the browser - editors name few
+ * enough of them for that to be the cheaper answer. Articles grow with the
+ * base (46 thousand at x50), so they are asked of /api/search/pages by name
+ * or link instead.
  */
-const LISTED_TYPES: readonly NodeType[] = ["article", "topic"];
+const LISTED_TYPES: readonly NodeType[] = ["topic"];
 
 const searchableTypes = computed(() =>
   entityTypes.value.filter((kind) => !LISTED_TYPES.includes(kind)),
@@ -204,20 +206,53 @@ async function search_(term: string) {
     // just created; the published pages for anybody else. The endpoint also
     // offers a logged out reader unpublished people, whose pages are a teaser
     // - something to land on from the search box, not something to pick.
-    const response = await $fetch<
-      Array<{ id: string; name: string; type: string; published?: boolean }>
-    >("/api/search", {
-      query: { q: term, ...(user.value ? { latest: true } : {}) },
-      headers: await authHeaders(user.value),
-    });
-    results.value = response
-      .filter((node) => entityTypes.value.includes(node.type as NodeType))
-      .filter((node) => !!user.value || node.published !== false)
-      .map((node) => ({
-        type: node.type as NodeType,
+    const headers = await authHeaders(user.value);
+    const byName = searchableTypes.value.some((kind) => kind !== "article");
+    const [response, articles] = await Promise.all([
+      byName
+        ? $fetch<
+            Array<{
+              id: string;
+              name: string;
+              type: string;
+              published?: boolean;
+            }>
+          >("/api/search", {
+            query: { q: term, ...(user.value ? { latest: true } : {}) },
+            headers,
+          })
+        : [],
+      searchableTypes.value.includes("article")
+        ? $fetch<{ id: string; name: string | null; url?: string | null }[]>(
+            "/api/search/pages",
+            {
+              query: {
+                type: "article",
+                q: term,
+                ...(looksLikeLink(term) ? { url: linkSpellings(term) } : {}),
+              },
+              headers,
+            },
+          )
+        : [],
+    ]);
+    results.value = [
+      ...response
+        .filter((node) => entityTypes.value.includes(node.type as NodeType))
+        .filter((node) => !!user.value || node.published !== false)
+        .map((node) => ({
+          type: node.type as NodeType,
+          id: node.id,
+          name: node.name,
+        })),
+      // Unpublished ones only reach a signed in reader (the endpoint's).
+      ...articles.map((node) => ({
+        type: "article" as NodeType,
         id: node.id,
-        name: node.name,
-      }));
+        name: (node.name ?? "").trim() || node.url || node.id,
+        ...(node.url ? { url: node.url } : {}),
+      })),
+    ];
   } catch (e) {
     // A search that fails should offer nothing rather than spin forever.
     console.error("Search failed", e);
@@ -270,6 +305,13 @@ function urlKey(value: string) {
     .replace(/^https?:\/\//, "")
     .replace(/^www\./, "")
     .replace(/\/+$/, "");
+}
+
+/** The ways a stored link may spell what was pasted: its Polish letters as
+ * themselves or percent-encoded. */
+function linkSpellings(term: string): string[] {
+  const key = urlKey(term);
+  return [...new Set([key, encodeURI(key).toLowerCase()])];
 }
 
 /** Whether to try the term against links at all.

@@ -1,7 +1,6 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { readerAwareCachedEventHandler } from "~~/server/utils/handlers";
 import { toExtractionFact } from "~~/server/utils/extractions";
+import { readExtractionPg } from "~~/server/db/extractions";
 
 /** One fact by id, whatever its review state.
  *
@@ -28,17 +27,15 @@ export default readerAwareCachedEventHandler(
       throw createError({ statusCode: 400, message: "Missing extraction id" });
     }
 
-    const db = getFirestore(getApp(), "koryta-pl");
-    const doc = await db.collection("extractions").doc(id).get();
-
-    if (!doc.exists) {
+    const row = await readExtractionPg(id);
+    if (!row) {
       throw createError({
         statusCode: 404,
         message: `Extraction not found for id=${id}`,
       });
     }
 
-    return { fact: toExtractionFact(doc) };
+    return { fact: toExtractionFact(row.id, row.data) };
   },
   { maxAge: 60 },
 );

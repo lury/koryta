@@ -1,12 +1,17 @@
-import { getFirestore } from "firebase-admin/firestore";
-import type { DocumentReference, Firestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { requireAdmin } from "~~/server/utils/auth";
-import { afterHandPublication } from "~~/server/utils/declarationDecisions";
-import { applyRevision, revisionTargetRef } from "~~/server/utils/revisions";
+import { afterHandPublicationPg } from "~~/server/db/declarationHolds";
 import { notifyRevisionReviewed } from "~~/server/utils/revisionNotifications";
-import { resolveEdgeEndpoints } from "~~/server/utils/edgePublication";
-import { forgetQueued } from "~~/server/utils/queueScan";
+import {
+  editorialTx,
+  readDoc,
+  type Data,
+  type Tx,
+} from "~~/server/db/editorial";
+import {
+  applyRevisionPg,
+  resolveEdgeEndpointsPg,
+  revisionTarget,
+} from "~~/server/db/revisionWrites";
 import type { Edge, Revision } from "~~/shared/model";
 import { z } from "zod";
 
@@ -25,30 +30,27 @@ const bodyValidator = z.object({
  * onto a page nobody can open.
  */
 async function assertEdgeRevisionPublishable(
-  db: Firestore,
-  revisionRef: DocumentReference,
+  tx: Tx,
+  revisionId: string,
   revision: Partial<Revision>,
   publish: boolean | undefined,
 ): Promise<void> {
-  const targetRef = revisionTargetRef(db, {
-    ...revision,
-    id: revisionRef.id,
-  } as Parameters<typeof revisionTargetRef>[1]);
-  if (targetRef.parent.id !== "edges") return;
+  const target = revisionTarget({ ...revision, id: revisionId });
+  if (target.collection !== "edges") return;
 
-  const stored = (await targetRef.get()).data() ?? {};
+  const stored: Data = (await readDoc(tx, "edges", target.id, true)) ?? {};
   const willBePublished = publish ?? stored.published === true;
   if (!willBePublished) return;
 
   const data = (revision.data ?? {}) as Partial<Edge>;
   const source = data.source ?? (stored.source as string | undefined);
-  const target = data.target ?? (stored.target as string | undefined);
-  if (!source || !target) return;
+  const edgeTarget = data.target ?? (stored.target as string | undefined);
+  if (!source || !edgeTarget) return;
 
-  const endpoints = await resolveEdgeEndpoints(db, [
-    { id: targetRef.id, source, target },
+  const endpoints = await resolveEdgeEndpointsPg(tx, [
+    { id: target.id, source, target: edgeTarget },
   ]);
-  const state = endpoints.get(targetRef.id);
+  const state = endpoints.get(target.id);
   if (state?.publishable) return;
 
   const names = (state?.blockedBy ?? []).map((node) => node.name ?? node.id);
@@ -73,70 +75,76 @@ export default defineEventHandler(async (event) => {
   );
   const user = await requireAdmin(event);
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  const revisionRef = db.collection("revisions").doc(body.revision_id);
-  const revisionSnap = await revisionRef.get();
-  if (!revisionSnap.exists) {
-    throw createError({
-      statusCode: 404,
-      message: `Nie ma rewizji o id=${body.revision_id}`,
-    });
-  }
+  const { revision, target, published, before } = await editorialTx(
+    async (tx, log) => {
+      const revision = (await readDoc(
+        tx,
+        "revisions",
+        body.revision_id,
+        true,
+      )) as Partial<Revision> | undefined;
+      if (!revision) {
+        throw createError({
+          statusCode: 404,
+          message: `Nie ma rewizji o id=${body.revision_id}`,
+        });
+      }
 
-  // `data` is required by the type but not by anything that wrote these
-  // documents, and applying a revision that has none would blank the target.
-  const revision = revisionSnap.data() as Partial<Revision>;
-  if (!revision.data) {
-    throw createError({
-      statusCode: 422,
-      message: `Rewizja ${body.revision_id} nie ma danych do zatwierdzenia.`,
-    });
-  }
+      // `data` is required by the type but not by anything that wrote these
+      // documents, and applying a revision that has none would blank the target.
+      if (!revision.data) {
+        throw createError({
+          statusCode: 422,
+          message: `Rewizja ${body.revision_id} nie ma danych do zatwierdzenia.`,
+        });
+      }
 
-  // Approving an edge revision can leave it published two ways: because the
-  // caller asked, or because the edge was already live and `applyRevision`
-  // carries that across. Either one has to answer to the rule that a relation
-  // never outlives its endpoints - and the revision may itself be what moves an
-  // end, so the check runs against the snapshot about to be written, not
-  // against what is stored now.
-  await assertEdgeRevisionPublishable(db, revisionRef, revision, body.publish);
+      // Approving an edge revision can leave it published two ways: because the
+      // caller asked, or because the edge was already live and the approval
+      // carries that across. Either one has to answer to the rule that a
+      // relation never outlives its endpoints - and the revision may itself be
+      // what moves an end, so the check runs against the snapshot about to be
+      // written, not against what is stored now.
+      await assertEdgeRevisionPublishable(
+        tx,
+        body.revision_id,
+        revision,
+        body.publish,
+      );
 
-  // A person's page this approval takes from draft to public is a publication
-  // by hand, as on /api/nodes/publish: it closes the page's declaration hold.
-  const before =
-    body.publish === true
-      ? (
-          await revisionTargetRef(db, { ...revision, id: revisionRef.id }).get()
-        ).data()
-      : undefined;
-
-  const { targetRef, published } = await applyRevision(
-    db,
-    revisionRef,
-    revision as Revision,
-    user,
-    body.publish,
+      const applied = await applyRevisionPg(
+        tx,
+        log,
+        body.revision_id,
+        revision as Revision,
+        user,
+        body.publish,
+      );
+      return { revision, ...applied };
+    },
   );
 
   // The node and entity endpoints are cached per handler, so a page approved
   // now would otherwise keep serving its previous answer.
   await useStorage("cache").clear("nitro:handlers");
-  forgetQueued(body.revision_id, "approved");
 
+  // A person's page this approval takes from draft to public is a publication
+  // by hand, as on /api/nodes/publish: it closes the page's declaration hold.
   if (
+    body.publish === true &&
     published &&
-    before?.type === "person" &&
+    before.type === "person" &&
     before.published !== true &&
-    targetRef.parent.id === "nodes"
+    target.collection === "nodes"
   ) {
-    await afterHandPublication(db, targetRef.id, user.uid, true);
+    await afterHandPublicationPg(target.id, user.uid, true);
   }
 
-  await notifyRevisionReviewed(db, {
+  await notifyRevisionReviewed({
     decision: "approved",
     revisionId: body.revision_id,
     revision,
-    targetRef,
+    target,
     published,
     reviewerUid: user.uid,
     siteUrl: useRuntimeConfig(event).public.siteUrl,
@@ -144,8 +152,8 @@ export default defineEventHandler(async (event) => {
 
   return {
     revision_id: body.revision_id,
-    id: targetRef.id,
-    collection: targetRef.parent.id,
+    id: target.id,
+    collection: target.collection,
     published,
   };
 });

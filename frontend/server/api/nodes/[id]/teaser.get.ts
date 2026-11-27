@@ -1,8 +1,13 @@
-import { getFirestore } from "firebase-admin/firestore";
 import { getRouterParam } from "h3";
 import { authCachedEventHandler } from "~~/server/utils/handlers";
-import { resolveMergedNode } from "~~/server/utils/merge";
-import { importedOrReviewed } from "~~/server/utils/provenance";
+import { writtenByImportOrReviewed } from "~~/server/utils/provenance";
+import {
+  MAX_MERGE_HOPS,
+  readEdgesFrom,
+  readNodeDocs,
+  resolveMergedNodeDoc,
+} from "~~/server/db/graph";
+import { readFirstRevisions } from "~~/server/db/edgeLists";
 import {
   buildPersonTeaser,
   type PersonTeaser,
@@ -32,11 +37,16 @@ export default authCachedEventHandler(async (event): Promise<PersonTeaser> => {
     throw createError({ statusCode: 400, message: "Missing id" });
   }
 
-  const db = getFirestore("koryta-pl");
-  // The survivor of a merge, as /api/nodes/[id] answers: a link to the
-  // duplicate is a link to the person.
-  const { id: personId, snapshot } = await resolveMergedNode(db, id);
-  const person = snapshot?.data();
+  return teaser(id);
+});
+
+/** The survivor of a merge, as /api/nodes/[id] answers: a link to the
+ * duplicate is a link to the person. */
+async function teaser(id: string): Promise<PersonTeaser> {
+  const { id: personId, data: person } = await resolveMergedNodeDoc(
+    id,
+    MAX_MERGE_HOPS,
+  );
   if (
     !person ||
     person.type !== "person" ||
@@ -45,40 +55,31 @@ export default authCachedEventHandler(async (event): Promise<PersonTeaser> => {
   ) {
     throw createError({ statusCode: 404, message: `No person ${id}` });
   }
-
-  const stored = (
-    await db
-      .collection("edges")
-      .where("source", "==", personId)
-      .where("type", "==", "employed")
-      .get()
-  ).docs.map(
-    (doc) =>
-      ({ id: doc.id, ...doc.data() }) as TeaserEdge & { revision_id?: unknown },
-  );
-
-  const shown = await importedOrReviewed(db, [
+  const stored = (await readEdgesFrom(personId, "employed")) as (TeaserEdge & {
+    revision_id?: unknown;
+  })[];
+  const candidates = [
     { id: personId, revision_id: person.revision_id },
     ...stored.filter((edge) => edge.deleted !== true),
-  ]);
+  ];
+  const firsts = await readFirstRevisions(
+    candidates.filter((doc) => !doc.revision_id).map((doc) => doc.id),
+  );
+  const shown = new Set(
+    candidates
+      .filter((doc) => writtenByImportOrReviewed(doc, firsts.get(doc.id)))
+      .map((doc) => doc.id),
+  );
   if (!shown.has(personId)) {
     throw createError({ statusCode: 404, message: `No person ${id}` });
   }
   const edges = stored.filter((edge) => shown.has(edge.id));
-
-  const companyIds = [...new Set(edges.map((edge) => edge.target))].filter(
-    Boolean,
+  const docs = await readNodeDocs(
+    [...new Set(edges.map((edge) => edge.target))].filter(Boolean),
   );
-  const companySnaps = companyIds.length
-    ? await db.getAll(
-        ...companyIds.map((companyId) => db.collection("nodes").doc(companyId)),
-      )
-    : [];
   const companies = new Map<string, TeaserCompany>();
-  for (const snap of companySnaps) {
-    const data = snap.data();
-    if (!data) continue;
-    companies.set(snap.id, {
+  for (const [companyId, data] of docs) {
+    companies.set(companyId, {
       type: data.type,
       name: data.name,
       published: data.published,
@@ -88,13 +89,16 @@ export default authCachedEventHandler(async (event): Promise<PersonTeaser> => {
       categories: data.categories,
       supervisoryBody: data.supervisoryBody,
       supervisoryOrgan: data.supervisoryOrgan,
-    });
+    } as TeaserCompany);
   }
-
   return buildPersonTeaser(
-    { id: personId, name: person.name, parties: person.parties },
+    {
+      id: personId,
+      name: person.name,
+      parties: person.parties as string[] | undefined,
+    },
     edges,
     companies,
     Date.now(),
   );
-});
+}

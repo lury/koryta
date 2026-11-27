@@ -1,6 +1,5 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { getUser } from "~~/server/utils/auth";
+import { addCommentPg } from "~~/server/db/feedback";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
@@ -13,8 +12,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const db = getFirestore(getApp(), "koryta-pl");
-
   const comment = {
     content: body.content,
     authorId: user.uid,
@@ -26,7 +23,5 @@ export default defineEventHandler(async (event) => {
     parentId: body.parentId || null,
   };
 
-  const docRef = await db.collection("comments").add(comment);
-
-  return { id: docRef.id, ...comment };
+  return { id: await addCommentPg(comment), ...comment };
 });

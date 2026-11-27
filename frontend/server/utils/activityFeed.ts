@@ -1,5 +1,12 @@
-import type { Firestore, Query } from "firebase-admin/firestore";
-import { Timestamp } from "firebase-admin/firestore";
+import {
+  getterOf,
+  readFieldsPg,
+  scanAuditPg,
+  scanAuthorRevisionsPg,
+  scanHumanRevisionsPg,
+  scanNotesPg,
+  scanVotesPg,
+} from "~~/server/db/activityFeed";
 import {
   countedFeedKinds,
   FEED_BATCH_GAP_MS,
@@ -38,10 +45,10 @@ const SCAN_CAP = 20_000;
  * not only the imports. */
 const IMPORT_SCAN_CAP = 1_000;
 
-/** `in` takes at most 30 values. */
+/** How many authors the imports scan asks for. */
 const IMPORT_UIDS_CAP = 30;
 
-/** `getAll` takes any number of refs, but one request has to fit in a call. */
+/** Ids one read of the revisions asks for at most. */
 const READ_CHUNK = 300;
 
 /** How long after a node's approval its publication still counts as the same
@@ -139,9 +146,8 @@ type Getter = (path: string) => unknown;
  * sitting, with every restricted field still on it - `present` in the endpoint
  * strips it per caller.
  *
- * Each source is one range scan on one timestamp, which the automatic
- * single-field indexes serve, plus two scans on `revisions` that existing
- * composite indexes serve. Everything is then folded in memory, so that one
+ * Each source is one range scan on one timestamp, on the indexes of
+ * 0301_c_user_activity.sql (server/db/activityFeed.ts). Everything is then folded in memory, so that one
  * click reads as one action: an approval that was the first half of a
  * publication, and a revision that was the side effect of a merge, are not
  * listed a second time.
@@ -158,7 +164,6 @@ type Getter = (path: string) => unknown;
  * the one thing they do that nobody sees.
  */
 export async function buildActivityFeed(
-  db: Firestore,
   options: FeedWindow & { newAdminUids: string[] },
 ): Promise<RawFeed> {
   const window = { sinceIso: options.sinceIso, untilIso: options.untilIso };
@@ -169,11 +174,11 @@ export async function buildActivityFeed(
   }
 
   const [votes, notes, revisions, audit, imports] = await Promise.all([
-    scanVotes(db, window),
-    scanNotes(db, window),
-    scanRevisions(db, window),
-    scanAudit(db, window),
-    scanImports(db, window, options.newAdminUids),
+    scanVotes(window),
+    scanNotes(window),
+    scanRevisions(window),
+    scanAudit(window),
+    scanImports(window, options.newAdminUids),
   ]);
 
   const known = new Map<string, FeedRevision>();
@@ -183,7 +188,6 @@ export async function buildActivityFeed(
 
   const folded = foldAuditRows(audit.rows);
   await readRevisions(
-    db,
     folded
       .filter((row) => ["approve", "reject", "publish"].includes(row.action))
       .map((row) => row.revisionId),
@@ -208,7 +212,7 @@ export async function buildActivityFeed(
   );
 
   return {
-    batches: summariseSittings(await nameSittings(db, sittings)),
+    batches: summariseSittings(await nameSittings(sittings)),
     truncated: [votes, notes, revisions, audit, imports]
       .filter((scan) => scan.truncated)
       .map((scan) => scan.source),
@@ -227,7 +231,6 @@ export async function buildActivityFeed(
  * was they touched.
  */
 async function nameSittings(
-  db: Firestore,
   sittings: readonly PendingFeedEvent[][],
 ): Promise<FeedEvent[][]> {
   const refs: FeedTargetRef[] = [];
@@ -246,7 +249,7 @@ async function nameSittings(
     }));
   });
 
-  const targets = await resolveFeedTargets(db, refs);
+  const targets = await resolveFeedTargets(refs);
   return planned.map((events) =>
     events.flatMap(({ event, slot }): FeedEvent[] => {
       if (slot === null) {
@@ -281,73 +284,40 @@ function targetKey(target: { collection: string; id: string }): string {
 
 type Scan<T> = { source: string; rows: T[]; truncated: boolean };
 
-/** A range on one field, newest first. The bounds are on the same field the
- * order is, so the query needs nothing beyond that field's own index - or,
- * after an equality filter, the composite whose second field it is. */
-function inWindow(
-  query: Query,
-  field: string,
-  window: FeedWindow,
-  asTimestamp = false,
-): Query {
-  const bound = (iso: string) =>
-    asTimestamp ? Timestamp.fromDate(new Date(iso)) : iso;
-  return query
-    .where(field, ">=", bound(window.sinceIso))
-    .where(field, "<", bound(window.untilIso))
-    .orderBy(field, "desc");
-}
-
-async function scanVotes(
-  db: Firestore,
-  window: FeedWindow,
-): Promise<Scan<PendingFeedEvent>> {
-  const snapshot = await inWindow(db.collection("votes"), "updatedAt", window)
-    .select(
+async function scanVotes(window: FeedWindow): Promise<Scan<PendingFeedEvent>> {
+  const docs = await scanVotesPg(
+    window,
+    [
       "userUid",
       "updatedAt",
       "nodeId",
       "extractionId",
       "categoryVotes",
       "comment",
-    )
-    .limit(SCAN_CAP)
-    .get();
-
-  const rows = snapshot.docs.flatMap((doc) => {
-    const event = voteFeedEvent(doc.id, (path) => doc.get(path), window);
+    ],
+    SCAN_CAP,
+  );
+  const rows = docs.flatMap((doc) => {
+    const event = voteFeedEvent(doc.id, getterOf(doc.data), window);
     return event ? [event] : [];
   });
-  return { source: "votes", rows, truncated: snapshot.size >= SCAN_CAP };
+  return { source: "votes", rows, truncated: docs.length >= SCAN_CAP };
 }
 
-/** Notes are stamped with `serverTimestamp()`, and the last one stamped with a
- * string is from 2026-08-01 - before any window the feed offers - so unlike
- * the stats, which reach back 90 days, only the Timestamp half is read.
- *
- * Only `updatedAt` is: `saveNote` writes it on every save, the first one
- * included, and nothing on the server creates a note - so a scan on
- * `createdAt` would only find notes this one already has, and be billed for
- * them twice. */
-async function scanNotes(
-  db: Firestore,
-  window: FeedWindow,
-): Promise<Scan<PendingFeedEvent>> {
-  const snapshot = await inWindow(
-    db.collection("notes"),
-    "updatedAt",
+/** Only `updatedAt` is read: `saveNote` writes it on every save, the first
+ * one included, and nothing on the server creates a note - so a scan on
+ * `createdAt` would only find notes this one already has. */
+async function scanNotes(window: FeedWindow): Promise<Scan<PendingFeedEvent>> {
+  const docs = await scanNotesPg(
     window,
-    true,
-  )
-    .select("userUid", "nodeId", "updatedAt", "sources")
-    .limit(SCAN_CAP)
-    .get();
-
-  const rows = snapshot.docs.flatMap((doc) => {
-    const event = noteFeedEvent(doc.id, (path) => doc.get(path), window);
+    ["userUid", "nodeId", "updatedAt", "sources"],
+    SCAN_CAP,
+  );
+  const rows = docs.flatMap((doc) => {
+    const event = noteFeedEvent(doc.id, getterOf(doc.data), window);
     return event ? [event] : [];
   });
-  return { source: "notes", rows, truncated: snapshot.size >= SCAN_CAP };
+  return { source: "notes", rows, truncated: docs.length >= SCAN_CAP };
 }
 
 const REVISION_SCAN_FIELDS = [
@@ -369,39 +339,24 @@ const REVISION_SCAN_FIELDS = [
 
 /** Revisions a person wrote. `update_automatic == false` is exact here, where
  * the stats have to read it as "not true": the revisions that carry no flag
- * all predate 2026-08-22, outside any window the feed offers. The query is
- * the shape of the composite `(update_automatic, update_time DESC)` the
- * revision queue already uses - an ascending order would need one that does
- * not exist. */
-async function scanRevisions(
-  db: Firestore,
-  window: FeedWindow,
-): Promise<Scan<FeedRevision>> {
-  const snapshot = await inWindow(
-    db.collection("revisions").where("update_automatic", "==", false),
-    "update_time",
+ * all predate 2026-08-22, outside any window the feed offers. */
+async function scanRevisions(window: FeedWindow): Promise<Scan<FeedRevision>> {
+  const docs = await scanHumanRevisionsPg(
     window,
-    true,
-  )
-    .select(...REVISION_SCAN_FIELDS)
-    .limit(SCAN_CAP)
-    .get();
-
+    REVISION_SCAN_FIELDS,
+    SCAN_CAP,
+  );
   return {
     source: "revisions",
-    rows: snapshot.docs.map((doc) =>
-      readFeedRevision(doc.id, (path) => doc.get(path)),
-    ),
-    truncated: snapshot.size >= SCAN_CAP,
+    rows: docs.map((doc) => readFeedRevision(doc.id, getterOf(doc.data))),
+    truncated: docs.length >= SCAN_CAP,
   };
 }
 
-/** What administrators on trial uploaded through the ingest endpoints, on the
- * `(update_user, update_time DESC)` composite. Ingest revisions are the bulk
- * of the collection, so they are asked for by author rather than read for
- * everybody and thrown away - and only the newest `IMPORT_SCAN_CAP` of them. */
+/** What administrators on trial uploaded through the ingest endpoints, asked
+ * for by author rather than read for everybody and thrown away - and only the
+ * newest `IMPORT_SCAN_CAP` of them. */
 async function scanImports(
-  db: Firestore,
   window: FeedWindow,
   newAdminUids: readonly string[],
 ): Promise<Scan<FeedRevision>> {
@@ -416,35 +371,26 @@ async function scanImports(
     );
   }
 
-  const snapshot = await inWindow(
-    db
-      .collection("revisions")
-      .where("update_user", "in", uids.slice(0, IMPORT_UIDS_CAP)),
-    "update_time",
+  const docs = await scanAuthorRevisionsPg(
     window,
-    true,
-  )
-    .select("update_automatic", ...REVISION_SCAN_FIELDS)
-    .limit(IMPORT_SCAN_CAP)
-    .get();
-
+    uids.slice(0, IMPORT_UIDS_CAP),
+    ["update_automatic", ...REVISION_SCAN_FIELDS],
+    IMPORT_SCAN_CAP,
+  );
   return {
     source: "imports",
-    rows: snapshot.docs
-      .filter((doc) => doc.get("update_automatic") === true)
-      .map((doc) => readFeedRevision(doc.id, (path) => doc.get(path))),
-    truncated: snapshot.size >= IMPORT_SCAN_CAP,
+    rows: docs
+      .filter((doc) => doc.data.update_automatic === true)
+      .map((doc) => readFeedRevision(doc.id, getterOf(doc.data))),
+    truncated: docs.length >= IMPORT_SCAN_CAP,
   };
 }
 
-/** Every audit row, whatever its action: filtering on `action` next to a range
- * on `at` would need a composite index, and the scan is capped either way. */
-async function scanAudit(
-  db: Firestore,
-  window: FeedWindow,
-): Promise<Scan<FeedAuditRow>> {
-  const snapshot = await inWindow(db.collection("audit"), "at", window)
-    .select(
+/** Every audit row, whatever its action; the scan is capped either way. */
+async function scanAudit(window: FeedWindow): Promise<Scan<FeedAuditRow>> {
+  const docs = await scanAuditPg(
+    window,
+    [
       "user",
       "pressed_by",
       "at",
@@ -454,15 +400,14 @@ async function scanAudit(
       "revision_id",
       "reason",
       "merge",
-    )
-    .limit(SCAN_CAP)
-    .get();
-
-  const rows = snapshot.docs.flatMap((doc) => {
-    const row = readFeedAuditRow(doc.id, (path) => doc.get(path), window);
+    ],
+    SCAN_CAP,
+  );
+  const rows = docs.flatMap((doc) => {
+    const row = readFeedAuditRow(doc.id, getterOf(doc.data), window);
     return row ? [row] : [];
   });
-  return { source: "audit", rows, truncated: snapshot.size >= SCAN_CAP };
+  return { source: "audit", rows, truncated: docs.length >= SCAN_CAP };
 }
 
 const REVISION_READ_FIELDS = [
@@ -481,9 +426,8 @@ const REVISION_READ_FIELDS = [
 /** The revisions behind the approvals, rejections and publications that are
  * left after folding, when the scan did not already bring them: one approved
  * in the window may have been proposed long before it, or by the ingest. A
- * chunk that fails only costs the flags its rows would have carried. */
+ * read that fails only costs the flags its rows would have carried. */
 async function readRevisions(
-  db: Firestore,
   ids: (string | undefined)[],
   known: Map<string, FeedRevision>,
 ): Promise<void> {
@@ -494,20 +438,15 @@ async function readRevisions(
   for (let i = 0; i < wanted.length; i += READ_CHUNK) {
     chunks.push(wanted.slice(i, i + READ_CHUNK));
   }
-
   await Promise.all(
     chunks.map(async (chunk) => {
       try {
-        const snapshots = await db.getAll(
-          ...chunk.map((id) => db.collection("revisions").doc(id)),
-          { fieldMask: REVISION_READ_FIELDS },
-        );
-        for (const snapshot of snapshots) {
-          if (!snapshot.exists) continue;
-          known.set(
-            snapshot.id,
-            readFeedRevision(snapshot.id, (path) => snapshot.get(path)),
-          );
+        for (const doc of await readFieldsPg(
+          "revisions",
+          chunk,
+          REVISION_READ_FIELDS,
+        )) {
+          known.set(doc.id, readFeedRevision(doc.id, getterOf(doc.data)));
         }
       } catch (error) {
         console.warn(

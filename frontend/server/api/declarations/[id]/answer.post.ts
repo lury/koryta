@@ -1,14 +1,9 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { z } from "zod";
-import { restageDeclarationPeople } from "~~/server/utils/declarationPeopleCount";
-import { creditFinds } from "~~/server/utils/declarationPublish";
+import { restageDeclarationPeoplePg } from "~~/server/db/declarationPeopleCount";
+import { creditFindsPg } from "~~/server/db/declarationPublish";
+import { queueForPg, recordAnswerPg } from "~~/server/db/declarationReading";
 import { compareSettled } from "~~/server/utils/declarationSettled";
-import {
-  getReader,
-  queueFor,
-  recordAnswer,
-} from "~~/server/utils/declarations";
+import { getReader } from "~~/server/utils/declarations";
 import {
   answerVerdicts,
   EXTRACT_ID_PATTERN,
@@ -67,8 +62,7 @@ export default defineEventHandler(async (event) => {
       ? (parseTypedDate(body.value) as { value: string }).value
       : null;
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  const recorded = await recordAnswer(db, {
+  const recorded = await recordAnswerPg({
     extractId: id,
     reader,
     answer: { verdict: body.verdict, value, name: body.name ?? null },
@@ -76,7 +70,7 @@ export default defineEventHandler(async (event) => {
   // A date finds the crop's people as it is saved, so they are in the
   // reader's „Znaleziono” on the way back.
   if (value) {
-    await creditFinds(db, {
+    await creditFindsPg({
       uid: reader.uid,
       extractId: id,
       personIds: recorded.personIds,
@@ -92,17 +86,16 @@ export default defineEventHandler(async (event) => {
   const [queue] = await Promise.all([
     // The crop's people are in hand: their next crop waits until this one
     // has settled, and its place in the queue moves only once it has.
-    queueFor(
-      db,
+    queueForPg(
       reader.uid,
       3,
       new Set([id, ...(body.holding ?? [])]),
       new Set(recorded.personIds),
     ),
     settledOnDay
-      ? compareSettled(event, db, [id], PAGES_PER_ANSWER)
+      ? compareSettled(event, [id], PAGES_PER_ANSWER)
       : settledUnreadable
-        ? restageDeclarationPeople(db, recorded.personIds)
+        ? restageDeclarationPeoplePg(recorded.personIds)
         : undefined,
   ]);
 

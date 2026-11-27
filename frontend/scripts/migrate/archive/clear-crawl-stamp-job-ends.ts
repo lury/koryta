@@ -12,7 +12,7 @@ import {
 } from "firebase-admin/firestore";
 import { approvedRevisionId, pageIsPublic } from "../../../shared/model";
 import { withoutInternalFields } from "../../../server/utils/revisions";
-import { edgeRevisionsForMany } from "../../../server/utils/edgePublication";
+import { edgeRevisionsForMany } from "../lib/firestoreRevisions";
 import { reportRemaining } from "../remaining";
 
 /**

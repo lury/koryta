@@ -60,7 +60,7 @@ export function companyIdentifiers(company: {
  * Here rather than in the people import, where it was written, because the
  * declarations automation asks the same question of a page's birth date: did
  * it come with the entry the page's jobs are listed under
- * (server/utils/declarationPublish.ts).
+ * (server/db/declarationPublish.ts).
  */
 export function registerEntry(link: unknown): string | undefined {
   if (typeof link !== "string" || !link) return undefined;

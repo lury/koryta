@@ -1,5 +1,6 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
+import { readDocs } from "~~/server/db/editorial";
+import { useDb } from "~~/server/db/client";
+import { revisionRowsOfNodePg } from "~~/server/db/revisionQueue";
 import { setResponseHeader } from "h3";
 import { getUser } from "~~/server/utils/auth";
 import { approvedRevisionId, pageIsPublic } from "~~/shared/model";
@@ -18,38 +19,18 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const db = getFirestore(getApp(), "koryta-pl");
-
-  // Query with both field name variants (node_id and nodeId)
-  const [byUnderscore, byCamel, nodeDoc] = await Promise.all([
-    db.collection("revisions").where("node_id", "==", nodeId).get(),
-    db.collection("revisions").where("nodeId", "==", nodeId).get(),
-    db.collection("nodes").doc(nodeId).get(),
+  const [rows, nodes] = await Promise.all([
+    revisionRowsOfNodePg(nodeId),
+    readDocs(useDb(), "nodes", [nodeId]),
   ]);
-
-  // Deduplicate by document ID
-  const map = new Map<string, Record<string, unknown>>();
-  for (const doc of [...byUnderscore.docs, ...byCamel.docs]) {
-    if (!map.has(doc.id)) {
-      map.set(doc.id, { id: doc.id, ...doc.data() });
-    }
-  }
-
-  // Extract the approved revision ID and publication state from the node
-  let approved: string | undefined = undefined;
-  let published = false;
-  if (nodeDoc.exists) {
-    const nodeData = nodeDoc.data();
-    published = pageIsPublic(nodeData || {});
-    approved = approvedRevisionId(nodeData?.revision_id);
-  }
+  const nodeData = nodes.get(nodeId);
 
   return {
-    revisions: Array.from(map.values()),
-    approvedRevisionId: approved,
-    published,
+    revisions: rows.map(({ id, data }) => ({ id, ...data })),
+    approvedRevisionId: approvedRevisionId(nodeData?.revision_id),
+    published: pageIsPublic(nodeData ?? {}),
     /** Whether the node exists at all - a suggestion for a node that was never
      * created has revisions but nothing to approve them onto. */
-    exists: nodeDoc.exists,
+    exists: nodeData !== undefined,
   };
 });

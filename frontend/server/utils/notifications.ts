@@ -1,6 +1,5 @@
 import { getAuth } from "firebase-admin/auth";
-import { Timestamp } from "firebase-admin/firestore";
-import type { Firestore } from "firebase-admin/firestore";
+import { useDb } from "~~/server/db/client";
 import {
   notificationEnabled,
   renderNotification,
@@ -25,11 +24,8 @@ export type NotificationOutcome =
 
 /** Queues a message for `uid`, if they want it and we may write to them.
  *
- * Nothing is sent from here. The document lands in `mail`, and the Firebase
- * "Trigger Email from Firestore" extension picks it up, delivers it and writes
- * the outcome back onto the same document - so retries, bounces and SMTP
- * credentials are not this codebase's problem, and an emulator run just leaves
- * the queue to be inspected.
+ * Nothing is sent from here. The document lands in `mail`, the outbox
+ * server/utils/mailOutbox.ts delivers and writes the outcome back onto.
  *
  * This never throws. A notification is a courtesy attached to an action that
  * has already been committed; failing the admin's request because an address
@@ -41,7 +37,6 @@ export type NotificationOutcome =
  * only it knows whether a repeat says anything new.
  */
 export async function notifyUser(
-  db: Firestore,
   uid: string,
   event: NotificationEvent,
   options: { dedupeKey: string; actorUid?: string; siteUrl: string },
@@ -51,33 +46,29 @@ export async function notifyUser(
     // somebody about what they just did themselves reads as a bug.
     if (options.actorUid && options.actorUid === uid) return "self";
 
-    if (!(await wantsNotification(db, uid, event.kind))) return "opted-out";
+    if (!(await wantsNotification(uid, event.kind))) return "opted-out";
 
     const address = await verifiedEmail(uid, event.kind);
     if ("refused" in address) return address.refused;
 
     const message = renderNotification(event, options.siteUrl);
-    const ref = db
-      .collection("mail")
-      .doc(mailDocId(event.kind, options.dedupeKey));
-
-    // `create` rather than `set`: the extension re-sends a document whose
-    // `delivery` field is missing, and overwriting a delivered one strips it.
-    // A rejected create is the dedupe working, not an error.
-    try {
-      await ref.create({
-        to: [address.email],
-        message,
-        // Not read by the extension - here so a failed delivery in the console
-        // can be traced back to what triggered it.
-        kind: event.kind,
-        uid,
-        created_at: Timestamp.now(),
-      });
-    } catch (error) {
-      if (isAlreadyExists(error)) return "duplicate";
-      throw error;
-    }
+    const mail = {
+      to: [address.email],
+      message,
+      // Not read by the outbox - here so a failed delivery can be traced back
+      // to what triggered it.
+      kind: event.kind,
+      uid,
+      created_at: new Date().toISOString(),
+    };
+    // Never over a message already there: the id is the dedupe, and a
+    // delivered one keeps its `delivery`.
+    const sql = useDb();
+    const queued = await sql`
+      INSERT INTO mail (id, data)
+      VALUES (${mailDocId(event.kind, options.dedupeKey)}, ${sql.json(mail as never)})
+      ON CONFLICT (id) DO NOTHING RETURNING id`;
+    if (queued.length === 0) return "duplicate";
 
     console.info(`Queued ${event.kind} notification for uid=${uid}`);
     return "sent";
@@ -90,19 +81,19 @@ export async function notifyUser(
   }
 }
 
-/** Firestore ids may not contain a slash, and a dedupe key derived from a
- * document path can. */
+/** Ids keep no slash, and a dedupe key derived from a document path can
+ * have one. */
 function mailDocId(kind: NotificationKind, dedupeKey: string): string {
   return `${kind}_${dedupeKey.replace(/\//g, "_")}`;
 }
 
 async function wantsNotification(
-  db: Firestore,
   uid: string,
   kind: NotificationKind,
 ): Promise<boolean> {
-  const snapshot = await db.collection("users").doc(uid).get();
-  const preferences = snapshot.data()?.notifications as
+  const [user] = await useDb()<{ notifications: unknown }[]>`
+    SELECT data -> 'notifications' AS notifications FROM users WHERE id = ${uid}`;
+  const preferences = (user?.notifications ?? undefined) as
     NotificationPreferences | undefined;
   return notificationEnabled(kind, preferences);
 }
@@ -127,14 +118,4 @@ async function verifiedEmail(
     return { refused: "unverified-address" };
   }
   return { email: user.email };
-}
-
-function isAlreadyExists(error: unknown): boolean {
-  // grpc ALREADY_EXISTS. firebase-admin surfaces the numeric code rather than
-  // a named error class.
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    (error as { code?: unknown }).code === 6
-  );
 }

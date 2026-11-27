@@ -1,14 +1,11 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { wantsLatest } from "~~/server/utils/handlers";
 import { pageIsPublic } from "~~/shared/model";
+import { readEdgeDoc } from "~~/server/db/edges";
+import { readNodeDocs } from "~~/server/db/graph";
 
-/** `references` as it comes back from Firestore. A list written from inside an
- * array by `sanitizeFirestoreData` is stored as a map with numbered keys, so
- * the field has to be read tolerantly - `asArray` in `server/utils/nodeFilters`
- * says the same thing, and is not imported here because that module pulls in
- * the whole node fetching layer.
- */
+/** `references` as stored. The migration turns the numbered-key maps an old
+ * write left into lists, but the field is read tolerantly all the same, as
+ * `asArray` in `server/utils/nodeFilters` reads it. */
 function referenceIds(value: unknown): string[] {
   const raw = Array.isArray(value)
     ? value
@@ -43,8 +40,8 @@ export type EdgeSources = {
  *
  * Uncached on purpose. It is read when somebody opens the dialog and again the
  * moment they add a source, and a cached answer would show them their own write
- * missing. It is two Firestore reads, and nothing asks for them until somebody
- * opens the dialog on one relation.
+ * missing. It is two primary-key reads, and nothing asks for them until
+ * somebody opens the dialog on one relation.
  */
 export default defineEventHandler(async (event): Promise<EdgeSources> => {
   const id = getRouterParam(event, "id");
@@ -53,26 +50,15 @@ export default defineEventHandler(async (event): Promise<EdgeSources> => {
   }
   const includeDrafts = await wantsLatest(event);
 
-  const db = getFirestore(getApp(), "koryta-pl");
-  const edgeSnap = await db.collection("edges").doc(id).get();
+  const edge = await readEdgeDoc(id);
   // A draft relation is as absent as a missing one to whoever may not see
   // drafts: it is drawn nowhere for them, so its sources are not theirs either.
-  if (
-    !edgeSnap.exists ||
-    (!includeDrafts && !pageIsPublic(edgeSnap.data() ?? {}))
-  ) {
+  if (!edge || (!includeDrafts && !pageIsPublic(edge))) {
     throw createError({ statusCode: 404, message: "Nie ma takiej relacji." });
   }
 
-  const references = Array.from(
-    new Set(referenceIds(edgeSnap.data()?.references)),
-  );
-  const snaps = references.length
-    ? await db.getAll(
-        ...references.map((nodeId) => db.collection("nodes").doc(nodeId)),
-      )
-    : [];
-  const nodes = new Map(snaps.map((snap) => [snap.id, snap.data()]));
+  const references = Array.from(new Set(referenceIds(edge.references)));
+  const nodes = await readNodeDocs(references);
 
   const sources = references
     .map((nodeId): EdgeSource => {

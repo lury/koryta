@@ -2,11 +2,13 @@ import { Timestamp } from "firebase-admin/firestore";
 import type { Firestore, WriteBatch } from "firebase-admin/firestore";
 import { edgeRelation, type EdgeLike } from "../../server/utils/edges";
 import {
-  createRevisionTransaction,
   sameStoredValue,
   withoutInternalFields,
 } from "../../server/utils/revisions";
-import { recordAudit } from "../../server/utils/audit";
+import {
+  createRevisionTransaction,
+  recordAudit,
+} from "./lib/firestoreRevisions";
 
 /**
  * Folding one candidacy stored twice into a single edge: what the migrations

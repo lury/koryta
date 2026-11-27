@@ -1,8 +1,5 @@
-import { getFirestore, FieldPath } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { editorFreshCachedEventHandler } from "~~/server/utils/handlers";
-import { fetchEdgeEndpointNodes } from "~~/server/utils/edgeNodes";
-import { asArray, pageIsPublic } from "~~/shared/model";
+import { asArray } from "~~/shared/model";
 import { canonicalParty, partyColors, partyMergedLabels } from "~~/shared/misc";
 import { categoryTitle, isSector } from "~~/shared/companyCategories";
 import { wojewodztwoLabel, wojewodztwoOf } from "~~/shared/teryt";
@@ -13,7 +10,11 @@ import {
   type HeldPost,
   type Timeline,
 } from "~~/shared/homeTimeline";
-import type { Company, Edge, Person } from "~~/shared/model";
+import {
+  readTimelinePosts,
+  readWojewodztwoNames,
+  type TimelinePost,
+} from "~~/server/db/edgeLists";
 
 /** The dimensions the chart can be split by.
  *
@@ -44,102 +45,38 @@ export type HomeTimelineResponse = {
   today: string;
 };
 
-/** How many edges to read per round trip while scanning. */
-const SCAN_PAGE = 500;
-
 /** The most edge documents one computation will read. Six times the 3,256
  * published employments on the 2026-09-12 export, so the ceiling is a guard
  * against a runaway query rather than a limit the data is near. */
 const MAX_SCAN = 20000;
 
-/** The node fields this endpoint reads.
- *
- * Field-masked because it fetches every node the published employments touch -
- * roughly 2,500 documents - and then holds the result in nitro's cache;
- * `activity`, `stats` and the revision pointers are no part of the answer. The
- * read count is the same either way. Same argument /api/edges/serviceMilestones
- * makes at greater length.
- */
-const NODE_FIELDS = ["type", "published", "deleted", "parties", "categories"];
+/** A nameless region is labelled with its teryt. */
+type SeatRegion = { name: string | undefined; teryt: string };
 
-/** The region fields the seat lookup reads.
- *
- * A company's seat is a `seat` edge from the region to the company, which the
- * stats job folds into the *region's* `seatNodeIds` - so the question is
- * answered by reading 1,389 region documents rather than by a second scan of
- * `edges`. `approved` is the right scope for a public, cached endpoint: the
- * `all` scope would place a company on the strength of a seat nobody has
- * approved. `app/utils/companyLocation.ts` does the same walk in the browser,
- * and says more about why it runs region-first.
- */
-const REGION_FIELDS = [
-  "name",
-  "teryt",
-  "stats.edges.approved.seatNodeIds",
-  "stats.edges.approved.targetNodeIds",
-];
-
-type SeatRegion = { name: string; teryt: string };
-
-/** The województwo each company sits in, keyed by company node id.
+/** The województwo an employer sits in, from its most specific seat.
  *
  * Only województwa: a powiat is the more specific answer and the one
  * `regionsByPlaceId` keeps, but sixteen lines is already past what a chart can
- * carry and 380 powiaty is not a grouping. The most specific region claiming a
- * company decides which województwo it is in, which is the same tie-break, just
- * read two digits in.
+ * carry and 380 powiaty is not a grouping. A company's seat is a `seat` edge
+ * from the region to the company, published ones only: a public, cached
+ * endpoint places no company on a seat nobody approved.
+ * `app/utils/companyLocation.ts` does the same walk in the browser.
  */
-async function seatsByCompany(
-  db: FirebaseFirestore.Firestore,
-): Promise<Map<string, SeatRegion>> {
-  const snap = await db
-    .collection("nodes")
-    .where("type", "==", "region")
-    .select(...REGION_FIELDS)
-    .get();
-
-  const wojewodztwa = new Map<string, string>();
-  const seats = new Map<string, SeatRegion>();
-  const specificity = new Map<string, number>();
-
-  for (const doc of snap.docs) {
-    const data = doc.data();
-    const teryt = typeof data.teryt === "string" ? data.teryt : "";
-    if (!teryt) continue;
-    if (teryt.length === 2 && typeof data.name === "string") {
-      wojewodztwa.set(teryt, wojewodztwoLabel(data.name));
-    }
-
-    const scoped = data.stats?.edges?.approved;
-    // `seatNodeIds` rather than `targetNodeIds`, falling back while the stats
-    // migration runs: since the register's shareholder lists arrived a region
-    // points at both the companies seated in it and the ones it merely holds
-    // shares in, and only the first is a location.
-    const targets = asArray<string>(
-      scoped?.seatNodeIds ?? scoped?.targetNodeIds,
-    );
-
-    for (const id of targets) {
-      if (typeof id !== "string") continue;
-      // The more specific region wins - a powiat over the województwo around
-      // it - which matters only for the name we could show; both agree on the
-      // first two digits.
-      if (seats.has(id) && specificity.get(id)! >= teryt.length) continue;
-      seats.set(id, { name: data.name, teryt });
-      specificity.set(id, teryt.length);
-    }
-  }
-
-  // Rewritten to the województwo, now that every region has been seen: a
-  // company placed by a powiat still has to be labelled with the voivodeship
-  // above it, and that node may have come later in the scan.
-  const placed = new Map<string, SeatRegion>();
-  for (const [id, seat] of seats) {
-    const code = wojewodztwoOf(seat.teryt);
-    if (!code) continue;
-    placed.set(id, { teryt: code, name: wojewodztwa.get(code) ?? seat.name });
-  }
-  return placed;
+function seatOf(
+  post: TimelinePost,
+  wojewodztwa: Map<string, string>,
+): SeatRegion | undefined {
+  if (!post.seatTeryt) return undefined;
+  const code = wojewodztwoOf(post.seatTeryt);
+  if (!code) return undefined;
+  const name = wojewodztwa.get(code);
+  return {
+    teryt: code,
+    name:
+      name !== undefined
+        ? wojewodztwoLabel(name)
+        : (post.seatName ?? undefined),
+  };
 }
 
 /** Every published employment, as posts a timeline can count.
@@ -164,48 +101,9 @@ async function seatsByCompany(
  */
 const cachedTimeline = defineCachedFunction(
   async (today: string): Promise<HomeTimelineResponse> => {
-    const db = getFirestore(getApp(), "koryta-pl");
-
-    const edges: (Edge & { id: string })[] = [];
-    let scanned = 0;
-    let cursor: { startDate: string; id: string } | null = null;
-
-    for (;;) {
-      let q = db
-        .collection("edges")
-        .where("type", "==", "employed")
-        .where("published", "==", true)
-        // Not the order this view wants - it wants none - but it is the index
-        // `edges` already carries for these two filters, and it gives the scan
-        // a cursor to resume from. `__name__` is spelled out because a raw
-        // `startAfter` is checked against the *declared* orders; see
-        // /api/edges/recentEmployments for the full story.
-        .orderBy("start_date", "desc")
-        .orderBy(FieldPath.documentId(), "desc")
-        .limit(SCAN_PAGE);
-      if (cursor) q = q.startAfter(cursor.startDate, cursor.id);
-
-      const snap = await q.get();
-      scanned += snap.size;
-      if (snap.empty) break;
-
-      for (const doc of snap.docs) {
-        const edge = { id: doc.id, ...(doc.data() as Edge) };
-        // An explicit null start_date is a value the index sorts (last, going
-        // down) rather than one it drops, and it cannot be a cursor either - so
-        // it is skipped without moving the cursor past it.
-        if (typeof edge.start_date !== "string") continue;
-        cursor = { startDate: edge.start_date, id: edge.id };
-        if (edge.deleted === true || !edge.source || !edge.target) continue;
-        edges.push(edge);
-      }
-
-      if (snap.size < SCAN_PAGE || scanned >= MAX_SCAN) break;
-    }
-
-    const [nodes, seats] = await Promise.all([
-      fetchEdgeEndpointNodes(db, edges, NODE_FIELDS),
-      seatsByCompany(db),
+    const [posted, wojewodztwa] = await Promise.all([
+      readTimelinePosts(MAX_SCAN),
+      readWojewodztwoNames(),
     ]);
 
     const byGrouping: Record<TimelineGrouping, HeldPost[]> = {
@@ -213,20 +111,15 @@ const cachedTimeline = defineCachedFunction(
       region: [],
       category: [],
     };
-    const regionNames = new Map<string, string>();
+    const regionNames = new Map<string, string | undefined>();
     let posts = 0;
 
-    for (const edge of edges) {
-      const person = nodes.get(edge.source);
-      if (person?.type !== "person" || !pageIsPublic(person)) continue;
-      const employer = nodes.get(edge.target);
-      if (!employer || !pageIsPublic(employer)) continue;
-
+    for (const row of posted) {
       posts += 1;
       const post = {
-        personId: edge.source,
-        start: edge.start_date!,
-        end: effectiveEnd(edge.end_date),
+        personId: row.person,
+        start: row.start,
+        end: effectiveEnd(row.end),
       };
 
       // `asArray`, not `.parties ?? []`: a node written before 2026-07-28 holds
@@ -237,13 +130,13 @@ const cachedTimeline = defineCachedFunction(
       // then invisible everywhere else - no chip, no graph legend - and a chart
       // is the wrong place to start showing them, a line with no colour of its
       // own being a line nobody can name.
-      const parties = asArray<string>((person as Person).parties)
+      const parties = asArray<string>(row.parties)
         .filter((party) => typeof party === "string" && party in partyColors)
         .map(canonicalParty);
       if (parties.length > 0)
         byGrouping.party.push({ ...post, groups: parties });
 
-      const seat = seats.get(edge.target);
+      const seat = seatOf(row, wojewodztwa);
       if (seat) {
         regionNames.set(seat.teryt, seat.name);
         byGrouping.region.push({ ...post, groups: [seat.teryt] });
@@ -254,9 +147,9 @@ const cachedTimeline = defineCachedFunction(
       // of that grouping rather than counted as "other". `coverage` is what says
       // how many that is. Sectors alone: Skarb Państwa says who owns the
       // company, beside its sector (`isSector`).
-      const categories = asArray<string>(
-        (employer as Company).categories,
-      ).filter((value) => typeof value === "string" && isSector(value));
+      const categories = asArray<string>(row.categories).filter(
+        (value) => typeof value === "string" && isSector(value),
+      );
       if (categories.length > 0) {
         byGrouping.category.push({ ...post, groups: categories });
       }

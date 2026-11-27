@@ -1,6 +1,6 @@
 import { holdRequest } from "~~/server/utils/declarationDecisionRequest";
-import { restageDeclarationPeople } from "~~/server/utils/declarationPeopleCount";
-import { recheckPublication } from "~~/server/utils/declarationPublish";
+import { restageDeclarationPeoplePg } from "~~/server/db/declarationPeopleCount";
+import { recheckPublicationPg } from "~~/server/db/declarationPublish";
 import type { RecheckResult } from "~~/shared/declarations";
 
 /**
@@ -11,11 +11,11 @@ import type { RecheckResult } from "~~/shared/declarations";
  * only, checked before anything is read.
  */
 export default defineEventHandler(async (event): Promise<RecheckResult> => {
-  const { uid, id, db } = await holdRequest(event);
-  const result = await recheckPublication(db, id, uid);
+  const { uid, id } = await holdRequest(event);
+  const result = await recheckPublicationPg(id, uid);
   if (result.outcome === "published") {
     await useStorage("cache").clear("nitro:handlers");
   }
-  if (result.outcome !== "skipped") await restageDeclarationPeople(db, [id]);
+  if (result.outcome !== "skipped") await restageDeclarationPeoplePg([id]);
   return result;
 });

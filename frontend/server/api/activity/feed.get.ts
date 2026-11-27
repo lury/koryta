@@ -1,6 +1,5 @@
 import { z } from "zod";
-import { getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
+import { readPublicProfilesFromDb } from "~~/server/db/activity";
 import { defineEventHandler, getValidatedQuery, setResponseHeader } from "h3";
 import { getUser } from "~~/server/utils/auth";
 import { buildActivityFeed } from "~~/server/utils/activityFeed";
@@ -9,7 +8,6 @@ import {
   identify,
   isEstablishedAdmin,
   listNewAdmins,
-  readPublicProfiles,
   type ContributorIdentity,
 } from "~~/server/utils/contributors";
 import { DECLARATION_ACTOR } from "~~/shared/declarations";
@@ -352,9 +350,7 @@ const cachedFeed = defineCachedFunction(
 
     const now = new Date();
     const since = new Date(now.getTime() - days * DAY_MS);
-    const db = getFirestore(getApp(), "koryta-pl");
-
-    const raw = await buildActivityFeed(db, {
+    const raw = await buildActivityFeed({
       sinceIso: since.toISOString(),
       untilIso: new Date(now.getTime() + CLOCK_SKEW_MS).toISOString(),
       newAdminUids,
@@ -366,7 +362,7 @@ const cachedFeed = defineCachedFunction(
     ].filter((uid) => uid !== DECLARATION_ACTOR);
     const [identities, publicProfiles, siteChanges] = await Promise.all([
       identify([...new Set([...actorUids, ...newAdminUids])]),
-      readPublicProfiles(db, actorUids),
+      readPublicProfilesFromDb(actorUids),
       siteChangesSince(since.toISOString()),
     ]);
 

@@ -1,12 +1,7 @@
-import { Timestamp, getFirestore } from "firebase-admin/firestore";
-import type { DocumentData } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
 import { getApp } from "firebase-admin/app";
-import { OPS_DATABASE } from "~~/shared/tasks";
 import {
   JOBS,
-  JOBS_COLLECTION,
-  JOB_RUNS_COLLECTION,
   CAPTURE_WINDOW_DAYS,
   PEOPLE_REQUEST,
   RECENT_RUNS,
@@ -38,6 +33,16 @@ import type {
 import type { CaptureStatus } from "~~/shared/capture";
 import { toArticleCapture } from "~~/server/utils/captures";
 import { CRAWLED_BUCKET } from "~~/server/utils/crawledBucket";
+import {
+  captureCountsPg,
+  capturesPg,
+  jobRecordsPg,
+  newestRunsPg,
+  runningRunsPg,
+  runsByIdPg,
+} from "../db/ops";
+
+type DocumentData = Record<string, unknown>;
 
 /** What /admin/procesy reads (shared/jobs.ts): the runs the jobs report, the
  * captures for the one job marked `captures`, and the two buckets that say
@@ -50,37 +55,14 @@ export const COMPRESSED_BUCKET = "koryta-pl-compressed";
 const CAPTURES_SHOWN = 20;
 const OPEN_CAPTURES = 20;
 
-const iso = (value: unknown): unknown =>
-  value instanceof Timestamp ? value.toDate().toISOString() : value;
-
-/** A map field with its `at` as an ISO string - a request's and a dispatch's. */
-const withIsoAt = (value: unknown): unknown =>
-  value && typeof value === "object"
-    ? { ...(value as DocumentData), at: iso((value as DocumentData).at) }
-    : value;
-
-/** A run document's data with its times as ISO strings. */
+/** A run as the pages read it; null for a row that is not one. */
 export function runFromDoc(id: string, data: DocumentData): JobRun | null {
-  return jobRunFromData(id, {
-    ...data,
-    startedAt: iso(data.startedAt),
-    heartbeatAt: iso(data.heartbeatAt),
-    finishedAt: iso(data.finishedAt),
-    request: withIsoAt(data.request),
-    dispatch: withIsoAt(data.dispatch),
-  });
+  return jobRunFromData(id, data);
 }
 
 export function recordFromDoc(data: DocumentData): JobRecord {
-  return jobRecordFromData({
-    ...data,
-    lastStartedAt: iso(data.lastStartedAt),
-    lastScheduledAt: iso(data.lastScheduledAt),
-    lastSucceededAt: iso(data.lastSucceededAt),
-  });
+  return jobRecordFromData(data);
 }
-
-const opsDb = () => getFirestore(OPS_DATABASE);
 
 /** The jobs whose runs write people's pages through /api/ingest/person: the
  * night, whose people step is one of its own, that step reported on its own,
@@ -104,12 +86,8 @@ export const PEOPLE_WRITING_JOBS: readonly string[] = [
  * nothing up.
  */
 export async function peopleImportRunning(now = new Date()): Promise<boolean> {
-  const snapshot = await opsDb()
-    .collection(JOB_RUNS_COLLECTION)
-    .where("state", "==", "running")
-    .get();
-  return snapshot.docs.some((doc) => {
-    const run = runFromDoc(doc.id, doc.data());
+  return (await runningRunsPg()).some(({ id, data }) => {
+    const run = runFromDoc(id, data);
     if (!run || !PEOPLE_WRITING_JOBS.includes(run.job)) return false;
     const definition = jobDefinition(run.job);
     return !definition || !isStalled(run, definition, now);
@@ -123,34 +101,21 @@ export async function reportedRuns(): Promise<{
   runs: Map<string, JobRun[]>;
   records: Map<string, JobRecord>;
 }> {
-  const db = opsDb();
-  const [runSnapshot, recordSnapshot] = await Promise.all([
-    db
-      .collection(JOB_RUNS_COLLECTION)
-      .orderBy("startedAt", "desc")
-      .limit(RECENT_RUNS)
-      .get(),
-    db.collection(JOBS_COLLECTION).get(),
+  const [recentRows, recordRows] = await Promise.all([
+    newestRunsPg(RECENT_RUNS),
+    jobRecordsPg(),
   ]);
 
-  const recent = runSnapshot.docs.map((doc) => runFromDoc(doc.id, doc.data()));
+  const recent = recentRows.map(({ id, data }) => runFromDoc(id, data));
   const records = new Map<string, JobRecord>();
-  for (const doc of recordSnapshot.docs) {
-    records.set(doc.id, recordFromDoc(doc.data()));
-  }
+  for (const { id, data } of recordRows) records.set(id, recordFromDoc(data));
 
   // A job that has not run lately has fallen out of the recent window; its
   // record still names its newest run.
   const missing = lastRunsMissing(records.values(), recent);
-  const older: (JobRun | null)[] = [];
-  if (missing.length) {
-    const refs = missing.map((id) =>
-      db.collection(JOB_RUNS_COLLECTION).doc(id),
-    );
-    for (const doc of await db.getAll(...refs)) {
-      if (doc.exists) older.push(runFromDoc(doc.id, doc.data()!));
-    }
-  }
+  const older = missing.length
+    ? (await runsByIdPg(missing)).map(({ id, data }) => runFromDoc(id, data))
+    : [];
 
   return { runs: runsByJob([...recent, ...older]), records };
 }
@@ -158,45 +123,37 @@ export async function reportedRuns(): Promise<{
 /** The newest captures and any older ones still open, as runs, with a week's
  * counts per state.
  *
- * Every query orders by `capturedAt` descending, as the (status ASC,
- * capturedAt DESC) index the capture list already has does: a range on
- * `capturedAt` with no order of its own would ask for an ascending index,
- * which does not exist. The counts are read apart from the lists, so a count
- * that fails costs the week's numbers and not the captures themselves. */
+ * The lists are newest first (`article_pages_captured`). The counts are read
+ * apart from the lists, so a count that fails costs the week's numbers and
+ * not the captures themselves. */
 export async function captureRuns(now: Date): Promise<{
   runs: JobRun[];
   stats: CaptureStats | null;
   statsError?: string;
 }> {
-  const pages = getFirestore("koryta-pl").collection("articlePages");
   const since = new Date(now.getTime() - CAPTURE_WINDOW_DAYS * 86_400_000);
   const statuses: CaptureStatus[] = ["stored", "extracting", "done", "error"];
-  const lastWeek = (status: CaptureStatus) =>
-    pages
-      .where("status", "==", status)
-      .where("capturedAt", ">=", Timestamp.fromDate(since))
-      .orderBy("capturedAt", "desc");
 
-  const counting = Promise.all(
-    statuses.map((status) => lastWeek(status).count().get()),
-  );
+  const counting = captureCountsPg(since.toISOString());
   const [recent, ...open] = await Promise.all([
-    pages.orderBy("capturedAt", "desc").limit(CAPTURES_SHOWN).get(),
+    capturesPg({ limit: CAPTURES_SHOWN }),
     // Open ones from the last week only: older ones are just as stuck, but a
     // capture nothing has picked up for a week is a fact about last week,
     // and would keep the row red for good.
     ...(["stored", "extracting"] as const).map((status) =>
-      lastWeek(status).limit(OPEN_CAPTURES).get(),
+      capturesPg({ status, since: since.toISOString(), limit: OPEN_CAPTURES }),
     ),
   ]);
+  // Not waited on above, so a count that fails costs the week's numbers only.
+  counting.catch(() => {});
 
   const seen = new Set<string>();
   const runs: JobRun[] = [];
-  for (const snapshot of [recent!, ...open]) {
-    for (const doc of snapshot.docs) {
-      if (seen.has(doc.id)) continue;
-      seen.add(doc.id);
-      runs.push(captureRun(toArticleCapture(doc.id, doc.data())));
+  for (const rows of [recent!, ...open]) {
+    for (const { id, data } of rows) {
+      if (seen.has(id)) continue;
+      seen.add(id);
+      runs.push(captureRun(toArticleCapture(id, data)));
     }
   }
   runs.sort(compareRunsNewest);
@@ -212,9 +169,9 @@ export async function captureRuns(now: Date): Promise<{
     const byState = Object.fromEntries(
       RUN_STATES.map((state) => [state, 0]),
     ) as Record<RunState, number>;
-    statuses.forEach((status, index) => {
-      byState[stateOf[status]] += counts[index]!.data().count;
-    });
+    for (const status of statuses) {
+      byState[stateOf[status]] += counts.get(status) ?? 0;
+    }
     return { runs, stats: { since: since.toISOString(), byState } };
   } catch (error) {
     console.error("Counting captures failed", error);

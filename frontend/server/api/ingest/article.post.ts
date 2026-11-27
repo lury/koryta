@@ -1,7 +1,6 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { getUser } from "~~/server/utils/auth";
-import { ensureArticleNode } from "~~/server/utils/articles";
+import { editorialTx } from "~~/server/db/editorial";
+import { ensureArticleNodePg } from "~~/server/db/articles";
 import { addArticleMentions } from "~~/server/utils/articleEdges";
 import { withHttpScheme } from "~~/shared/url";
 import { z } from "zod";
@@ -36,21 +35,17 @@ export default defineEventHandler(async (event) => {
     articleRequestSchema.parse(body),
   );
   const user = await getUser(event);
-  const db = getFirestore(getApp(), "koryta-pl");
-
-  const batch = db.batch();
-  const { nodeId, created } = await ensureArticleNode(db, batch, user, body);
-  // On the same batch as the article, so a reader never ends up with a page
-  // joined to nobody because a second request failed. Read-then-write, so it
-  // has to happen before the commit rather than after it.
-  const mentions = await addArticleMentions(
-    db,
-    batch,
-    user,
-    nodeId,
-    body.mentions ?? [],
-  );
-  await batch.commit();
-
-  return { nodeId, created, mentions, status: "ok" };
+  return editorialTx(async (tx, log) => {
+    const { nodeId, created } = await ensureArticleNodePg(tx, log, user, body);
+    // In the article's transaction, so a reader never ends up with a page
+    // joined to nobody because a second request failed.
+    const mentions = await addArticleMentions(
+      tx,
+      log,
+      user,
+      nodeId,
+      body.mentions ?? [],
+    );
+    return { nodeId, created, mentions, status: "ok" };
+  });
 });

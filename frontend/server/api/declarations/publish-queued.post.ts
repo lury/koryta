@@ -1,9 +1,7 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { requireAdmin } from "~~/server/utils/auth";
 import { OVERVIEW_CACHE_BASE } from "~~/server/utils/declarationDecisions";
-import { restageDeclarationPeople } from "~~/server/utils/declarationPeopleCount";
-import { drainPublications } from "~~/server/utils/declarationPublish";
+import { restageDeclarationPeoplePg } from "~~/server/db/declarationPeopleCount";
+import { drainPublicationsPg } from "~~/server/db/declarationPublish";
 import { pagesTouched } from "~~/shared/declarationPeople";
 import {
   PRESS_BATCH,
@@ -32,9 +30,7 @@ import {
  */
 export default defineEventHandler(async (event): Promise<DrainResult> => {
   const admin = await requireAdmin(event);
-  const db = getFirestore(getApp(), "koryta-pl");
-  const result = await drainPublications(
-    db,
+  const result = await drainPublicationsPg(
     new Date(),
     publishLimitOf(useRuntimeConfig(event)),
     { pressedBy: admin.uid, maxPages: PRESS_BATCH },
@@ -42,7 +38,7 @@ export default defineEventHandler(async (event): Promise<DrainResult> => {
   if (result.published.length > 0) {
     await useStorage("cache").clear("nitro:handlers");
   }
-  await restageDeclarationPeople(db, pagesTouched({ drain: result }));
+  await restageDeclarationPeoplePg(pagesTouched({ drain: result }));
   await useStorage("cache").clear(OVERVIEW_CACHE_BASE);
   setResponseHeader(event, "Cache-Control", "private, no-store");
   return result;

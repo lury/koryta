@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { getFirestore } from "firebase-admin/firestore";
 import { defineEventHandler, getValidatedQuery, setResponseHeader } from "h3";
 import { logger } from "firebase-functions/logger";
 import { getUser } from "~~/server/utils/auth";
-import { countProposals, scanMyProposals } from "~~/server/utils/myProposals";
+import { scanMyProposalsPg } from "~~/server/db/revisionQueue";
+import { countProposals, MINE_SCAN_CAP } from "~~/server/utils/myProposals";
 import {
   nameVotes,
   scanMyVotes,
@@ -64,16 +64,13 @@ type Scanned =
 export default defineEventHandler(async (event): Promise<MyInteractions> => {
   const user = await getUser(event);
   const query = await getValidatedQuery(event, (q) => queryValidator.parse(q));
-  const db = getFirestore("koryta-pl");
-
   setResponseHeader(event, "Cache-Control", "private, no-store");
 
-  // The votes need a composite index that is deployed by hand. Without it
-  // the card still has the proposals to show, so a failed read of the votes
+  // A failed read of the votes leaves the card the proposals to show, so it
   // is logged and reported rather than taking the proposals down with it.
   const [mine, voted] = await Promise.all([
-    scanMyProposals(db, user.uid),
-    scanMyVotes(db, user.uid).catch((error: unknown) => {
+    scanMyProposalsPg(user.uid, MINE_SCAN_CAP),
+    scanMyVotes(user.uid).catch((error: unknown) => {
       logger.error("[api/interactions/mine] could not read the votes", {
         uid: user.uid,
         error: error instanceof Error ? error.message : String(error),
@@ -108,7 +105,6 @@ export default defineEventHandler(async (event): Promise<MyInteractions> => {
   const offset = (query.page - 1) * query.limit;
   const page = matching.slice(offset, offset + query.limit);
   const named = await nameVotes(
-    db,
     page.flatMap((row) => (row.kind === "vote" ? [row.vote] : [])),
   );
   let next = 0;

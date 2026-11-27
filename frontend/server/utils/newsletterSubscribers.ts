@@ -1,11 +1,15 @@
 import { createHash } from "node:crypto";
-import { FieldValue, Timestamp } from "firebase-admin/firestore";
-import type { Firestore } from "firebase-admin/firestore";
+import {
+  confirmSubscriberPg,
+  confirmedSubscribersPg,
+  queueMailPg,
+  readSubscriberPg,
+  requestSubscriptionPg,
+} from "~~/server/db/mail";
 import { mailTokenMatches, mailToken } from "~~/server/utils/mailTokens";
 import { campaignTopics, type CampaignTopic } from "~~/shared/campaigns";
 import {
   CONFIRMATION_DAYS,
-  SUBSCRIBERS,
   SUBSCRIBER_PREFIX,
   confirmationUrl,
   renderConfirmation,
@@ -49,25 +53,29 @@ export function subscriberId(email: string): string {
 
 /** Takes an address from the form: a new one, or one whose earlier request
  * was never confirmed or later withdrawn, is sent the confirmation mail. */
-export async function requestSubscription(
-  db: Firestore,
-  args: { email: string; where: string; siteUrl: string; now: Date },
-): Promise<SubscribeOutcome> {
-  const ref = db.collection(SUBSCRIBERS).doc(subscriberId(args.email));
-  const limitRef = db
-    .collection(SUBSCRIBE_LIMITS)
-    .doc(args.now.toISOString().slice(0, 10));
-  const sentAt = Timestamp.fromDate(args.now);
+export async function requestSubscription(args: {
+  email: string;
+  where: string;
+  siteUrl: string;
+  now: Date;
+}): Promise<SubscribeOutcome> {
+  const id = subscriberId(args.email);
+  const sentAt = args.now.toISOString();
 
-  const outcome = await db.runTransaction(
-    async (tx): Promise<SubscribeOutcome> => {
-      const [snapshot, limit] = await Promise.all([
-        tx.get(ref),
-        tx.get(limitRef),
-      ]);
-      const data = snapshot.data();
-      if (data?.status === "confirmed") return "alreadyConfirmed";
-
+  const outcome = (await requestSubscriptionPg({
+    id,
+    email: args.email,
+    where: args.where,
+    topics: campaignTopics,
+    now: args.now,
+    day: sentAt.slice(0, 10),
+    // Removes an address nobody confirmed (expire_documents, 0403). Cleared
+    // when it is confirmed.
+    expireAt: new Date(
+      args.now.getTime() + CONFIRMATION_DAYS * DAY_MS,
+    ).toISOString(),
+    decide: (data, sentToday) => {
+      if (data?.status === "confirmed") return { outcome: "alreadyConfirmed" };
       const recent = timestamps(data?.confirmationsSent).filter(
         (at) => args.now.getTime() - at.getTime() < DAY_MS,
       );
@@ -76,53 +84,25 @@ export async function requestSubscription(
         recent.length >= MAX_CONFIRMATIONS_A_DAY ||
         (last && args.now.getTime() - last.getTime() < RESEND_AFTER_MS)
       ) {
-        return "throttled";
+        return { outcome: "throttled" };
       }
-      const sentToday = (limit.get("count") as number | undefined) ?? 0;
-      if (sentToday >= DAILY_CONFIRMATIONS_CAP) return "capped";
-
-      tx.set(
-        limitRef,
-        { count: sentToday + 1, day: limitRef.id },
-        {
-          merge: true,
-        },
-      );
-      tx.set(
-        ref,
-        {
-          email: args.email,
-          status: "pending",
-          topics: Object.fromEntries(
-            campaignTopics.map((topic) => [topic, true]),
-          ),
-          where: args.where,
-          createdAt: data?.createdAt ?? sentAt,
-          confirmationsSent: [
-            ...recent.map((at) => Timestamp.fromDate(at)),
-            sentAt,
-          ],
-          // Removes an address nobody confirmed, once the TTL policy on this
-          // field is on. Cleared when it is confirmed.
-          expireAt: Timestamp.fromMillis(
-            args.now.getTime() + CONFIRMATION_DAYS * DAY_MS,
-          ),
-        },
-        { merge: true },
-      );
-      return "sent";
+      if (sentToday >= DAILY_CONFIRMATIONS_CAP) return { outcome: "capped" };
+      return {
+        outcome: "sent",
+        confirmationsSent: [...recent.map((at) => at.toISOString()), sentAt],
+      };
     },
-  );
+  })) as SubscribeOutcome;
   if (outcome !== "sent") return outcome;
 
-  const token = await mailToken(db, `${SUBSCRIBER_PREFIX}${ref.id}`);
-  await db.collection("mail").add({
+  const token = await mailToken(`${SUBSCRIBER_PREFIX}${id}`);
+  await queueMailPg({
     to: [args.email],
     message: renderConfirmation({
-      url: confirmationUrl(args.siteUrl, { id: ref.id, token }),
+      url: confirmationUrl(args.siteUrl, { id, token }),
     }),
     kind: "newsletterConfirmation",
-    subscriber: ref.id,
+    subscriber: id,
     created_at: sentAt,
   });
   return "sent";
@@ -131,66 +111,57 @@ export async function requestSubscription(
 export type ConfirmOutcome = "confirmed" | "alreadyConfirmed" | "invalid";
 
 /** Confirms the address behind a confirmation link. */
-export async function confirmSubscription(
-  db: Firestore,
-  args: { id: string; token: string; now: Date },
-): Promise<ConfirmOutcome> {
-  if (
-    !(await mailTokenMatches(db, `${SUBSCRIBER_PREFIX}${args.id}`, args.token))
-  ) {
+export async function confirmSubscription(args: {
+  id: string;
+  token: string;
+  now: Date;
+}): Promise<ConfirmOutcome> {
+  if (!(await mailTokenMatches(`${SUBSCRIBER_PREFIX}${args.id}`, args.token))) {
     return "invalid";
   }
-  const ref = db.collection(SUBSCRIBERS).doc(args.id);
-  const data = (await ref.get()).data();
+  const data = await readSubscriberPg(args.id);
   if (!data) return "invalid";
   if (data.status === "confirmed") return "alreadyConfirmed";
   // A request withdrawn by its own link is not brought back by an old
   // confirmation mail: the form makes a new one.
   if (data.status !== "pending") return "invalid";
-  const expireAt = data.expireAt as Timestamp | undefined;
-  if (expireAt && expireAt.toMillis() < args.now.getTime()) return "invalid";
+  const expireAt = instantOf(data.expireAt);
+  if (expireAt && expireAt.getTime() < args.now.getTime()) return "invalid";
 
-  await ref.update({
-    status: "confirmed",
-    confirmedAt: Timestamp.fromDate(args.now),
-    expireAt: FieldValue.delete(),
-  });
+  // Pending no more since it was read: the other click confirmed it.
+  if (!(await confirmSubscriberPg(args.id, args.now.toISOString()))) {
+    return (await readSubscriberPg(args.id))?.status === "confirmed"
+      ? "alreadyConfirmed"
+      : "invalid";
+  }
   return "confirmed";
 }
 
 /** Every confirmed subscriber, for the campaign audience. */
-export async function confirmedSubscribers(
-  db: Firestore,
-): Promise<Subscriber[]> {
-  const snapshot = await db
-    .collection(SUBSCRIBERS)
-    .where("status", "==", "confirmed")
-    .get();
-  return snapshot.docs.map((doc) => {
-    const data = doc.data();
+export async function confirmedSubscribers(): Promise<Subscriber[]> {
+  return (await confirmedSubscribersPg()).map(({ id, data }) => {
+    const stored = data.topics as Record<string, unknown> | undefined;
     const topics: Partial<Record<CampaignTopic, boolean>> = {};
     for (const topic of campaignTopics) {
-      if (typeof data.topics?.[topic] === "boolean") {
-        topics[topic] = data.topics[topic];
+      if (typeof stored?.[topic] === "boolean") {
+        topics[topic] = stored[topic] as boolean;
       }
     }
-    return {
-      id: doc.id,
-      email: String(data.email ?? ""),
-      status: "confirmed",
-      topics,
-    };
+    return { id, email: String(data.email ?? ""), status: "confirmed", topics };
   });
+}
+
+/** A stored instant (an ISO string) as a Date; null for anything else. */
+function instantOf(value: unknown): Date | null {
+  if (typeof value !== "string") return null;
+  const ms = Date.parse(value);
+  return Number.isNaN(ms) ? null : new Date(ms);
 }
 
 function timestamps(value: unknown): Date[] {
   if (!Array.isArray(value)) return [];
   return value
-    .map((item) =>
-      item && typeof (item as Timestamp).toDate === "function"
-        ? (item as Timestamp).toDate()
-        : null,
-    )
+    .map((item) => instantOf(item))
     .filter((date): date is Date => date !== null)
     .sort((a, b) => a.getTime() - b.getTime());
 }

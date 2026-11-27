@@ -1,4 +1,3 @@
-import type { Firestore } from "firebase-admin/firestore";
 import {
   declarationPeopleSchema,
   type DeclarationPeople,
@@ -11,14 +10,11 @@ import {
  */
 export const PEOPLE_DOC = "declaration_people";
 
-/** The snapshot, or null before the first count, or for one that does not
- * read as one: an old shape is left unsaid rather than half drawn. */
-export async function readDeclarationPeople(
-  db: Firestore,
-): Promise<DeclarationPeople | null> {
-  const snap = await db.collection("stats").doc(PEOPLE_DOC).get();
-  if (!snap.exists) return null;
-  const parsed = declarationPeopleSchema.safeParse(snap.data());
+/** A stored snapshot read as one, from either backend. */
+export function parseDeclarationPeople(
+  data: unknown,
+): DeclarationPeople | null {
+  const parsed = declarationPeopleSchema.safeParse(data);
   if (!parsed.success) {
     console.error(
       `stats/${PEOPLE_DOC} does not read as a people snapshot:`,

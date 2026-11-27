@@ -1,6 +1,9 @@
 import type { Edge } from "~~/shared/model";
-import { getFirestore } from "firebase-admin/firestore";
-import { getRevisionsForNodes } from "~~/server/utils/revisions";
+import {
+  edgesWithNullRevisionPg,
+  nodeNamesPg,
+  revisionsForNodesPg,
+} from "~~/server/db/edgeQueues";
 import { defineEventHandler, setResponseHeader } from "h3";
 import { getUser } from "~~/server/utils/auth";
 
@@ -13,45 +16,21 @@ import { getUser } from "~~/server/utils/auth";
 export default defineEventHandler(async (event) => {
   await getUser(event);
   setResponseHeader(event, "Cache-Control", "private, no-store");
-  const db = getFirestore("koryta-pl");
-  const query: FirebaseFirestore.Query = db
-    .collection("edges")
-    .where("revision_id", "==", null)
-    .limit(50);
-  const edges = await query.get();
-  const edgesData = edges.docs.map((doc) => {
-    return { id: doc.id, ...doc.data() } as Edge & {
-      id: string;
-    };
-  });
-
-  const nodeIdsToFetch = new Set<string>();
-  edgesData.forEach((edge) => {
-    if (edge.source && typeof edge.source === "string")
-      nodeIdsToFetch.add(edge.source);
-    if (edge.target && typeof edge.target === "string")
-      nodeIdsToFetch.add(edge.target);
-  });
-
-  const nodeRefs = Array.from(nodeIdsToFetch);
-
-  // Use Promise.all to avoid potential issues with getAll in some environments
-  const nodeDocs = await Promise.all(
-    nodeRefs.map((id) => db.collection("nodes").doc(id).get()),
+  const edgesData = (await edgesWithNullRevisionPg()).map(
+    ({ id, data }) => ({ id, ...data }) as Edge & { id: string },
   );
 
-  const nodeNames = new Map<string, string>();
-  nodeDocs.forEach((doc) => {
-    if (doc.exists) {
-      const data = doc.data();
-      if (data && data.name) {
-        nodeNames.set(doc.id, data.name);
-      }
-    }
+  const nodeIds = new Set<string>();
+  edgesData.forEach((edge) => {
+    if (edge.source && typeof edge.source === "string")
+      nodeIds.add(edge.source);
+    if (edge.target && typeof edge.target === "string")
+      nodeIds.add(edge.target);
   });
-
-  const edgeIds = edgesData.map((e) => e.id);
-  const revisions = await getRevisionsForNodes(db, edgeIds);
+  const [nodeNames, revisions] = await Promise.all([
+    nodeNamesPg([...nodeIds]),
+    revisionsForNodesPg(edgesData.map((e) => e.id)),
+  ]);
 
   const edgesWithDetails = edgesData.map((edge) => ({
     ...edge,

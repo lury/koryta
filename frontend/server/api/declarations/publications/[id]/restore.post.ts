@@ -1,6 +1,6 @@
 import { holdRequest } from "~~/server/utils/declarationDecisionRequest";
-import { restorePublication } from "~~/server/utils/declarationDecisions";
-import { restageDeclarationPeople } from "~~/server/utils/declarationPeopleCount";
+import { restorePublicationPg } from "~~/server/db/declarationHolds";
+import { restageDeclarationPeoplePg } from "~~/server/db/declarationPeopleCount";
 
 /**
  * „Przywróć” on /admin/oswiadczenia: takes an admin's „Nie publikuj” back, and
@@ -8,8 +8,8 @@ import { restageDeclarationPeople } from "~~/server/utils/declarationPeopleCount
  * Admins only, checked before anything is read.
  */
 export default defineEventHandler(async (event): Promise<{ id: string }> => {
-  const { id, db } = await holdRequest(event);
-  await restorePublication(db, id);
-  await restageDeclarationPeople(db, [id]);
+  const { id } = await holdRequest(event);
+  await restorePublicationPg(id);
+  await restageDeclarationPeoplePg([id]);
   return { id };
 });

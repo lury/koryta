@@ -1,7 +1,7 @@
-import { getFirestore, FieldPath } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { requireAdmin } from "~~/server/utils/auth";
-import { resolveEdgeEndpoints } from "~~/server/utils/edgePublication";
+import { useDb } from "~~/server/db/client";
+import { unpublishedEdgePagePg } from "~~/server/db/edgeQueues";
+import { resolveEdgeEndpointsPg } from "~~/server/db/revisionWrites";
 import type { Edge, EdgeType } from "~~/shared/model";
 import { z } from "zod";
 
@@ -37,11 +37,8 @@ const queryValidator = z.object({
 /** How many edges to read per round trip while filling a page. */
 const SCAN_PAGE = 300;
 
-/** The most documents one request will read. Firestore cannot join, so
- * "unpublished edge between two published nodes" is a scan plus a lookup, and
- * the honest way to bound it is to stop and say so - `truncated` and `scanned`
- * are in the response for exactly that reason.
- */
+/** The most edges one request will read: a scan plus a lookup of the ends,
+ * bounded, and `truncated` and `scanned` say where it stopped. */
 const MAX_SCAN = 3000;
 
 /** Relations that are ready to go live: not published themselves, but with
@@ -56,37 +53,25 @@ export default defineEventHandler(async (event): Promise<UnpublishedEdges> => {
   const query = await getValidatedQuery(event, (q) => queryValidator.parse(q));
   await requireAdmin(event);
 
-  const db = getFirestore(getApp(), "koryta-pl");
-
   const rows: UnpublishedEdgeRow[] = [];
   let cursor = query.cursor ?? null;
   let scanned = 0;
   let exhausted = false;
 
   while (rows.length < query.limit && scanned < MAX_SCAN && !exhausted) {
-    let q = db
-      .collection("edges")
-      // An equality filter ordered by document id is served by the automatic
-      // single-field index; anything else on `edges` would need a composite
-      // index declared, and there are none.
-      .where("published", "==", false)
-      .orderBy(FieldPath.documentId())
-      .limit(SCAN_PAGE);
-    if (cursor) q = q.startAfter(cursor);
-
-    const snap = await q.get();
-    scanned += snap.size;
-    if (snap.empty) {
+    const page = await unpublishedEdgePagePg(cursor, SCAN_PAGE);
+    scanned += page.length;
+    if (page.length === 0) {
       exhausted = true;
       break;
     }
 
-    const edges = snap.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as Edge),
+    const edges = page.map(({ id, data }) => ({
+      ...(data as unknown as Edge),
+      id,
     }));
-    const endpoints = await resolveEdgeEndpoints(
-      db,
+    const endpoints = await resolveEdgeEndpointsPg(
+      useDb(),
       edges.filter((edge) => edge.source && edge.target),
     );
 
@@ -118,7 +103,7 @@ export default defineEventHandler(async (event): Promise<UnpublishedEdges> => {
 
     // Only a batch read to its end, and short of what was asked for, means
     // there is nothing behind it.
-    if (consumed === snap.size && snap.size < SCAN_PAGE) exhausted = true;
+    if (consumed === page.length && page.length < SCAN_PAGE) exhausted = true;
   }
 
   return {

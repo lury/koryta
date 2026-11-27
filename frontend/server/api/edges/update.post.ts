@@ -1,13 +1,12 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { z } from "zod";
 import { getUser } from "~~/server/utils/auth";
+import { withoutInternalFields } from "~~/server/utils/revisions";
+import { editorialTx, readDoc } from "~~/server/db/editorial";
+import { createRevisionPg } from "~~/server/db/revisionWrites";
 import {
-  createRevisionTransaction,
-  proposeRevisionTransaction,
-  revisionChangesNothing,
-  withoutInternalFields,
-} from "~~/server/utils/revisions";
+  proposeRevisionPg,
+  revisionChangesNothingPg,
+} from "~~/server/db/proposals";
 import { edgeEditSchema } from "~~/shared/api";
 
 const bodyValidator = edgeEditSchema.extend({
@@ -57,120 +56,114 @@ export default defineEventHandler(async (event): Promise<EdgeUpdated> => {
   const { edge_id, ...fields } = body;
 
   const user = await getUser(event);
-  const db = getFirestore(getApp(), "koryta-pl");
+  const result = await editorialTx(async (tx, log): Promise<EdgeUpdated> => {
+    const stored = await readDoc(tx, "edges", edge_id, true);
+    if (!stored) {
+      throw createError({
+        statusCode: 404,
+        message: `Nie ma powiązania o id: ${edge_id}`,
+      });
+    }
 
-  const edgeRef = db.collection("edges").doc(edge_id);
-  const snapshot = await edgeRef.get();
-  if (!snapshot.exists) {
-    throw createError({
-      statusCode: 404,
-      message: `Nie ma powiązania o id: ${edge_id}`,
-    });
-  }
+    if (stored.deleted === true) {
+      throw createError({
+        statusCode: 409,
+        message: "To powiązanie zostało usunięte i nie da się go już zmienić.",
+      });
+    }
 
-  const stored = snapshot.data() ?? {};
-  if (stored.deleted === true) {
-    throw createError({
-      statusCode: 409,
-      message: "To powiązanie zostało usunięte i nie da się go już zmienić.",
-    });
-  }
+    // A revision is a complete snapshot, so the fields nobody edited have to come
+    // off the stored document or the write would delete them - the same layering
+    // `/api/revisions/create` does through `baseNodeFields`. Only the keys the
+    // caller actually sent are overlaid: zod leaves an omitted optional field
+    // undefined, and spreading that over the stored value would blank it.
+    const edited: Record<string, unknown> = Object.fromEntries(
+      Object.entries(fields).filter(([, value]) => value !== undefined),
+    );
+    // An unticked „Uzyskano mandat" says nobody recorded a win, not that the
+    // person lost, so it is stored as nothing rather than as `false` - see
+    // `elected` in shared/api.ts, and /api/edges/create, which does the same.
+    // Null rather than a dropped key, so that unticking takes a win back off the
+    // relation instead of leaving the stored `true` under the overlay;
+    // `sanitizeFirestoreData` drops the null on the way to Firestore.
+    if (edited.elected === false) edited.elected = null;
+    const data = { ...withoutInternalFields(stored), ...edited };
 
-  // A revision is a complete snapshot, so the fields nobody edited have to come
-  // off the stored document or the write would delete them - the same layering
-  // `/api/revisions/create` does through `baseNodeFields`. Only the keys the
-  // caller actually sent are overlaid: zod leaves an omitted optional field
-  // undefined, and spreading that over the stored value would blank it.
-  const edited: Record<string, unknown> = Object.fromEntries(
-    Object.entries(fields).filter(([, value]) => value !== undefined),
-  );
-  // An unticked „Uzyskano mandat" says nobody recorded a win, not that the
-  // person lost, so it is stored as nothing rather than as `false` - see
-  // `elected` in shared/api.ts, and /api/edges/create, which does the same.
-  // Null rather than a dropped key, so that unticking takes a win back off the
-  // relation instead of leaving the stored `true` under the overlay;
-  // `sanitizeFirestoreData` drops the null on the way to Firestore.
-  if (edited.elected === false) edited.elected = null;
-  const data = { ...withoutInternalFields(stored), ...edited };
+    const isAdmin = user.admin === true;
+    const published = stored.published === true;
 
-  const isAdmin = user.admin === true;
-  const published = stored.published === true;
+    // Nothing to record where the relation already says this. Worth checking on
+    // both paths: an admin would write a revision that changes nothing, and a
+    // contributor would leave a proposal a reviewer has to open to find out it is
+    // a no-op. Only meaningful for the admin path's own write, so the comparison
+    // is made against what that path would produce.
+    if (
+      revisionChangesNothingPg("edges", data, {
+        stored,
+        published,
+        approve: isAdmin,
+      })
+    ) {
+      return {
+        edge_id,
+        revision_id: null,
+        applied: false,
+        unchanged: true,
+        duplicate: false,
+      };
+    }
 
-  // Nothing to record where the relation already says this. Worth checking on
-  // both paths: an admin would write a revision that changes nothing, and a
-  // contributor would leave a proposal a reviewer has to open to find out it is
-  // a no-op. Only meaningful for the admin path's own write, so the comparison
-  // is made against what that path would produce.
-  if (
-    revisionChangesNothing(edgeRef, data, {
-      stored,
-      published,
-      approve: isAdmin,
-    })
-  ) {
+    if (!isAdmin) {
+      // Filed under the caller's uid. Their own proposal of this, still
+      // waiting, is handed back rather than filed twice - the way
+      // /api/revisions/create answers a node proposal made again - and one a
+      // reviewer has answered gets a second ask beside it rather than having
+      // the verdict overwritten.
+      const { revisionId, outcome } = await proposeRevisionPg(
+        tx,
+        log,
+        user,
+        { collection: "edges", id: edge_id },
+        data,
+      );
+      return {
+        edge_id,
+        revision_id: revisionId,
+        applied: false,
+        unchanged: false,
+        duplicate: outcome === "unchanged",
+      };
+    }
+
+    const { revisionId } = await createRevisionPg(
+      tx,
+      log,
+      user,
+      { collection: "edges", id: edge_id },
+      data,
+      // `published` is passed through rather than decided here: correcting a date
+      // on a live relation must not take it off the site, and correcting one on a
+      // draft must not publish it.
+      { stored, approve: true, published },
+    );
+
+    // No `audit` entry beside it, unlike /api/edges/delete. That collection is
+    // for the decisions that leave no other document behind; this one leaves an
+    // approved revision carrying `update_user` and `review_user`, which is the
+    // same record in the place a reviewer already looks for it.
     return {
       edge_id,
-      revision_id: null,
-      applied: false,
-      unchanged: true,
+      revision_id: revisionId,
+      applied: true,
+      unchanged: false,
       duplicate: false,
     };
-  }
-
-  const batch = db.batch();
-
-  if (!isAdmin) {
-    // Filed under the caller's uid. Their own proposal of this, still
-    // waiting, is handed back rather than filed twice - the way
-    // /api/revisions/create answers a node proposal made again - and one a
-    // reviewer has answered gets a second ask beside it rather than having
-    // the verdict overwritten.
-    const { revisionRef, outcome } = await proposeRevisionTransaction(
-      db,
-      batch,
-      user,
-      edgeRef,
-      data,
-    );
-    const duplicate = outcome === "unchanged";
-    if (!duplicate) await batch.commit();
-    return {
-      edge_id,
-      revision_id: revisionRef.id,
-      applied: false,
-      unchanged: false,
-      duplicate,
-    };
-  }
-
-  const { revisionRef } = createRevisionTransaction(
-    db,
-    batch,
-    user,
-    edgeRef,
-    data,
-    // `published` is passed through rather than decided here: correcting a date
-    // on a live relation must not take it off the site, and correcting one on a
-    // draft must not publish it.
-    { stored, approve: true, published },
-  );
-
-  // No `audit` entry beside it, unlike /api/edges/delete. That collection is
-  // for the decisions that leave no other document behind; this one leaves an
-  // approved revision carrying `update_user` and `review_user`, which is the
-  // same record in the place a reviewer already looks for it.
-  await batch.commit();
+  });
+  if (!result.applied) return result;
 
   // The entity and graph endpoints are cached per handler for six hours, so the
   // correction would otherwise not reach the page it was typed on until
   // tomorrow. Same clear as /api/edges/delete.
   await useStorage("cache").clear("nitro:handlers");
-
-  return {
-    edge_id,
-    revision_id: revisionRef.id,
-    applied: true,
-    unchanged: false,
-    duplicate: false,
-  };
+  return result;
 });

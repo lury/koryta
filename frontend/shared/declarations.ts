@@ -964,7 +964,7 @@ export type DeclarationFinds = {
  *
  * `hasPublicPost` is `isPublicEmployment` over the page's own employment
  * edges, which only a caller with the graph can answer
- * (`pagesWithAPublicPost` in server/utils/publicPosts.ts).
+ * (`pagesWithAPublicPostPg` in server/db/publicPosts.ts).
  */
 export function readingPriority(
   page: { published?: unknown; deleted?: unknown; birthDate?: unknown },

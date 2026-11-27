@@ -1,7 +1,10 @@
 import { holdRequest } from "~~/server/utils/declarationDecisionRequest";
 import { waitsForAdmin } from "~~/server/utils/declarationDecisions";
-import { peopleById, reviewRow } from "~~/server/utils/declarationOverview";
-import { readingsOfAnotherDay } from "~~/server/utils/declarationPublish";
+import { reviewRow } from "~~/server/utils/declarationOverview";
+import { peopleByIdPg } from "~~/server/db/declarationOverview";
+import { readingsOfAnotherDayPg } from "~~/server/db/declarationPublish";
+import { readDoc } from "~~/server/db/editorial";
+import { useDb } from "~~/server/db/client";
 import type { HeldCropRow } from "~~/shared/declarations";
 
 /**
@@ -15,19 +18,19 @@ import type { HeldCropRow } from "~~/shared/declarations";
  * dates and what readers typed are read here.
  */
 export default defineEventHandler(async (event): Promise<HeldCropRow[]> => {
-  const { id, db } = await holdRequest(event);
-  const page = await db.collection("nodes").doc(id).get();
-  const born = page.get("birthDate");
+  const { id } = await holdRequest(event);
+  const born = (await readDoc(useDb(), "nodes", id))?.birthDate;
   if (typeof born !== "string" || !born) return [];
-  const crops = await readingsOfAnotherDay(db, id, born.trim());
-  const people = await peopleById(
-    db,
-    crops.flatMap(
-      (crop) => (crop.get("personIds") as string[] | undefined) ?? [],
+  const crops = await readingsOfAnotherDayPg(id, born.trim());
+  const people = await peopleByIdPg(
+    crops.flatMap((crop) =>
+      Array.isArray(crop.data.personIds)
+        ? (crop.data.personIds as string[])
+        : [],
     ),
   );
   return crops.map((crop) => ({
     ...reviewRow(crop, people),
-    decidable: waitsForAdmin(crop.data()),
+    decidable: waitsForAdmin(crop.data),
   }));
 });

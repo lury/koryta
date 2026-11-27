@@ -89,7 +89,7 @@ export type BoardPersonRow = {
 
 /** The sentinel the rest of the site already uses for "no party", so a link
  * built out of this response lands on the filter the table understands - see
- * `applyPartiesFilter` in server/utils/fetch.ts. */
+ * `partiesFilter` in server/db/nodes.ts. */
 export const NO_PARTY = "__NONE__";
 
 /** What a breakdown sorts parties on first, ahead of their seats: the parties

@@ -170,6 +170,7 @@ export async function useListWithStats(
     return fetchedItems.value.map((person) => {
       // Reconstruct companies and elections from subgraph
       const companies = new Set<string>();
+      const companyIds: Record<string, string> = {};
       const elections: ElectionRich[] = [];
 
       const employerIds: string[] = [];
@@ -193,6 +194,8 @@ export async function useListWithStats(
 
         if (edge.type === "employed" && otherNode?.entityType === "place") {
           companies.add(otherNode.name);
+          if (!(otherNode.name in companyIds))
+            companyIds[otherNode.name] = otherNodeId;
           employerIds.push(otherNodeId);
           employments.push({
             placeId: otherNodeId,
@@ -246,6 +249,7 @@ export async function useListWithStats(
         ...person,
         id: person.id as string,
         companies: Array.from(companies),
+        companyIds,
         ...rowMatches(employments, hits, {
           seats: seats.value,
           matchedPlaces,

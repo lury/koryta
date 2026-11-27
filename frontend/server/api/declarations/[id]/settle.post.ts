@@ -1,16 +1,13 @@
-import type { Firestore } from "firebase-admin/firestore";
 import type { H3Event } from "h3";
 import { z } from "zod";
-import {
-  decideExtract,
-  type DecidedExtract,
-} from "~~/server/utils/declarationDecisions";
+import type { DecidedExtract } from "~~/server/utils/declarationDecisions";
+import { decideExtractPg } from "~~/server/db/declarationHolds";
 import {
   afterDecision,
   decisionRequest,
 } from "~~/server/utils/declarationDecisionRequest";
-import { restageCropPeople } from "~~/server/utils/declarationPeopleCount";
-import { matchAndDrain } from "~~/server/utils/declarationPublish";
+import { restageCropPeoplePg } from "~~/server/db/declarationPeopleCount";
+import { matchAndDrainPg } from "~~/server/db/declarationPublish";
 import { pagesTouched } from "~~/shared/declarationPeople";
 import { parseTypedDate, publishLimitOf } from "~~/shared/declarations";
 
@@ -50,10 +47,10 @@ const PAGES_PER_DECISION = 1;
  * the pass took up, move in the people count.
  */
 export default defineEventHandler(async (event): Promise<DecidedExtract> => {
-  const { uid, id, db } = await decisionRequest(event);
+  const { uid, id } = await decisionRequest(event);
   const body = await readValidatedBody(event, (raw) => settleSchema.parse(raw));
 
-  const decided = await decideExtract(db, {
+  const decided = await decideExtractPg({
     extractId: id,
     uid,
     decision:
@@ -65,10 +62,10 @@ export default defineEventHandler(async (event): Promise<DecidedExtract> => {
         : { verdict: "unreadable" },
   });
   const compared = decided.compare
-    ? await compareWithPages(event, db, id)
+    ? await compareWithPages(event, id)
     : { published: false, touched: [] };
-  await restageCropPeople(db, [id], compared.touched);
-  await afterDecision(db, id, compared.published);
+  await restageCropPeoplePg([id], compared.touched);
+  await afterDecision(id, compared.published);
   return decided;
 });
 
@@ -78,12 +75,10 @@ export default defineEventHandler(async (event): Promise<DecidedExtract> => {
  * crop this did not. */
 async function compareWithPages(
   event: H3Event,
-  db: Firestore,
   extractId: string,
 ): Promise<{ published: boolean; touched: string[] }> {
   try {
-    const { matched, drain } = await matchAndDrain(
-      db,
+    const { matched, drain } = await matchAndDrainPg(
       [extractId],
       new Date(),
       publishLimitOf(useRuntimeConfig(event)),

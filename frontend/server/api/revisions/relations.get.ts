@@ -1,18 +1,15 @@
 import { z } from "zod";
-import {
-  getFirestore,
-  type Firestore,
-  type QueryDocumentSnapshot,
-} from "firebase-admin/firestore";
 import { defineEventHandler, getValidatedQuery, setResponseHeader } from "h3";
 import { requireAdmin } from "~~/server/utils/auth";
-import { fetchEdgesForNode } from "~~/server/utils/edgePublication";
+import { targetIdOf } from "~~/server/utils/revisionQueue";
+import { useDb } from "~~/server/db/client";
+import { readDocs } from "~~/server/db/editorial";
 import {
-  describeRevisions,
-  nodeTypeOf,
-  targetIdOf,
-} from "~~/server/utils/revisionQueue";
-import { generateEntityUrl } from "~~/shared/slugs";
+  describeRevisionsPg,
+  edgesOfNodePg,
+  endpointsOf,
+  revisionRowsOfEdgesPg,
+} from "~~/server/db/revisionQueue";
 import {
   approvedRevisionId,
   pageIsPublic,
@@ -28,12 +25,6 @@ const queryValidator = z.object({ nodeId: z.string().min(1) });
  * candidacies here. Past the cap the ones that wait for somebody come first,
  * and `total` says how many there are. */
 export const MAX_RELATIONS = 300;
-
-/** Firestore's ceiling for an `in` filter. */
-const IN_CHUNK = 30;
-
-/** `getAll` reads at most this many documents per call in practice. */
-const GET_ALL_CHUNK = 100;
 
 /** The page at the far end of a relation. */
 export type RelationEnd = {
@@ -136,12 +127,12 @@ export default defineEventHandler(
     );
     setResponseHeader(event, "Cache-Control", "private, no-store");
 
-    const db = getFirestore("koryta-pl");
     const [edges, node] = await Promise.all([
-      fetchEdgesForNode(db, nodeId),
-      db.collection("nodes").doc(nodeId).get(),
+      edgesOfNodePg(nodeId),
+      readDocs(useDb(), "nodes", [nodeId]),
     ]);
-    const nodePublished = node.exists && pageIsPublic(node.data() ?? {});
+    const nodeData = node.get(nodeId);
+    const nodePublished = nodeData !== undefined && pageIsPublic(nodeData);
 
     // The cap is applied before anything is read per relation, so it has to
     // order by what the edges themselves say: the drafts first, then the
@@ -160,14 +151,11 @@ export default defineEventHandler(
       edge.source === nodeId ? edge.target : edge.source,
     );
     const [ends, revisionDocs] = await Promise.all([
-      readEnds(db, otherIds),
-      readRevisions(
-        db,
-        capped.map((edge) => edge.id),
-      ),
+      readDocs(useDb(), "nodes", otherIds).then(endpointsOf),
+      revisionRowsOfEdgesPg(capped.map((edge) => edge.id)),
     ]);
 
-    const described = await describeRevisions(db, revisionDocs, {
+    const described = await describeRevisionsPg(revisionDocs, {
       withAuthors: true,
       allChanges: true,
     });
@@ -177,7 +165,7 @@ export default defineEventHandler(
       const edgeId = targetIdOf(doc);
       if (!edgeId) return;
       byEdge.set(edgeId, [...(byEdge.get(edgeId) ?? []), described[index]!]);
-      if (doc.get("status") === "pending") {
+      if (doc.data.status === "pending") {
         waitingByEdge.set(edgeId, (waitingByEdge.get(edgeId) ?? 0) + 1);
       }
     });
@@ -281,58 +269,6 @@ function latestWaiting(relation: RelationHistory): number {
     )
     .map((revision) => timeOf(revision.updateTime));
   return times.length > 0 ? Math.max(...times) : -Infinity;
-}
-
-/** The far end of each relation: what it is called, what kind of page it is
- * and whether it is live. Masked to those fields, a hundred at a time. */
-async function readEnds(
-  db: Firestore,
-  ids: string[],
-): Promise<Map<string, RelationEnd>> {
-  const wanted = [...new Set(ids)];
-  const ends = new Map<string, RelationEnd>();
-  for (let i = 0; i < wanted.length; i += GET_ALL_CHUNK) {
-    const chunk = wanted.slice(i, i + GET_ALL_CHUNK);
-    const snapshots = await db.getAll(
-      ...chunk.map((id) => db.collection("nodes").doc(id)),
-      { fieldMask: ["name", "type", "published", "deleted"] },
-    );
-    snapshots.forEach((snapshot, index) => {
-      const id = chunk[index]!;
-      if (!snapshot.exists) return;
-      const data = snapshot.data() ?? {};
-      const name = text(data.name);
-      const type = nodeTypeOf(data);
-      ends.set(id, {
-        id,
-        name,
-        type,
-        path: type ? generateEntityUrl(type, id, name ?? undefined) : null,
-        published: pageIsPublic(data),
-      });
-    });
-  }
-  return ends;
-}
-
-/** Every revision written against these edges, thirty edges a query. Edge
- * revisions name their edge in `node_id`; the camel-cased `nodeId` only ever
- * appears on old node revisions, which is why `edgeRevisionsForMany` asks for
- * the one spelling too. */
-async function readRevisions(
-  db: Firestore,
-  edgeIds: string[],
-): Promise<QueryDocumentSnapshot[]> {
-  const docs: QueryDocumentSnapshot[] = [];
-  for (let i = 0; i < edgeIds.length; i += IN_CHUNK) {
-    const chunk = edgeIds.slice(i, i + IN_CHUNK);
-    const snapshot = await db
-      .collection("revisions")
-      .where("node_id", "in", chunk)
-      .get();
-    docs.push(...snapshot.docs);
-  }
-  return docs;
 }
 
 function text(value: unknown): string | null {

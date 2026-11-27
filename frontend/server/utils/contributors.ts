@@ -1,12 +1,7 @@
 import { getAuth } from "firebase-admin/auth";
-import { publicProfileEnabled } from "~~/shared/profile";
 
 /** `getUsers` takes at most 100 identifiers per call. */
 const AUTH_LOOKUP_CHUNK = 100;
-
-/** `getAll` takes its references as one argument list; 300 at a time keeps
- * that bounded, as `activityRollup.ts` and `notes.ts` do. */
-const PROFILE_READ_CHUNK = 300;
 
 /** `listUsers` hands out at most 1000 accounts per page. */
 const LIST_USERS_PAGE = 1000;
@@ -89,38 +84,6 @@ export async function identify(
   }
 
   return found;
-}
-
-/** Who among the given uids said their name may be shown.
- *
- * Read with the admin SDK, which the `users` rules do not apply to - they let
- * only the owner read their own document, and deliberately so. Nothing but the
- * boolean leaves this function.
- */
-export async function readPublicProfiles(
-  db: FirebaseFirestore.Firestore,
-  uids: string[],
-): Promise<Record<string, boolean>> {
-  const allowed: Record<string, boolean> = {};
-
-  for (let i = 0; i < uids.length; i += PROFILE_READ_CHUNK) {
-    const chunk = uids.slice(i, i + PROFILE_READ_CHUNK);
-    // The field mask is not an optimisation. A `users` document is writable by
-    // its owner (`firestore.rules`), with no constraint on shape or size, so
-    // pulling it whole would carry whatever they chose to put in it into the
-    // caller's memo. One boolean is all this decision needs.
-    const snapshots = await db.getAll(
-      ...chunk.map((uid) => db.collection("users").doc(uid)),
-      { fieldMask: ["publicProfile"] },
-    );
-    for (const snapshot of snapshots) {
-      allowed[snapshot.id] = publicProfileEnabled(
-        snapshot.data()?.publicProfile as boolean | undefined,
-      );
-    }
-  }
-
-  return allowed;
 }
 
 /** Every administrator on trial right now, whether or not they did anything.

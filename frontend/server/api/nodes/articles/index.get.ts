@@ -1,5 +1,5 @@
 import { authCachedEventHandler } from "~~/server/utils/handlers";
-import { getFirestore } from "firebase-admin/firestore";
+import { readWhere } from "~~/server/db/graph";
 
 export type SourceStat = {
   domain: string;
@@ -10,20 +10,15 @@ export type SourceStat = {
 };
 
 export default authCachedEventHandler(async () => {
-  const db = getFirestore("koryta-pl");
-  const statsSnap = await db
-    .collection("stats")
-    .where("type", "==", "domain_articles")
-    .get();
+  const docs = await readWhere("stats", "type", "domain_articles");
 
-  const sourceStats: SourceStat[] = statsSnap.docs.map((doc) => {
-    const data = doc.data();
+  const sourceStats: SourceStat[] = docs.map((data) => {
     return {
-      domain: data.domain,
-      articleCount: data.articleCount,
-      peopleCount: data.peopleCount,
-      people: data.people || [],
-      url: data.url,
+      domain: data.domain as string,
+      articleCount: data.articleCount as number,
+      peopleCount: data.peopleCount as number,
+      people: (data.people as string[] | undefined) || [],
+      url: data.url as string | undefined,
     };
   });
 

@@ -232,7 +232,9 @@
             <v-col cols="12" md="6">
               <v-autocomplete
                 v-model="place"
+                v-model:search="companySearch"
                 :items="availableCompanies"
+                :no-filter="serverCompanies"
                 label="Instytucje"
                 variant="outlined"
                 density="comfortable"
@@ -286,6 +288,10 @@ const props = withDefaults(
     availableParties: { title: string; value: string }[] | string[];
     availableRegions: { title: string; value: string }[];
     availableCompanies: { title: string; value: string }[];
+    /** `availableCompanies` already match what is typed (the page asks the
+     * server for them by `companySearch`), so the field does not filter
+     * them again. */
+    serverCompanies?: boolean;
     /** The reader is signed in, so the verification filters are theirs to
      * use. */
     showVisibility?: boolean;
@@ -296,7 +302,7 @@ const props = withDefaults(
      * has a toolbar for that. */
     showHeader?: boolean;
   }>(),
-  { showVisibility: true, totalItems: undefined },
+  { showVisibility: true, totalItems: undefined, serverCompanies: false },
 );
 
 const emit = defineEmits<{ close: []; clear: [] }>();
@@ -312,6 +318,8 @@ const teryt = defineModel<string | null>("teryt");
 const companyTeryt = defineModel<string | null>("companyTeryt");
 /** Selected employers, by place node id. */
 const place = defineModel<string[] | null>("place");
+/** What the reader has typed into the employer field. */
+const companySearch = defineModel<string>("companySearch");
 const category = defineModel<string | null>("category");
 const hideVoted = defineModel<"all" | "no_votes" | "has_votes">("hideVoted");
 const currentlyEmployed = defineModel<"all" | "any" | "selected">(

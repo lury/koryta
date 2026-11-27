@@ -77,7 +77,8 @@ watch(model, () => {
   showSuggestions.value = true;
 });
 
-const { entities } = useEntities(entity);
+// What the server finds for the name typed, not every page of the type.
+const { entities } = useNameMatches(() => entity, model);
 
 function onSelect(key: string) {
   navigateTo(`/edit/node/${key}`);

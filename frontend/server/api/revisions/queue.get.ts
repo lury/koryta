@@ -1,10 +1,14 @@
 import { z } from "zod";
-import { getFirestore } from "firebase-admin/firestore";
-import type { Firestore, Query } from "firebase-admin/firestore";
 import { defineEventHandler, getValidatedQuery, setResponseHeader } from "h3";
 import { getUser } from "~~/server/utils/auth";
-import { describeRevisions } from "~~/server/utils/revisionQueue";
-import { scanQueue } from "~~/server/utils/queueScan";
+import type { RevisionRow } from "~~/server/utils/revisionQueue";
+import {
+  authorRevisionsPg,
+  describeRevisionsPg,
+  queuePagePg,
+  revisionRowsPg,
+  scanQueuePg,
+} from "~~/server/db/revisionQueue";
 import {
   matchesPublished,
   matchesStoredStatus,
@@ -47,6 +51,11 @@ export const AUTHOR_SCAN_CAP = 500;
  * the most anybody had pending was 73, a draft's, all from the pipeline; on a
  * published page, 21. */
 export const GROUP_PROPOSAL_CAP = 50;
+
+/** How many revisions one scan reads before its answer is a lower bound. The
+ * pending queue held 20,956 in the 2026-10-06 export, 20,523 of them the
+ * pipeline's; the approved history is longer, and says so. */
+export const QUEUE_SCAN_CAP = 30_000;
 
 /** One entry and the proposals about it, newest first. */
 export type QueueGroup = {
@@ -103,8 +112,7 @@ export type RevisionQueue = {
  *   links to this mode rather than to the aggregate one.
  *
  * `excludeAuthor` is a clause of the query on the first path, not a filter
- * over its answer: dropping one person's rows from a page Firestore already
- * cut would leave short pages and a total that counts them anyway. On the
+ * over its answer: dropping one person's rows from a page already cut would leave short pages and a total that counts them anyway. On the
  * second it is applied in memory with the rest, which it can only empty. On
  * the third, below, it comes off the scan before the scan is paged, which
  * keeps the pages and the count as exact, and needs no index.
@@ -121,10 +129,8 @@ export type RevisionQueue = {
  * Whether the entry a proposal is about is live (`published`), and grouping by
  * that entry (`group=subject`), are questions about the target - no clause on
  * `revisions` can ask them, and neither can be answered for one page of 25
- * alone. With either set, the aggregate query is read whole instead, once and
- * kept for a couple of minutes (`scanQueue`), and only the rows of the page
- * are read in full. That is what it takes to find the 425 pending pipeline
- * proposals about a published person among the pipeline's 20,523.
+ * alone. With either set, the aggregate query is read whole, joined to its
+ * targets (`scanQueuePg`), and only the rows of the page are read in full.
  */
 export default defineEventHandler(async (event): Promise<RevisionQueue> => {
   const caller = await getUser(event);
@@ -136,17 +142,16 @@ export default defineEventHandler(async (event): Promise<RevisionQueue> => {
   }
 
   const query = await getValidatedQuery(event, (q) => queryValidator.parse(q));
-  const db = getFirestore("koryta-pl");
 
   // Uids, emails and display names. Never cached, never shared - the same
   // reasoning /api/stats/activity applies to its identified branch.
   setResponseHeader(event, "Cache-Control", "private, no-store");
 
   const page = query.author
-    ? await byAuthor(db, query)
+    ? await byAuthor(query)
     : query.published !== "all" || query.group
-      ? await byScan(db, query)
-      : await byFilter(db, query);
+      ? await byScan(query)
+      : await byFilter(query);
 
   const onPage = [
     ...page.revisions,
@@ -154,7 +159,7 @@ export default defineEventHandler(async (event): Promise<RevisionQueue> => {
   ];
   return {
     ...page,
-    pinned: query.revision ? await onePinned(db, query.revision, onPage) : null,
+    pinned: query.revision ? await onePinned(query.revision, onPage) : null,
   };
 });
 
@@ -162,31 +167,24 @@ type QueryOptions = z.infer<typeof queryValidator>;
 
 /** One person's proposals, read whole and filtered in memory.
  *
- * No `status` clause in Firestore on purpose: the revisions that carry no
+ * No `status` clause on purpose: the revisions that carry no
  * status are precisely the history a per-person view exists to show, and an
  * equality would match none of them.
  */
 async function byAuthor(
-  db: Firestore,
   query: QueryOptions,
 ): Promise<Omit<RevisionQueue, "pinned">> {
-  const snapshot = await db
-    .collection("revisions")
-    .where("update_user", "==", query.author!)
-    .orderBy("update_time", "desc")
-    .limit(AUTHOR_SCAN_CAP)
-    .get();
-
-  const docs = snapshot.docs.filter(
+  const scanned = await authorRevisionsPg(query.author!, AUTHOR_SCAN_CAP);
+  const docs = scanned.filter(
     (doc) =>
       matchesAutomatic(doc, query) &&
-      doc.get("update_user") !== query.excludeAuthor,
+      doc.data.update_user !== query.excludeAuthor,
   );
 
   // Status is resolved against the target, which needs the join, so the whole
   // scanned set is described before it can be filtered on status. The cap is
   // what keeps that bounded: describing 500 rows is two `getAll` calls.
-  const described = await describeRevisions(db, docs, { withAuthors: true });
+  const described = await describeRevisionsPg(docs, { withAuthors: true });
   const matching = described.filter(
     (row) =>
       matchesStoredStatus(row.status, query.status) &&
@@ -194,7 +192,7 @@ async function byAuthor(
   );
 
   const offset = (query.page - 1) * query.limit;
-  const truncated = snapshot.size >= AUTHOR_SCAN_CAP;
+  const truncated = scanned.length >= AUTHOR_SCAN_CAP;
   if (query.group) {
     const groups = groupBy(matching, (row) => row.subject.id);
     return {
@@ -218,45 +216,27 @@ async function byAuthor(
   };
 }
 
-/** The aggregate queue: an exact Firestore query, paged by Firestore.
+/** The aggregate queue: one statement for the page, one for the count.
  *
  * Every revision this path can match carries an explicit `update_automatic`,
  * and every one of those also carries a `status` - the two fields were written
- * by the same code paths - so filtering on the stored status here is exact
- * rather than an approximation.
+ * by the same code paths - so filtering on the stored status here is exact.
  */
 async function byFilter(
-  db: Firestore,
   query: QueryOptions,
 ): Promise<Omit<RevisionQueue, "pinned">> {
-  let base: Query = db.collection("revisions");
-  if (query.automatic !== "all") {
-    base = base.where("update_automatic", "==", query.automatic === "true");
-  }
-  if (query.status !== "all") {
-    base = base.where("status", "==", query.status);
-  }
-  // An inequality ordered by another field, which Firestore serves from an
-  // index with `update_user` after `update_time` - one per combination of the
-  // clauses above, in firestore.indexes.json. It also leaves out the few
-  // revisions written before `update_user` was, which name nobody to review.
-  if (query.excludeAuthor) {
-    base = base.where("update_user", "!=", query.excludeAuthor);
-  }
-
-  const ordered = base.orderBy("update_time", "desc");
-  const offset = (query.page - 1) * query.limit;
-
-  const [snapshot, count] = await Promise.all([
-    ordered.offset(offset).limit(query.limit).get(),
-    ordered.count().get(),
-  ]);
-
+  const { rows, total } = await queuePagePg(
+    {
+      status: query.status,
+      automatic: query.automatic,
+      excludeAuthor: query.excludeAuthor,
+    },
+    (query.page - 1) * query.limit,
+    query.limit,
+  );
   return {
-    revisions: await describeRevisions(db, snapshot.docs, {
-      withAuthors: true,
-    }),
-    total: count.data().count,
+    revisions: await describeRevisionsPg(rows, { withAuthors: true }),
+    total,
     truncated: false,
     flagOnly: query.automatic !== "all",
   };
@@ -272,13 +252,12 @@ async function byFilter(
  * way round.
  */
 async function byScan(
-  db: Firestore,
   query: QueryOptions,
 ): Promise<Omit<RevisionQueue, "pinned">> {
-  const scan = await scanQueue(db, {
-    status: query.status,
-    automatic: query.automatic,
-  });
+  const scan = await scanQueuePg(
+    { status: query.status, automatic: query.automatic },
+    QUEUE_SCAN_CAP,
+  );
   const matching = scan.rows.filter(
     (row) =>
       matchesPublished(row.published, query.published) &&
@@ -296,7 +275,6 @@ async function byScan(
     return {
       ...answer,
       revisions: await describeFresh(
-        db,
         slice.map((row) => row.id),
         query,
       ),
@@ -310,7 +288,6 @@ async function byScan(
   const described = new Map(
     (
       await describeFresh(
-        db,
         slice.flatMap((rows) => rows.map((row) => row.id)),
         query,
       )
@@ -339,22 +316,14 @@ async function byScan(
 /** The revisions named, read in full and described - those that still match
  * the query, in the order asked. */
 async function describeFresh(
-  db: Firestore,
   ids: string[],
   query: QueryOptions,
 ): Promise<Proposal[]> {
   if (ids.length === 0) return [];
-  const snapshots = await db.getAll(
-    ...ids.map((id) => db.collection("revisions").doc(id)),
+  const current = (await revisionRowsPg(ids)).filter(
+    (row) => query.status === "all" || row.data.status === query.status,
   );
-  const current = snapshots.filter(
-    (snapshot) =>
-      snapshot.exists &&
-      (query.status === "all" || snapshot.get("status") === query.status),
-  );
-  const described = await describeRevisions(db, current, {
-    withAuthors: true,
-  });
+  const described = await describeRevisionsPg(current, { withAuthors: true });
   return described.filter((row) =>
     matchesPublished(row.subject.published, query.published),
   );
@@ -382,24 +351,18 @@ function groupBy<T>(rows: T[], key: (row: T) => string): T[][] {
 
 /** The permalinked proposal, when it is not already on the page. */
 async function onePinned(
-  db: Firestore,
   revisionId: string,
   onPage: Proposal[],
 ): Promise<Proposal | null> {
   if (onPage.some((row) => row.id === revisionId)) return null;
-  const snapshot = await db.collection("revisions").doc(revisionId).get();
-  if (!snapshot.exists) return null;
-  const [described] = await describeRevisions(db, [snapshot], {
-    withAuthors: true,
-  });
+  const rows = await revisionRowsPg([revisionId]);
+  if (rows.length === 0) return null;
+  const [described] = await describeRevisionsPg(rows, { withAuthors: true });
   return described ?? null;
 }
 
-function matchesAutomatic(
-  doc: { get(field: string): unknown },
-  query: QueryOptions,
-): boolean {
+function matchesAutomatic(doc: RevisionRow, query: QueryOptions): boolean {
   if (query.automatic === "all") return true;
-  const automatic = doc.get("update_automatic") === true;
+  const automatic = doc.data.update_automatic === true;
   return automatic === (query.automatic === "true");
 }

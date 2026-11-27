@@ -1,8 +1,6 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { getUser, requireDatascience } from "~~/server/utils/auth";
-import { restageDeclarationPeople } from "~~/server/utils/declarationPeopleCount";
-import { sweepDeclarations } from "~~/server/utils/declarationPublish";
+import { restageDeclarationPeoplePg } from "~~/server/db/declarationPeopleCount";
+import { sweepDeclarationsPg } from "~~/server/db/declarationPublish";
 import { publishLimitOf, type SweepResult } from "~~/shared/declarations";
 
 /**
@@ -17,16 +15,14 @@ import { publishLimitOf, type SweepResult } from "~~/shared/declarations";
  */
 export default defineEventHandler(async (event): Promise<SweepResult> => {
   requireDatascience(await getUser(event));
-  const db = getFirestore(getApp(), "koryta-pl");
-  const { touched, ...result } = await sweepDeclarations(
-    db,
+  const { touched, ...result } = await sweepDeclarationsPg(
     new Date(),
     publishLimitOf(useRuntimeConfig(event)),
   );
   if (result.drain.published.length > 0) {
     await useStorage("cache").clear("nitro:handlers");
   }
-  await restageDeclarationPeople(db, touched);
+  await restageDeclarationPeoplePg(touched);
   setResponseHeader(event, "Cache-Control", "private, no-store");
   return result;
 });

@@ -263,8 +263,6 @@
 <script lang="ts" setup>
 import { mdiCheckCircle, mdiAlertCircle } from "@mdi/js";
 import { updateProfile, sendEmailVerification } from "firebase/auth";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
-import { useFirebaseApp } from "vuefire";
 import { useAuthState } from "@/composables/auth";
 import {
   notificationDefaults,
@@ -293,12 +291,9 @@ useHead({
 });
 
 const { user, userConfig, logout, isAdmin } = useAuthState();
-// The database `useAuthState` reads the same document from, and the one the
-// server checks before sending mail. See the note in composables/auth.ts.
-const firestore = getFirestore(useFirebaseApp(), "koryta-pl");
 
 const photoURL = computed(
-  () => userConfig?.data?.value?.photoURL || user.value?.photoURL,
+  () => userConfig.data.value?.photoURL || user.value?.photoURL,
 );
 const initials = computed(() => {
   const source = user.value?.displayName || user.value?.email || "?";
@@ -347,11 +342,7 @@ const saveProfile = async () => {
     await updateProfile(user.value, { displayName: name });
     // Keep the mirror `useAuthState().userConfig` reads in sync with the auth
     // profile.
-    await setDoc(
-      doc(firestore, "users", user.value.uid),
-      { displayName: name },
-      { merge: true },
-    );
+    await userConfig.save({ displayName: name });
     notify("Zapisano nazwę użytkownika.");
   } catch (err) {
     console.error("Failed to save profile:", err);
@@ -377,11 +368,11 @@ const ownDisplayName = computed(
  * for the same reason: a toggle made before the read lands would write the
  * default over a choice already made. */
 const profileVisibilityLoaded = computed(
-  () => userConfig?.data?.value !== undefined,
+  () => userConfig.data.value !== undefined,
 );
 
 watch(
-  () => userConfig?.data?.value?.publicProfile,
+  () => userConfig.data.value?.publicProfile,
   (choice) => {
     publicProfile.value = publicProfileEnabled(choice);
   },
@@ -392,11 +383,7 @@ const saveVisibility = async () => {
   if (!user.value) return;
   savingVisibility.value = true;
   try {
-    await setDoc(
-      doc(firestore, "users", user.value.uid),
-      { publicProfile: publicProfile.value },
-      { merge: true },
-    );
+    await userConfig.save({ publicProfile: publicProfile.value });
     notify(
       publicProfile.value
         ? "Twoja nazwa jest teraz widoczna w statystykach i w aktywności."
@@ -430,12 +417,10 @@ const savingNotifications = ref(false);
  * disabled until then; /profil is what the emails link to for opting out, so
  * it is reached cold more often than not.
  */
-const notificationsLoaded = computed(
-  () => userConfig?.data?.value !== undefined,
-);
+const notificationsLoaded = computed(() => userConfig.data.value !== undefined);
 
 watch(
-  () => userConfig?.data?.value?.notifications,
+  () => userConfig.data.value?.notifications,
   (prefs) => {
     for (const kind of notificationKinds) {
       notificationPrefs[kind] = notificationEnabled(kind, prefs);
@@ -448,11 +433,7 @@ const saveNotifications = async () => {
   if (!user.value) return;
   savingNotifications.value = true;
   try {
-    await setDoc(
-      doc(firestore, "users", user.value.uid),
-      { notifications: { ...notificationPrefs } },
-      { merge: true },
-    );
+    await userConfig.save({ notifications: { ...notificationPrefs } });
     notify("Zapisano preferencje powiadomień.");
   } catch (err) {
     console.error("Failed to save notification preferences:", err);
@@ -470,7 +451,7 @@ const savingNewsletter = ref(false);
 const saveNewsletterChoice = useNewsletterChoice();
 
 /** Same guard as the notification switches - see `notificationsLoaded`. */
-const newsletterLoaded = computed(() => userConfig?.data?.value !== undefined);
+const newsletterLoaded = computed(() => userConfig.data.value !== undefined);
 const subscribed = computed(
   () => newsletterRecentPeople.value || newsletterCallsToAction.value,
 );
@@ -485,15 +466,15 @@ const CHANGE_DAY = new Intl.DateTimeFormat("pl-PL", {
 /** „17 października 2026, po zalogowaniu”, from the record kept with the
  * topics; nothing for an account that has none yet. */
 const newsletterChange = computed(() => {
-  const change = userConfig?.data?.value?.newsletterUpdated;
-  const at = change?.at?.toDate?.();
-  if (!at) return null;
+  const change = userConfig.data.value?.newsletterUpdated;
+  const at = change?.at ? new Date(change.at) : null;
+  if (!at || Number.isNaN(at.getTime())) return null;
   const day = CHANGE_DAY.format(at);
   return change?.via ? `${day}, ${newsletterChangeViaLabels[change.via]}` : day;
 });
 
 watch(
-  () => userConfig?.data?.value?.newsletter,
+  () => userConfig.data.value?.newsletter,
   (prefs) => {
     newsletterRecentPeople.value = !!prefs?.recentPeople;
     newsletterCallsToAction.value = !!prefs?.callsToAction;
@@ -527,7 +508,7 @@ const teamMail = ref(true);
 const savingTeamMail = ref(false);
 
 watch(
-  () => userConfig?.data?.value?.teamMail,
+  () => userConfig.data.value?.teamMail,
   (choice) => {
     teamMail.value = choice !== false;
   },
@@ -538,11 +519,7 @@ const saveTeamMail = async () => {
   if (!user.value) return;
   savingTeamMail.value = true;
   try {
-    await setDoc(
-      doc(firestore, "users", user.value.uid),
-      { teamMail: teamMail.value },
-      { merge: true },
-    );
+    await userConfig.save({ teamMail: teamMail.value });
     notify("Zapisano preferencje powiadomień.");
   } catch (err) {
     console.error("Failed to save team mail preference:", err);

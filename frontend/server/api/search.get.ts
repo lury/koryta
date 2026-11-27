@@ -1,6 +1,4 @@
 import { z } from "zod";
-import { parseNodeDoc } from "~~/server/utils/fetch";
-import { getFirestore } from "firebase-admin/firestore";
 import {
   editorFreshCachedEventHandler,
   wantsLatest,
@@ -17,6 +15,7 @@ import {
   townChunk,
 } from "~~/shared/search";
 import { hitLine, type SearchLineNode } from "~~/shared/searchLine";
+import { searchChunk, searchKrs } from "~~/server/db/search";
 
 const queryValidator = z.object({
   q: z.string().optional().default(""),
@@ -37,9 +36,12 @@ type node = {
   stats?: SearchLineNode["stats"];
 };
 
+/** A document a pass read, and whether it was merged away. */
+type Hit = { node: node; deleted: boolean };
+
 /** How far down the anchor's hit list a multi-word query reads.
  *
- * Firestore has one `array-contains` slot per query, so several words are
+ * A pass matches one chunk (`searchChunk`), so several words are
  * answered by matching the rarest of them and checking the rest against the
  * names that come back - which only reaches as far as this window. It is
  * ordered by node group size, so what falls off the end is the least connected
@@ -52,10 +54,8 @@ const MULTI_WORD_SCAN_LIMIT = 500;
 
 /** How far down the hit list a reader who may not see drafts is answered from.
  *
- * Their hits are filtered and reordered after the query - no index puts
- * `published` beside `nameChunksLower`, and adding one would have to be
- * deployed before the code that needs it - and most people in the base are
- * unpublished, so the top twenty of a common name can be twenty drafts. A wider
+ * Their hits are filtered and reordered after the query, and most people in
+ * the base are unpublished, so the top twenty of a common name can be twenty drafts. A wider
  * window keeps the published namesakes behind them reachable, and in front of
  * them once ranked; it is paid once per query, which the cache then holds for
  * every logged out reader typing the same thing.
@@ -68,19 +68,13 @@ const PUBLIC_SCAN_LIMIT = 200;
 export default editorFreshCachedEventHandler(async (event) => {
   const query = await getValidatedQuery(event, (q) => queryValidator.parse(q));
   const includeDrafts = await wantsLatest(event);
-  const db = getFirestore("koryta-pl");
 
   const tokens = searchTokens(query.q);
 
-  const byChunk = (chunk: string, limit: number) =>
-    db
-      .collection("nodes")
-      .where("type", "in", ["person", "place", "region"])
-      // It's set by the function / computeNodes
-      .where("nameChunksLower", "array-contains", chunk)
-      .orderBy("stats.nodeGroupSize", "desc")
-      .limit(limit)
-      .get();
+  // The chunk is matched against the name columns of 0101_a_search.sql,
+  // largest group first.
+  const byChunk = (chunk: string, limit: number): Promise<Hit[]> =>
+    searchChunk(chunk, limit) as Promise<Hit[]>;
 
   // What the index answers by itself: everything the typed text is a prefix
   // of, whole name or single word. An empty query is the top of the
@@ -125,11 +119,9 @@ export default editorFreshCachedEventHandler(async (event) => {
   // spell it. The name passes still run: they cost one read when they find
   // nothing.
   const krs = krsNumberQuery(query.q);
-  const byKrs = krs
-    ? db.collection("nodes").where("krsNumber", "==", krs).limit(5).get()
-    : undefined;
+  const byKrs = krs ? (searchKrs(krs) as Promise<Hit[]>) : undefined;
 
-  const [krsSnapshot, wholeSnapshot, anchored] = await Promise.all([
+  const [krsHits, wholeHits, anchored] = await Promise.all([
     byKrs,
     whole,
     anchor === undefined ? undefined : byWord(anchor),
@@ -145,24 +137,21 @@ export default editorFreshCachedEventHandler(async (event) => {
   const byName: node[] = [];
   const byTown: node[] = [];
   const seen = new Set<string>();
-  for (const doc of krsSnapshot?.docs ?? []) {
-    const node = parseNodeDoc<node>(doc);
-    if (seen.has(node.id) || doc.data().deleted === true) continue;
+  for (const { node, deleted } of krsHits ?? []) {
+    if (seen.has(node.id) || deleted) continue;
     if (!includeDrafts && !node.visibility) continue;
     seen.add(node.id);
     byNumber.push({ ...node, matchedKrs: krs });
   }
-  const take = (snapshot: FirebaseFirestore.QuerySnapshot, town: boolean) => {
-    for (const doc of snapshot.docs) {
-      const node = parseNodeDoc<node>(doc);
+  const take = (hits: Hit[], town: boolean) => {
+    for (const { node, deleted } of hits) {
       if (seen.has(node.id)) continue;
       // A page that has been removed, or folded into another as a duplicate,
-      // is not a search hit. It keeps its `nameChunksLower` - nothing clears
-      // them, and the trigger keeps them in step with the name it still has -
-      // so without this a merged duplicate goes on being offered under the name
+      // is not a search hit. It keeps the name it had, so without this a
+      // merged duplicate goes on being offered under the name
       // it had, and the reader gets a redirect to a page they were not looking
       // for.
-      if (doc.data().deleted === true) continue;
+      if (deleted) continue;
       // An unpublished page is a legitimate hit for a signed in reader, who
       // may have just created it. A logged out reader is offered every
       // unpublished person too, and nothing else unpublished. The person they
@@ -189,7 +178,7 @@ export default editorFreshCachedEventHandler(async (event) => {
       (town ? byTown : byName).push(node);
     }
   };
-  take(wholeSnapshot, false);
+  take(wholeHits, false);
   if (anchored) {
     take(anchored[0], false);
     take(anchored[1], true);
@@ -199,9 +188,7 @@ export default editorFreshCachedEventHandler(async (event) => {
   // (`MULTI_WORD_SCAN_LIMIT`): „paged warszawa” reaches the PAGED companies
   // past the 500th of Warsaw's by „paged”. After the passes above rather than
   // beside them, so that only a query that fills one pays for it.
-  const cutOff = anchored?.some(
-    (snapshot) => snapshot.size >= MULTI_WORD_SCAN_LIMIT,
-  );
+  const cutOff = anchored?.some((hits) => hits.length >= MULTI_WORD_SCAN_LIMIT);
   const next = cutOff ? nextAnchorChunk(tokens) : undefined;
   if (next !== undefined) {
     const [plain, town] = await byWord(next);

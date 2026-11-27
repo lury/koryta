@@ -1,11 +1,10 @@
-import type { Firestore } from "firebase-admin/firestore";
+/** A node or an edge, as much of it as `writtenByImportOrReviewed` reads. */
+export type Written = { id?: string; revision_id?: unknown };
 
-/** A node or an edge, as much of it as `importedOrReviewed` reads. */
-type Written = { id?: string; revision_id?: unknown };
-
-/** Which of `docs` say only what an automatic import wrote or a reviewer
+/** Whether a document says only what an automatic import wrote or a reviewer
  * approved - the unpublished pages and relations a logged out reader may be
- * shown a glimpse of (`shared/personTeaser.ts`).
+ * shown a glimpse of (`shared/personTeaser.ts`), given its first revision:
+ * the earliest by `update_time` of those whose `node_id` is the document's id.
  *
  * Everything else in the drafts is somebody's say-so. A contributor's change
  * to an existing page or relation is only a pending revision until a reviewer
@@ -18,46 +17,8 @@ type Written = { id?: string; revision_id?: unknown };
  * or when its first revision was written by an import - `update_automatic`,
  * which the server sets from how the write was made rather than from anything
  * in the request. A document with no revisions at all is older than the
- * question can be answered for, and does not.
- *
- * One read per document left to check: the first of its revisions, off the
- * `(node_id, update_time)` index the revision history already uses.
- */
-export async function importedOrReviewed(
-  db: Firestore,
-  docs: readonly Written[],
-): Promise<Set<string>> {
-  const qualified = new Set<string>();
-  const toCheck: string[] = [];
-  for (const doc of docs) {
-    if (!doc.id) continue;
-    if (doc.revision_id) qualified.add(doc.id);
-    else toCheck.push(doc.id);
-  }
-
-  const firsts = await Promise.all(
-    [...new Set(toCheck)].map(async (id) => {
-      const snapshot = await db
-        .collection("revisions")
-        .where("node_id", "==", id)
-        .orderBy("update_time", "asc")
-        .limit(1)
-        .get();
-      return { id, first: snapshot.docs[0]?.data() };
-    }),
-  );
-  for (const { id, first } of firsts) {
-    if (writtenByImportOrReviewed({ id }, first)) qualified.add(id);
-  }
-  return qualified;
-}
-
-/** The same rule for one document whose first revision is already in hand -
- * the earliest by `update_time` of those whose `node_id` is the document's
- * id, as the query above finds it. /api/stats/computeNodes reads every
- * revision anyway, and asks this of every person and post at once for the
- * line the search box shows under an unpublished person
- * (shared/searchLine.ts). */
+ * question can be answered for, and does not. Many at once:
+ * `importedOrReviewedPg` (server/db/provenance.ts). */
 export function writtenByImportOrReviewed(
   doc: Written,
   first: { update_automatic?: unknown } | undefined,

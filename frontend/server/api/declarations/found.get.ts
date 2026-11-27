@@ -1,7 +1,5 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { getUser } from "~~/server/utils/auth";
-import { findsOf } from "~~/server/utils/declarationFinds";
+import { findsOfPg } from "~~/server/db/declarationReading";
 
 /**
  * The people a signed-in reader found (`findsOf`), for
@@ -13,7 +11,6 @@ import { findsOf } from "~~/server/utils/declarationFinds";
  */
 export default defineEventHandler(async (event) => {
   const user = await getUser(event);
-  const db = getFirestore(getApp(), "koryta-pl");
   setResponseHeader(event, "Cache-Control", "private, no-store");
-  return findsOf(db, user.uid);
+  return findsOfPg(user.uid);
 });

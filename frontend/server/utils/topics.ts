@@ -1,8 +1,15 @@
-import type { Firestore } from "firebase-admin/firestore";
 import { pageIsPublic } from "~~/shared/model";
 import type { Edge } from "~~/shared/model";
-
-/** Firestore's cap on the values in an `in` or `array-contains-any` filter. */
+import {
+  readEdgesCiting,
+  readEdgesOfType,
+  readEdgesTo,
+  readEdgesTouchingAny,
+  readNodeDocsOfType,
+} from "~~/server/db/graph";
+/** Articles taken at a time. Each chunk's edges are kept in the order they
+ * came, chunk after chunk: the order the graphs below were drawn in when the
+ * reads were chunked queries. */
 const ANY_CHUNK = 30;
 
 /** The articles tagged into a story.
@@ -13,19 +20,13 @@ const ANY_CHUNK = 30;
  * approved.
  */
 export async function articleIdsForTopic(
-  db: Firestore,
   topicId: string,
   includeDrafts: boolean,
 ): Promise<string[]> {
-  const snapshot = await db
-    .collection("edges")
-    .where("target", "==", topicId)
-    .where("type", "==", "tagged")
-    .get();
+  const docs: TopicRow[] = await readEdgesTo(topicId, "tagged");
 
   const ids = new Set<string>();
-  for (const doc of snapshot.docs) {
-    const data = doc.data();
+  for (const data of docs) {
     if (data.deleted === true) continue;
     if (!includeDrafts && !pageIsPublic(data)) continue;
     if (typeof data.source === "string") ids.add(data.source);
@@ -37,33 +38,31 @@ export async function articleIdsForTopic(
  *
  * This is the step that turns a pile of articles into a graph: an article is
  * not itself a connection between people, it is the evidence for one, and
- * `Edge.references` is where that evidence is recorded.
- *
- * `array-contains-any` takes 30 values, so a story with more articles than that
- * is asked for in several passes and the results merged by edge id - the same
- * shape `fetchEdgesClose` uses for its `in` queries, and for the same limit.
+ * `Edge.references` is where that evidence is recorded. Merged by edge id.
  */
 export async function edgesCitingArticles(
-  db: Firestore,
   articleIds: string[],
   includeDrafts: boolean,
 ): Promise<(Edge & { id: string })[]> {
   if (articleIds.length === 0) return [];
+  const cited = await readEdgesCiting(articleIds);
 
   const found = new Map<string, Edge & { id: string }>();
   for (let i = 0; i < articleIds.length; i += ANY_CHUNK) {
     const chunk = articleIds.slice(i, i + ANY_CHUNK);
-    const snapshot = await db
-      .collection("edges")
-      .where("references", "array-contains-any", chunk)
-      .get();
+    const docs = cited
+      .filter((edge) =>
+        (edge.references as unknown[]).some((ref) =>
+          chunk.includes(ref as string),
+        ),
+      )
+      .map((edge) => ({ id: edge.id, data: edge as unknown as Edge }));
 
-    for (const doc of snapshot.docs) {
-      if (found.has(doc.id)) continue;
-      const data = doc.data() as Edge;
+    for (const { id, data } of docs) {
+      if (found.has(id)) continue;
       if (data.deleted === true) continue;
       if (!includeDrafts && !pageIsPublic(data)) continue;
-      found.set(doc.id, { ...data, id: doc.id });
+      found.set(id, { ...data, id });
     }
   }
   return Array.from(found.values());
@@ -82,7 +81,6 @@ export async function edgesCitingArticles(
  * has yet drawn a relation from them.
  */
 export async function nodesMentionedByArticles(
-  db: Firestore,
   articleIds: string[],
   includeDrafts: boolean,
 ): Promise<string[]> {
@@ -90,26 +88,41 @@ export async function nodesMentionedByArticles(
 
   const articles = new Set(articleIds);
   const found = new Set<string>();
+  const keep = (data: Edge) => {
+    if (data.type !== "mentions") return;
+    if (data.deleted === true) return;
+    if (!includeDrafts && !pageIsPublic(data)) return;
+    const far = articles.has(data.source) ? data.target : data.source;
+    if (typeof far === "string" && !articles.has(far)) found.add(far);
+  };
+  const touching = await readEdgesTouchingAny(articleIds, "mentions");
   for (let i = 0; i < articleIds.length; i += ANY_CHUNK) {
     const chunk = articleIds.slice(i, i + ANY_CHUNK);
-    // No `type` filter in the query: that would want a composite index on
-    // (source, type), and an article has few enough edges that filtering the
-    // handful that come back is cheaper than adding one.
-    const snapshots = await Promise.all([
-      db.collection("edges").where("source", "in", chunk).get(),
-      db.collection("edges").where("target", "in", chunk).get(),
-    ]);
-
-    for (const snapshot of snapshots) {
-      for (const doc of snapshot.docs) {
-        const data = doc.data() as Edge;
-        if (data.type !== "mentions") continue;
-        if (data.deleted === true) continue;
-        if (!includeDrafts && !pageIsPublic(data)) continue;
-        const far = articles.has(data.source) ? data.target : data.source;
-        if (typeof far === "string" && !articles.has(far)) found.add(far);
-      }
-    }
+    // The edges leaving the chunk, then those arriving.
+    for (const end of ["source", "target"] as const)
+      for (const edge of touching)
+        if (chunk.includes(edge[end] as string)) keep(edge as unknown as Edge);
   }
   return Array.from(found);
+}
+
+/** A topic or a `tagged` edge: its document with its id. */
+export type TopicRow = {
+  id: string;
+  published?: unknown;
+  deleted?: unknown;
+  [field: string]: unknown;
+};
+
+/** Every topic and every `tagged` edge, each by id: what /api/topics and
+ * /api/articles/topics fold into their lists. */
+export async function topicsAndTags(): Promise<{
+  topics: TopicRow[];
+  tagged: TopicRow[];
+}> {
+  const [topics, tagged] = await Promise.all([
+    readNodeDocsOfType("topic"),
+    readEdgesOfType("tagged"),
+  ]);
+  return { topics, tagged };
 }

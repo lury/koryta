@@ -5,13 +5,15 @@ import type {
   QueryDocumentSnapshot,
 } from "firebase-admin/firestore";
 import {
-  applyNodeMerge,
-  edgesTouching,
   mergeRefusal,
-  planNodeMerge,
   type MergeDisposition,
   type MergePlan,
 } from "../../server/utils/merge";
+import {
+  applyNodeMerge,
+  edgesTouching,
+  planNodeMerge,
+} from "./lib/firestoreMerge";
 import { pageIsPublic } from "../../shared/model";
 
 /**
@@ -362,7 +364,7 @@ async function migrate() {
   // be swayed by a merge that happened earlier in the same run.
   const merges: MergePlan[] = [];
   const totals = emptyCounts();
-  const byType: Record<string, Record<MergeDisposition, number>> = {};
+  const byType = new Map<string, Record<MergeDisposition, number>>();
   const oversized: MergePlan[] = [];
   const refused: { duplicate_id: string; refusal: string }[] = [];
   /** The first few groups, printed in full, so a human can check that the two
@@ -402,7 +404,8 @@ async function migrate() {
 
       for (const edge of plan.edges) {
         totals[edge.disposition]++;
-        const perType = (byType[edge.type] ??= emptyCounts());
+        const perType = byType.get(edge.type) ?? emptyCounts();
+        byType.set(edge.type, perType);
         perType[edge.disposition]++;
       }
       merges.push(plan);
@@ -429,7 +432,7 @@ async function migrate() {
       `fuller copy the survivor already had, ${totals.review} moved but identical ` +
       `to one the survivor already holds, ${totals.self} self-pointing.`,
   );
-  for (const [type, counts] of Object.entries(byType).sort(([a], [b]) =>
+  for (const [type, counts] of [...byType].sort(([a], [b]) =>
     a < b ? -1 : a > b ? 1 : 0,
   )) {
     console.log(

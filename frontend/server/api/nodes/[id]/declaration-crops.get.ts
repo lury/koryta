@@ -1,10 +1,8 @@
-import { getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
 import { getUser } from "~~/server/utils/auth";
 import {
-  draftPerson,
-  personDeclarationCrops,
-} from "~~/server/utils/declarationPersonCrops";
+  draftPersonPg,
+  personDeclarationCropsPg,
+} from "~~/server/db/declarationPages";
 import type { PersonDeclarationCrops } from "~~/shared/declarations";
 
 /**
@@ -15,7 +13,7 @@ import type { PersonDeclarationCrops } from "~~/shared/declarations";
  * gave.
  *
  * Signed-in readers only, as a draft page itself is (decision on
- * 2026-11-20), and drafts only (`draftPerson`). Never cached, as it changes
+ * 2026-11-20), and drafts only (`draftPersonPg`). Never cached, as it changes
  * with every reading.
  */
 export default defineEventHandler(
@@ -25,8 +23,7 @@ export default defineEventHandler(
     const id = getRouterParam(event, "id");
     if (!id) throw createError({ statusCode: 400, message: "Missing id" });
 
-    const db = getFirestore(getApp(), "koryta-pl");
-    const personId = await draftPerson(db, id);
-    return personDeclarationCrops(db, personId, user.uid);
+    const personId = await draftPersonPg(id);
+    return personDeclarationCropsPg(personId, user.uid);
   },
 );

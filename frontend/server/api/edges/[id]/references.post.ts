@@ -1,11 +1,8 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { z } from "zod";
 import { getUser } from "~~/server/utils/auth";
-import {
-  createRevisionTransaction,
-  withoutInternalFields,
-} from "~~/server/utils/revisions";
+import { withoutInternalFields } from "~~/server/utils/revisions";
+import { editorialTx, readDoc, readDocs } from "~~/server/db/editorial";
+import { createRevisionPg } from "~~/server/db/revisionWrites";
 
 const bodyValidator = z.object({
   /** Article node ids to cite. Checked to exist and to be articles. */
@@ -47,49 +44,44 @@ export default defineEventHandler(async (event) => {
   }
 
   const user = await getUser(event);
-  const db = getFirestore(getApp(), "koryta-pl");
-  const edgeRef = db.collection("edges").doc(id);
+  return editorialTx(async (tx, log) => {
+    const [stored, added] = await Promise.all([
+      readDoc(tx, "edges", id, true),
+      readDocs(tx, "nodes", add),
+    ]);
 
-  const [edgeSnap, ...addedSnaps] = await Promise.all([
-    edgeRef.get(),
-    ...add.map((articleId) => db.collection("nodes").doc(articleId).get()),
-  ]);
-
-  if (!edgeSnap.exists) {
-    throw createError({ statusCode: 404, message: "Nie ma takiej relacji." });
-  }
-
-  // An id that is not an article would sit in `references` forever, resolving
-  // to nothing on every page that tries to render it.
-  for (const snap of addedSnaps) {
-    if (!snap.exists || snap.data()?.type !== "article") {
-      throw createError({
-        statusCode: 422,
-        message: `Źródło ${snap.id} nie jest artykułem w bazie.`,
-      });
+    if (!stored) {
+      throw createError({ statusCode: 404, message: "Nie ma takiej relacji." });
     }
-  }
 
-  const stored = edgeSnap.data() ?? {};
-  const current: string[] = Array.isArray(stored.references)
-    ? stored.references
-    : [];
+    // An id that is not an article would sit in `references` forever,
+    // resolving to nothing on every page that tries to render it.
+    for (const articleId of add) {
+      if (added.get(articleId)?.type !== "article") {
+        throw createError({
+          statusCode: 422,
+          message: `Źródło ${articleId} nie jest artykułem w bazie.`,
+        });
+      }
+    }
 
-  const removing = new Set(remove);
-  const references = Array.from(
-    new Set([...current.filter((ref) => !removing.has(ref)), ...add]),
-  );
+    const current: string[] = Array.isArray(stored.references)
+      ? stored.references
+      : [];
 
-  const batch = db.batch();
-  createRevisionTransaction(
-    db,
-    batch,
-    user,
-    edgeRef,
-    { ...withoutInternalFields(stored), references },
-    { stored },
-  );
-  await batch.commit();
+    const removing = new Set(remove);
+    const references = Array.from(
+      new Set([...current.filter((ref) => !removing.has(ref)), ...add]),
+    );
 
-  return { id, references };
+    await createRevisionPg(
+      tx,
+      log,
+      user,
+      { collection: "edges", id },
+      { ...withoutInternalFields(stored), references },
+      { stored },
+    );
+    return { id, references };
+  });
 });

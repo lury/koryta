@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { FieldValue, getFirestore } from "firebase-admin/firestore";
 import { defineEventHandler, readValidatedBody } from "h3";
 import { getUser } from "~~/server/utils/auth";
 import { OPEN_CAP } from "~~/shared/feedbackQueue";
+import { triageFeedbackPg } from "~~/server/db/feedback";
 
 const bodyValidator = z.object({
   id: z.string().min(1),
@@ -39,33 +39,18 @@ export default defineEventHandler(async (event) => {
 
   const body = await readValidatedBody(event, (b) => bodyValidator.parse(b));
 
-  const db = getFirestore("koryta-pl");
-  const ref = db.collection("feedback").doc(body.id);
-  const snap = await ref.get();
-  if (!snap.exists) {
-    throw createError({ statusCode: 404, message: "Zgłoszenie nie istnieje." });
-  }
-
   const patch: Record<string, unknown> = {};
   if (body.adminStatus !== undefined) patch.adminStatus = body.adminStatus;
   if (body.adminNote !== undefined) patch.adminNote = body.adminNote || "";
-  if (body.queueRank !== undefined) {
-    patch.queueRank =
-      body.queueRank === null ? FieldValue.delete() : body.queueRank;
+  if (typeof body.queueRank === "number") patch.queueRank = body.queueRank;
+  const found = await triageFeedbackPg(
+    body.id,
+    patch,
+    body.queueRank === null,
+    body.renumber ?? [],
+  );
+  if (!found) {
+    throw createError({ statusCode: 404, message: "Zgłoszenie nie istnieje." });
   }
-
-  if (body.renumber?.length) {
-    const batch = db.batch();
-    for (const { id, queueRank } of body.renumber) {
-      // `update` fails the whole batch if a report is gone - better than a
-      // queue renumbered around a hole.
-      batch.update(db.collection("feedback").doc(id), { queueRank });
-    }
-    if (Object.keys(patch).length > 0) batch.update(ref, patch);
-    await batch.commit();
-  } else if (Object.keys(patch).length > 0) {
-    await ref.update(patch);
-  }
-
   return { ok: true };
 });

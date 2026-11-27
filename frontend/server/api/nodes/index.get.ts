@@ -1,35 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// TODO remove this and fix the typing
-
 import { z } from "zod";
-import { FieldPath, getFirestore } from "firebase-admin/firestore";
 import {
   dropDraftStats,
-  dropSearchIndex,
   fetchNodes,
   fetchOptionsValidator,
-  paginate,
 } from "~~/server/utils/fetch";
-import {
-  buildStructuralFilterOps,
-  matchedTargets,
-  placeNames,
-  type NodeFilterOp,
-} from "~~/server/utils/nodeFilters";
-import {
-  isIndexError,
-  ListMemo,
-  readMatching,
-  warnMissingIndex,
-} from "~~/server/utils/nodeScan";
+import { matchedTargets } from "~~/server/utils/nodeFilters";
 import {
   editorFreshCachedEventHandler,
   wantsLatest,
 } from "~~/server/utils/handlers";
 import { getUser } from "~~/server/utils/auth";
-import { nodeTypes, pageIsPublic } from "~~/shared/model";
+import { nodeTypes } from "~~/shared/model";
 import { defineEventHandler } from "h3";
 import { logger } from "firebase-functions/logger";
+import { listNodes, placeNamesFromDb } from "~~/server/db/nodes";
 
 const queryValidator = z.object({
   // We use generic fetch options for pagination
@@ -55,6 +39,13 @@ const queryValidator = z.object({
   /** One page by its id, as a row like any other: what /eksploruj/nowe asks
    * for when its url names somebody the queue has moved past. */
   id: z.string().min(1).optional(),
+  /** Pages by id, fifty at most: the places a table's filter names. */
+  ids: z
+    .union([z.string(), z.array(z.string()).max(50)])
+    .optional()
+    .transform((value) =>
+      value === undefined ? undefined : Array.isArray(value) ? value : [value],
+    ),
 
   // Sorting parameters
   sortBy: z.string().optional(),
@@ -107,160 +98,6 @@ function publicNodes<N extends { visibility?: boolean }>(
   );
 }
 
-type NodeRow = { id: string; [field: string]: any };
-
-function approvedOp(approved: boolean): NodeFilterOp {
-  return {
-    applyFs: (q) => q.where("stats.isApproved", "==", approved),
-    applyMem: (nodes) => nodes.filter((n) => n.stats?.isApproved === approved),
-    fields: ["stats.isApproved"],
-    name: "visibility",
-    base: true,
-  };
-}
-
-function humanVotedOp(voted: boolean): NodeFilterOp {
-  return {
-    applyFs: (q) => q.where("stats.votes.humanVoted", "==", voted),
-    applyMem: (nodes) =>
-      nodes.filter((n) => n.stats?.votes?.humanVoted === voted),
-    fields: ["stats.votes.humanVoted"],
-    name: "hideVoted",
-  };
-}
-
-function buildSortOp(
-  sortBy: string,
-  desc: boolean,
-  signedIn: boolean,
-): NodeFilterOp {
-  let sortField = sortBy;
-  if (sortField === "experience") {
-    sortField = signedIn
-      ? "stats.edges.all.experienceMonths"
-      : "stats.edges.approved.experienceMonths";
-  } else if (sortField === "latestEmploymentStart") {
-    sortField = signedIn
-      ? "stats.edges.all.latestEmploymentStart"
-      : "stats.edges.approved.latestEmploymentStart";
-  } else if (sortField === "notesCount") {
-    sortField = "stats.notesCount";
-  } else if (sortField === "factsCount") {
-    sortField = "stats.factsCount";
-  } else if (sortField === "visibility") {
-    sortField = "stats.isApproved";
-  } else if (sortField.startsWith("votes.")) {
-    sortField = `stats.votes.${sortField.split(".")[1]}`;
-  }
-
-  const direction = desc ? "desc" : "asc";
-  return {
-    applyFs: (q) => q.orderBy(sortField, direction),
-    applyMem: (nodes) => {
-      return [...nodes].sort((a, b) => {
-        const getVal = (obj: any, path: string) =>
-          path.split(".").reduce((o, i) => o?.[i], obj);
-        const valA = getVal(a, sortField);
-        const valB = getVal(b, sortField);
-
-        if (valA === valB) return 0;
-        if (valA === undefined || valA === null)
-          return direction === "desc" ? 1 : -1;
-        if (valB === undefined || valB === null)
-          return direction === "desc" ? -1 : 1;
-
-        const res = valA > valB ? 1 : -1;
-        return direction === "desc" ? -res : res;
-      });
-    },
-    fields: [sortField],
-    name: "sort",
-  };
-}
-
-function toNodeRow(doc: FirebaseFirestore.QueryDocumentSnapshot): NodeRow {
-  const data = dropSearchIndex(doc.data());
-  if (data.revision_id) {
-    if (typeof data.revision_id.path === "string") {
-      data.revision_id = data.revision_id.path;
-    } else if (
-      data.revision_id._path &&
-      Array.isArray(data.revision_id._path.segments)
-    ) {
-      data.revision_id = data.revision_id._path.segments.join("/");
-    }
-  }
-  return { id: doc.id, ...data, visibility: pageIsPublic(data) };
-}
-
-/** A page merged away keeps its document - `deleted: true`, `merged_into`,
- * see server/utils/merge.ts - so its url still resolves and the votes and
- * revisions filed against it still hang off something. `pageIsPublic` takes
- * it off the public site, and that was assumed to be enough; it is not.
- * `visibility=private` means `stats.isApproved == false`, which is exactly
- * the bucket a tombstone falls into, so to a logged-in editor all 171
- * people merged on 2026-08-31 were still rows in /eksploruj/tabela.
- *
- * In memory rather than in the query because Firestore cannot express it:
- * `deleted` is absent on the other 15,597 nodes, so neither `== false` nor
- * `!= true` matches them, and a mem-only op here would push the sort and
- * every structural filter out of their indexes - reading all 8,277
- * unpublished people to serve a page of ten. The price is that when the
- * query did run indexed, the page can come back a row short and `total`
- * still counts the tombstones. That is 171 in 8,277, which is the cheaper
- * of the two errors by a wide margin. */
-function notMergedAway(node: NodeRow): boolean {
-  return (node as { deleted?: boolean }).deleted !== true;
-}
-
-/** The page and the count straight from Firestore, or null when it has no
- * index for the query and the list has to be put together in memory. */
-async function readIndexedPage(
-  db: FirebaseFirestore.Firestore,
-  ops: NodeFilterOp[],
-  sortOp: NodeFilterOp | undefined,
-  query: Query,
-): Promise<{ rows: NodeRow[]; total: number } | null> {
-  let fsQuery: FirebaseFirestore.Query = db.collection("nodes");
-  for (const op of ops) {
-    fsQuery = op.applyFs(fsQuery);
-  }
-  if (sortOp) {
-    fsQuery = sortOp.applyFs(fsQuery);
-  }
-  try {
-    const [snap, countSnap] = await Promise.all([
-      paginate(fsQuery, query).get(),
-      fsQuery.count().get(),
-    ]);
-    return {
-      rows: snap.docs.map(toNodeRow).filter(notMergedAway),
-      total: countSnap.data().count,
-    };
-  } catch (error) {
-    if (!isIndexError(error)) throw error;
-    warnMissingIndex("api/nodes", sortOp ? [...ops, sortOp] : ops, error);
-    return null;
-  }
-}
-
-/** Public lists put together in memory, for ten minutes: the home map's
- * województwo lists are read a page at a time, and each page was a fresh read
- * of every person, 3.79M of prod's 9.7M large reads on the morning of
- * 2026-11-23. A newly published person can take that long to join a list. */
-const publicLists = new ListMemo<NodeRow>(10 * 60 * 1000, 15_000);
-
-const PAGING = new Set(["page", "limit", "sortBy", "sortDesc"]);
-
-/** What a public list holds, whatever page of it or order is asked. */
-function listKey(query: Query): string {
-  return JSON.stringify(
-    Object.entries(query)
-      .filter(([key]) => !PAGING.has(key))
-      .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)),
-  );
-}
-
 export default defineEventHandler(async (event) => {
   const query = await getValidatedQuery(event, (q) => queryValidator.parse(q));
 
@@ -281,117 +118,66 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: "Missing type" });
   }
 
-  // If pagination/sorting is requested, query Firestore directly for uncached results
+  // A page, a count or a sort: every filter and the order in SQL, never more
+  // than NODE_PAGE_LIMIT rows.
   if (query.limit || query.sortBy) {
     const user = await getUser(event).catch(() => null);
-    const db = getFirestore("koryta-pl");
-
-    const edgeScope = user ? "all" : "approved";
-    const { ops, empty, targetIds } = await buildStructuralFilterOps(
-      db,
-      query,
-      edgeScope,
+    return listFromPostgres(
+      {
+        ...query,
+        limit: Math.min(query.limit ?? NODE_PAGE_LIMIT, NODE_PAGE_LIMIT),
+      },
+      !!user,
     );
-    if (empty) {
-      return { nodes: {}, total: 0 };
-    }
-
-    // First, so the missing-index fallback, which moves ops into memory from
-    // the end, never trades a one-document read for the whole type.
-    const id = query.id;
-    if (id) {
-      ops.unshift({
-        applyFs: (q) => q.where(FieldPath.documentId(), "==", id),
-        applyMem: (nodes) => nodes.filter((n) => n.id === id),
-        name: "id",
-      });
-    }
-
-    if (!user) {
-      if (query.visibility === "private") {
-        return { nodes: {}, total: 0 };
-      }
-      ops.push(approvedOp(true));
-    } else if (query.visibility === "public") {
-      ops.push(approvedOp(true));
-    } else if (query.visibility === "private") {
-      ops.push(approvedOp(false));
-    }
-
-    if (query.hideVoted === "no_votes") {
-      ops.push(humanVotedOp(false));
-    } else if (query.hideVoted === "has_votes") {
-      ops.push(humanVotedOp(true));
-    }
-
-    const sortOp = query.sortBy
-      ? buildSortOp(query.sortBy, query.sortDesc === "true", !!user)
-      : undefined;
-
-    let nodesArray: NodeRow[];
-    let total: number;
-    const indexed = ops.some((op) => op.memoryOnly)
-      ? null
-      : await readIndexedPage(db, ops, sortOp, query);
-    if (indexed) {
-      ({ rows: nodesArray, total } = indexed);
-    } else {
-      let rows = user ? undefined : publicLists.get(listKey(query));
-      if (!rows) {
-        const { docs } = await readMatching(db, ops, { label: "api/nodes" });
-        rows = docs.map(toNodeRow);
-        for (const op of ops) {
-          rows = op.applyMem(rows);
-        }
-        rows = rows.filter(notMergedAway);
-        // Signed-in readers read back their own votes and publications from
-        // these lists, so only the public ones are kept.
-        if (!user) publicLists.set(listKey(query), rows);
-      }
-      if (sortOp) {
-        rows = sortOp.applyMem(rows);
-      }
-      total = rows.length;
-      const page = query.page || 1;
-      const limit = query.limit || rows.length;
-      const offset = (page - 1) * limit;
-      nodesArray = rows.slice(offset, offset + limit);
-    }
-
-    const nodesRecord: Record<string, unknown> = {};
-    for (const node of nodesArray) {
-      // Published pages only, by the filter above, and still not their
-      // unpublished relations - see `dropDraftStats`.
-      nodesRecord[node.id] = user ? node : dropDraftStats(node);
-    }
-
-    // Only beside a company or region filter, and only for the page being
-    // returned: which employers and regions put each row here, so the table
-    // can mark them, and the names of the companies among them, for a row
-    // that reached one only through the company it works for. Present but
-    // empty means the filters are set and nothing the rows hold matched them.
-    if (targetIds) {
-      const matched = matchedTargets(
-        nodesArray,
-        targetIds,
-        edgeScope,
-        query.currentlyEmployed,
-      );
-      return {
-        nodes: nodesRecord,
-        total,
-        matched,
-        matchedPlaces: await placeNames(
-          db,
-          Object.values(matched).flat(),
-          !!user,
-        ),
-      };
-    }
-
-    return { nodes: nodesRecord, total };
   }
 
-  // Fallback to the original cached behavior if no limit/sortBy is provided
+  // The whole of a type only where the type is bounded by something other
+  // than the base: the TERYT units, the topics editors name. A person, place
+  // or article list grows with the base, and at x50 `?type=place` ran the
+  // server out of heap.
+  if (!WHOLE_TYPES.includes(query.type)) {
+    throw createError({
+      statusCode: 400,
+      message: `List ${query.type} a page at a time: pass limit (at most ${NODE_PAGE_LIMIT})`,
+    });
+  }
   return cachedHandler(event);
 });
+
+/** The most rows one page of /api/nodes holds; a larger `limit` is cut to
+ * it. The largest page the site asks for is /eksploruj/autograf's 200. */
+export const NODE_PAGE_LIMIT = 200;
+
+/** The types /api/nodes hands out whole, without `limit`. */
+const WHOLE_TYPES: readonly string[] = ["region", "topic"];
+
+/** The paginated list: every filter and the sort in SQL (`listNodes`), and
+ * `total` counts what the page is cut from. A reader who may not see drafts
+ * gets published pages only, and not their unpublished relations
+ * (`dropDraftStats`). Beside a company or region filter, which employers and
+ * regions put each row here (`matched`) and the names of the companies among
+ * them, so the table can mark them. */
+async function listFromPostgres(query: Query, signedIn: boolean) {
+  const list = await listNodes(query, signedIn);
+  if (list === "empty") return { nodes: {}, total: 0 };
+  const nodes: Record<string, unknown> = {};
+  for (const node of list.rows) {
+    nodes[node.id] = signedIn ? node : dropDraftStats(node);
+  }
+  if (!list.targetIds) return { nodes, total: list.total };
+  const matched = matchedTargets(
+    list.rows,
+    list.targetIds,
+    signedIn ? "all" : "approved",
+    query.currentlyEmployed,
+  );
+  return {
+    nodes,
+    total: list.total,
+    matched,
+    matchedPlaces: await placeNamesFromDb(
+      Object.values(matched).flat(),
+      signedIn,
+    ),
+  };
+}

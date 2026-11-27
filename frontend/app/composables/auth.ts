@@ -8,16 +8,10 @@ import {
 import { computedAsync } from "@vueuse/core";
 import {
   useCurrentUser,
-  useFirebaseApp,
   useFirebaseAuth,
   useIsCurrentUserLoaded,
 } from "vuefire";
-import {
-  collection,
-  doc,
-  getFirestore,
-  type Timestamp,
-} from "firebase/firestore";
+import type { Ref } from "vue";
 import type { NotificationPreferences } from "~~/shared/notifications";
 import type { CampaignTopic, NewsletterUpdate } from "~~/shared/campaigns";
 import {
@@ -34,8 +28,9 @@ export type UserConfig = {
   photoURL?: string;
   displayName?: string;
   newsletter?: NewsletterPreferences;
-  /** When and where `newsletter` last changed - see `NewsletterUpdate`. */
-  newsletterUpdated?: NewsletterUpdate<Timestamp>;
+  /** When and where `newsletter` last changed - see `NewsletterUpdate`; `at`
+   * is ISO, as /api/me hands it out. */
+  newsletterUpdated?: NewsletterUpdate<string>;
   /** Administrators only: campaigns sent to the team, which reach them
    * without a newsletter topic. Absent means yes. */
   teamMail?: boolean;
@@ -49,17 +44,77 @@ export type UserConfig = {
   publicProfile?: boolean;
 };
 
+/** What PATCH /api/me takes (server/utils/meRules.ts). */
+export type UserConfigPatch = Pick<
+  UserConfig,
+  "displayName" | "publicProfile" | "teamMail" | "notifications"
+> & {
+  newsletter?: NewsletterPreferences;
+  newsletterVia?: Exclude<NewsletterUpdate["via"], "wypisz" | undefined>;
+};
+
+/** The reader's own `users/{uid}` through /api/me, shared by every caller on
+ * the page: `data` is `undefined` until it is known for the account signed in
+ * now, `null` for an account that never saved any. Read on a sign-in and
+ * replaced by the answer to each save, since nobody else writes it (decision
+ * on 2026-11-26: no Firestore listeners in the browser). */
+function useUserConfig(user: Ref<User | null | undefined>) {
+  const data = useState<(UserConfig & { id?: string }) | null | undefined>(
+    "user-config",
+    () => undefined,
+  );
+  const pending = useState<boolean>("user-config-pending", () => false);
+  const loadedFor = useState<string | null>("user-config-for", () => null);
+
+  async function refresh(force = false) {
+    if (import.meta.server) return;
+    const uid = user.value?.uid;
+    if (!uid) {
+      data.value = undefined;
+      loadedFor.value = null;
+      return;
+    }
+    if (!force && (loadedFor.value === uid || pending.value)) return;
+    if (loadedFor.value !== uid) data.value = undefined;
+    pending.value = true;
+    try {
+      const answer = await authRequest<{ config: UserConfig | null }>(
+        "/api/me",
+        { method: "GET" },
+      );
+      if (user.value?.uid !== uid) return;
+      data.value = answer.config;
+      loadedFor.value = uid;
+    } catch (error) {
+      console.error("Nie udało się wczytać ustawień konta", error);
+    } finally {
+      pending.value = false;
+    }
+  }
+
+  async function save(patch: UserConfigPatch): Promise<UserConfig> {
+    const answer = await authRequest<{ config: UserConfig }>("/api/me", {
+      method: "PATCH",
+      body: patch,
+    });
+    data.value = answer.config;
+    loadedFor.value = user.value?.uid ?? null;
+    return answer.config;
+  }
+
+  if (import.meta.client) {
+    watch(
+      () => user.value?.uid,
+      () => void refresh(),
+      { immediate: true },
+    );
+  }
+
+  return { data, pending, refresh, save };
+}
+
 export function useAuthState() {
   const router = useRouter();
-  // Named explicitly, like every other client call site (votes.ts, notes.ts,
-  // useMyContributions.ts). `useFirestore()` is `getFirestore(app)` with no
-  // database id, i.e. `(default)` - a database this project does not use, whose
-  // rules are not deployed, and which the emulator plugin never connects. The
-  // server reads this same document to decide whether to email somebody
-  // (server/utils/notifications.ts), so a config written to the wrong database
-  // is an opt-out that silently does nothing.
-  const db = getFirestore(useFirebaseApp(), "koryta-pl");
-
   const user = useCurrentUser();
   /** The claims on the reader's ID token, for the three flags below:
    * `undefined` while nobody is signed in, until the token has been read, and
@@ -90,10 +145,7 @@ export function useAuthState() {
   });
   const auth = useFirebaseAuth()!;
 
-  const userConfigRef = computed(() =>
-    user.value ? doc(collection(db, "users"), user.value.uid) : null,
-  );
-  const userConfig = useDocument<UserConfig>(userConfigRef);
+  const userConfig = useUserConfig(user);
 
   const logout = async () => {
     try {
@@ -199,7 +251,9 @@ export async function authRequest<T>(
     );
   }
 
-  return await $fetch<T>(url, {
+  // `string`, not the union of the routes Nitro knows: the caller names the
+  // answer, and no route's type should be matched against it.
+  return await $fetch<T, string>(url, {
     method: (options.method || "POST") as "POST",
     body: options.body as Record<string, unknown>,
     query: options.query as Record<string, unknown>,
@@ -239,7 +293,7 @@ export async function anonymousRequest<T>(
   url: string,
   options: { method?: string; body?: unknown; query?: unknown } = {},
 ): Promise<T> {
-  return await $fetch<T>(url, {
+  return await $fetch<T, string>(url, {
     method: (options.method || "POST") as "POST",
     body: options.body as Record<string, unknown>,
     query: options.query as Record<string, unknown>,

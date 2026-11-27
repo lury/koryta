@@ -813,41 +813,30 @@ function precedes(
   return a.copy.id < b.copy.id;
 }
 
-/** How every stored edge between this pair relates to `edge`.
- *
- * One query, partitioned in memory, because the answers all come from the same
- * documents and an ingest that asked twice would double its reads.
+/** How every stored edge between this pair relates to `edge`, given every
+ * stored edge of its (source, target, type) (`edgesOfPairsPg`).
  *
  * `same` is exact identity for a type that cannot be enriched, and the looser
  * `edgeRelation` reading for one that can - so a candidacy a reviewer has added
  * a `term` to still counts as already saying what the payload says, rather than
  * being restated as a second document.
  *
- * `enrichable` carries the stored document, not just its id: the caller has to
- * fill its blanks to build the revision, and re-reading it would be a second
- * round trip against a collection this request has pending writes for.
- * `documents` has every sibling's, for the same reason: an exact match of a
+ * `enrichable` carries the stored document: the caller has to fill its blanks
+ * to build the revision. `documents` has every sibling's: an exact match of a
  * type that is not enrichable is in `same`, and can still learn an annotation.
  *
  * `ids` is every sibling, which the caller needs to avoid creating a new edge
  * on top of one of them - see `edgeDocumentId`.
  */
-export async function findEdgeMatches(
-  db: FirebaseFirestore.Firestore,
+export function edgeMatches(
   edge: EdgeLike,
-): Promise<{
+  siblings: { id: string; data: Record<string, unknown> }[],
+): {
   same: string[];
   enrichable: { id: string; stored: Record<string, unknown> }[];
   ids: Set<string>;
   documents: Map<string, Record<string, unknown>>;
-}> {
-  const snapshot = await db
-    .collection("edges")
-    .where("source", "==", edge.source)
-    .where("target", "==", edge.target)
-    .where("type", "==", edge.type)
-    .get();
-
+} {
   const identity = edgeIdentity(edge);
   const { enrichable: mayEnrich } = edgeSemantics(edge.type);
   const same: string[] = [];
@@ -855,10 +844,9 @@ export async function findEdgeMatches(
   const ids = new Set<string>();
   const documents = new Map<string, Record<string, unknown>>();
 
-  for (const doc of snapshot.docs) {
-    ids.add(doc.id);
-    const stored = doc.data();
-    documents.set(doc.id, stored);
+  for (const { id, data: stored } of siblings) {
+    ids.add(id);
+    documents.set(id, stored);
     if (edgeIdentity(stored as EdgeLike) === identity) {
       // The same episode, by every field that says which episode it is. It can
       // still be missing an annotation the payload carries - whether the
@@ -870,18 +858,18 @@ export async function findEdgeMatches(
       const relation = mayEnrich
         ? edgeRelation(stored as EdgeLike, edge)
         : "same";
-      if (relation === "enriches") enrichable.push({ id: doc.id, stored });
-      else same.push(doc.id);
+      if (relation === "enriches") enrichable.push({ id, stored });
+      else same.push(id);
       continue;
     }
     if (!mayEnrich || !meetsEnrichFloor(stored as EdgeLike)) continue;
 
     switch (edgeRelation(stored as EdgeLike, edge)) {
       case "enriches":
-        enrichable.push({ id: doc.id, stored });
+        enrichable.push({ id, stored });
         break;
       case "same":
-        same.push(doc.id);
+        same.push(id);
         break;
       case "conflict":
         break;
@@ -896,42 +884,23 @@ export async function findEdgeMatches(
   return { same, enrichable, ids, documents };
 }
 
-/** Every stored edge asserting the same thing as `edge`, by id.
+/** Every stored edge asserting the same thing as `edge`, by id, among its
+ * (source, target, type) siblings.
  *
  * A list rather than one match, because an occurrence edge may legitimately
  * have several. The caller takes the n-th when it is placing the n-th copy from
  * a payload, which is what stops re-ingesting that payload growing the
- * collection while still letting it hold two.
- *
- * Queried on the three fields every edge has - an equality-only query Firestore
- * serves from its single field indexes, with no composite index to declare -
- * and narrowed in memory. Comparing the discriminators in memory rather than in
- * the query avoids Firestore's rule that a document missing a field matches no
- * filter on it, which would make an edge stored without `start_date`
- * unfindable by a lookup that supplies one.
+ * collection while still letting it hold two. The discriminators are compared
+ * here rather than in the query, so an edge stored without `start_date` is
+ * found by a lookup that supplies one.
  */
-export async function findEdges(
-  db: FirebaseFirestore.Firestore,
+export function sameEdges(
   edge: EdgeLike,
-): Promise<string[]> {
-  const snapshot = await db
-    .collection("edges")
-    .where("source", "==", edge.source)
-    .where("target", "==", edge.target)
-    .where("type", "==", edge.type)
-    .get();
-
+  siblings: { id: string; data: Record<string, unknown> }[],
+): string[] {
   const identity = edgeIdentity(edge);
-  return snapshot.docs
-    .filter((doc) => edgeIdentity(doc.data() as EdgeLike) === identity)
-    .map((doc) => doc.id)
+  return siblings
+    .filter(({ data }) => edgeIdentity(data as EdgeLike) === identity)
+    .map(({ id }) => id)
     .sort();
-}
-
-/** The edge already asserting this, if there is one. */
-export async function findEdge(
-  db: FirebaseFirestore.Firestore,
-  edge: EdgeLike,
-): Promise<string | undefined> {
-  return (await findEdges(db, edge))[0];
 }

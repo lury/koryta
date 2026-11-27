@@ -1,9 +1,12 @@
 import { z } from "zod";
-import { getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { readerAwareCachedEventHandler } from "~~/server/utils/handlers";
 import { toExtractionFact } from "~~/server/utils/extractions";
 import type { ExtractionFact } from "~~/shared/model";
+import {
+  countExtractionsPg,
+  listExtractionsPg,
+  type ExtractionFilter,
+} from "~~/server/db/extractions";
 
 // The collection grows with every ingest, so a page is always served — no
 // caller needs the whole backlog, and `total` tells them how much they missed.
@@ -17,7 +20,7 @@ const queryValidator = z.object({
     .positive()
     .max(MAX_LIMIT)
     .default(DEFAULT_LIMIT),
-  page: z.coerce.number().default(0),
+  page: z.coerce.number().int().min(0).default(0),
   tag: z.string().optional(),
   /** Everything extracted from one article.
    *
@@ -35,8 +38,8 @@ const queryValidator = z.object({
    * very mistake the card's "To nie ta osoba" flag exists to report.
    */
   personNodeId: z.string().optional(),
-  // Mirrors `hideVoted` on /api/nodes: filters on the vote aggregate that the
-  // onVoteWritten trigger keeps on the document, so it costs no extra read.
+  // Mirrors `hideVoted` on /api/nodes: filters on the vote aggregate that a
+  // vote's write keeps on the document, so it costs no extra read.
   reviewed: z.enum(["all", "yes", "no"]).default("all"),
   groupBy: z.enum(["article"]).optional(),
   /** How many match, without any of them.
@@ -70,61 +73,35 @@ export default readerAwareCachedEventHandler(
     // logged out caller.
     const countOnly = query.countOnly || event.context.hasUser !== true;
 
-    const db = getFirestore(getApp(), "koryta-pl");
-
-    let firestoreQuery: FirebaseFirestore.Query = db.collection("extractions");
-
-    if (query.tag) {
-      firestoreQuery = firestoreQuery.where("tag", "==", query.tag);
-    }
-
-    if (query.articleUrl) {
-      firestoreQuery = firestoreQuery.where(
-        "articleUrl",
-        "==",
-        query.articleUrl,
-      );
-    }
-
-    if (query.personNodeId) {
-      firestoreQuery = firestoreQuery.where(
-        "personNodeId",
-        "==",
-        query.personNodeId,
-      );
-    }
-
-    if (query.reviewed !== "all") {
-      firestoreQuery = firestoreQuery.where(
-        "stats.votes.humanVoted",
-        "==",
-        query.reviewed === "yes",
-      );
-    }
-
-    // Newest first, so a freshly ingested batch is what reviewers see.
-    firestoreQuery = firestoreQuery.orderBy("createdAt", "desc");
+    const filter: ExtractionFilter = {
+      tag: query.tag,
+      articleUrl: query.articleUrl,
+      personNodeId: query.personNodeId,
+      humanVoted:
+        query.reviewed === "all" ? undefined : query.reviewed === "yes",
+    };
 
     // Count and nothing else. Returned before the page read rather than
     // alongside it, so a caller that only says how many there are never causes
     // the documents to be fetched at all.
     if (countOnly) {
-      const only = await firestoreQuery.count().get();
-      return { facts: [], total: only.data().count };
+      return { facts: [], total: await countExtractionsPg(filter) };
     }
 
     // The count is of the filtered query, not the page — it is what tells a
     // reviewer how much backlog is left behind the slice they were served.
-    const [snapshot, countSnapshot] = await Promise.all([
-      firestoreQuery
-        .offset(query.page * query.limit)
-        .limit(query.limit)
-        .get(),
-      firestoreQuery.count().get(),
+    // Newest first, so a freshly ingested batch is what reviewers see.
+    const [rows, total] = await Promise.all([
+      listExtractionsPg(filter, {
+        offset: query.page * query.limit,
+        limit: query.limit,
+      }),
+      countExtractionsPg(filter),
     ]);
-    const total = countSnapshot.data().count;
 
-    const facts: ExtractionFact[] = snapshot.docs.map(toExtractionFact);
+    const facts: ExtractionFact[] = rows.map((row) =>
+      toExtractionFact(row.id, row.data),
+    );
 
     if (query.groupBy === "article") {
       const articles: Record<

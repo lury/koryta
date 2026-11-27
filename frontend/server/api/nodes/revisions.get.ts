@@ -1,6 +1,8 @@
 import { z } from "zod";
-import { getFirestore } from "firebase-admin/firestore";
-import { fetchOptionsValidator, paginate } from "~~/server/utils/fetch";
+import { fetchOptionsValidator, pageOf } from "~~/server/utils/fetch";
+import { withDerivedStats } from "~~/server/db/nodes";
+import { useDb } from "~~/server/db/client";
+import { textArray } from "~~/server/db/textArray";
 import { defineEventHandler, setResponseHeader } from "h3";
 import { getUser } from "~~/server/utils/auth";
 import { nodeTypes, pageIsPublic } from "~~/shared/model";
@@ -26,56 +28,54 @@ export default defineEventHandler(async (event) => {
   setResponseHeader(event, "Cache-Control", "private, no-store");
   const query = await getValidatedQuery(event, (q) => queryValidator.parse(q));
 
-  const db = getFirestore("koryta-pl");
-  let fsQuery: FirebaseFirestore.Query = db.collection("nodes");
-
-  if (query.type) {
-    fsQuery = fsQuery.where("type", "==", query.type);
-  }
-
-  // An equality on the field the "Zaakceptowane" column reads. Either value
-  // drops the nodes with no `revisions` map at all, which is what the page
-  // wants both ways round: a node nobody has ever revised is neither waiting
-  // for approval nor approved, and there are far more of those than of either.
-  if (query.status) {
-    fsQuery = fsQuery.where(
-      "revisions.has_unapproved",
-      "==",
-      query.status === "unapproved",
-    );
-  }
-
+  const sql = useDb();
+  const where = [
+    query.type ? sql`type = ${query.type}` : sql`true`,
+    // An equality on the field the "Zaakceptowane" column reads. Either value
+    // drops the nodes with no `revisions` map at all, which is what the page
+    // wants both ways round: a node nobody has ever revised is neither waiting
+    // for approval nor approved, and there are far more of those than of either.
+    query.status
+      ? sql`(data #> '{revisions,has_unapproved}') = ${query.status === "unapproved" ? sql`'true'::jsonb` : sql`'false'::jsonb`}`
+      : sql`true`,
+  ];
+  // Any field, in the order of its values' types (null, boolean, number,
+  // string, array, map) and then the values; a node without it is left out,
+  // of the count too. Ties by id in the same direction.
+  let order = sql`id ASC`;
   if (query.sortBy) {
-    const direction = query.sortDesc === "true" ? "desc" : "asc";
-    fsQuery = fsQuery.orderBy(query.sortBy, direction);
+    const direction = sql.unsafe(query.sortDesc === "true" ? "DESC" : "ASC");
+    if (query.sortBy === "type") {
+      where.push(sql`type IS NOT NULL`);
+      order = sql`type ${direction}, id ${direction}`;
+    } else {
+      const field = sql`(data #> ${textArray(query.sortBy.split("."))}::text[])`;
+      where.push(sql`${field} IS NOT NULL`);
+      order = sql`docstore_rank(${field}) ${direction}, docstore_num(${field}) ${direction},
+        (CASE WHEN jsonb_typeof(${field}) = 'string' THEN ${field} #>> '{}' END) COLLATE "C" ${direction},
+        ${field} ${direction}, id ${direction}`;
+    }
   }
-
-  // Paginate
-  const paginatedQuery = paginate(fsQuery, query);
-
-  const [snap, countSnap] = await Promise.all([
-    paginatedQuery.get(),
-    fsQuery.count().get(),
+  const clause = where.reduce((acc, part) => sql`${acc} AND ${part}`);
+  // A page always, never more than REVISIONS_PAGE_LIMIT: without a limit
+  // this was every revised page of the base, 10 MB at x1.
+  const { offset, limit } = pageOf({
+    ...query,
+    limit: Math.min(query.limit ?? REVISIONS_PAGE_LIMIT, REVISIONS_PAGE_LIMIT),
+  });
+  const [rows, [count]] = await Promise.all([
+    sql<{ id: string; data: Record<string, unknown> }[]>`
+      SELECT id, data FROM nodes WHERE ${clause} ORDER BY ${order}
+      ${offset ? sql`OFFSET ${offset}` : sql``} ${limit !== undefined ? sql`LIMIT ${limit}` : sql``}`,
+    sql<{ n: number }[]>`SELECT count(*)::int AS n FROM nodes WHERE ${clause}`,
   ]);
 
-  const nodesArray = snap.docs.map((doc) => {
-    const data = doc.data();
-    if (data.revision_id) {
-      if (typeof data.revision_id.path === "string") {
-        data.revision_id = data.revision_id.path;
-      } else if (
-        data.revision_id._path &&
-        Array.isArray(data.revision_id._path.segments)
-      ) {
-        data.revision_id = data.revision_id._path.segments.join("/");
-      }
+  const nodesArray = (await withDerivedStats([...rows])).map(({ id, data }) => {
+    const revisions = data.revisions as { latest_time?: unknown } | undefined;
+    if (revisions?.latest_time) {
+      revisions.latest_time = normalizeUpdateTime(revisions.latest_time);
     }
-    if (data.revisions?.latest_time) {
-      data.revisions.latest_time = normalizeUpdateTime(
-        data.revisions.latest_time,
-      );
-    }
-    return { id: doc.id, ...data, visibility: pageIsPublic(data) };
+    return { id, ...data, visibility: pageIsPublic(data) };
   });
 
   const nodesRecord: Record<string, unknown> = {};
@@ -83,5 +83,8 @@ export default defineEventHandler(async (event) => {
     nodesRecord[node.id] = node;
   }
 
-  return { nodes: nodesRecord, total: countSnap.data().count };
+  return { nodes: nodesRecord, total: count?.n ?? 0 };
 });
+
+/** The most pages one request lists; /admin/rewizje asks for 100 at most. */
+export const REVISIONS_PAGE_LIMIT = 100;

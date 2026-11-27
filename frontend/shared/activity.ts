@@ -13,10 +13,9 @@
  * fifth on 2026-11-02: it is the one way to help that needs no knowledge of
  * the people involved, and it is where most of the readers are.
  *
- * Two interactions are missing on purpose, because nothing timestamps them:
- * the per-category tallies `/api/votes/vote` writes inline onto a node or edge
- * (`votes.<category>.<uid>`), and the newsletter preferences on a user document.
- * Neither can be placed on a day, so neither can be counted here.
+ * One interaction is missing on purpose, because nothing timestamps it: the
+ * newsletter preferences on a user document. It cannot be placed on a day,
+ * so it cannot be counted here.
  *
  * The order is not cosmetic. The timeline stacks the kinds in it and
  * `activityColors` hands them categorical slots in the same order, which is

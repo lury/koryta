@@ -10,12 +10,10 @@
  * and the job reports on the same document until it ends.
  */
 import { randomUUID } from "node:crypto";
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
 import type { DecodedIdToken } from "firebase-admin/auth";
 import { z } from "zod";
 import { generateEntityUrl } from "~~/shared/slugs";
 import {
-  JOB_RUNS_COLLECTION,
   PEOPLE_REQUEST,
   captureRun,
   compareRunsNewest,
@@ -23,11 +21,17 @@ import {
   type JobRun,
   type RequestTarget,
 } from "~~/shared/jobs";
-import { OPS_DATABASE } from "~~/shared/tasks";
 import { toArticleCapture } from "~~/server/utils/captures";
 import { runFromDoc } from "~~/server/utils/jobs";
 import { startRunner } from "~~/server/utils/jobRunner";
-import { resolveMergedNode } from "~~/server/utils/merge";
+import { resolveMergedNodeDoc } from "~~/server/db/graph";
+import {
+  queueRunPg,
+  readCapturePg,
+  readRunPg,
+  runsOfNodePg,
+  setRunDispatchPg,
+} from "../db/ops";
 
 export const jobRequestSchema = z.object({
   /** The page the button was on. */
@@ -40,9 +44,6 @@ export type JobRequestInput = z.output<typeof jobRequestSchema>;
 /** Runs waiting at once, across every page. More is somebody's script, or a
  * runner that has been down for a day - either way not a queue to add to. */
 export const MAX_QUEUED = 20;
-
-const opsDb = () => getFirestore(OPS_DATABASE);
-const siteDb = () => getFirestore("koryta-pl");
 
 const refuse = (statusCode: number, message: string) =>
   createError({ statusCode, message });
@@ -67,8 +68,7 @@ async function targetOf(nodeId: string): Promise<{
 }> {
   // Through a merge to the page that is left: a request from a stale tab on
   // a duplicate is about the person the duplicate now points at.
-  const { id, snapshot } = await resolveMergedNode(siteDb(), nodeId);
-  const data = snapshot?.data();
+  const { id, data } = await resolveMergedNodeDoc(nodeId);
   if (!data || data.deleted === true) {
     throw refuse(404, "Nie ma takiej strony.");
   }
@@ -108,12 +108,8 @@ export async function runsForNode(
   nodeId: string,
   limit = 5,
 ): Promise<JobRun[]> {
-  const snapshot = await opsDb()
-    .collection(JOB_RUNS_COLLECTION)
-    .where("request.nodeId", "==", nodeId)
-    .get();
-  return snapshot.docs
-    .map((doc) => runFromDoc(doc.id, doc.data()))
+  return (await runsOfNodePg(nodeId))
+    .map(({ id, data }) => runFromDoc(id, data))
     .filter((run): run is JobRun => run !== null && run.job === PEOPLE_REQUEST)
     .sort(compareRunsNewest)
     .slice(0, limit);
@@ -136,17 +132,8 @@ export async function requestPeopleRun(
   );
   if (open) return { run: open, reused: true };
 
-  const runs = opsDb().collection(JOB_RUNS_COLLECTION);
-  const waiting = await runs.where("state", "==", "queued").get();
-  if (waiting.size >= MAX_QUEUED) {
-    throw refuse(
-      429,
-      `W kolejce czeka już ${waiting.size} zleceń - poczekaj, aż maszyna je zrobi (/admin/procesy).`,
-    );
-  }
-
   const id = randomUUID();
-  const at = Timestamp.fromDate(now);
+  const at = now.toISOString();
   const doc = {
     job: PEOPLE_REQUEST,
     state: "queued",
@@ -178,14 +165,17 @@ export async function requestPeopleRun(
       at,
     },
   };
-  const ref = runs.doc(id);
-  await ref.create(doc);
+  const waiting = await queueRunPg(id, doc, MAX_QUEUED);
+  if (waiting !== null) {
+    throw refuse(
+      429,
+      `W kolejce czeka już ${waiting} zleceń - poczekaj, aż maszyna je zrobi (/admin/procesy).`,
+    );
+  }
 
   const dispatch = await startRunner(now);
   try {
-    await ref.update({
-      dispatch: { ...dispatch, at: Timestamp.fromDate(new Date(dispatch.at)) },
-    });
+    await setRunDispatchPg(id, dispatch);
   } catch (error) {
     // The run is queued either way; only the page's note about the machine
     // is lost.
@@ -200,9 +190,8 @@ export async function requestPeopleRun(
 /** Start the machine again for a run still waiting - the first start was
  * refused, or the VM was switching off just then. */
 export async function redispatch(id: string, now: Date = new Date()) {
-  const ref = opsDb().collection(JOB_RUNS_COLLECTION).doc(id);
-  const snapshot = await ref.get();
-  const run = snapshot.exists ? runFromDoc(id, snapshot.data()!) : null;
+  const stored = await readRunPg(id);
+  const run = stored ? runFromDoc(id, stored) : null;
   if (!run || run.job !== PEOPLE_REQUEST) {
     throw refuse(404, "Nie ma takiego zlecenia.");
   }
@@ -210,18 +199,18 @@ export async function redispatch(id: string, now: Date = new Date()) {
     throw refuse(409, "To zlecenie już ktoś podjął.");
   }
   const dispatch = await startRunner(now);
-  await ref.update({
-    dispatch: { ...dispatch, at: Timestamp.fromDate(new Date(dispatch.at)) },
-  });
+  if (!(await setRunDispatchPg(id, dispatch))) {
+    throw refuse(404, "Nie ma takiego zlecenia.");
+  }
   return { ...run, dispatch };
 }
 
 /** One run, for its link: a reported or asked-for run from the ops database,
  * else a capture - which is a run under its `articlePages` id. */
 export async function oneRun(id: string): Promise<JobRun | null> {
-  const reported = await opsDb().collection(JOB_RUNS_COLLECTION).doc(id).get();
-  if (reported.exists) return runFromDoc(id, reported.data()!);
-  const page = await siteDb().collection("articlePages").doc(id).get();
-  if (page.exists) return captureRun(toArticleCapture(id, page.data()!));
+  const reported = await readRunPg(id);
+  if (reported) return runFromDoc(id, reported);
+  const page = await readCapturePg(id);
+  if (page) return captureRun(toArticleCapture(id, page));
   return null;
 }

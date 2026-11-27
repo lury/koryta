@@ -1,11 +1,8 @@
-import { FieldValue, getFirestore } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { requireAdmin } from "~~/server/utils/auth";
-import {
-  createRevisionTransaction,
-  withoutInternalFields,
-} from "~~/server/utils/revisions";
-import { recordAudit } from "~~/server/utils/audit";
+import { withoutInternalFields } from "~~/server/utils/revisions";
+import { editorialTx, readDoc, recordAuditPg } from "~~/server/db/editorial";
+import { createRevisionPg } from "~~/server/db/revisionWrites";
+import { removePromotedEdge } from "~~/server/db/edgeWrites";
 import { z } from "zod";
 
 const bodyValidator = z.object({
@@ -42,81 +39,52 @@ export default defineEventHandler(async (event): Promise<EdgeDeleted> => {
   );
 
   const user = await requireAdmin(event);
-  const db = getFirestore(getApp(), "koryta-pl");
+  const result = await editorialTx(async (tx, log) => {
+    const data = await readDoc(tx, "edges", body.edge_id, true);
+    if (!data) {
+      throw createError({
+        statusCode: 404,
+        message: `Nie ma powiązania o id: ${body.edge_id}`,
+      });
+    }
+    // Idempotent rather than a 409: two admins clearing the same bad merge
+    // both mean the relation is gone.
+    if (data.deleted === true) return null;
 
-  const edgeRef = db.collection("edges").doc(body.edge_id);
-  const snapshot = await edgeRef.get();
-  if (!snapshot.exists) {
-    throw createError({
-      statusCode: 404,
-      message: `Nie ma powiązania o id: ${body.edge_id}`,
+    // `deleted` and `delete_reason` are fields the document owns, so they are
+    // withheld from `stored` for this revision to be the one that states them.
+
+    const { deleted: _wasDeleted, delete_reason: _oldReason, ...stored } = data;
+    const { revisionId } = await createRevisionPg(
+      tx,
+      log,
+      user,
+      { collection: "edges", id: body.edge_id },
+      {
+        ...withoutInternalFields(data),
+        deleted: true,
+        delete_reason: body.reason,
+      },
+      { stored, approve: true, published: false },
+    );
+    await recordAuditPg(tx, {
+      action: "delete",
+      collection: "edges",
+      target_id: body.edge_id,
+      revision_id: revisionId,
+      user: user.uid,
+      reason: body.reason,
     });
-  }
-
-  const data = snapshot.data() ?? {};
-  // Idempotent rather than a 409: two admins clearing the same bad merge, or
-  // one double-clicking, both mean the relation is gone. Writing a second
-  // removal revision would only add a duplicate to its history.
-  if (data.deleted === true) {
+    // The facts this relation was promoted from no longer say it exists.
+    await removePromotedEdge(tx, log, body.edge_id);
+    return revisionId;
+  });
+  if (result === null) {
     return { edge_id: body.edge_id, deleted: true, revision_id: null };
   }
 
-  // `deleted` and `delete_reason` are fields the document owns, so
-  // `createRevisionTransaction` layers whatever `stored` says for them back
-  // over the revision. Withholding both is what lets this revision be the one
-  // that states them - an edge carrying `deleted: false` outright would
-  // otherwise undo the removal on the way out. Same reasoning as the article
-  // relation helper, which removes edges the same way.
-  const { deleted: _wasDeleted, delete_reason: _oldReason, ...stored } = data;
-
-  const batch = db.batch();
-  const { revisionRef } = createRevisionTransaction(
-    db,
-    batch,
-    user,
-    edgeRef,
-    {
-      ...withoutInternalFields(data),
-      deleted: true,
-      delete_reason: body.reason,
-    },
-    // Approved as it is written: an admin removing a relation *is* the review
-    // of it, so it does not go on a queue for somebody to confirm.
-    { stored, approve: true, published: false },
-  );
-
-  recordAudit(
-    db,
-    {
-      action: "delete",
-      collection: "edges",
-      target_id: edgeRef.id,
-      revision_id: revisionRef.id,
-      user: user.uid,
-      reason: body.reason,
-    },
-    batch,
-  );
-
-  // A fact promoted into this relation says so on its card („Powiązanie
-  // utworzone”, pointing at „Historia powiązań”), which stops being true now.
-  // Taken off in the same batch, so the fact offers the promotion again.
-  const promotedFrom = await db
-    .collection("extractions")
-    .where("promotedEdgeIds", "array-contains", edgeRef.id)
-    .get();
-  for (const fact of promotedFrom.docs) {
-    batch.update(fact.ref, {
-      promotedEdgeIds: FieldValue.arrayRemove(edgeRef.id),
-    });
-  }
-
-  await batch.commit();
-
-  // The entity and graph endpoints are cached per handler for six hours, so a
-  // relation removed now would otherwise stay on the page for the rest of the
-  // day. Same clear as /api/edges/publish.
+  // The entity and graph endpoints are cached per handler for six hours.
   await useStorage("cache").clear("nitro:handlers");
 
-  return { edge_id: body.edge_id, deleted: true, revision_id: revisionRef.id };
+  return { edge_id: body.edge_id, deleted: true, revision_id: result };
 });

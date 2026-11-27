@@ -1,12 +1,10 @@
-import { getFirestore, FieldPath } from "firebase-admin/firestore";
-import { getApp } from "firebase-admin/app";
 import { editorFreshCachedEventHandler } from "~~/server/utils/handlers";
-import { fetchEdgeEndpointNodes } from "~~/server/utils/edgeNodes";
 import { asArray, pageIsPublic } from "~~/shared/model";
 import { displayRole } from "~~/shared/companyBodies";
 import type { Company, Edge, Person } from "~~/shared/model";
 import type { H3Event } from "h3";
 import { z } from "zod";
+import { readEmployedPage, readNodeDocs } from "~~/server/db/edgeLists";
 
 /** One spell of employment, flattened into what a card needs to draw itself.
  *
@@ -65,8 +63,8 @@ const MAX_SCAN = 600;
 
 /** Splits `${start_date}|${edgeId}` back into its two halves.
  *
- * On the first `|` rather than the only one: a Firestore document id may
- * contain anything but a slash, so the id is whatever is left, while
+ * On the first `|` rather than the only one: a document id may contain
+ * anything but a slash, so the id is whatever is left, while
  * `start_date` never holds one.
  */
 function parseCursor(
@@ -83,8 +81,8 @@ function parseCursor(
  * "Most recent" is `start_date`, not when the row was written: the reader is
  * being shown who has just taken a post, and the import order of a KRS batch
  * says nothing about that. The cost of that choice is that an employment with
- * no start date never appears here at all - a Firestore `orderBy` matches no
- * document missing the field it sorts on - which is the same 195-odd hand
+ * no start date never appears here at all (`readEmployedPage` orders by it)
+ * - which is the same 195-odd hand
  * entered edges `test_a_dated_edge_says_when_it_began` already budgets for.
  *
  * Published edges only, and then both endpoints checked again against the
@@ -97,7 +95,6 @@ function parseCursor(
  */
 async function recentEmployments(event: H3Event): Promise<RecentEmployments> {
   const query = await getValidatedQuery(event, (q) => queryValidator.parse(q));
-  const db = getFirestore(getApp(), "koryta-pl");
 
   const employments: RecentEmployment[] = [];
   let cursor = parseCursor(query.cursor);
@@ -105,39 +102,17 @@ async function recentEmployments(event: H3Event): Promise<RecentEmployments> {
   let exhausted = false;
 
   while (employments.length < query.limit && scanned < MAX_SCAN && !exhausted) {
-    let q = db
-      .collection("edges")
-      .where("type", "==", "employed")
-      .where("published", "==", true)
-      .orderBy("start_date", "desc")
-      // Spelled out rather than left implicit, and the whole cursor depends on
-      // it. Firestore only appends `__name__` for a cursor given as a document
-      // snapshot (`createImplicitOrderByForCursor`); against raw values it
-      // compares the count to the *declared* orders and throws "Too many cursor
-      // values specified" - so a two-value `startAfter` under one `orderBy`
-      // fails on every page but the first. The composite index needs no field
-      // for it: an index ends in `__name__` in the direction of its last
-      // ordered field, which is descending here.
-      //
-      // The id half is not decoration either. Every row of a KRS import shares
-      // a start date, so a date-only cursor landing inside one of those groups
-      // would resume at the top of it and loop.
-      .orderBy(FieldPath.documentId(), "desc")
-      .limit(SCAN_PAGE);
-    if (cursor) q = q.startAfter(cursor.startDate, cursor.id);
-
-    const snap = await q.get();
-    scanned += snap.size;
-    if (snap.empty) {
+    const edges = (await readEmployedPage(cursor, SCAN_PAGE)) as (Edge & {
+      id: string;
+    })[];
+    scanned += edges.length;
+    if (edges.length === 0) {
       exhausted = true;
       break;
     }
-
-    const edges = snap.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as Edge),
-    }));
-    const nodes = await fetchEdgeEndpointNodes(db, edges);
+    const nodes = (await readNodeDocs(
+      edges.flatMap((edge) => [edge.source, edge.target]),
+    )) as Map<string, Person | Company>;
 
     // The cursor follows what was examined rather than what was returned, so
     // that filling the page halfway through a batch does not skip the rest of
@@ -185,7 +160,7 @@ async function recentEmployments(event: H3Event): Promise<RecentEmployments> {
 
     // Only a batch read to its end, and shorter than what was asked for, means
     // there is nothing behind it.
-    if (consumed === snap.size && snap.size < SCAN_PAGE) exhausted = true;
+    if (consumed === edges.length && edges.length < SCAN_PAGE) exhausted = true;
   }
 
   return {
