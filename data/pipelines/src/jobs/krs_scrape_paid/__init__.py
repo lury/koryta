@@ -25,6 +25,14 @@ first. Nobody else is bought under `plan.FLOOR` connections, and no feed the
 count says is empty. The queue still owes what that leaves out, and the run
 summary counts it (`under_floor`, `counted_empty`).
 
+`--free-index` also leaves out what the free KRS index already knows
+(`plan.covered_by_index`, `scrapers.krs.full_index`): a person feed where the
+index counts as many posts as rejestr.io does for it, and a company whose PDF
+on file says all its newest JSON does. The summary counts what that saved
+(`index_covered`, `index_pln`). What stays paid is a person's posts in
+companies outside the index - the tracked companies - which no free source
+can find, and anybody the index cannot place.
+
 In either scope a company's connections are left out where its people already
 come from a current odpis pełny (`ScrapeRejestrIO.companies_told_by_the_odpis`),
 so by hand the bill is smallest after `koryta_krs_odpis` and a rebuild of the
@@ -58,7 +66,15 @@ from uuid_extensions import uuid7str  # type: ignore
 from conductor import setup_context
 from jobs.krs_common import PINNED, REFRESH_PIPELINES, upload_result
 from jobs.krs_scrape_paid import plan
+from scrapers.krs.full_index import (
+    IndexCount,
+    KrsIndexCompanies,
+    KrsPersonPositions,
+    counts_by_rejestrio_id,
+    told_by_the_pdf,
+)
 from scrapers.krs.odpis_attempts import KrsOdpisAttempts, failed_odpis
+from scrapers.krs.odpis_people import PeopleKRSCombined
 from scrapers.krs.person_counts import PersonCount, RejestrIOPersonCounts, read_counts
 from scrapers.krs.scrape import (
     PLN_PER_CALL,
@@ -119,6 +135,11 @@ class RunSummary:
     #: otherwise.
     under_floor: int = 0
     counted_empty: int = 0
+    #: Calls the free KRS index made unnecessary (`--free-index`), and what
+    #: they would have cost. Owed no more: the index answers for them.
+    free_index: bool = False
+    index_covered: int = 0
+    index_pln: float = 0.0
     #: Calls bought; not bought - declined at the prompt, or rejestr.io holds
     #: nothing under the id; failed; and bought but not stored, which the
     #: next run buys again.
@@ -157,6 +178,11 @@ class RunSummary:
             "deferred": self.deferred,
             "pln": self.pln,
             "pln_planned": self.planned * PLN_PER_CALL,
+            **(
+                {"index_covered": self.index_covered, "index_pln": self.index_pln}
+                if self.free_index
+                else {}
+            ),
         }
 
     def line(self) -> str:
@@ -194,6 +220,13 @@ def parser() -> argparse.ArgumentParser:
         help="Seconds after each call bought. Default: %(default)s.",
     )
     parser.add_argument(
+        "--free-index",
+        action="store_true",
+        help="Leave out what the free KRS index already knows: person feeds "
+        "it counts as many posts for as rejestr.io does, companies whose PDF "
+        "on file says all their newest JSON does.",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Rebuild the queue and print the bill; buy nothing.",
@@ -208,9 +241,40 @@ def parser() -> argparse.ArgumentParser:
     return parser
 
 
+#: Rebuilt for `--free-index`: folds of the index's log, a few seconds. The
+#: PDF seats and `PeopleKRSCombined` are read as they are on disk.
+INDEX_REFRESH = {
+    "KrsFullOdpisSeats",
+    "KrsPositionsIndex",
+    "KrsIndexCompanies",
+    "KrsPersonPositions",
+}
+
+
+def read_index(ctx: Context) -> tuple[dict[str, IndexCount], set[str]]:
+    """The index's count of each rejestr.io person, and the companies its PDF
+    on file says everything about."""
+    people = PeopleKRSCombined().read_or_process(ctx)
+    positions = KrsPersonPositions().read_or_process(ctx)
+    companies = KrsIndexCompanies().read_or_process(ctx)
+    index = counts_by_rejestrio_id(people, positions)
+    told = told_by_the_pdf(companies)
+    print(
+        f"Free index: {len(index)} rejestr.io people placed, "
+        f"{len(told)} companies told by their PDF"
+    )
+    return index, told
+
+
 def build_queue(
-    scope: str, unattended: bool
-) -> tuple[Context, list[RejestrIOQuery], set[str], dict[str, PersonCount]]:
+    scope: str, unattended: bool, free_index: bool = False
+) -> tuple[
+    Context,
+    list[RejestrIOQuery],
+    set[str],
+    dict[str, PersonCount],
+    tuple[dict[str, IndexCount], set[str]] | None,
+]:
     """The queue rebuilt, cut to `scope`, the companies the public owns, and
     rejestr.io's own count of each person's connections."""
     # Folded again from every company feed the bucket holds: one bought by
@@ -220,6 +284,8 @@ def build_queue(
         # The fold of the odpis job's record: nothing it depends on changes
         # when tonight's attempts are added to it.
         refresh.add("KrsOdpisAttempts")
+    if free_index:
+        refresh |= INDEX_REFRESH
     # Unattended is the night, which rebuilds PeopleMerged right after this.
     # The copy on disk names the people somebody marked interesting as well,
     # without the ~10 GB a rebuild costs.
@@ -237,7 +303,8 @@ def build_queue(
         print(f"Companies the free odpis failed for: {len(failed)}")
         queries = plan.fallback(queries, failed)
     counts = read_counts(RejestrIOPersonCounts().read_or_process(ctx))
-    return ctx, queries, public, counts
+    index = read_index(ctx) if free_index else None
+    return ctx, queries, public, counts, index
 
 
 def held_back(
@@ -436,7 +503,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(missing)
             return EXIT_FAILED
 
-    ctx, queries, public, counts = build_queue(args.scope, unattended)
+    ctx, queries, public, counts, index = build_queue(
+        args.scope, unattended, args.free_index
+    )
     # What the bill is made of, not just what it comes to. Every query carries
     # the reason it exists, and the reasons are not worth the same money: a
     # refresh re-buys a company we already hold, a person feed is one name, and
@@ -445,6 +514,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     worth, under = plan.above_the_floor(plan.paid(queries), counts)
     worth, empty = plan.without_empty_feeds(worth, counts)
     print(held_back(queries, counts, under, empty))
+    covered: list[RejestrIOQuery] = []
+    if index is not None:
+        worth, covered = plan.covered_by_index(worth, counts, *index)
+        print(
+            f"The free index answers for {plan.calls(covered)} calls "
+            f"({plan.calls(covered) * PLN_PER_CALL:.2f} PLN); not bought."
+        )
     ordered = plan.order(worth, public, counts)
     summary = RunSummary(
         run=uuid7str(),
@@ -453,6 +529,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         max_calls=args.max_calls,
         under_floor=plan.calls(under),
         counted_empty=plan.calls(empty),
+        free_index=index is not None,
+        index_covered=plan.calls(covered),
+        index_pln=round(plan.calls(covered) * PLN_PER_CALL, 2),
     )
     if unattended:
         summary.bought_before = plan.bought_today(rejestr_names(ctx), today())

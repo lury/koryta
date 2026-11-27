@@ -17,6 +17,7 @@
                                       # the register's backlog too, not only
                                       # the day's new registrations
     koryta_nightly --company-dry-run  # count the companies' changes; send none
+    koryta_nightly --paid-free-index  # buy nothing the free KRS index knows
 
 The steps, in order (`STEPS`):
 
@@ -34,12 +35,19 @@ The steps, in order (`STEPS`):
                 yesterday, then those the paid queue owes rejestr.io for,
                 then the public companies with no odpis on file -
                 --odpis-max in all
+    krs_index   koryta_krs_full_index --daily: api-krs's odpis pełny JSON of the
+                tracked companies the bulletin named since they were read - the
+                free index of who sat where - and --index-backfill never read
     krs_paid    koryta_scrape_krs_paid --scope fallback: rejestr.io for what the
                 free sources cannot give - the people somebody marked
                 interesting, by rejestr.io's own count of their connections,
                 and the companies whose odpis did not come - at most
                 --paid-max-calls a day; before the reprocess, so what it buys
                 reaches tonight's people, who send those pages first
+    wikidata    koryta_wikidata_people --max-requests --wikidata-max-requests:
+                the Wikidata items of the people with a pl.wikipedia link,
+                read again only where their revision moved, for the
+                reprocess's WikidataPeople
     rebuild_held
                 `koryta <Name> --refresh <Name>`, one at a time, for each
                 pipeline the reprocess holds whose code has changed since
@@ -78,6 +86,11 @@ The steps, in order (`STEPS`):
     scores      koryta_score_import: every scoring model rebuilt over the
                 day's newest export and the pages the people step has just
                 created, and its votes reconciled with the site's
+    news_watch  koryta_news_watch --since <yesterday>: the news searched for
+                the board changes the bulletin showed at the site's
+                companies since yesterday, at most --news-max-queries (20)
+                searches, and the articles found handed to the crawl's url
+                store; held when the reprocess did not come through
     declarations
                 koryta_bip_declarations send-facts: the newest facts part
                 predator wrote after a crawl chunk, a cut or an upload, with
@@ -171,6 +184,11 @@ any kind on 2026-11-19. The rest of the private ones wait behind
 `--odpis-missing all`. The service
 slows down after about 1,000 documents a run; `--odpis-max` caps the step,
 queue, gap and all.
+
+`krs_index` holds nothing back, and nothing holds it. It reads the odpis pełny
+JSON of the tracked companies the bulletin named since they were read (about
+55 a day, a minute at 1 a second), and `--index-backfill` of those never read.
+`krs_paid` leaves out what the index knows only with `--paid-free-index`.
 
 `krs_paid` holds nothing back, and nothing holds it: the people go up with or
 without what it bought. It needs the rejestr.io key - REJESTR_KEY, else the
@@ -296,11 +314,13 @@ HELD = (
 class Rebuildable:
     """A held pipeline the night rebuilds when its code changes."""
 
-    #: Its output, versioned/<filename>/<filename>.jsonl.
+    #: Its output, versioned/<filename>/<filename>.<format>.
     filename: str
     #: The paths in the repository its rows are computed from: its own module
     #: and what decides what goes in them, not the framework that writes them.
     sources: tuple[str, ...]
+    #: The pipeline's `format`.
+    format: str = "jsonl"
 
 
 #: The held pipelines the VM can rebuild in minutes, cheapest first, so that a
@@ -344,6 +364,7 @@ REBUILT_ON_CHANGE: dict[str, Rebuildable] = {
             "data/pipelines/src/util/polish.py",
             "data/pipelines/src/entities/person.py",
         ),
+        format="parquet",
     ),
 }
 
@@ -519,7 +540,13 @@ STEPS = (
     # register's log began, 2,286 of them, about twenty.
     Step("krs_register", "rejestr KRS", 30),
     Step("krs_odpis", "odpisy", 45),
+    # ~55 tracked companies a day at 1 a second; a backfill of 1,000 about 18
+    # minutes.
+    Step("krs_index", "indeks KRS", 30),
     Step("krs_paid", "rejestr.io", 30),
+    # 17-19 requests and half a minute on a night when nothing changed; the
+    # first, with the two dumps (195 MB), a minute and a half.
+    Step("wikidata", "Wikidata", 10),
     # Nothing to do on most nights, a few git calls. The first night after it
     # landed rebuilds all six, PeoplePKW perhaps after downloading PKW's files.
     Step("rebuild_held", "stałe potoki", 30),
@@ -538,6 +565,9 @@ STEPS = (
     # and the hand uploads' pace: 290 companies in 3 minutes on 2026-10-29.
     Step("company_updates", "zmiany firm", 30),
     Step("scores", "oceny", 30),
+    # GDELT takes a call every 30 s and 10-20 s to answer it: 20 queries,
+    # about 15 minutes; the job stops asking a minute short of the limit.
+    Step("news_watch", "wiadomości", 20),
     # The list, PESEL's tables and one request, which the site answers once it
     # has counted: two tries at most, which end inside this limit
     # (`jobs.bip_declarations.FACTS_BACKOFF_S`).
@@ -634,8 +664,8 @@ def state_dir() -> str:
     return os.path.join(PROJECT_ROOT, "nightly-state")
 
 
-def held_output(filename: str) -> str:
-    return os.path.join(VERSIONED_DIR, filename, f"{filename}.jsonl")
+def held_output(filename: str, format: str = "jsonl") -> str:
+    return os.path.join(VERSIONED_DIR, filename, f"{filename}.{format}")
 
 
 def source_trees(
@@ -1154,7 +1184,9 @@ class Night:
             and not self.summary.export
         ):
             return "wstrzymane: brak kopii bazy"
-        if step.name in ("tests", "outputs") and not self.came_through("reprocess"):
+        if step.name in ("tests", "outputs", "news_watch") and not self.came_through(
+            "reprocess"
+        ):
             return "wstrzymane: potoki się nie przeliczyły"
         if step.name in ("companies", "company_updates") and (
             held := self.why_not_upload()
@@ -1312,6 +1344,29 @@ class Night:
             return []
         return ["--missing", self.args.odpis_missing]
 
+    def index_argv(self, minutes: float) -> list[str]:
+        return [
+            bin_path("koryta_krs_full_index"),
+            "--daily",
+            "--backfill",
+            str(self.args.index_backfill),
+            "--max-minutes",
+            f"{max(1.0, minutes - REGISTER_MARGIN):.0f}",
+        ]
+
+    def step_krs_index(self, step: Step) -> tuple[str, str, int | None]:
+        argv = self.index_argv(self.minutes_for(step))
+        return self.judge_job(*self.process(step, argv))
+
+    def paid_argv(self) -> list[str]:
+        return [
+            "--scope",
+            "fallback",
+            "--max-calls",
+            str(self.args.paid_max_calls),
+            *(["--free-index"] if self.args.paid_free_index else []),
+        ]
+
     def step_krs_paid(self, step: Step) -> tuple[str, str, int | None]:
         if not self.args.paid_max_calls:
             return SKIPPED, "limit zapytań 0", None
@@ -1319,16 +1374,18 @@ class Night:
         if not key:
             self.log(f"No rejestr.io key: {why}", step.name)
             return SKIPPED, "brak klucza rejestr.io", None
-        argv = [
-            bin_path("koryta_scrape_krs_paid"),
-            "--scope",
-            "fallback",
-            "--max-calls",
-            str(self.args.paid_max_calls),
-        ]
+        argv = [bin_path("koryta_scrape_krs_paid"), *self.paid_argv()]
         # In the job's environment, never on its command line, which the
         # night's log prints.
         return self.judge_job(*self.process(step, argv, {"REJESTR_KEY": key}))
+
+    def step_wikidata(self, step: Step) -> tuple[str, str, int | None]:
+        argv = [
+            bin_path("koryta_wikidata_people"),
+            "--max-requests",
+            str(self.args.wikidata_max_requests),
+        ]
+        return self.judge_job(*self.process(step, argv))
 
     def step_rebuild_held(self, step: Step) -> tuple[str, str, int | None]:
         """Rebuild, one by one, the held pipelines whose code changed since
@@ -1338,7 +1395,7 @@ class Night:
         record = read_built_from(path)
         rebuilt, missed = self.summary.rebuilt, self.summary.not_rebuilt
         for name, spec in REBUILT_ON_CHANGE.items():
-            output = held_output(spec.filename)
+            output = held_output(spec.filename, spec.format)
             if put_back_aside(output):
                 self.log(
                     f"{name}: put back the copy a killed night moved aside", step.name
@@ -1601,6 +1658,26 @@ class Night:
             argv += ["--refresh", name]
         return self.judge_job(*self.process(step, argv))
 
+    def step_news_watch(self, step: Step) -> tuple[str, str, int | None]:
+        if not self.args.news_max_queries:
+            return SKIPPED, "limit zapytań 0", None
+        yesterday = (warsaw_now() - timedelta(days=1)).date().isoformat()
+        argv = [
+            bin_path("koryta_news_watch"),
+            *self.news_watch_args(yesterday),
+            "--max-minutes",
+            f"{max(1.0, self.minutes_for(step) - 1):.0f}",
+        ]
+        return self.judge_job(*self.process(step, argv))
+
+    def news_watch_args(self, since: str) -> list[str]:
+        return [
+            "--since",
+            since,
+            "--max-queries",
+            str(self.args.news_max_queries),
+        ]
+
     def step_declarations(self, step: Step) -> tuple[str, str, int | None]:
         argv = [bin_path("koryta_bip_declarations"), "send-facts"]
         return self.judge_job(*self.process(step, argv))
@@ -1679,8 +1756,14 @@ class Night:
                     f"--max {self.args.odpis_max}",
                 ]
             ),
-            "krs_paid": "koryta_scrape_krs_paid --scope fallback --max-calls "
-            f"{self.args.paid_max_calls} (the key from {REJESTR_SECRET})",
+            "krs_index": "koryta_krs_full_index "
+            + " ".join(self.index_argv(step.minutes)[1:]),
+            "krs_paid": "koryta_scrape_krs_paid "
+            + " ".join(self.paid_argv())
+            + f" (the key from {REJESTR_SECRET})",
+            "wikidata": "koryta_wikidata_people --max-requests "
+            f"{self.args.wikidata_max_requests}: tonight's people's Wikidata "
+            "items, those whose revision moved",
             "reprocess": "koryta " + " ".join(reprocess_argv()[1:]),
             "tests": "pytest src/tests/pipelines",
             "outputs": "pytest -m e2e src/tests/e2e",
@@ -1695,6 +1778,10 @@ class Night:
             "those turning public first; none made private",
             "scores": "koryta_score_import: every scoring model, tonight's new "
             "pages included",
+            "news_watch": "koryta_news_watch "
+            + " ".join(self.news_watch_args("<yesterday>"))
+            + ": the news for the board changes the bulletin showed, to the "
+            "crawl's url store",
             "declarations": "koryta_bip_declarations send-facts: predator's newest "
             "facts part, with tonight's list, to the site, which counts the "
             "declarations in people",
@@ -2007,11 +2094,39 @@ def parser() -> argparse.ArgumentParser:
         "Default: %(default)s.",
     )
     parser.add_argument(
+        "--index-backfill",
+        type=positive_int,
+        default=0,
+        help="Tracked companies the free KRS index reads a night besides the "
+        "bulletin's, never read, lowest KRS first. About 1,000 fit the step. "
+        "Default: %(default)s: the backfill is a hand run.",
+    )
+    parser.add_argument(
+        "--paid-free-index",
+        action="store_true",
+        help="Buy nothing from rejestr.io that the free KRS index already "
+        "knows (koryta_scrape_krs_paid --free-index).",
+    )
+    parser.add_argument(
+        "--news-max-queries",
+        type=positive_int,
+        default=20,
+        help="news searches at most a night, each one person at one company; "
+        "0 asks none. Default: %(default)s.",
+    )
+    parser.add_argument(
         "--paid-max-calls",
         type=positive_int,
         default=50,
         help="rejestr.io calls bought at most a day, at 0.05 PLN each; 0 buys "
         "nothing. Default: %(default)s.",
+    )
+    parser.add_argument(
+        "--wikidata-max-requests",
+        type=positive_int,
+        default=100,
+        help="Requests to Wikimedia the wikidata step makes at most; what it "
+        "leaves waits for the next night. Default: %(default)s.",
     )
     parser.add_argument(
         "--export-max-age",

@@ -128,7 +128,8 @@ dependencies = [
     "pymupdf==1.28.2",
     "pypdfium2==5.13.0",
     "rapidocr-onnxruntime==1.4.4",
-    "zstandard>=0.23 ; python_full_version < '3.14'",
+    "python-calamine>=0.9.1,<1.0.0",
+    "zstandard>=0.23,<1",
 ]
 
 [project.scripts]
@@ -147,11 +148,14 @@ koryta_scrape_krs_updates = "jobs.krs_bulletin:main"
 koryta_krs_register_owners = "jobs.krs_register_owners:main"
 koryta_krs_odpis = "jobs.krs_odpis:main"
 koryta_pkw_postgres = "jobs.pkw_postgres:main"
+koryta_krs_full_index = "jobs.krs_full_index:main"
 koryta_krs_nip = "jobs.krs_nip:main"
+koryta_wikidata_people = "jobs.wikidata_people:main"
 koryta_people_import = "jobs.people_import:main"
 koryta_company_import = "jobs.company_import:main"
 koryta_score_import = "jobs.score_import:main"
 koryta_nightly = "jobs.nightly:main"
+koryta_news_watch = "jobs.news_watch:main"
 koryta_job_requests = "jobs.requests:main"
 set_auth_claims = "set_auth_claims:main"
 
@@ -231,11 +235,28 @@ requires-dist = [
 [tool.mypy]
 python_version = "3.13"
 mypy_path = "src"
+check_untyped_defs = true
+
+# Tests still have ~480 errors in untyped bodies (issue #232), so they keep
+# the default until they are cleaned up.
+[[tool.mypy.overrides]]
+module = [
+    "tests.*",
+    "*.tests.*",
+    "*.test.*",
+    "*.conftest",
+    # A test module that sits next to the code it tests.
+    "scrapers.article.pipelines.test_article_analyzed_dedup",
+]
+check_untyped_defs = false
 
 [[tool.mypy.overrides]]
 module = [
     "duckdb",
     "duckdb.*",
+    # pyarrow ships no stubs (pandas-stubs types only pandas' side of it).
+    "pyarrow",
+    "pyarrow.*",
     "firebase_admin.*",
     "google.*",
     "scipy.*",

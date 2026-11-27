@@ -23,6 +23,7 @@ from analysis.scores import (
 from analysis.scores.coverage import PeopleScoreCoverage
 from analysis.stats import Statistics
 from analysis.utils.names import FirstNameFreq, NamesCountByRegion
+from analysis.wikidata_people import WikidataPeople
 from scrapers.article.pipelines import (
     ArticleAnalyzed,
     ArticleDomainSelectors,
@@ -51,6 +52,14 @@ from scrapers.koryta.download import (
 )
 from scrapers.krs.censored import KRSCensoredPeople
 from scrapers.krs.coverage import PersonFeedCoverage, RejestrIOCoverage
+from scrapers.krs.full_index import (
+    KrsFullOdpisLedger,
+    KrsFullOdpisSeats,
+    KrsIndexCompanies,
+    KrsIndexQueue,
+    KrsPersonPositions,
+    KrsPositionsIndex,
+)
 from scrapers.krs.list import CompaniesKRS, PeopleKRS
 from scrapers.krs.odpis_attempts import KrsOdpisAttempts
 from scrapers.krs.odpis_history import KrsOdpisEntries, KrsOdpisSeats
@@ -62,6 +71,7 @@ from scrapers.krs.scrape import KRSAlreadyScraped, KRSNeedsRefresh, ScrapeRejest
 from scrapers.krs.updates import KRSUpdates
 from scrapers.map.postal_codes import PostalCodes
 from scrapers.map.teryt import Regions
+from scrapers.news.changes import NewsWatchChanges
 from scrapers.pkw.process import PeoplePKW
 from scrapers.wiki.process_articles import ProcessWiki
 from scrapers.wiki.process_articles_ner import ProcessWikiNer
@@ -111,6 +121,12 @@ PIPELINES = [
     KrsOdpisAttempts,
     KrsOdpisEntries,
     KrsOdpisSeats,
+    KrsFullOdpisLedger,
+    KrsFullOdpisSeats,
+    KrsIndexQueue,
+    KrsPositionsIndex,
+    KrsIndexCompanies,
+    KrsPersonPositions,
     PersonFeedCoverage,
     RejestrIOCoverage,
     RejestrIOPersonCounts,
@@ -124,6 +140,7 @@ PIPELINES = [
     KorytaPeopleCreated,
     KorytaVotes,
     NamesCountByRegion,
+    NewsWatchChanges,
     PeopleEnriched,
     PeopleKRS,
     PeopleKRSCombined,
@@ -139,6 +156,7 @@ PIPELINES = [
     Regions,
     ScrapeRejestrIO,
     Statistics,
+    WikidataPeople,
 ]
 
 

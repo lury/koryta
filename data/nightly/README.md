@@ -33,7 +33,9 @@ order, each with a time limit and its output in the night's log:
 | `krs_free`        | `koryta_scrape_krs_free --max-minutes 60`: the bulletin, then api-krs                                                                              |
 | `krs_register`    | `koryta_krs_register_owners --new-registrations --reads 0 --max-minutes 25`: who owns each newly registered company                                |
 | `krs_odpis`       | `koryta_krs_odpis --graph --changed-since <yesterday> --queue --missing site --max 300`: odpisy pełne, see below                                   |
+| `krs_index`       | `koryta_krs_full_index --daily --backfill 0 --max-minutes 25`: the free KRS index, the bulletin's companies (below)                                |
 | `krs_paid`        | `koryta_scrape_krs_paid --scope fallback --max-calls 50`: rejestr.io for what the free sources could not give                                      |
+| `wikidata`        | `koryta_wikidata_people --max-requests 100`: the Wikidata items of the people with a pl.wikipedia link, those whose revision moved                 |
 | `rebuild_held`    | `koryta <Name> --refresh <Name>` for each held pipeline whose code changed since this VM last built it (below)                                     |
 | `reprocess`       | `koryta --all-pipelines --refresh all`, as the CI nightly, less the article branch, the BIP documents and the slow static sources (`HELD`)         |
 | `tests`           | `pytest src/tests/pipelines` over the night's outputs                                                                                              |
@@ -43,6 +45,7 @@ order, each with a time limit and its output in the night's log:
 | `people`          | `koryta_people_import --scope priority --max-uploads 100 --max-odpis-only-current 10 --max-rejestrio-current 50 --max-published 10 --refresh none` |
 | `company_updates` | `koryta_company_import --max-uploads 200 --max-renames 0`: what tonight's data changes on the companies the export has (below)                     |
 | `scores`          | `koryta_score_import`: the scoring models rebuilt, tonight's new pages included, and their votes reconciled                                        |
+| `news_watch`      | `koryta_news_watch --since <yesterday> --max-queries 20`: the news for the board changes the bulletin showed, to the crawl's url store (below)     |
 | `declarations`    | `koryta_bip_declarations send-facts`: predator's newest facts, with tonight's list, to the site, which counts the declarations in people (below)   |
 | `compute_nodes`   | `koryta_uploader --type computeNodes --endpoint https://autopush.koryta.pl --submit`: the site recounts every page's stats (below)                 |
 | `tidy`            | export shards and day-named outputs older than a week off the disk                                                                                 |
@@ -108,6 +111,45 @@ short and leaves the rest to the next night. A company registered before the
 log began on 2026-09-28 - 0001192039 among them - is in the backlog, not among
 the new ones.
 
+## Wikidata
+
+`wikidata` runs after `krs_paid` and before the reprocess, which builds
+`WikidataPeople` (`versioned/wikidata_people/`) from what it leaves: for every
+person with a pl.wikipedia link the item's QID, birth date with its precision,
+parties and positions with their dates and qualifiers, occupations and
+citizenship, whether the birth date agrees with the site's (`birth_check`:
+exact, year_only, different) and which links are dead (`link_status`).
+Nothing goes up to the site; the step holds nothing back, and a failed one
+leaves last night's cache for the reprocess.
+
+`koryta_wikidata_people` (`data/pipelines/src/jobs/wikidata_people`) keeps its
+cache in `downloaded/wikidata/` on the VM's disk, under 0.5 MB for the 752
+people linked on 2026-11-26:
+
+- title -> QID comes off two dumps, `plwiki-latest-page.sql.gz` (147 MB) and
+  `plwiki-latest-page_props.sql.gz` (48 MB): `page_props` names pages by id
+  only, so it needs `page` to get to a title. A night asks for both with their
+  ETag and gets a 304 until Wikimedia publishes new ones, twice a month;
+  mapping 751 titles off them takes 6 s. What the dumps lack goes to
+  wbgetentities by sitelink, then to pl.wikipedia, which tells a dead link
+  from an article without an item;
+- an item is read again only when its `lastrevid` moved: wbgetentities
+  props=info, 50 items a request, about 7 KB each;
+- requests go one at a time, a second apart, as `koryta-pipelines/<version>`,
+  and a 429 or 503 waits out its Retry-After. `--wikidata-max-requests` (100)
+  caps the step; what it leaves is the next night's (exit 75, partial).
+
+Measured on 2026-11-26 over the public copy's 752 people:
+
+| Run                          | Requests                                      | Over the wire   | Time  |
+| ---------------------------- | --------------------------------------------- | --------------- | ----- |
+| first (no cache, no dumps)   | 25: 2 dumps, 15 items, 6 labels, 2 dead links | 195 MB + 9.6 MB | 92 s  |
+| a night when nothing changed | 19: 2 × 304, 15 revision checks, 2 dead links | 0.11 MB         | 27 s  |
+| again inside 20 h            | 0                                             | 0               | 0.5 s |
+
+So 30 seconds most nights, a minute and a half the night after a new dump;
+the step may take 10 minutes.
+
 ## Odpisy pełne
 
 `krs_odpis` asks the ministry's search service for the odpis pełny of the
@@ -153,6 +195,75 @@ under, queue, gap and all: while the queue's companies take the nights, the
 gap waits for them. An odpis that does not come is what `krs_paid` buys
 rejestr.io's feeds for, so a gap company the gateway eats can cost two of its
 50 calls.
+
+## The free KRS index
+
+`krs_index` keeps an index of who sat where in the ~12.7k companies the site
+has a page for, free (`koryta_krs_full_index`, `scrapers/krs/full_index.py`).
+It asks api-krs for the odpis pełny **JSON** of every tracked company the
+bulletin named on or after the day it was last read, plus the reads that
+failed: about 55 a day (51 and 57 on 2026-11-24 and 25), one request each
+once the register is known, a minute at 1 request a second. Every answer goes
+verbatim to `gs://koryta-pl-sharedcache/jobs/krs_full_index/reads/` as
+write-once zstd parts the VM's create-only grant adds, and to the disk
+(`downloaded/krs_full_index/`, one file per company and state of its odpis,
+~12 KB compressed), so a night killed mid-step loses no request.
+
+The JSON gives every board, supervisory-board and prokura seat with the
+entries that began and ended it and their days; it masks the people. The
+reprocess lends them the identities of the PDF `krs_odpis` already fetches
+(`KrsOdpisSeats`'s PESEL fingerprints): a seat is matched on the company,
+the role, its first entry, the masked names' initial and length and the
+PESEL's first digit (`KrsPositionsIndex`). `KrsPersonPositions` is one row per
+fingerprint, every post across the indexed companies with its days, and
+`KrsIndexCompanies` says which companies' JSON names somebody their PDF on
+file does not - the ones that owe `krs_odpis` a new PDF.
+
+api-krs sends no `ETag` and no `Last-Modified` and answers `If-Modified-Since`
+with a full 200, uncompressed, whatever `Accept-Encoding` says (measured
+2026-11-26). What saves requests is the bulletin: a company it has not named
+since the read is never asked again, and the disk answers a rerun.
+
+Measured on 2026-11-26 over 30 tracked companies from the site's export (15
+public, the audit's sample), at 1 request a second:
+
+| Run                     | Requests | Bytes in | Waiting on api-krs | Wall time |
+| ----------------------- | -------- | -------- | ------------------ | --------- |
+| cold (empty disk)       | 41       | 2.48 MB  | 6.0 s              | 40.7 s    |
+| warm (the disk current) | 0        | 0        | 0                  | 0.1 s     |
+
+41 for 30: 11 associations, foundations and SPZOZ answered 404 in P before S;
+with the register known, 30. All 30 came back with an odpis, the 5 the odpis
+aktualny answers 204 for among them: the odpis pełny serves a company struck
+off or in liquidation, with its boards. 997 seats, every one dated, 789 ended.
+The log holds them in 124 KB (1.25 MB of JSON). A full pass over the tracked
+companies is 12.7k to 17.4k requests, 3.5 to 4.8 hours, ~1 GB in and ~55 MB
+of log: a hand run on predator or the VM, or `--index-backfill` of them a
+night (default 0; about 1,000 fit the step):
+
+    koryta_krs_full_index --backfill 13000 --max-minutes 300   # resumes where it stops
+
+`--paid-free-index` (off by default) has `krs_paid` buy nothing the index
+already knows (`koryta_scrape_krs_paid --free-index`,
+`plan.covered_by_index`):
+
+- a person feed, current or past, where the index counts at least as many of
+  the person's posts as rejestr.io's own count says the feed lists
+  (`RejestrIOPersonCounts`). The person is placed through `PeopleKRSCombined`,
+  whose rows carry their rejestr.io id and the fingerprint it was matched to;
+- a company whose odpis pełny PDF did not come, where the PDF on file already
+  names everybody its newest JSON does, and no seat the JSON ends stands in
+  the PDF.
+
+What stays paid: a person somebody named (a vote buys them whatever the count
+says), a person the index cannot place or rejestr.io has no count for, and
+**every post in a company outside the index** - where else in the ~1.28m
+numbers somebody sits. api-krs cannot be searched by person and the JSON's
+masking cannot join one company's people to another's, so that is the one
+question nothing free answers. The run summary counts what the index saved
+(`index_covered` calls, `index_pln`); `koryta_scrape_krs_paid --scope fallback
+--free-index --dry-run` on the VM says what it would save tonight, before the
+night switches over.
 
 ## The held pipelines, when their code changes
 
@@ -355,9 +466,62 @@ many Poles carry each surname (`koryta_bip_declarations send-facts`); the site
 counts everybody then, and moves them between stages during the day as pages
 are published or readings settle (decision on 2026-11-17).
 
+News: the bulletin names a company whose entry changed, and the seats of
+its people say what changed - somebody joined or left the management or the
+supervisory board on the day of the entry. `NewsWatchChanges` (built by the
+reprocess) lists those changes at the companies the site has a page for:
+`PeopleKRSCombined`'s seats dated on, or up to three days before, a bulletin
+day of their company (`KRSUpdates`), the companies off `KorytaNodes`. The
+`news_watch` step (`koryta_news_watch`, `data/pipelines/src/jobs/news_watch`)
+takes the changes of the bulletin days since yesterday and asks the news for
+each person and company, `"<Imię Nazwisko>" "<company>"`, over the 14 days
+either side of the change: the company by the name a reporter writes - no
+legal form, no town - or by its town where the name is one every town has
+("Przedsiębiorstwo Energetyki Cieplnej"). One query per person and company;
+two changes whose windows overlap share one. At most `--news-max-queries`
+(20) a night, and none asked in the step's last minute (`--max-minutes`);
+0 switches the step off.
+
+The searches: GDELT DOC 2.0, free and keyless, Polish sources only
+(`sourcelang:polish`), one call every 30 seconds - its 429 asks for 5, but on
+2026-11-26 calls 20 s apart, each answered in 10-20 s, drew a 429 on every
+other query - and
+the Brave Search news API once `BRAVE_SEARCH_API_KEY` is in the environment
+(metered; its answers are not kept on disk, as its standard plans allow no
+storing), and Google News RSS search, one call every 2 seconds, as
+low-volume discovery - about 20 searches a night (decision on 2026-11-26).
+What gets crawled is the publishers' pages: a Google News link is resolved to
+the publisher's URL first (the article page's signature, then its
+`batchexecute` call; two calls a link, at most `--max-resolve` (40) a run,
+those naming the person in the title first, each answer kept for good). A link
+Google does not resolve is not queued; on 2026-11-26 Google answered the
+article page with 429 ("automated queries"), so until it resolves, Google News
+adds titles to the run's record and nothing to the crawl. Bing's Search API
+(retired 2025-08-11) and Google's Custom Search JSON API (no new customers,
+off on 2027-01-01) are not used. Every call says who asks
+(`koryta-pipelines/<version> (https://github.com/SzymonPajzert/koryta)`), waits
+at least a second after the source's last, and backs off on 429 and 5xx
+(10, 20, 40 s). Each answer is kept under `versioned/news_watch/cache/<source>/day=<day>/`,
+so a rerun the same day asks nothing again.
+
+What it found goes to the crawl, which does the rest as for every page: each
+URL in one spelling (https, no `www.`, no tracking parameters, no AMP), less
+the articles the site has a page for, into the url store (`URL_STORE_URL`,
+`source=news_watch`, with the person, the company and the queries as its
+context), where the crawler's `--custom-pipeline` door fetches it and
+`ArticleDoneUrls` reads it; `--queue postgres` puts them at the front of
+predator's queue instead. Without `URL_STORE_URL` nothing is queued and the run
+says so. The run's queries, candidates and summary are in
+`versioned/news_watch/runs/<day>.jsonl`. A source that did not answer makes
+the step partial (75); the next night asks for the next day's changes, so a
+change whose search failed is searched again only by hand
+(`koryta_news_watch --since <its bulletin day>`), which the cache makes cheap.
+
 A failed step does not end the night; the steps that depend on it are held:
 
-- `invariants` needs the export; `tests` and `outputs` the reprocess.
+- `invariants` needs the export; `tests`, `outputs` and `news_watch` the
+  reprocess, which builds the changes `news_watch` reads. `news_watch` holds
+  nothing back.
 - `people` needs tonight's export, a reprocess that succeeded, and checks with
   nothing new failing. "New" is against the last night that ran the check: a
   test that passed then and fails now - most likely after the last upload -

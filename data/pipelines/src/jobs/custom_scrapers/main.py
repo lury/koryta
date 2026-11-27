@@ -19,7 +19,7 @@ LOG_DIR = 'log/'
 
 
 def setup_logging(log_file_prefix='', console_level=logging.INFO):
-    handlers = []
+    handlers: List[logging.Handler] = []
 
     if ENV != LOCAL_ENV:
         if not os.path.exists(LOG_DIR):

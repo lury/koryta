@@ -10,6 +10,7 @@ import typing
 from collections.abc import Collection, Iterable, Mapping
 from dataclasses import replace
 
+from scrapers.krs.full_index import IndexCount
 from scrapers.krs.person_counts import PersonCount
 from scrapers.krs.scrape import (
     REASON_HARDCODED,
@@ -210,3 +211,57 @@ def bought_today(names: Iterable[str], day: str) -> int:
     """
     suffix = f"/date={day}"
     return sum(1 for name in names if name.endswith(suffix))
+
+
+def index_covers(query_type: QueryType, count: PersonCount, index: IndexCount) -> bool:
+    """Whether the free index holds as many of the person's posts as rejestr.io
+    counts for this feed: current ones for `aktualne`, past for `historyczne`."""
+    if query_type == QueryType.REJESTRIO_OSOBY_KRS_POWIAZANIA_AKTUALNE:
+        return index.current >= count.aktualne
+    if query_type == QueryType.REJESTRIO_OSOBY_KRS_POWIAZANIA_HISTORYCZNE:
+        return index.past >= count.przeszle
+    return False
+
+
+def covered_by_index(
+    queries: Iterable[RejestrIOQuery],
+    counts: Mapping[str, PersonCount],
+    index: Mapping[str, IndexCount],
+    told: Collection[str] = frozenset(),
+) -> tuple[list[RejestrIOQuery], list[RejestrIOQuery]]:
+    """The queries less what the free index already knows, and that, as
+    queries of their own (`scrapers.krs.full_index`).
+
+    A person's feed is left out where the index - the tracked companies'
+    odpisy pełne with the PDF's PESEL fingerprints - counts at least as many
+    posts as rejestr.io does for that feed. rejestr.io counts across the whole
+    register, so a gap is a post in a company outside the index, and that feed
+    is still bought: where else in the ~1.28m numbers somebody sits is the one
+    thing no free source says. A person nobody counted or the index cannot
+    place is bought as before, and so is one somebody named (`NAMED`), as a
+    vote always buys them.
+
+    A company's feed is left out where its PDF on file already says all its
+    newest JSON does (`told`): every seat identified, no end it lacks.
+    """
+    kept: list[RejestrIOQuery] = []
+    covered: list[RejestrIOQuery] = []
+    for query in queries:
+        if query.person is None:
+            told_already = query.krs is not None and query.krs.id in told
+            (covered if told_already and query.paid_calls() else kept).append(query)
+            continue
+        count = counted(query, counts)
+        known = index.get(str(query.person.id))
+        if count is None or known is None:
+            kept.append(query)
+            continue
+        feeds = [q for q in query.queries if index_covers(q, count, known)]
+        if not feeds:
+            kept.append(query)
+            continue
+        covered.append(replace(query, queries=feeds))
+        rest = [q for q in query.queries if q not in feeds]
+        if rest:
+            kept.append(replace(query, queries=rest))
+    return kept, covered

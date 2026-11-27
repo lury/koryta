@@ -1333,3 +1333,28 @@ class TestEveryRootIsDecided(unittest.TestCase):
 
     def test_nothing_named_reads_both(self):
         self.assertEqual(self.run_both(), (0, 0))
+
+
+def test_jsonl_written_in_slices_is_the_file_written_whole():
+    df = pd.DataFrame(
+        {
+            "name": ["Anna", None, "Zażółć", "Jan", "Ewa"],
+            "year": [1990, 1991, None, 1993, 1994],
+            "teryt": ["020000", "040000", None, "060000", "080000"],
+        }
+    )
+    whole = io.BytesIO()
+    df.to_json(whole, orient="records", lines=True)
+
+    pipeline = DummyPipeline()
+    pipeline.filename = "sliced"
+    written = io.BytesIO()
+    ctx = Mock()
+    ctx.io.write_file.side_effect = lambda ref, writer: writer(written)
+    with (
+        patch("scrapers.stores.JSONL_SLICE", 2),
+        patch("scrapers.stores.backup_disabled", return_value=True),
+    ):
+        pipeline.write_dataframe(ctx, df)
+
+    assert written.getvalue() == whole.getvalue()

@@ -1284,6 +1284,7 @@ def main():
     args = parse_args()
 
     # The recount sends nothing: it asks the site to recount what it holds.
+    entities: list[dict]
     if args.type == "computeNodes":
         entities = [{}]
     else:

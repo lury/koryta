@@ -32,13 +32,16 @@ GOOD = {
     "koryta_scrape_krs_free": 0,
     "koryta_krs_register_owners": 0,
     "koryta_krs_odpis": 0,
+    "koryta_krs_full_index": 0,
     "koryta_scrape_krs_paid": 0,
+    "koryta_wikidata_people": 0,
     "koryta": 0,
     # The companies step runs the people import too, with one flag more.
     "koryta_people_import --companies-only": 0,
     "koryta_people_import": 0,
     "koryta_company_import": 0,
     "koryta_score_import": 0,
+    "koryta_news_watch": 0,
     "koryta_bip_declarations": 0,
     "koryta_uploader": 0,
     "compressor": 0,
@@ -148,8 +151,8 @@ class World:
         night.write_built_from(str(self.state / night.BUILT_FROM), record)
 
     def output(self, name: str):
-        filename = night.REBUILT_ON_CHANGE[name].filename
-        return self.versioned / filename / f"{filename}.jsonl"
+        spec = night.REBUILT_ON_CHANGE[name]
+        return self.versioned / spec.filename / f"{spec.filename}.{spec.format}"
 
     def hold(self, name: str) -> None:
         """A copy of the pipeline's output on disk, as the nights keep it."""
@@ -280,7 +283,9 @@ def test_a_good_night_runs_every_step_in_order_and_exits_0(world):
         "koryta_scrape_krs_free",
         "koryta_krs_register_owners",
         "koryta_krs_odpis",
+        "koryta_krs_full_index",
         "koryta_scrape_krs_paid",
+        "koryta_wikidata_people",
         "koryta",
         "pytest tests",
         "pytest outputs",
@@ -289,6 +294,7 @@ def test_a_good_night_runs_every_step_in_order_and_exits_0(world):
         "koryta_people_import",
         "koryta_company_import",
         "koryta_score_import",
+        "koryta_news_watch",
         "koryta_bip_declarations",
         "koryta_uploader",
     ]
@@ -732,6 +738,37 @@ def test_the_register_reads_the_days_new_registrations_and_no_backlog(world):
     assert argv[argv.index("--reads") + 1] == "2000"
 
 
+def test_the_index_reads_the_bulletins_companies_and_the_paid_step_buys_as_before(
+    world,
+):
+    night.main([])
+
+    argv, _ = world.command("koryta_krs_full_index")
+    assert "--daily" in argv
+    assert argv[argv.index("--backfill") + 1] == "0"
+    assert argv[argv.index("--max-minutes") + 1] == "25"
+    argv, _ = world.command("koryta_scrape_krs_paid")
+    assert "--free-index" not in argv
+
+    world.commands.clear()
+    world.objects.clear()
+    night.main(["--index-backfill", "1000", "--paid-free-index"])
+
+    argv, _ = world.command("koryta_krs_full_index")
+    assert argv[argv.index("--backfill") + 1] == "1000"
+    argv, _ = world.command("koryta_scrape_krs_paid")
+    assert "--free-index" in argv
+
+
+def test_what_the_index_step_leaves_or_breaks_holds_nothing(world):
+    world.codes["koryta_krs_full_index"] = 1
+
+    assert night.main([]) == 1
+    assert world.steps()["krs_index"] == ("failed", "kod wyjścia 1")
+    for step in ("krs_paid", "reprocess", "people", "scores"):
+        assert world.steps()[step][0] == "succeeded", step
+
+
 def test_what_the_register_step_leaves_or_breaks_holds_nothing(world):
     world.codes["koryta_krs_register_owners"] = night.EXIT_TRY_LATER
 
@@ -1122,7 +1159,10 @@ def test_every_rebuildable_pipeline_is_held_and_its_sources_exist():
     for name, spec in night.REBUILT_ON_CHANGE.items():
         assert name in night.HELD, name
         pipeline = by_name[name]
-        assert (pipeline.filename, pipeline.format) == (spec.filename, "jsonl"), name
+        assert (pipeline.filename, pipeline.format) == (
+            spec.filename,
+            spec.format,
+        ), name
         for path in spec.sources:
             assert os.path.exists(os.path.join(top, path)), path
     assert "ProcessWiki" not in night.REBUILT_ON_CHANGE
@@ -1308,10 +1348,11 @@ def test_the_scores_do_not_wait_on_how_the_people_went(world):
     assert world.steps()["people"] == ("failed", "kod wyjścia 1")
     assert world.steps()["company_updates"] == ("succeeded", "")
     assert world.steps()["scores"] == ("succeeded", "")
-    assert world.ran()[-5:] == [
+    assert world.ran()[-6:] == [
         "koryta_people_import",
         "koryta_company_import",
         "koryta_score_import",
+        "koryta_news_watch",
         "koryta_bip_declarations",
         "koryta_uploader",
     ]
@@ -1368,6 +1409,48 @@ def test_the_site_recounts_on_autopush_after_everything_the_night_sent(world):
         "--submit",
     ]
     assert world.steps()["compute_nodes"] == ("succeeded", "")
+
+
+def test_the_news_are_searched_for_yesterday_s_board_changes(world):
+    assert night.main([]) == 0
+
+    argv, _ = world.command("koryta_news_watch")
+    yesterday = (night.warsaw_now() - timedelta(days=1)).date().isoformat()
+    assert argv[1:] == [
+        "--since",
+        yesterday,
+        "--max-queries",
+        "20",
+        "--max-minutes",
+        "19",
+    ]
+    assert world.steps()["news_watch"] == ("succeeded", "")
+
+
+def test_the_news_wait_for_the_reprocess_and_hold_nothing(world):
+    world.codes["koryta"] = 1
+
+    night.main([])
+
+    assert world.steps()["news_watch"][0] == "held"
+    assert "koryta_news_watch" not in world.ran()
+
+    world.commands.clear()
+    world.objects.clear()
+    world.codes["koryta"] = 0
+    world.codes["koryta_news_watch"] = 1
+
+    assert night.main([]) == night.EXIT_FAILED
+
+    assert world.steps()["news_watch"] == ("failed", "kod wyjścia 1")
+    assert world.steps()["declarations"] == ("succeeded", "")
+
+
+def test_no_news_searches_when_the_limit_is_0(world):
+    assert night.main(["--news-max-queries", "0"]) == 0
+
+    assert world.steps()["news_watch"] == ("skipped", "limit zapytań 0")
+    assert "koryta_news_watch" not in world.ran()
 
 
 def test_a_held_night_still_recounts(world):

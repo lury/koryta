@@ -50,5 +50,5 @@ logs/
 crawler_output/
 
 # Credentials, on the same reasoning as `.gitignore`: never in a build context.
-.env
+.env*
 koryta-pl*.json

@@ -95,6 +95,11 @@
       "format": "jsonl",
       "non_null": {},
       "rows": null
+    },
+    "wikidata_people": {
+      "format": "jsonl",
+      "non_null": {},
+      "rows": null
     }
   },
   "required": {

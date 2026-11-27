@@ -1,12 +1,18 @@
 import logging
 import time
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from curl_cffi import requests as r
 
 from jobs.custom_scrapers.scrapers.common import create_url_store_client
 from jobs.custom_scrapers.scrapers.url.url_client import UrlClient
 from jobs.custom_scrapers.scrapers.url_scraper import UrlScraper
+
+
+def _data_name(tag: Tag) -> str:
+    # bs4 types attributes as str | AttributeValueList; data-name is single-valued.
+    value = tag['data-name']
+    return value if isinstance(value, str) else ' '.join(value)
 
 
 class NaszeMiastoScraper(UrlScraper):
@@ -37,13 +43,13 @@ class NaszeMiastoScraper(UrlScraper):
         }
         self.max_pages = 5
 
-    def _get_all_cities(self):
+    def _get_all_cities(self) -> list[str]:
         url = 'https://poznan.naszemiasto.pl/ajax/nsk/geo/cities'
         response = r.get(url, headers=self.headers, impersonate='chrome')
         soup = BeautifulSoup(response.text, 'html.parser')
         all_links = soup.find_all('a')
-        groups = [link['data-name'].replace('-', '') for link in soup.find_all('li')]
-        cities = [link['data-name'] for link in all_links]
+        groups = [_data_name(li).replace('-', '') for li in soup.find_all('li')]
+        cities = [_data_name(link) for link in all_links]
         cities = [c for c in cities if c not in groups]
         return cities
 
