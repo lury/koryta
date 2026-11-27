@@ -44,11 +44,27 @@ try {
   await sql.end();
 }
 
+// The census /api/stats/database reads is written by the nightly recount;
+// refresh it here so a fresh deployment does not show zeros until night.
+async function refreshCensus(): Promise<void> {
+  const db = postgres(url!, {
+    ...connectOptions(),
+    max: 1,
+    onnotice: () => {},
+  });
+  try {
+    await db`SELECT refresh_database_counts()`;
+  } finally {
+    await db.end();
+  }
+}
+
 if (mode === "none") process.exit(0);
 if (nodes > 0 && process.env.SEED_FORCE !== "true") {
   console.log(
     `${nodes} nodes already stored, not seeding (SEED_FORCE=true to)`,
   );
+  await refreshCensus();
   process.exit(0);
 }
 
@@ -74,3 +90,4 @@ const run = (args: string[]) =>
   execFileSync("npx", ["tsx", ...args], { stdio: "inherit" });
 run(generate);
 run(["scripts/pg/load-seed.ts", "--dir", out]);
+await refreshCensus();
