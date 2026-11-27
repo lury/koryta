@@ -28,11 +28,11 @@ class MockIO(IO):
     def write_file(self, fs, content):
         pass
 
-    def upload(self, source, data, content_type, include_query=False, verbose=True):
+    def upload(self, source, data, content_type, include_query=True, verbose=True):
         pass
 
     def batch_upload(
-        self, source, data, content_type, include_query=False, verbose=True
+        self, source, data, content_type, include_query=True, verbose=True
     ) -> str:
         return ""
 

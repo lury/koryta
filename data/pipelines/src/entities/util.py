@@ -78,6 +78,23 @@ class NormalizedParse:
             full_url=parsed.geturl(),
         )
 
+    def crawl_path(self, include_query: bool = True) -> str:
+        """The path a crawl of this URL is filed under, without the host.
+
+        Each query pair, sorted by key, becomes its own `/?k=v` segment. A `/`
+        inside a key or value is escaped, or `?a=b/c` and the path `?a=b`
+        followed by `c` would share one name.
+        """
+        path = self.path if self.path else "index"
+        if include_query:
+            for k, v in sorted(self.query.items(), key=lambda item: item[0]):
+                path += f"/?{_escape_slash(k)}={_escape_slash(v)}"
+        return path
+
+
+def _escape_slash(part: str) -> str:
+    return part.replace("/", "%2F")
+
 
 def parse_query(query: str) -> list[tuple[str, str]]:
     """Decoded key/value pairs from a query string, blanks and order kept."""

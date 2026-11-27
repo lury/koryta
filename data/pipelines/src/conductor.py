@@ -281,14 +281,14 @@ class Conductor(IO):
                 content(f)
 
     def upload(
-        self, source, data, content_type, include_query=False, verbose=True
+        self, source, data, content_type, include_query=True, verbose=True
     ) -> bool:
         return self.storage.upload(
             source, data, content_type, include_query=include_query, verbose=verbose
         )
 
     def batch_upload(
-        self, source, data, content_type, include_query=False, verbose=True
+        self, source, data, content_type, include_query=True, verbose=True
     ) -> str:
         return self.storage.batch_upload(
             source, data, content_type, include_query=include_query, verbose=verbose

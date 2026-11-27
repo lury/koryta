@@ -126,10 +126,7 @@ def _storage_path(
     parsed: NormalizedParse,
     suffix: str | None = None,
 ) -> str:
-    path = parsed.path or ""
-    path = path.strip("/")
-    if not path:
-        path = "index"
+    path = parsed.crawl_path().strip("/") or "index"
     date = datetime.now(warsaw_tz).strftime("%Y-%m-%d")
     base = f"hostname={parsed.hostname_normalized}/{path}/date={date}"
     if suffix:

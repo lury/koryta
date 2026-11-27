@@ -152,6 +152,10 @@ _NOISE_QUERY_PARAMS = frozenset(
         # The high-contrast view of the same page (um.bip.klodzko.pl, 11-05:
         # every menu page read three times over, the councillors never).
         "tryb_widoku",
+        # Softres' larger-font and high-contrast views (bip.strzyzow.pl,
+        # 2026-11-27: 273 of 652 addresses, each page read up to four times).
+        "czcionka",
+        "kontrast",
     }
 )
 _NOISE_QUERY_PREFIXES = ("switch_",)

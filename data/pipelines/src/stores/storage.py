@@ -59,15 +59,24 @@ def _backup_datetime(blob) -> str:
 def crawl_blob_name(
     source: NormalizedParse | str, include_query: bool, day: str
 ) -> str:
-    """The name `Client.upload` stores a crawl of `source` under on `day`."""
+    """The name `Client.upload` stores a crawl of `source` under on `day`.
+
+    Without the query, every `index.php?id=N` of a BIP shares one name per
+    day, and all but the first are dropped as already uploaded: 71 % of the
+    BIP pages of the 2026-11-27 sample. Writers keep the default.
+    """
     if isinstance(source, str):
         source = NormalizedParse.parse(source)
-    path = source.path if source.path else "index"
-    if include_query:
-        for k, v in sorted(source.query.items(), key=lambda item: item[0]):
-            # We split the keys, so they create folders as well
-            path += f"/?{k}={v}"
+    path = source.crawl_path(include_query)
     name = f"hostname={source.hostname}/{path}/date={day}"
+    return name.replace("//", "/").rstrip("/")
+
+
+def crawl_member_name(source: NormalizedParse | str, include_query: bool = True) -> str:
+    """The name `BatchClient` files a crawl of `source` under in its archive."""
+    if isinstance(source, str):
+        source = NormalizedParse.parse(source)
+    name = f"{source.hostname}/{source.crawl_path(include_query)}"
     return name.replace("//", "/").rstrip("/")
 
 
@@ -402,7 +411,7 @@ class Client:
         source: NormalizedParse | str,
         data,
         content_type,
-        include_query=False,
+        include_query=True,
         verbose=True,
     ) -> bool:
         """Store a crawl under today's Warsaw date; False when it could not.
@@ -447,7 +456,7 @@ class Client:
         source: NormalizedParse | str,
         data,
         content_type,
-        include_query=False,
+        include_query=True,
         verbose=True,
     ) -> str:
         raise NotImplementedError("Use BatchClient instead")
@@ -798,7 +807,7 @@ class BatchClient(Client):
         source: NormalizedParse | str,
         data,
         content_type,
-        include_query=False,
+        include_query=True,
         verbose=True,
     ) -> str:
         if isinstance(source, str):
@@ -827,12 +836,7 @@ class BatchClient(Client):
 
             batch = self._batches[key]
 
-            path = source.path if source.path else "index"
-            if include_query:
-                for k, v in sorted(source.query.items(), key=lambda item: item[0]):
-                    path += f"/?{k}={v}"
-
-            rel_path = f"{source.hostname}/{path}".replace("//", "/").rstrip("/")
+            rel_path = crawl_member_name(source, include_query)
 
             if isinstance(data, str):
                 data = data.encode("utf-8")

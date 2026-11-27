@@ -1,4 +1,5 @@
 import argparse
+import glob
 import os
 import re
 import shutil
@@ -328,10 +329,13 @@ class CompressedMirror:
     def get(self, url: str) -> bytes:
         parsed = NormalizedParse.parse(url)
         host = parsed.hostname_normalized
-        path = (parsed.path.strip("/") or "index").replace("/", ".")
-
         extract_dir = self.ensure_extracted(host)
-        candidates = sorted(extract_dir.glob(f"{path}.date=*"))
-        if not candidates:
-            raise NotInMirrorError(f"URL not found in mirror: {url}")
-        return candidates[-1].read_bytes()
+        # Filed with the query since 2026-11-27; older archives without it.
+        for include_query in (True, False):
+            path = (parsed.crawl_path(include_query).strip("/") or "index").replace(
+                "/", "."
+            )
+            candidates = sorted(extract_dir.glob(f"{glob.escape(path)}.date=*"))
+            if candidates:
+                return candidates[-1].read_bytes()
+        raise NotInMirrorError(f"URL not found in mirror: {url}")

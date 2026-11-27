@@ -14,14 +14,28 @@ from scrapers.stores.file import GCSBlob
 _GCS_PREFIX = "gs://koryta-pl-crawled/"
 
 
-def _member_path(url: str) -> str:
-    """Return the tar member path for a given URL (mirrors batch_upload logic)."""
+def _member_paths(url: str) -> list[str]:
+    """Where `batch_upload` may have filed `url` in its archive, newest first.
+
+    With its query since 2026-11-27, before that without it; older archives
+    still hold the names without.
+    """
     try:
         parsed = NormalizedParse.parse(url)
-        path = parsed.path if parsed.path else "index"
-        return f"{parsed.hostname}/{path}".replace("//", "/").rstrip("/")
     except Exception:
-        return ""
+        return []
+    names = [
+        f"{parsed.hostname}/{parsed.crawl_path(q)}".replace("//", "/").rstrip("/")
+        for q in (True, False)
+    ]
+    return list(dict.fromkeys(names))
+
+
+def _find_member(members: dict, url: str):
+    for name in _member_paths(url):
+        if name in members:
+            return members[name]
+    return None
 
 
 def read_html_from_storage(ctx: Context, done_urls: list[DoneUrl]) -> dict[str, bytes]:
@@ -61,7 +75,7 @@ def iter_html_by_tar(
             with tarfile.open(fileobj=io.BytesIO(raw), mode="r:gz") as tar:
                 members = {m.name: m for m in tar.getmembers()}
                 for done in urls:
-                    member = members.get(_member_path(done.url))
+                    member = _find_member(members, done.url)
                     if member is None:
                         continue
                     f = tar.extractfile(member)
@@ -92,8 +106,7 @@ def iter_html_from_storage(
             with tarfile.open(fileobj=io.BytesIO(raw), mode="r:gz") as tar:
                 members = {m.name: m for m in tar.getmembers()}
                 for done in urls:
-                    member_name = _member_path(done.url)
-                    member = members.get(member_name)
+                    member = _find_member(members, done.url)
                     if member is None:
                         continue
                     f = tar.extractfile(member)

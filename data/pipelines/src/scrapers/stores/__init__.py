@@ -115,7 +115,7 @@ class IO(metaclass=ABCMeta):
         source: Any,
         data: Any,
         content_type: str,
-        include_query=False,
+        include_query=True,
         verbose=True,
     ) -> bool | None:
         """Uploads data to storage (e.g. GCS).
@@ -130,7 +130,7 @@ class IO(metaclass=ABCMeta):
         source: Any,
         data: Any,
         content_type: str,
-        include_query=False,
+        include_query=True,
         verbose=True,
     ) -> str:
         """Batches data for upload (e.g. to GCS in a tar.gz).
