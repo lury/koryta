@@ -76,6 +76,8 @@ class CrawlResult:
     upload_duration_s: float | None = None
     total_duration_s: float | None = None
     media_type: str | None = None
+    #: The page went to an archive uploaded later (`batch_upload`).
+    batched: bool = False
 
 
 @contextmanager
@@ -240,6 +242,7 @@ def crawl_url(
         upload_duration_s=t_upload.duration,
         total_duration_s=time.time() - start_time,
         media_type=_content_type_from_response(response),
+        batched=options.storage_type == "gcs",
     )
 
 
@@ -301,23 +304,101 @@ def _http_worker(
         work_q.task_done()
 
 
+#: A page waits for its archive's upload at most this share of the queue's
+#: lock timeout before the coordinator asks for that archive to go now: past
+#: the timeout the queue hands the URL out again.
+_STORE_WAIT_SHARE = 0.5
+
+
+@dataclass
+class _Unstored:
+    """Pages fetched whose archive is not uploaded yet, so not done yet."""
+
+    items: list[tuple[CrawlQueueItem, CrawlResult, float]] = field(default_factory=list)
+
+    def settled(self, ctx: Context | None) -> list[tuple[CrawlQueueItem, CrawlResult]]:
+        """Take out the pages whose archive is now stored or failed."""
+        keep, out = [], []
+        for entry, result, since in self.items:
+            if _storage_state(ctx, result) == "open":
+                keep.append((entry, result, since))
+            else:
+                out.append((entry, result))
+        self.items = keep
+        return out
+
+    def settle(
+        self, ctx: Context | None, now: float, wait_s: float
+    ) -> list[tuple[CrawlQueueItem, CrawlResult]]:
+        """`settled`, after asking for the archives waited on too long."""
+        overdue = {
+            r.storage_path
+            for _, r, since in self.items
+            if r.storage_path is not None and now - since >= wait_s
+        }
+        if overdue:
+            _flush_archives(ctx, overdue)
+        return self.settled(ctx)
+
+    def drain(self, ctx: Context | None) -> list[tuple[CrawlQueueItem, CrawlResult]]:
+        """Every page, once all archives were asked to upload: the run ends."""
+        _flush_archives(ctx, None)
+        out = self.settled(ctx)
+        # Whatever is still open was never handed to an upload.
+        out.extend((e, r) for e, r, _ in self.items)
+        self.items = []
+        return out
+
+
+def _storage_state(ctx: Context | None, result: CrawlResult) -> str:
+    """`stored`, `open` or `failed`: whether the page is safely written."""
+    if ctx is None or result.storage_path is None or not result.batched:
+        return "stored"
+    return ctx.io.batch_state(result.storage_path)
+
+
+def _flush_archives(ctx: Context | None, paths: set[str] | None) -> None:
+    """Upload these archives (all with None) now; a failure shows in its state."""
+    if ctx is None:
+        return
+    try:
+        ctx.io.flush_batches(paths)
+    except Exception as exc:  # noqa: BLE001 - each page's state says which
+        logging.error("Archives not stored: %s", exc)
+
+
 def _flush_batch(
     pending: list[tuple[CrawlQueueItem, CrawlResult]],
     queue_store: CrawlQueue,
     options: CrawlOptions,
     blocked_normalized: set[str],
     worker_name: str,
+    ctx: Context | None = None,
+    unstored: _Unstored | None = None,
 ) -> dict[str, int]:
     """Write a batch of crawl results to the DB in as few transactions as possible.
 
-    Returns what the batch held, in the counters `CrawlProgress` is given."""
+    A page is marked done only once its archive is stored: until then it
+    waits in `unstored`, and if the archive fails it is an error, retried as
+    any other. Returns what the batch held, in the counters `CrawlProgress`
+    is given."""
     done_items: list[tuple[str, str | None, dict]] = []
     error_items: list[tuple[str, str]] = []
     release_items: list[str] = []
     all_discovered: list[NewUrl] = []
+    not_stored = 0
+    now = time.monotonic()
 
     for entry, result in pending:
         priority = entry.priority
+        state = "stored" if result.error else _storage_state(ctx, result)
+        if state == "open" and unstored is not None:
+            unstored.items.append((entry, result, now))
+            continue
+        if state != "stored" and not result.error:
+            why = ctx.io.batch_error(result.storage_path or "") if ctx else None
+            result.error = f"not stored: {result.storage_path} {why or ''}".strip()
+            not_stored += 1
         if result.hit_rate_limit:
             logging.info("[p=%d] Releasing (rate limited): %s", priority, entry.url)
             release_items.append(entry.uid)
@@ -365,13 +446,16 @@ def _flush_batch(
     if all_discovered:
         queue_store.put(all_discovered)
     stored = sum(1 for _, path, _ in done_items if path is not None)
-    return {
+    counts = {
         "stored": stored,
         "not_html": len(done_items) - stored,
         "errors": len(error_items),
         "rate_limited": len(release_items),
         "discovered": len(all_discovered),
     }
+    if not_stored:
+        counts["not_stored"] = not_stored
+    return counts
 
 
 class _Tally:
@@ -386,8 +470,16 @@ class _Tally:
         if self.on_progress is not None:
             self.on_progress(dict(self.totals))
 
+    def raise_if_not_stored(self) -> None:
+        """Fail the run if pages were fetched and lost on the way to storage."""
+        if lost := self.totals["not_stored"]:
+            raise RuntimeError(
+                f"{lost} crawled pages could not be stored; "
+                "they are back in the queue as errors"
+            )
 
-def _coordinator(
+
+def _coordinator(  # noqa: PLR0915
     thread_index: int,
     options: CrawlOptions,
     queue_store: CrawlQueue,
@@ -441,6 +533,22 @@ def _coordinator(
     total_sent = 0
     total_received = 0
     tally = _Tally(on_progress)
+    unstored = _Unstored()
+    store_wait_s = options.lock_timeout_seconds * _STORE_WAIT_SHARE
+
+    def flush_pending(final: bool = False) -> None:
+        tally.add(
+            _flush_batch(
+                pending,
+                queue_store,
+                options,
+                blocked_normalized,
+                worker_name,
+                ctx,
+                None if final else unstored,
+            )
+        )
+        pending.clear()
 
     while True:
         # Refill work queue when it runs low.
@@ -480,32 +588,27 @@ def _coordinator(
                 total_received,
             )
             last_log = now
+        pending.extend(unstored.settle(ctx, now, store_wait_s))
         if len(pending) >= queue_flush_size or (
             pending and now - last_flush >= _FLUSH_INTERVAL_S
         ):
-            tally.add(
-                _flush_batch(
-                    pending, queue_store, options, blocked_normalized, worker_name
-                )
-            )
-            pending.clear()
+            flush_pending()
             last_flush = now
 
         # Terminate when all dispatched URLs have returned results
         if db_exhausted and total_sent == total_received:
             if pending:
-                tally.add(
-                    _flush_batch(
-                        pending, queue_store, options, blocked_normalized, worker_name
-                    )
-                )
-                pending.clear()
+                flush_pending()
+            if unstored.items:
+                pending.extend(unstored.drain(ctx))
+                flush_pending(final=True)
             for _ in http_threads:
                 work_q.put(None)
             work_q.join()
             for t in http_threads:
                 t.join()
             logging.info("[%s] Pipeline complete.", worker_name)
+            tally.raise_if_not_stored()
             return
 
         time.sleep(0.005)

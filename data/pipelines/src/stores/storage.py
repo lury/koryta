@@ -5,6 +5,7 @@ import contextlib
 import hashlib
 import io
 import json
+import logging
 import os
 import shutil
 import tarfile
@@ -744,21 +745,51 @@ class Client:
             os.unlink(tmp_path)
 
 
+class BatchUploadError(RuntimeError):
+    """Archives of crawled pages that could not be stored, after every retry."""
+
+
+#: What `BatchClient.batch_state` says of an archive it handed out.
+BatchState = typing.Literal["open", "stored", "failed"]
+
+
 class BatchClient(Client):
+    """Crawled pages, one archive per (host, day) part, uploaded in the background.
+
+    `batch_upload` only says which archive a page is going to; nothing is
+    stored until that archive is uploaded. A caller marks a page done once
+    `batch_state` says its archive is `stored`, and treats `failed` as an
+    error. An archive is uploaded once it holds `--max_batch_size` bytes or
+    has been open `--batch_max_age` seconds, whichever comes first, or when
+    `flush_batches` asks for it.
+    """
+
+    #: How many times an upload is tried, and the first wait between tries;
+    #: the wait doubles after each.
+    UPLOAD_ATTEMPTS = 5
+    UPLOAD_BACKOFF_S = 1.0
+    #: How often the background thread looks for archives past their age.
+    FLUSH_CHECK_S = 5.0
+
     @cached_property
     def args(self):
         parser = argparse.ArgumentParser()
         parser.add_argument(
             "--max_batch_size",
-            help="Size of the data to be cached until it's uploaded",
-            default=50 * 1024 * 1024,
+            type=int,
+            help="Upload an archive once it holds this many bytes of pages "
+            "(default: 16 MiB).",
+            default=16 * 1024 * 1024,
             required=False,
         )
         parser.add_argument(
+            "--batch_max_age",
             "--batch_idle_timeout",
+            dest="batch_max_age",
             type=float,
-            default=3600.0,
-            help="Flush a domain batch if idle for this many seconds (default: 600).",
+            default=300.0,
+            help="Upload an archive this many seconds after its first page "
+            "(default: 300).",
         )
         parser.add_argument(
             "--flush_max_workers",
@@ -771,36 +802,46 @@ class BatchClient(Client):
 
     def __init__(self):
         super().__init__()
-        self._batch_locks = defaultdict(threading.Lock)
-        self._batches = {}
-        self._global_lock = threading.Lock()
-        atexit.register(self.flush_all)
-        self._start_idle_flusher()
+        self._init_batches()
+        atexit.register(self._flush_at_exit)
+        self._start_age_flusher()
 
-    def _start_idle_flusher(self) -> None:
+    def _init_batches(self) -> None:
+        self._batch_locks: defaultdict[tuple[str, str], threading.Lock] = defaultdict(
+            threading.Lock
+        )
+        self._batches: dict[tuple[str, str], dict] = {}
+        self._global_lock = threading.Lock()
+        #: Every archive handed out, by its gs:// path.
+        self._states: dict[str, BatchState] = {}
+        self._failures: dict[str, str] = {}
+
+    def _start_age_flusher(self) -> None:
         def _loop() -> None:
             while True:
-                time.sleep(30)
-                self._flush_idle()
+                time.sleep(self.FLUSH_CHECK_S)
+                self._flush_old()
 
-        t = threading.Thread(target=_loop, daemon=True, name="batch-idle-flusher")
+        t = threading.Thread(target=_loop, daemon=True, name="batch-age-flusher")
         t.start()
 
-    def _flush_idle(self) -> None:
-        timeout = self.args.batch_idle_timeout
+    def _flush_old(self) -> None:
+        max_age = self.args.batch_max_age
         now = time.monotonic()
         with self._global_lock:
             keys = list(self._batches.keys())
         for key in keys:
-            lock = self._batch_locks[key]
-            with lock:
+            with self._batch_locks[key]:
                 batch = self._batches.get(key)
-                if batch is None:
+                if batch is None or now - batch["opened"] < max_age:
                     continue
-                if now - batch["last_updated"] >= timeout:
-                    print(f"Flushing idle batch for {key[0]} (idle >{timeout:.0f}s)")
-                    self._flush_batch(key, batch)
-                    del self._batches[key]
+                del self._batches[key]
+            self._flush_batch(key, batch)
+
+    @staticmethod
+    def _blob_name(key: tuple[str, str], uid: str) -> str:
+        hostname, date = key
+        return f"hostname={hostname}/date={date}/uid_{uid}.tar.gz"
 
     def batch_upload(
         self,
@@ -813,102 +854,151 @@ class BatchClient(Client):
         if isinstance(source, str):
             source = NormalizedParse.parse(source)
 
-        hostname = source.hostname
         date = datetime.now(warsaw_tz).strftime("%Y-%m-%d")
-        key = (hostname, date)
+        key = (source.hostname, date)
+        if isinstance(data, str):
+            data = data.encode("utf-8")
+        rel_path = crawl_member_name(source, include_query)
 
         with self._global_lock:
             lock = self._batch_locks[key]
 
+        full = None
         with lock:
-            if key not in self._batches:
+            batch = self._batches.get(key)
+            if batch is None:
                 uid = uuid7str()
                 buf = io.BytesIO()
-                tar = tarfile.open(fileobj=buf, mode="w:gz")
-                self._batches[key] = {
+                batch = {
                     "uid": uid,
+                    "path": f"gs://{CRAWLED_BUCKET}/{self._blob_name(key, uid)}",
                     "buffer": buf,
-                    "tar": tar,
+                    "tar": tarfile.open(fileobj=buf, mode="w:gz"),
                     "uncompressed_size": 0,
                     "index": [],
-                    "last_updated": time.monotonic(),
+                    "opened": time.monotonic(),
                 }
-
-            batch = self._batches[key]
-
-            rel_path = crawl_member_name(source, include_query)
-
-            if isinstance(data, str):
-                data = data.encode("utf-8")
+                self._batches[key] = batch
+                with self._global_lock:
+                    self._states[batch["path"]] = "open"
 
             info = tarfile.TarInfo(name=rel_path)
             info.size = len(data)
             info.mtime = int(datetime.now(warsaw_tz).timestamp())
-
             batch["tar"].addfile(info, io.BytesIO(data))
             batch["index"].append(rel_path)
             batch["uncompressed_size"] += len(data)
-            batch["last_updated"] = time.monotonic()
+            path = batch["path"]
 
             if batch["uncompressed_size"] >= self.args.max_batch_size:
-                self._flush_batch(key, batch)
-                del self._batches[key]
+                full = self._batches.pop(key)
+        if full is not None:
+            self._flush_batch(key, full)
+        return path
 
-            return f"gs://{CRAWLED_BUCKET}/hostname={hostname}/date={date}/uid_{batch['uid']}.tar.gz"
+    def batch_state(self, path: str) -> BatchState:
+        """Whether the archive `batch_upload` named is stored yet.
 
-    def _flush_batch(self, key, batch):
+        A path this client never handed out is not one it can vouch for.
+        """
+        with self._global_lock:
+            return self._states.get(path, "failed")
+
+    def batch_error(self, path: str) -> str | None:
+        with self._global_lock:
+            return self._failures.get(path)
+
+    def _archive_bytes(self, batch) -> bytes:
         index_data = ("\n".join(batch["index"]) + "\n").encode("utf-8")
         idx_info = tarfile.TarInfo(name="index.txt")
         idx_info.size = len(index_data)
         idx_info.mtime = int(datetime.now(warsaw_tz).timestamp())
         batch["tar"].addfile(idx_info, io.BytesIO(index_data))
-
         batch["tar"].close()
-        compressed_data = batch["buffer"].getvalue()
+        return batch["buffer"].getvalue()
 
-        hostname, date = key
-        uid = batch["uid"]
+    def _flush_batch(self, key, batch) -> bool:
+        """Upload one archive, retrying; True once it is stored."""
+        data = self._archive_bytes(batch)
+        name = self._blob_name(key, batch["uid"])
+        wait = self.UPLOAD_BACKOFF_S
+        error = ""
+        for attempt in range(1, self.UPLOAD_ATTEMPTS + 1):
+            try:
+                # Create-only, and a 412 on the same bytes is a retry of a
+                # create that landed (`create_object`).
+                self.create_object(CRAWLED_BUCKET, name, data, "application/gzip")
+            except Exception as e:
+                error = f"{type(e).__name__}: {e}"
+                logging.warning(
+                    "Upload of %s failed (attempt %d of %d): %s",
+                    name,
+                    attempt,
+                    self.UPLOAD_ATTEMPTS,
+                    error,
+                )
+                if attempt < self.UPLOAD_ATTEMPTS:
+                    time.sleep(wait)
+                    wait *= 2
+                continue
+            with self._global_lock:
+                self._states[batch["path"]] = "stored"
+            logging.info("Uploaded %d pages to %s", len(batch["index"]), batch["path"])
+            return True
+        with self._global_lock:
+            self._states[batch["path"]] = "failed"
+            self._failures[batch["path"]] = error
+        logging.error(
+            "Gave up on %s after %d attempts, %d pages not stored: %s",
+            name,
+            self.UPLOAD_ATTEMPTS,
+            len(batch["index"]),
+            error,
+        )
+        return False
 
-        destination_blob_name = f"hostname={hostname}/date={date}/uid_{uid}.tar.gz"
-        bucket = self.storage_client.bucket(CRAWLED_BUCKET)
-        blob = bucket.blob(destination_blob_name)
+    def flush_batches(self, paths: typing.Iterable[str] | None = None) -> None:
+        """Upload the open archives now: those named, or all of them.
 
-        try:
-            blob.upload_from_string(compressed_data, content_type="application/gzip")
-            full_path = f"gs://{CRAWLED_BUCKET}/{destination_blob_name}"
-            print(f"Successfully uploaded batch to: {full_path}")
-        except Exception as e:
-            print(
-                f"An error occurred when batch_upload to {destination_blob_name}: {e}"
-            )
-
-    def flush_all(self):
+        Raises `BatchUploadError` if any archive, now or earlier, could not
+        be stored.
+        """
+        wanted = None if paths is None else set(paths)
         with self._global_lock:
             keys = list(self._batches.keys())
 
         to_flush = []
         for key in keys:
-            lock = self._batch_locks[key]
-            with lock:
-                if key in self._batches:
-                    to_flush.append((key, self._batches.pop(key)))
+            with self._batch_locks[key]:
+                batch = self._batches.get(key)
+                if batch is None:
+                    continue
+                if wanted is not None and batch["path"] not in wanted:
+                    continue
+                to_flush.append((key, self._batches.pop(key)))
 
-        if not to_flush:
-            return
+        if to_flush:
+            workers = min(self.args.flush_max_workers, len(to_flush))
+            with ThreadPoolExecutor(workers) as pool:
+                list(pool.map(lambda kb: self._flush_batch(*kb), to_flush))
 
-        max_workers = self.args.flush_max_workers
-        print(f"Flushing {len(to_flush)} batches in parallel (max {max_workers})...")
-        sem = threading.Semaphore(max_workers)
+        with self._global_lock:
+            failed = dict(self._failures)
+        if wanted is not None:
+            failed = {p: e for p, e in failed.items() if p in wanted}
+        if failed:
+            raise BatchUploadError(
+                f"{len(failed)} archive(s) of crawled pages not stored: "
+                + "; ".join(f"{p}: {e}" for p, e in sorted(failed.items()))
+            )
 
-        def _flush_with_sem(key, batch):
-            with sem:
-                self._flush_batch(key, batch)
+    def flush_all(self) -> None:
+        self.flush_batches()
 
-        threads = [
-            threading.Thread(target=_flush_with_sem, args=(key, batch), daemon=False)
-            for key, batch in to_flush
-        ]
-        for t in threads:
-            t.start()
-        for t in threads:
-            t.join()
+    def _flush_at_exit(self) -> None:
+        # The crawl flushes and checks before it ends; this is for a caller
+        # that did not, so it still logs rather than loses the pages quietly.
+        try:
+            self.flush_batches()
+        except BatchUploadError as e:
+            logging.error("%s", e)

@@ -294,6 +294,23 @@ class Conductor(IO):
             source, data, content_type, include_query=include_query, verbose=verbose
         )
 
+    def batch_state(self, path: str) -> str:
+        if isinstance(self.storage, BatchClient):
+            return self.storage.batch_state(path)
+        return "stored"
+
+    def batch_error(self, path: str) -> str | None:
+        if isinstance(self.storage, BatchClient):
+            return self.storage.batch_error(path)
+        return None
+
+    def flush_batches(self, paths: typing.Iterable[str] | None = None) -> None:
+        # Not built just to be flushed: a run that never batched has no client.
+        if self._batch_upload and "storage" in self.__dict__:
+            storage = self.storage
+            if isinstance(storage, BatchClient):
+                storage.flush_batches(paths)
+
     def list_namespaces(self, ref: CloudStorage, namespace: str) -> list[str]:
         return self.storage.list_namespaces(ref, namespace)
 
