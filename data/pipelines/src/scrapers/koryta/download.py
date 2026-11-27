@@ -22,6 +22,7 @@ from tqdm import tqdm
 from entities.company import KorytaCompany
 from entities.person import Koryta as Person
 from entities.person import PageNote, PersonFact, PersonVote, is_pipeline_uid
+from scrapers.koryta.pg_export import configured_export
 from scrapers.stores import (
     CloudStorage,
     Context,
@@ -190,6 +191,9 @@ class FirestoreCollection(Pipeline):
         """
         List the objects from the specified Firestore collection and output entities.
         """
+        pg_export = configured_export()
+        if pg_export is not None:
+            return self.process_pg_export(pg_export)
         output = []
         # Every export sits under its own `date=<timestamp>/`, so naming the day
         # in the prefix lists that day's exports and nothing else. Listing the
@@ -221,6 +225,22 @@ class FirestoreCollection(Pipeline):
                 output.append(data)
 
         print(f"Finished processing collection: {self.collection_name}.")
+        return pd.DataFrame.from_records(output)
+
+    def process_pg_export(self, pg_export) -> pd.DataFrame:
+        """The collection from the export KORYTA_EXPORT names, whatever
+        `date` asks for: the night points it at tonight's. Rows as the
+        Firestore branch builds them - a stored `id` field wins over the
+        document id, as there, and `date` is the export's timestamp."""
+        output = []
+        for document_id, document in pg_export.documents(self.collection_name):
+            if self.type_name and document.get("type") != self.type_name:
+                continue
+            data = dict(document)
+            data["id"] = str(data.get("id", "") or document_id)
+            data["date"] = pg_export.exported_at
+            output.append(data)
+        print(f"Read {len(output)} {self.collection_name} from {pg_export.source}")
         return pd.DataFrame.from_records(output)
 
 

@@ -1,10 +1,17 @@
 import { connectAuthEmulator, getAuth } from "firebase/auth";
-import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 import { connectStorageEmulator, getStorage } from "firebase/storage";
 
 export default defineNuxtPlugin((_nuxtApp) => {
   const config = useRuntimeConfig();
+
+  const authEmulatorUrl = config.public.authEmulatorUrl as string;
+  if (!config.public.isLocal && authEmulatorUrl) {
+    connectAuthEmulator(getAuth(useFirebaseApp()), authEmulatorUrl, {
+      disableWarnings: true,
+    });
+    return;
+  }
 
   if (config.public.isLocal) {
     const app = useFirebaseApp();
@@ -16,10 +23,6 @@ export default defineNuxtPlugin((_nuxtApp) => {
     connectAuthEmulator(auth, "http://127.0.0.1:9099", {
       disableWarnings: true,
     });
-
-    // Firestore
-    const db = getFirestore(app, "koryta-pl");
-    connectFirestoreEmulator(db, "127.0.0.1", 8080);
 
     // Functions
     const functions = getFunctions(app);

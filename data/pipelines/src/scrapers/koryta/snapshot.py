@@ -24,6 +24,7 @@ from dataclasses import dataclass, field
 
 from leveldb_export import parse_leveldb_documents  # type: ignore
 
+from scrapers.koryta.pg_export import configured_export
 from scrapers.stores import CloudStorage, Context
 from scrapers.stores.file import DownloadableFile
 
@@ -50,6 +51,9 @@ def export_dates(ctx: Context) -> list[str]:
 
 def is_complete(ctx: Context, date: str) -> bool:
     """Whether the export taken at ``date`` finished writing."""
+    pg_export = configured_export()
+    if pg_export is not None:
+        return pg_export.exported_at == date
     # The metadata file sits directly inside the export directory and is named
     # after it, so this prefix matches it and nothing else - no need to list the
     # export's thousands of collection shards to find out.
@@ -68,6 +72,9 @@ def latest_export(ctx: Context, max_lookback: int = 5) -> str:
     run that is still in progress, which would otherwise read as a database that
     lost most of its documents.
     """
+    pg_export = configured_export()
+    if pg_export is not None:
+        return pg_export.exported_at
     dates = export_dates(ctx)
     if not dates:
         raise RuntimeError(f"No exports found under gs://.../{DUMP_PREFIX}")
@@ -93,6 +100,9 @@ def is_exported(ctx: Context, date: str, collection: str) -> bool:
     deployed. Firestore writes a directory, with a metadata file of its own,
     for every collection it was asked for.
     """
+    pg_export = configured_export()
+    if pg_export is not None:
+        return pg_export.exports(collection)
     ref = CloudStorage(
         prefix=f"{DUMP_PREFIX}/date={date}/all_namespaces/kind_{collection}/",
         binary=True,
@@ -115,6 +125,15 @@ def read_collection(ctx: Context, date: str, collection: str) -> list[dict]:
     )
 
     documents: list[dict] = []
+    pg_export = configured_export()
+    if pg_export is not None:
+        for document_id, stored in pg_export.documents(collection):
+            document = dict(stored)
+            if "id" in document:
+                document["stored_id"] = document["id"]
+            document["id"] = document_id
+            documents.append(document)
+        return documents
     for blob in ctx.io.list_files(ref):
         assert isinstance(blob, DownloadableFile)
         # Alongside the `output-N` shards each collection directory holds an

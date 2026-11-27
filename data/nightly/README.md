@@ -396,6 +396,41 @@ they cover everything it sent. It asks autopush, never koryta.pl (decision on
 signs in as it does for its uploads: the site lets the datascience group
 recount, as well as an admin.
 
+## When the site runs on Postgres
+
+The site moves its data to Postgres (docs/postgres/README.md). From the
+cut-over Firestore takes no writes, so `scheduledFirestoreExport` would copy a
+database nobody updates. Two steps change, and nothing else does:
+
+| Step            | Firestore (today)                                                          | Postgres                                                                                                                                         |
+| --------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 02:00 export    | `scheduledFirestoreExport` to `gs://koryta-pl-crawled/hostname=koryta.pl/` | `npx tsx scripts/pg/export-jsonl.ts --out <dir>` on the site's side (a Cloud Scheduler job, or a Coolify scheduled task on `tools`), then copied |
+| `export`        | waits for the newest folder with `.overall_export_metadata`               | with `KORYTA_EXPORT` set, waits for that export's `export.json`                                                                                   |
+| `compute_nodes` | the site reads every document and writes every node (93-146 s at scale 1) | the same request: the site refreshes its views and writes the batch fields (15 s at scale 1)                                                     |
+
+The export is `date=<ISO timestamp>/` with one `<collection>.jsonl.zst` per
+collection the Firestore export takes, each line `{"id", "data"}`, read in one
+snapshot, and `export.json` written last, with `exportedAt` and the rows of
+each collection. 6 s and 14.6 MB at production's size. Copy it under a prefix
+of its own, so that nothing reading the Firestore folders mistakes it for one:
+
+```
+DATABASE_URL=... npx tsx scripts/pg/export-jsonl.ts --out /tmp/export
+gcloud storage cp -r "/tmp/export/date=<stamp>" gs://koryta-pl-crawled/hostname=koryta.pl-pg/
+```
+
+`KORYTA_EXPORT` in `nightly.env` (`gs://…/date=<stamp>`, a local path or an
+`https://` URL) points every reader at it: `FirestoreCollection`, which the
+people, votes, notes, facts and companies frames come from, and
+`scrapers.koryta.snapshot`, which the invariants read. Same rows as from
+Firestore's export, except that timestamps are ISO strings rather than
+`datetime`, references such as `revision_id` are `revisions/<id>` paths
+(`reference_id` reads both), and the `{"0": …}` maps the migration turned
+back into lists are lists. Left unset, the night reads Firestore's export as
+before. The stamp changes every night, so whatever writes the export also
+writes the variable (or a fixed `…/latest` copy, which the export step then
+reads once its `export.json` is there).
+
 ## Runs asked for on the site
 
 The datascience group can ask, from a company's page or a person's, for what

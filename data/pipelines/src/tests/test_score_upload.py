@@ -11,8 +11,8 @@ from entities.composite import PersonScore
 from uploader import Args, ScoreUploader
 from util.firestore import (
     BATCH_LIMIT,
+    ApiVotes,
     Firestore,
-    RestVotes,
     vote_document,
     vote_id,
 )
@@ -127,111 +127,82 @@ class FakeResponse:
 
 
 class FakeSession:
-    """Records what the REST backend puts on the wire."""
+    """Records what the API backend puts on the wire."""
 
     def __init__(self, *responses: FakeResponse):
         self.headers: dict[str, str] = {}
         self.responses = list(responses)
-        self.calls: list[tuple[str, dict]] = []
+        self.calls: list[tuple[str, str, dict | None]] = []
+
+    def get(self, url, params=None, timeout=None):
+        self.calls.append(("GET", url, params))
+        return self.responses.pop(0) if self.responses else FakeResponse({})
 
     def post(self, url, json=None, timeout=None):
-        self.calls.append((url, json))
+        self.calls.append(("POST", url, json))
         return self.responses.pop(0) if self.responses else FakeResponse({})
 
 
-def rest_with(session: FakeSession) -> RestVotes:
-    votes = RestVotes.__new__(RestVotes)
-    votes.collection = "projects/p/databases/d/documents"
-    votes.documents = f"https://firestore.example/v1/{votes.collection}"
+def api_with(session: FakeSession) -> ApiVotes:
+    votes = ApiVotes.__new__(ApiVotes)
+    votes.url = "https://koryta.example/api/votes/pipeline"
     votes.session = session  # type: ignore[assignment]
     return votes
 
 
-class TestRestVotes:
-    """The wire format, which is the part `firestore.rules` is judging."""
+class TestApiVotes:
+    """The wire format /api/votes/pipeline takes."""
 
     def test_reads_a_models_stored_scores(self):
-        session = FakeSession(
-            FakeResponse(
-                [
-                    # The stream opens with a result that carries no document.
-                    {"readTime": "2026-08-16T00:00:00Z"},
-                    {
-                        "document": {
-                            "name": ".../votes/n1_pipeline-pagerank",
-                            "fields": {
-                                "nodeId": {"stringValue": "n1"},
-                                "userUid": {"stringValue": "pipeline-pagerank"},
-                                "categoryVotes": {
-                                    "mapValue": {
-                                        "fields": {"interesting": {"integerValue": "5"}}
-                                    }
-                                },
-                            },
-                        }
-                    },
-                ]
-            )
-        )
+        session = FakeSession(FakeResponse({"scores": {"n1": 5}}))
 
-        scores = rest_with(session).scores("pipeline-pagerank")
+        scores = api_with(session).scores("pipeline-pagerank")
 
         assert scores == {"n1": 5}
-        url, query = session.calls[0]
-        assert url.endswith(":runQuery")
-        condition = query["structuredQuery"]["where"]["fieldFilter"]
-        assert condition["field"]["fieldPath"] == "userUid"
-        assert condition["value"]["stringValue"] == "pipeline-pagerank"
+        assert session.calls == [
+            (
+                "GET",
+                "https://koryta.example/api/votes/pipeline",
+                {"model": "pipeline-pagerank"},
+            )
+        ]
 
     def test_writes_a_score_under_the_models_uid(self):
         session = FakeSession()
 
-        rest_with(session).apply(
+        api_with(session).apply(
             "pipeline-capture", [score("n1", 4, "pipeline-capture")], []
         )
 
-        url, body = session.calls[0]
-        assert url.endswith(":commit")
-        (write,) = body["writes"]
-        assert write["update"]["name"].endswith("/votes/n1_pipeline-capture")
-        assert write["update"]["fields"] == {
-            "nodeId": {"stringValue": "n1"},
-            "userUid": {"stringValue": "pipeline-capture"},
-            "categoryVotes": {
-                "mapValue": {"fields": {"interesting": {"integerValue": "4"}}}
-            },
+        method, _, body = session.calls[0]
+        assert method == "POST"
+        assert body == {
+            "model": "pipeline-capture",
+            "set": [{"nodeId": "n1", "score": 4}],
+            "retract": [],
         }
-        # Naming the leaf is what `merge=True` does: a vote this person cast in
-        # another category on the same document survives the write.
-        assert write["updateMask"]["fieldPaths"] == [
-            "nodeId",
-            "userUid",
-            "categoryVotes.interesting",
-        ]
 
-    def test_retracts_by_deleting(self):
+    def test_retracts_by_naming_the_node(self):
         session = FakeSession()
 
-        rest_with(session).apply("pipeline", [], ["gone"])
+        api_with(session).apply("pipeline", [], ["gone"])
 
-        _, body = session.calls[0]
-        assert body["writes"] == [
-            {"delete": "projects/p/databases/d/documents/votes/gone_pipeline"}
-        ]
+        _, _, body = session.calls[0]
+        assert body == {"model": "pipeline", "set": [], "retract": ["gone"]}
 
-    def test_commits_in_batches_firestore_will_accept(self):
+    def test_sends_in_batches(self):
         session = FakeSession()
         scores = [score(f"n{i}", 3, "pipeline") for i in range(BATCH_LIMIT + 1)]
 
-        rest_with(session).apply("pipeline", scores, [])
+        api_with(session).apply("pipeline", scores, [])
 
-        assert [len(body["writes"]) for _, body in session.calls] == [BATCH_LIMIT, 1]
+        assert [len(body["set"]) for _, _, body in session.calls] == [BATCH_LIMIT, 1]
 
     def test_a_refusal_names_the_claim_the_upload_needs(self):
         session = FakeSession(FakeResponse({"error": "denied"}, status_code=403))
 
         with pytest.raises(PermissionError, match="datascience"):
-            rest_with(session).scores("pipeline")
+            api_with(session).scores("pipeline")
 
 
 def uploader_with(**overrides) -> ScoreUploader:

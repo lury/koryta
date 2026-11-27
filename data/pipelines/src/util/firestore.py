@@ -9,13 +9,13 @@ Two ways in, because the two contexts hold different credentials:
   from the same browser login every other `--type` uses. A person's Google
   account holds no Firestore IAM role, only the deploy service accounts do, so
   the Admin SDK's application-default path answers `403 Missing or insufficient
-  permissions`. The REST API given an id token is evaluated against
-  `firestore.rules` instead, and those admit a member of the datascience group
-  writing a pipeline's votes.
+  permissions`. So the upload goes through the site's own API
+  (`/api/votes/pipeline`) with the id token, which admits a member of the
+  datascience group writing a pipeline's votes, on Firestore or on Postgres.
 
 Set `KORYTA_ID_TOKEN` to skip the browser login and present an id token
 directly - what a service holding its own datascience account would do, and
-what the tests do against the emulator. The login itself is passed in by the
+what a local stack on Postgres needs. The login itself is passed in by the
 caller: it lives in `stores.auth`, which this layer may not import.
 """
 
@@ -28,14 +28,13 @@ import requests
 from firebase_admin import firestore
 
 from entities.composite import PersonScore
+from util.cf_access import site_session
 
 #: Asks whoever is running the upload to sign in, and returns their id token.
 Login = typing.Callable[[], str]
 
 #: Firestore takes at most 500 operations in one batch, REST commit included.
 BATCH_LIMIT = 500
-
-FIRESTORE_ORIGIN = "https://firestore.googleapis.com"
 
 #: A full reconciliation reads back every vote the model holds, tens of
 #: thousands of documents in one response.
@@ -122,107 +121,49 @@ class AdminVotes:
                 print(f"  committed {written}...", file=sys.stderr)
 
 
-class RestVotes:
-    """Writes as the signed-in person, subject to `firestore.rules`.
+class ApiVotes:
+    """Writes as the signed-in person, through the site's own API.
 
-    The id token is what the rules see: `request.auth.token.datascience` has to
-    be true, and each document has to read as a model's own vote. Nothing here
-    can write a vote in a person's name, which is the point of going through
-    the rules rather than around them.
+    `GET` and `POST /api/votes/pipeline` (frontend/server/api/votes/) take the
+    id token and check what `firestore.rules` checked before: the
+    `datascience` claim, and a model uid with "pipeline" in it, writing only
+    the `interesting` leaf of `<nodeId>_<model>`. The same call works on either
+    store behind the site, Firestore or Postgres (decision on 2026-11-26).
     """
 
-    def __init__(
-        self,
-        project_id: str,
-        database_id: str,
-        id_token: str,
-        origin: str = FIRESTORE_ORIGIN,
-    ):
-        # A write names its document by resource path, which is not the URL the
-        # request goes to - Firestore refuses one given in place of the other.
-        self.collection = f"projects/{project_id}/databases/{database_id}/documents"
-        self.documents = f"{origin}/v1/{self.collection}"
-        self.session = requests.Session()
+    def __init__(self, endpoint: str, id_token: str):
+        self.url = f"{endpoint.rstrip('/')}/api/votes/pipeline"
+        self.session = site_session()
         self.session.headers["Authorization"] = f"Bearer {id_token}"
 
-    def document_name(self, document_id: str) -> str:
-        return f"{self.collection}/votes/{document_id}"
-
     def scores(self, model: str) -> dict[str, int]:
-        query: dict[str, typing.Any] = {
-            "structuredQuery": {
-                "from": [{"collectionId": "votes"}],
-                "where": {
-                    "fieldFilter": {
-                        "field": {"fieldPath": "userUid"},
-                        "op": "EQUAL",
-                        "value": {"stringValue": model},
-                    }
-                },
-            }
-        }
-        response = self.session.post(
-            f"{self.documents}:runQuery", json=query, timeout=QUERY_TIMEOUT_S
+        response = self.session.get(
+            self.url, params={"model": model}, timeout=QUERY_TIMEOUT_S
         )
         self.check(response, f"reading {model}'s votes")
-
-        existing = {}
-        for result in response.json():
-            fields = (result.get("document") or {}).get("fields")
-            if not fields:
-                # A result carrying no document is a keep-alive from the
-                # streamed response, not a vote.
-                continue
-            node_id = fields.get("nodeId", {}).get("stringValue")
-            categories = fields.get("categoryVotes", {}).get("mapValue", {})
-            interesting = categories.get("fields", {}).get("interesting")
-            if node_id and interesting is not None:
-                existing[node_id] = number(interesting)
-        return existing
+        return {
+            node_id: int(score)
+            for node_id, score in response.json().get("scores", {}).items()
+        }
 
     def apply(self, model: str, changed: list[PersonScore], stale: list[str]) -> None:
-        writes: list[dict] = [
-            {
-                "update": {
-                    "name": self.document_name(vote_id(score.node_id, model)),
-                    "fields": {
-                        "nodeId": {"stringValue": score.node_id},
-                        "userUid": {"stringValue": model},
-                        "categoryVotes": {
-                            "mapValue": {
-                                "fields": {
-                                    "interesting": {
-                                        "integerValue": str(int(score.score))
-                                    }
-                                }
-                            }
-                        },
-                    },
-                },
-                # The Admin SDK's `merge=True`, spelled out: naming the leaf
-                # rather than `categoryVotes` leaves a vote in another category
-                # on the same document alone.
-                "updateMask": {
-                    "fieldPaths": [
-                        "nodeId",
-                        "userUid",
-                        "categoryVotes.interesting",
-                    ]
-                },
-            }
-            for score in changed
+        writes: list[tuple[str, int | None]] = [
+            (score.node_id, int(score.score)) for score in changed
         ]
-        writes += [
-            {"delete": self.document_name(vote_id(node_id, model))} for node_id in stale
-        ]
+        writes += [(node_id, None) for node_id in stale]
 
         written = 0
         for chunk in batched(writes):
-            response = self.session.post(
-                f"{self.documents}:commit",
-                json={"writes": chunk},
-                timeout=COMMIT_TIMEOUT_S,
-            )
+            body = {
+                "model": model,
+                "set": [
+                    {"nodeId": node_id, "score": score}
+                    for node_id, score in chunk
+                    if score is not None
+                ],
+                "retract": [node_id for node_id, score in chunk if score is None],
+            }
+            response = self.session.post(self.url, json=body, timeout=COMMIT_TIMEOUT_S)
             self.check(response, f"writing {len(chunk)} of {model}'s votes")
             written += len(chunk)
             if written < len(writes):
@@ -234,20 +175,13 @@ class RestVotes:
             return
         if response.status_code == 403:
             raise PermissionError(
-                f"Firestore refused {what}: {response.text}\n"
+                f"The site refused {what}: {response.text}\n"
                 "Uploading scores needs the `datascience` claim on the account "
                 "you logged in as - the same one /ekstrakcje requires."
             )
         raise RuntimeError(
-            f"Firestore failed {what}: {response.status_code} {response.text}"
+            f"The site failed {what}: {response.status_code} {response.text}"
         )
-
-
-def number(value: dict) -> int:
-    """A Firestore REST value back into the integer a score is stored as."""
-    if "integerValue" in value:
-        return int(value["integerValue"])
-    return int(float(value["doubleValue"]))
 
 
 def emulator_project_id() -> str:
@@ -268,7 +202,11 @@ def open_votes(args, login: Login | None = None) -> VoteStore:
     database_id = getattr(args, "database", "koryta-pl")
     project_id = getattr(args, "project", None)
 
-    if args.endpoint.startswith("http://localhost"):
+    # A local stack on Postgres has no emulator to write to: given a token,
+    # it goes through the API like a deployed site.
+    if args.endpoint.startswith("http://localhost") and not os.environ.get(
+        "KORYTA_ID_TOKEN"
+    ):
         os.environ["FIRESTORE_EMULATOR_HOST"] = "localhost:8080"
         return AdminVotes(project_id or emulator_project_id(), database_id)
 
@@ -280,7 +218,7 @@ def open_votes(args, login: Login | None = None) -> VoteStore:
                 "KORYTA_ID_TOKEN, or hand this call a way to log in."
             )
         id_token = login()
-    return RestVotes(project_id or "koryta-pl", database_id, id_token)
+    return ApiVotes(args.endpoint, id_token)
 
 
 class Firestore:

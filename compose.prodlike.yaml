@@ -1,0 +1,91 @@
+# The site as production runs it, on a laptop: the production build on Node 24
+# with App Hosting's 2 GiB (frontend/apphosting.yaml), against the emulators.
+#
+#   docker compose -f compose.prodlike.yaml up --build -d
+#   (cd frontend && npm run seed && npm run seed:large -- --scale 1)
+#   (cd frontend && npm run seed:large -- --recount)
+#   open http://localhost:3000
+#
+# Postgres beside them, sized like the smallest Cloud SQL tier with 2 GiB
+# (docs/postgres/README.md); the app reads and writes there alone. To fill it
+# from the emulator's Firestore:
+#   (cd frontend && DATABASE_URL=postgres://postgres:dev@127.0.0.1:5433/koryta \
+#     npm run db:from-firestore -- --project demo-koryta-pl)
+#
+# The app shares the emulators' network namespace: nuxt.config.ts pins the
+# emulator hosts to 127.0.0.1, for the server and the browser alike.
+name: koryta-prodlike
+
+services:
+  emulators:
+    build:
+      context: .
+      dockerfile: docker/prodlike/Dockerfile
+      target: emulators
+    ports:
+      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:9099:9099"
+      - "127.0.0.1:4000:4000"
+    volumes:
+      - emulator-data:/data
+    stop_grace_period: 2m
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/prodlike/Dockerfile
+      target: app
+    network_mode: service:emulators
+    # restart: the app lives in the emulators' network namespace, which a
+    # restart of the emulators replaces; without it the app keeps a dead one.
+    depends_on:
+      emulators:
+        condition: service_started
+        restart: true
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://postgres:dev@postgres:5432/koryta
+    mem_limit: 2g
+    cpus: 1.0
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:17.7-bookworm
+    user: postgres
+    environment:
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: koryta
+    ports:
+      - "127.0.0.1:5433:5432"
+    # 2 GiB: a quarter for shared buffers, the planner told that about 70%
+    # of it is cache, and every sort that spills to disk logged.
+    command:
+      - postgres
+      - -c
+      - shared_buffers=512MB
+      - -c
+      - effective_cache_size=1400MB
+      - -c
+      - work_mem=32MB
+      - -c
+      - maintenance_work_mem=128MB
+      - -c
+      - max_connections=60
+      - -c
+      - log_temp_files=0
+    shm_size: 256m
+    mem_limit: 2g
+    cpus: 1.0
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "koryta"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  emulator-data:
+  pgdata:

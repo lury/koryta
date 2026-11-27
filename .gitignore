@@ -41,3 +41,6 @@ pnpm-debug.log*
 **/.claude/*
 !**/.claude/skills/
 !**/.claude/rules/
+
+# The public copy compose.coolify.yaml mounts for SEED_MODE=public.
+.seed-public

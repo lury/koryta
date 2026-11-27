@@ -128,6 +128,7 @@ dependencies = [
     "pymupdf==1.28.2",
     "pypdfium2==5.13.0",
     "rapidocr-onnxruntime==1.4.4",
+    "zstandard>=0.23 ; python_full_version < '3.14'",
 ]
 
 [project.scripts]
@@ -145,6 +146,7 @@ koryta_scrape_krs_paid = "jobs.krs_scrape_paid:main"
 koryta_scrape_krs_updates = "jobs.krs_bulletin:main"
 koryta_krs_register_owners = "jobs.krs_register_owners:main"
 koryta_krs_odpis = "jobs.krs_odpis:main"
+koryta_pkw_postgres = "jobs.pkw_postgres:main"
 koryta_krs_nip = "jobs.krs_nip:main"
 koryta_people_import = "jobs.people_import:main"
 koryta_company_import = "jobs.company_import:main"
@@ -311,6 +313,8 @@ layers = ["jobs", "analysis", "stores", "scrapers", "util", "entities"]
 ignore_imports = [
     "scrapers.krs.scrape -> analysis.*",
     "scrapers.stores -> stores.config",
+    # Where KORYTA_EXPORT points, and its bytes.
+    "scrapers.koryta.pg_export -> stores.pg_export",
     # PeopleAffairTags chains the ArticlePersonMentions output as a pipeline
     # source instead of hardcoding its jsonl path.
     "scrapers.article.pipelines.people_affair_tags_pipeline -> analysis.article_person_mentions",
@@ -363,6 +367,8 @@ ignore_imports = [
     "entities.util -> urllib",
     "scrapers.stores -> io",
     "scrapers.stores -> stores.config",
+    # Where KORYTA_EXPORT points, and its bytes.
+    "scrapers.koryta.pg_export -> stores.pg_export",
     # Joining local versioned output paths for --force-download-shared-cache
     "scrapers.stores -> os",
     "scrapers.cru.config -> os",

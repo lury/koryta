@@ -117,6 +117,12 @@ export default defineNuxtConfig({
     declarationsDailyPublishLimit: 200,
     public: {
       isLocal,
+      /** The Firebase Auth emulator the browser signs in with, for a demo
+       * without a Firebase project of its own (compose.coolify.yaml, profile
+       * `emulator-auth`): NUXT_PUBLIC_AUTH_EMULATOR_URL, e.g.
+       * http://127.0.0.1:9199. The server's side is FIREBASE_AUTH_EMULATOR_HOST.
+       * Empty: the real project. */
+      authEmulatorUrl: "",
       /** The published extension's id, so `/rozszerzenie` knows who to hand a
        * token to. Empty until it is listed, which the page says out loud
        * rather than failing silently. */
@@ -147,6 +153,15 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@nuxtjs/plausible",
   ],
+
+  content: {
+    // The production server's posts in an in-memory SQLite, filled from the
+    // dump in the bundle on the first query. The default file sits next to
+    // the bundle, which the container's user cannot write (`USER node`, code
+    // owned by root), and /api/blog answered 500 there. Dev keeps its own
+    // local database.
+    database: { type: "sqlite", filename: ":memory:" },
+  },
 
   site: {
     url: siteUrl,
@@ -291,9 +306,17 @@ export default defineNuxtConfig({
     auth: {
       enabled: true,
     },
-    appCheck: {
-      enabled: !isLocal,
-    },
+    // Left out for a Firebase project without App Check, such as the demo's
+    // (docs/postgres/README.md): nuxt-vuefire installs its plugin whenever
+    // the key is present, whatever `enabled` says. Decided at build time.
+    appCheck:
+      process.env.FIREBASE_APP_CHECK === "false"
+        ? undefined
+        : { enabled: !isLocal },
+    // The web config below is the default. A deployment against another
+    // Firebase project overrides it at runtime, without a rebuild, with
+    // NUXT_PUBLIC_VUEFIRE_CONFIG_API_KEY, _AUTH_DOMAIN, _PROJECT_ID and
+    // _APP_ID (runtimeConfig.public.vuefire.config).
     config: {
       apiKey: "AIzaSyD54RK-k0TIcJtVbZerx2947XiduteqvaM",
       authDomain:

@@ -1,0 +1,165 @@
+# koryta.pl on a server of our own, on Postgres, for Coolify's "Docker
+# Compose" resource (docs/postgres/README.md, "Demo na własnym serwerze").
+#
+# Coolify routes the domain set on the `app` service to its port 3000
+# through its own Traefik; nothing here publishes a host port. Secrets come
+# from the resource's environment variables, never from this file:
+#   NUXT_PUBLIC_VUEFIRE_CONFIG_API_KEY / _AUTH_DOMAIN / _PROJECT_ID / _APP_ID
+#                           the Firebase project people sign in with
+#   CF_ACCESS_TEAM_DOMAIN, CF_ACCESS_AUD
+#                           refuse requests without Cloudflare Access's token
+#   SEED_MODE=public|seed   fill an empty database (see `migrate` below)
+#
+# Without a Firebase project: `--profile emulator-auth` starts the Auth
+# emulator (`auth`) with user@koryta.pl and admin@koryta.pl / password123, and
+#   FIREBASE_AUTH_EMULATOR_HOST=auth:9099        the server's side
+#   NUXT_PUBLIC_AUTH_EMULATOR_URL=http://<host>  the browser's side
+#   NUXT_PUBLIC_VUEFIRE_CONFIG_PROJECT_ID=demo-koryta-pl
+# point the site at it. A test deployment only: anyone who reaches the
+# emulator can mint any account.
+#
+# Locally: docker compose -f compose.coolify.yaml up --build
+# (SERVICE_PASSWORD_POSTGRES and the Firebase values default to placeholders).
+
+services:
+  postgres:
+    image: postgres:17.7-bookworm
+    user: postgres
+    environment:
+      POSTGRES_USER: koryta
+      POSTGRES_PASSWORD: ${SERVICE_PASSWORD_POSTGRES:-change-me}
+      POSTGRES_DB: koryta
+    # Sized for a shared host with 64 GB (decision on 2026-11-26); every
+    # setting can be changed from the resource's variables. On Cloud SQL the
+    # same four are database flags; max_worker_processes needs a restart.
+    command:
+      - postgres
+      - -c
+      - shared_buffers=${PG_SHARED_BUFFERS:-4GB}
+      - -c
+      - effective_cache_size=${PG_EFFECTIVE_CACHE_SIZE:-12GB}
+      - -c
+      - work_mem=${PG_WORK_MEM:-64MB}
+      - -c
+      - maintenance_work_mem=${PG_MAINTENANCE_WORK_MEM:-1GB}
+      - -c
+      - max_connections=${PG_MAX_CONNECTIONS:-100}
+      - -c
+      - log_temp_files=0
+      # Parallel query: the nightly refreshes and the counts of the lists
+      # scan millions of rows (0941_parallel_safe_reads.sql). Workers per
+      # query at a quarter of the CPUs, all of them at the CPUs.
+      - -c
+      - max_worker_processes=${PG_MAX_WORKER_PROCESSES:-8}
+      - -c
+      - max_parallel_workers=${PG_MAX_PARALLEL_WORKERS:-4}
+      - -c
+      - max_parallel_workers_per_gather=${PG_MAX_PARALLEL_WORKERS_PER_GATHER:-2}
+      - -c
+      - max_parallel_maintenance_workers=${PG_MAX_PARALLEL_MAINTENANCE_WORKERS:-2}
+    shm_size: ${PG_SHM_SIZE:-1g}
+    mem_limit: ${PG_MEM_LIMIT:-16g}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "koryta", "-d", "koryta"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  # Once per deploy: migrations, then - into an empty database only, when
+  # SEED_MODE says so - the data. `public` reads the public copy of koryta.pl
+  # (nodes-*.jsonl.zst, edges.jsonl.zst) from SEED_PUBLIC_HOST_DIR on the host
+  # and tops it up with synthetic drafts; `seed` is synthetic throughout.
+  migrate:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+      target: tools
+    environment:
+      DATABASE_URL: postgres://koryta:${SERVICE_PASSWORD_POSTGRES:-change-me}@postgres:5432/koryta
+      SEED_MODE: ${SEED_MODE:-none}
+      SEED_SCALE: ${SEED_SCALE:-1}
+      SEED_FORCE: ${SEED_FORCE:-false}
+      SEED_PUBLIC_DIR: /seed/public
+    volumes:
+      - ${SEED_PUBLIC_HOST_DIR:-./.seed-public}:/seed/public:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+      target: app
+    environment:
+      # Coolify: route this service's domain to port 3000.
+      SERVICE_FQDN_APP_3000: ${SERVICE_FQDN_APP_3000:-}
+      DATABASE_URL: postgres://koryta:${SERVICE_PASSWORD_POSTGRES:-change-me}@postgres:5432/koryta
+      PG_POOL_MAX: ${PG_POOL_MAX:-10}
+      NUXT_PUBLIC_VUEFIRE_CONFIG_API_KEY: ${NUXT_PUBLIC_VUEFIRE_CONFIG_API_KEY:-placeholder-api-key}
+      NUXT_PUBLIC_VUEFIRE_CONFIG_AUTH_DOMAIN: ${NUXT_PUBLIC_VUEFIRE_CONFIG_AUTH_DOMAIN:-placeholder.firebaseapp.com}
+      NUXT_PUBLIC_VUEFIRE_CONFIG_PROJECT_ID: ${NUXT_PUBLIC_VUEFIRE_CONFIG_PROJECT_ID:-placeholder}
+      NUXT_PUBLIC_VUEFIRE_CONFIG_APP_ID: ${NUXT_PUBLIC_VUEFIRE_CONFIG_APP_ID:-placeholder-app-id}
+      # Tokens are checked against Google's public keys for this project;
+      # no service account is needed for that.
+      GOOGLE_CLOUD_PROJECT: ${NUXT_PUBLIC_VUEFIRE_CONFIG_PROJECT_ID:-placeholder}
+      KORYTA_NOINDEX: ${KORYTA_NOINDEX:-true}
+      # Pages get their X-Robots-Tag from the robots module, after the
+      # middleware: without this a page said "index, follow".
+      NUXT_SITE_INDEXABLE: ${NUXT_SITE_INDEXABLE:-false}
+      CF_ACCESS_TEAM_DOMAIN: ${CF_ACCESS_TEAM_DOMAIN:-}
+      CF_ACCESS_AUD: ${CF_ACCESS_AUD:-}
+      SENTRY_ENABLED: "false"
+      # Profile `emulator-auth` only (see the top of this file).
+      FIREBASE_AUTH_EMULATOR_HOST: ${FIREBASE_AUTH_EMULATOR_HOST:-}
+      NUXT_PUBLIC_AUTH_EMULATOR_URL: ${NUXT_PUBLIC_AUTH_EMULATOR_URL:-}
+    expose:
+      - "3000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    mem_limit: ${APP_MEM_LIMIT:-4g}
+    restart: unless-stopped
+
+  # --- optional: the Firebase Auth emulator, for a test deployment without
+  # a Firebase project (profile `emulator-auth`, see the top of this file) ---
+  auth:
+    profiles: ["emulator-auth"]
+    build:
+      context: .
+      dockerfile: docker/prodlike/Dockerfile
+      target: emulators
+    command: ["sh", "/usr/local/bin/auth-emulator"]
+    volumes:
+      - ./docker/app/auth-emulator.sh:/usr/local/bin/auth-emulator:ro
+    expose:
+      - "9099"
+    mem_limit: ${AUTH_MEM_LIMIT:-2g}
+    restart: unless-stopped
+
+  # --- optional, not started unless asked for: the pipelines ---------------
+  # Their uploads go through /api/ingest/* and /api/votes/pipeline, which
+  # write to Postgres here. The schedule is set up in Coolify (Scheduled
+  # Tasks: `uv run python -m ...` in this container).
+  pipelines:
+    profiles: ["pipelines"]
+    build:
+      context: data/pipelines
+      dockerfile: Dockerfile
+    # Uploads go to the public domain (`--endpoint https://<domain>`), with
+    # the Access service token below: with CF_ACCESS_* set on `app`, a request
+    # from inside the network without Cloudflare's token is refused too.
+    environment:
+      CF_ACCESS_CLIENT_ID: ${CF_ACCESS_CLIENT_ID:-}
+      CF_ACCESS_CLIENT_SECRET: ${CF_ACCESS_CLIENT_SECRET:-}
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: "no"
+
+volumes:
+  pgdata:

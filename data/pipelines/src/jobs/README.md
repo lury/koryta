@@ -105,6 +105,23 @@ rejestr.io's for every company where the odpis is the newer of the two, on the w
 1. Writes every answer to the crawl bucket (`hostname=wyszukiwarka-krs-api.ms.gov.pl/api/wyszukiwarka/krs/nip/`)
 1. Writes a table of the entries found - KRS, register, NIP, name, city - that `krs_odpis --krs-file` reads as it is
 
+## pkw_postgres
+`koryta_pkw_postgres [--dsn …] [--no-refresh]`, DSN from `KORYTA_PKW_DSN`.
+
+1. Reads every list `scrapers.pkw.sources` names (first rounds and the 2024 run-offs), the way PeoplePKW reads it,
+   and COPYs it into `pkw_raw.row`: one row of a list per row, `{header: cell}` as jsonb, the ADR's id + document
+   shape. A list whose file has the sha256 and the reader it was loaded with is skipped without being opened;
+   `pkw_raw.load_log` says, per list and run, `loaded`, `unchanged` or `failed`
+1. Writes what each column means (`pkw_raw.header_rule`: `CSV_HEADERS` with the list's own `headers`, the processor
+   by name) and the lookups the rules make (okręgi, seats, gmina kinds) - code, so rewritten every time. A processor
+   with no SQL port stops the load
+1. Refreshes `pkw.mapped` and `pkw.candidacy` (`sql/02_pkw_candidacy.sql`): `process_csv`, `extract_data`,
+   `with_runoff` and `local_office` in SQL. `pkw.candidacy` is PeoplePKW's output, one row per candidacy, in its order
+   (`n`), with the list and row it came from
+
+`PeoplePKWPostgres` (`analysis/people_pkw_postgres.py`) reads it as a pipeline source, a pipeline that reads
+PeoplePKW today declares it instead; `stores.pkw_postgres.read_candidacies` is the same read for a script.
+
 ## nightly
 1. Runs the night on the koryta-nightly VM, one step after another: the compressor, then waits for tonight's 02:00 export, then `krs_scrape_free`, `krs_register_owners --new-registrations`, `krs_odpis --queue --missing site`, `krs_scrape_paid --scope fallback --max-calls 50`, the held pipelines whose code changed, every pipeline rebuilt but the held ones (backed up as `main`), the pipeline tests, the output checks, the invariants, the companies the night's people name that the export has no page for (`people_import` as the people step runs it, with `--companies-only`), `people_import --scope priority --max-uploads 100 --max-odpis-only-current 10 --max-rejestrio-current 50 --max-published 10`, `company_import --max-uploads 1000 --max-renames 0` and `score_import`
 1. The held pipelines are the ones whose sources change with a dump or an election (`HELD`). Each night the six of them it can rebuild in minutes are compared, by the git hashes of the paths they are built from, with what their last build on the VM recorded in its state dir, and each that differs - or has no record - is rebuilt alone with `koryta <Name> --refresh <Name>` before the reprocess, which still holds it. One that fails keeps the copy on disk and is tried again the next night, without failing the night or holding the people

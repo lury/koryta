@@ -1,0 +1,34 @@
+# Postgres for local development (docs/postgres/README.md).
+#
+#   docker compose up -d postgres
+#   cd frontend
+#   export DATABASE_URL=postgres://postgres:dev@127.0.0.1:5432/koryta
+#   npm run db:migrate && npm run db:seed       # SEED_SCALE=1 for production size
+#   npm run dev:local                            # Auth emulator, seed, nuxt dev
+name: koryta-dev
+
+services:
+  postgres:
+    image: postgres:17.7-bookworm
+    user: postgres
+    environment:
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: koryta
+    ports:
+      - "127.0.0.1:${PG_PORT:-5432}:5432"
+    command:
+      - postgres
+      - -c
+      - log_temp_files=0
+      - -c
+      - work_mem=32MB
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "koryta"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:

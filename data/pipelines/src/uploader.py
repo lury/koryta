@@ -22,6 +22,7 @@ from scrapers.map.jst import SKARB_PANSTWA
 from scrapers.stores import ProcessPolicy, iterate_pipeline_dict
 from stores.job_runs import ERRORS_KEPT, FinalState, JobRun
 from stores.koryta_login import TokenSource, token_source
+from util.cf_access import site_session
 from util.firestore import Firestore
 
 #: How many kinds of unplaced candidacy to name in the closing report. Enough
@@ -505,7 +506,9 @@ class Uploader:
         # until a request needs a token, so building an uploader signs in to
         # nothing.
         self.tokens = tokens if tokens is not None else token_source(args.endpoint)
-        self.session = session if session is not None else requests.Session()
+        # With the Cloudflare Access service token where the site is behind
+        # Access (util/cf_access.py).
+        self.session = session if session is not None else site_session()
         #: Off once a renewed token was refused as well, or could not be had:
         #: from then on a 401 is the site refusing this account, and renewing
         #: for every person would mint - or ask for - one per request.

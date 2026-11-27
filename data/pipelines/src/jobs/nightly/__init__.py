@@ -222,8 +222,10 @@ from datetime import UTC, datetime, timedelta
 from uuid_extensions import uuid7str  # type: ignore
 
 from entities.priority_groups import parse_group, repeated
+from scrapers.koryta.pg_export import open_export
 from stores.config import DOWNLOADED_DIR, PROJECT_ROOT, VERSIONED_DIR
 from stores.job_runs import FinalState, JobRun
+from stores.pg_export import export_source
 from stores.storage import CRAWLED_BUCKET, SHARED_BUCKET, Client, warsaw_tz
 
 JOB = "nightly"
@@ -875,7 +877,15 @@ def newest_export(client: Client, lookback: int = 5) -> str | None:
     Lists the folders under the export prefix, one level deep, and asks each of
     the newest few for the marker Firestore writes last (`snapshot.is_complete`
     asks the same thing through a pipeline context).
+
+    With KORYTA_EXPORT set, the export from Postgres it names, once its
+    `export.json` is there (`scrapers.koryta.pg_export`).
     """
+    if export_source() is not None:
+        try:
+            return open_export(export_source()).exported_at
+        except FileNotFoundError:
+            return None
     bucket = client.storage_client.bucket(CRAWLED_BUCKET)
     listing = bucket.list_blobs(prefix=EXPORT_PREFIX, delimiter="/")
     for _ in listing:  # The prefixes are filled in as the pages are read.
