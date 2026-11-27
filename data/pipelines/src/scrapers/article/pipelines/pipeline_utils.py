@@ -1,7 +1,6 @@
 import argparse
 import io
 import json
-import tarfile
 from collections import defaultdict
 from functools import cache
 from pathlib import Path
@@ -10,6 +9,7 @@ from typing import Generator, Iterator
 from entities.util import NormalizedParse
 from scrapers.stores import Context, DoneUrl
 from scrapers.stores.file import GCSBlob
+from util.zst import open_tar_stream
 
 _GCS_PREFIX = "gs://koryta-pl-crawled/"
 
@@ -31,34 +31,43 @@ def _member_paths(url: str) -> list[str]:
     return list(dict.fromkeys(names))
 
 
-def _find_member(members: dict, url: str):
-    for name in _member_paths(url):
-        if name in members:
-            return members[name]
-    return None
+def _read_archive(raw: bytes, urls: list[DoneUrl]) -> Iterator[tuple[str, bytes]]:
+    """(url, page) for each of `urls` the archive holds, in archive order.
+
+    A `.tar.zst` or a `.tar.gz` (before 2026-11-27), read as a stream.
+    """
+    wanted: dict[str, list[str]] = defaultdict(list)
+    for done in urls:
+        for name in _member_paths(done.url):
+            wanted[name].append(done.url)
+    found: set[str] = set()
+    with open_tar_stream(io.BytesIO(raw)) as tar:
+        for member in tar:
+            for url in wanted.get(member.name, ()):
+                if url in found:
+                    continue
+                f = tar.extractfile(member)
+                if f is None:
+                    continue
+                found.add(url)
+                yield url, f.read()
 
 
 def read_html_from_storage(ctx: Context, done_urls: list[DoneUrl]) -> dict[str, bytes]:
-    """Download tar.gz files from GCS and extract HTML for each URL in memory.
+    """Download the crawl archives from GCS and extract HTML for each URL in memory.
 
-    Groups by storage_path so each tar.gz is downloaded only once.
+    Groups by storage_path so each archive is downloaded only once.
     Returns a mapping of url → html bytes.
     """
-    by_path: dict[str, list[DoneUrl]] = defaultdict(list)
-    for done in done_urls:
-        if done.storage_path:
-            by_path[done.storage_path].append(done)
-
     html_by_url: dict[str, bytes] = {}
     for url, html in iter_html_from_storage(ctx, done_urls):
         html_by_url[url] = html
     return html_by_url
 
 
-def iter_html_by_tar(
+def _archives(
     ctx: Context, done_urls: list[DoneUrl]
-) -> "Generator[tuple[str, dict[str, bytes]], None, None]":
-    """Yield (storage_path, {url: html_bytes}) one tar.gz at a time."""
+) -> Iterator[tuple[str, list[DoneUrl], bytes]]:
     by_path: dict[str, list[DoneUrl]] = defaultdict(list)
     for done in done_urls:
         if done.storage_path:
@@ -70,17 +79,16 @@ def iter_html_by_tar(
             raw = ctx.io.read_data(GCSBlob(blob_name=blob_name)).read_bytes()
         except Exception:
             continue
-        html_by_url: dict[str, bytes] = {}
+        yield storage_path, urls, raw
+
+
+def iter_html_by_tar(
+    ctx: Context, done_urls: list[DoneUrl]
+) -> "Generator[tuple[str, dict[str, bytes]], None, None]":
+    """Yield (storage_path, {url: html_bytes}) one archive at a time."""
+    for storage_path, urls, raw in _archives(ctx, done_urls):
         try:
-            with tarfile.open(fileobj=io.BytesIO(raw), mode="r:gz") as tar:
-                members = {m.name: m for m in tar.getmembers()}
-                for done in urls:
-                    member = _find_member(members, done.url)
-                    if member is None:
-                        continue
-                    f = tar.extractfile(member)
-                    if f is not None:
-                        html_by_url[done.url] = f.read()
+            html_by_url = dict(_read_archive(raw, urls))
         except Exception:
             continue
         if html_by_url:
@@ -90,28 +98,10 @@ def iter_html_by_tar(
 def iter_html_from_storage(
     ctx: Context, done_urls: list[DoneUrl]
 ) -> "Generator[tuple[str, bytes], None, None]":
-    """Yield (url, html_bytes) one tar.gz at a time for incremental processing."""
-    by_path: dict[str, list[DoneUrl]] = defaultdict(list)
-    for done in done_urls:
-        if done.storage_path:
-            by_path[done.storage_path].append(done)
-
-    for storage_path, urls in by_path.items():
-        blob_name = storage_path.removeprefix(_GCS_PREFIX)
+    """Yield (url, html_bytes) one archive at a time for incremental processing."""
+    for _, urls, raw in _archives(ctx, done_urls):
         try:
-            raw = ctx.io.read_data(GCSBlob(blob_name=blob_name)).read_bytes()
-        except Exception:
-            continue
-        try:
-            with tarfile.open(fileobj=io.BytesIO(raw), mode="r:gz") as tar:
-                members = {m.name: m for m in tar.getmembers()}
-                for done in urls:
-                    member = _find_member(members, done.url)
-                    if member is None:
-                        continue
-                    f = tar.extractfile(member)
-                    if f is not None:
-                        yield done.url, f.read()
+            yield from _read_archive(raw, urls)
         except Exception:
             continue
 

@@ -3,7 +3,6 @@ package processor
 import (
 	"archive/tar"
 	"bytes"
-	"compress/gzip"
 	"context"
 	"errors"
 	"fmt"
@@ -91,7 +90,7 @@ func TestProcessHostnameIncremental(t *testing.T) {
 	}
 
 	// Verify that an incremental dump was created
-	destPath := "hostname=example.com/from=2025-01-01/date=2026-05-27.tar.gz"
+	destPath := "hostname=example.com/from=2025-01-01/date=2026-05-27.tar.zst"
 	exists, err := mockDst.ObjectExists(ctx, destPath)
 	if err != nil {
 		t.Fatalf("ObjectExists failed: %v", err)
@@ -102,7 +101,7 @@ func TestProcessHostnameIncremental(t *testing.T) {
 
 	// And that it reads back whole, the way the Python mirror opens it:
 	// index.txt first, then every file up to yesterday and nothing from today.
-	members := readTarGz(t, mockDst.file(destPath))
+	members := readArchive(t, mockDst.file(destPath))
 	if len(members) == 0 || members[0].name != "index.txt" {
 		t.Fatalf("Expected index.txt as the first member, got %v", members)
 	}
@@ -128,14 +127,15 @@ type tarMember struct {
 	name, content string
 }
 
-// readTarGz unpacks an archive, failing the test unless both the tar and the
-// gzip stream around it are complete.
-func readTarGz(t *testing.T, archive []byte) []tarMember {
+// readArchive unpacks a tar.zst, failing the test unless both the tar and the
+// zstd stream around it are complete.
+func readArchive(t *testing.T, archive []byte) []tarMember {
 	t.Helper()
-	gr, err := gzip.NewReader(bytes.NewReader(archive))
+	gr, err := newArchiveReader(bytes.NewReader(archive), "a"+archiveExt)
 	if err != nil {
-		t.Fatalf("Archive is not gzip: %v", err)
+		t.Fatalf("Archive is not zstd: %v", err)
 	}
+	defer gr.Close()
 	tr := tar.NewReader(gr)
 	var members []tarMember
 	for {
@@ -152,9 +152,9 @@ func readTarGz(t *testing.T, archive []byte) []tarMember {
 		}
 		members = append(members, tarMember{hdr.Name, string(content)})
 	}
-	// Read on to the gzip trailer, which is where its checksum is verified.
+	// Read on to the end of the frame, which is where its checksum is verified.
 	if _, err := io.Copy(io.Discard, gr); err != nil {
-		t.Fatalf("Archive's gzip stream is incomplete: %v", err)
+		t.Fatalf("Archive's zstd stream is incomplete: %v", err)
 	}
 	return members
 }
@@ -284,7 +284,7 @@ func TestProcessHostnameIncremental_CreatesWhenNewData(t *testing.T) {
 	if len(mockDst.WriteTracker) != 1 {
 		t.Errorf("Expected 1 tarball to be created, got %d", len(mockDst.WriteTracker))
 	}
-	expected := "hostname=example.com/from=2026-05-25/date=2026-05-27.tar.gz"
+	expected := "hostname=example.com/from=2026-05-25/date=2026-05-27.tar.zst"
 	if mockDst.WriteTracker[0] != expected {
 		t.Errorf("Expected dump %s, got %s", expected, mockDst.WriteTracker[0])
 	}
@@ -375,7 +375,7 @@ func TestFailedDownloadPublishesNothing(t *testing.T) {
 		t.Fatalf("Expected the read error, got %v", err)
 	}
 
-	destPath := "hostname=example.com/from=2025-01-01/date=2026-05-27.tar.gz"
+	destPath := "hostname=example.com/from=2025-01-01/date=2026-05-27.tar.zst"
 	if exists, _ := mockDst.ObjectExists(ctx, destPath); exists {
 		t.Errorf("A partial archive was published as %s", destPath)
 	}
@@ -460,7 +460,7 @@ func TestFailedRunDoesNotMoveTheChainForward(t *testing.T) {
 		t.Fatalf("Next run failed: %v", err)
 	}
 
-	want := "hostname=example.com/from=2026-05-25/date=2026-05-28.tar.gz"
+	want := "hostname=example.com/from=2026-05-25/date=2026-05-28.tar.zst"
 	if written := mockDst.written(); !reflect.DeepEqual(written, []string{want}) {
 		t.Fatalf("Expected only %s to be written, got %v", want, written)
 	}
@@ -469,7 +469,7 @@ func TestFailedRunDoesNotMoveTheChainForward(t *testing.T) {
 		"example.com/date=2026-05-27.json": "day27",
 		"example.com/date=2026-05-28.json": "day28",
 	}
-	if got := filesIn(t, readTarGz(t, mockDst.file(want))); !reflect.DeepEqual(got, wantFiles) {
+	if got := filesIn(t, readArchive(t, mockDst.file(want))); !reflect.DeepEqual(got, wantFiles) {
 		t.Errorf("Archive holds %v, want %v", got, wantFiles)
 	}
 }
@@ -482,7 +482,7 @@ func TestWriteErrorStopsTheDownloads(t *testing.T) {
 	mockSrc := NewMockStorageClient()
 	mockDst := NewMockStorageClient()
 
-	// Incompressible and far more than gzip buffers, so the writer is handed
+	// Incompressible and far more than zstd buffers, so the writer is handed
 	// bytes, and fails, while files are still being appended.
 	rng := rand.NewChaCha8([32]byte{})
 	var files []FileInfo
@@ -499,18 +499,66 @@ func TestWriteErrorStopsTheDownloads(t *testing.T) {
 
 	dumper := NewDumper(mockSrc, mockDst, &config.Config{DownloadWorkers: 4})
 	before := runtime.NumGoroutine()
-	err := dumper.createTarGz(ctx, "hostname=example.com/date=2026-05-01.tar.gz", files, "index\n")
+	err := dumper.createArchive(ctx, "hostname=example.com/date=2026-05-01.tar.zst", files, "index\n")
 	if !errors.Is(err, errWrite) {
 		t.Fatalf("Expected the write error, got %v", err)
 	}
 
 	for deadline := time.Now().Add(5 * time.Second); runtime.NumGoroutine() > before; {
 		if time.Now().After(deadline) {
-			t.Fatalf("%d goroutines left running after createTarGz returned, %d before it started", runtime.NumGoroutine(), before)
+			t.Fatalf("%d goroutines left running after createArchive returned, %d before it started", runtime.NumGoroutine(), before)
 		}
 		time.Sleep(10 * time.Millisecond)
 	}
 	if written := mockDst.written(); len(written) != 0 {
 		t.Errorf("Expected nothing written, got %v", written)
+	}
+}
+
+// An object that is not the size its listing said is an error: the tar header
+// is written before the body, and a short or long body would corrupt it.
+func TestAnObjectOfAnotherSizeThanListedIsNotArchived(t *testing.T) {
+	ctx := context.Background()
+	for _, tc := range []struct {
+		name   string
+		listed int64
+	}{{"shorter", 20}, {"longer", 4}} {
+		t.Run(tc.name, func(t *testing.T) {
+			mockSrc := NewMockStorageClient()
+			mockDst := NewMockStorageClient()
+			name := "hostname=example.com/date=2026-05-01.json"
+			mockSrc.AddObject(name, tc.listed, []byte("some data!"))
+			files := []FileInfo{{Name: name, Hostname: "example.com", Date: "2026-05-01", Size: tc.listed}}
+
+			err := NewDumper(mockSrc, mockDst, &config.Config{}).createArchive(ctx, "hostname=example.com/date=2026-05-01.tar.zst", files, name+"\n")
+
+			if err == nil || !strings.Contains(err.Error(), "listing said") {
+				t.Fatalf("Expected a size error, got %v", err)
+			}
+			if written := mockDst.written(); len(written) != 0 {
+				t.Errorf("Expected nothing written, got %v", written)
+			}
+		})
+	}
+}
+
+// After the switch to zstd the chain mixes formats; the newest archive of
+// either says where the next one starts.
+func TestTheNextArchiveStartsAfterTheNewestOfEitherFormat(t *testing.T) {
+	ctx := context.Background()
+	mockSrc := NewMockStorageClient()
+	mockDst := NewMockStorageClient()
+	mockDst.AddObject("hostname=example.com/from=2025-01-01/date=2026-05-20.tar.gz", 100, []byte("tarball"))
+	mockDst.AddObject("hostname=example.com/from=2026-05-20/date=2026-05-25.tar.zst", 100, []byte("tarball"))
+	mockSrc.AddObject("hostname=example.com/date=2026-05-26.json", 5, []byte("day26"))
+
+	dumper := NewDumper(mockSrc, mockDst, &config.Config{Incremental: true, ListingRanges: 1})
+	if err := dumper.processHostnameIncremental(ctx, "example.com", "2026-05-28", "2026-05-27"); err != nil {
+		t.Fatal(err)
+	}
+
+	want := "hostname=example.com/from=2026-05-25/date=2026-05-27.tar.zst"
+	if written := mockDst.written(); !reflect.DeepEqual(written, []string{want}) {
+		t.Fatalf("Expected %s, got %v", want, written)
 	}
 }

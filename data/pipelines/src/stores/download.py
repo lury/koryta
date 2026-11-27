@@ -3,7 +3,6 @@ import glob
 import os
 import re
 import shutil
-import tarfile
 import urllib.request
 from functools import cached_property
 from pathlib import Path
@@ -17,6 +16,7 @@ from entities.util import NormalizedParse
 from scrapers.stores.file import DownloadableFile as FileSourceConfig
 from scrapers.stores.file import NotInMirrorError
 from stores.config import DOWNLOADED_DIR
+from util.zst import TAR_SUFFIXES, is_tar_archive, open_tar_stream
 
 base_dir = Path(DOWNLOADED_DIR)
 
@@ -259,7 +259,7 @@ class CompressedMirror:
                 for b in gcs_lib.Client()
                 .bucket(bucket_name)
                 .list_blobs(prefix=f"hostname={host}/")
-                if b.name.endswith(".tar.gz")
+                if is_tar_archive(b.name)
             ]
             if not blobs:
                 raise NotInMirrorError(f"{host} has no snapshot in mirror")
@@ -269,7 +269,9 @@ class CompressedMirror:
             ]
 
         candidates = [
-            str(p) for p in Path(bucket).glob(f"hostname={host}/**/date=*.tar.gz")
+            str(p)
+            for suffix in TAR_SUFFIXES
+            for p in Path(bucket).glob(f"hostname={host}/**/date=*{suffix}")
         ]
         if not candidates:
             raise NotInMirrorError(f"{host} has no snapshot in mirror")
@@ -288,7 +290,7 @@ class CompressedMirror:
         way back from that to the original path.
         """
         for tar_path in self._resolve_tar_paths(host):
-            with tarfile.open(tar_path) as tf:
+            with open(tar_path, "rb") as raw, open_tar_stream(raw) as tf:
                 for member in tf:
                     if not member.isfile() or member.name == "index.txt":
                         continue
@@ -308,8 +310,8 @@ class CompressedMirror:
             return extract_dir
         tar_path = self._resolve_tar_path(host)
         extract_dir.mkdir(parents=True, exist_ok=True)
-        with tarfile.open(tar_path) as tf:
-            for member in tf.getmembers():
+        with open(tar_path, "rb") as raw, open_tar_stream(raw) as tf:
+            for member in tf:
                 if not member.isfile() or member.name == "index.txt":
                     continue
                 rel = member.name[len(host) + 1 :]  # strip "host/"

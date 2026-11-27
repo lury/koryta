@@ -10,6 +10,7 @@ from scrapers.article.pipelines import pipeline_utils
 from scrapers.bip.classify import normalize_url
 from stores import config, download
 from stores.storage import Client, crawl_blob_name, crawl_member_name
+from util import zst
 
 DAY = "2026-11-27"
 
@@ -111,14 +112,14 @@ def test_upload_by_default_keeps_every_page_of_a_query_addressed_bip(
     assert sorted(gcs.objects.values()) == ["page 0", "page 1", "page 2"]
 
 
-def _tar(members: dict[str, bytes]) -> bytes:
+def _tar(members: dict[str, bytes], zstd: bool = False) -> bytes:
     buf = io.BytesIO()
-    with tarfile.open(fileobj=buf, mode="w:gz") as tar:
+    with tarfile.open(fileobj=buf, mode="w" if zstd else "w:gz") as tar:
         for name, data in members.items():
             info = tarfile.TarInfo(name)
             info.size = len(data)
             tar.addfile(info, io.BytesIO(data))
-    return buf.getvalue()
+    return zst.compress(buf.getvalue()) if zstd else buf.getvalue()
 
 
 class _Read:
@@ -151,8 +152,8 @@ def test_article_archives_are_read_under_old_and_new_names():
     new_url = "https://wiadomosci.wp.pl/artykul?id=1"
     old_url = "https://wiadomosci.onet.pl/kraj/artykul"
     archives = {
-        "hostname=wiadomosci.wp.pl/date=2026-11-27/uid_a.tar.gz": _tar(
-            {crawl_member_name(new_url): b"new"}
+        "hostname=wiadomosci.wp.pl/date=2026-11-27/uid_a.tar.zst": _tar(
+            {crawl_member_name(new_url): b"new"}, zstd=True
         ),
         "hostname=wiadomosci.onet.pl/date=2026-10-01/uid_b.tar.gz": _tar(
             {"wiadomosci.onet.pl/kraj/artykul": b"old"}

@@ -32,6 +32,7 @@ from scrapers.stores import IO, CloudStorage
 from scrapers.stores.file import DownloadableFile
 from stores import config
 from stores.user import get_username, interactive, pick_user
+from util import zst
 
 CRAWLED_BUCKET = "koryta-pl-crawled"
 SHARED_BUCKET = "koryta-pl-sharedcache"
@@ -841,7 +842,7 @@ class BatchClient(Client):
     @staticmethod
     def _blob_name(key: tuple[str, str], uid: str) -> str:
         hostname, date = key
-        return f"hostname={hostname}/date={date}/uid_{uid}.tar.gz"
+        return f"hostname={hostname}/date={date}/uid_{uid}.tar.zst"
 
     def batch_upload(
         self,
@@ -873,7 +874,7 @@ class BatchClient(Client):
                     "uid": uid,
                     "path": f"gs://{CRAWLED_BUCKET}/{self._blob_name(key, uid)}",
                     "buffer": buf,
-                    "tar": tarfile.open(fileobj=buf, mode="w:gz"),
+                    "tar": tarfile.open(fileobj=buf, mode="w"),
                     "uncompressed_size": 0,
                     "index": [],
                     "opened": time.monotonic(),
@@ -915,7 +916,7 @@ class BatchClient(Client):
         idx_info.mtime = int(datetime.now(warsaw_tz).timestamp())
         batch["tar"].addfile(idx_info, io.BytesIO(index_data))
         batch["tar"].close()
-        return batch["buffer"].getvalue()
+        return zst.compress(batch["buffer"].getvalue())
 
     def _flush_batch(self, key, batch) -> bool:
         """Upload one archive, retrying; True once it is stored."""
@@ -927,7 +928,7 @@ class BatchClient(Client):
             try:
                 # Create-only, and a 412 on the same bytes is a retry of a
                 # create that landed (`create_object`).
-                self.create_object(CRAWLED_BUCKET, name, data, "application/gzip")
+                self.create_object(CRAWLED_BUCKET, name, data, "application/zstd")
             except Exception as e:
                 error = f"{type(e).__name__}: {e}"
                 logging.warning(

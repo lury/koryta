@@ -252,8 +252,8 @@ func TestIncrementalRunsSplitByTheChain(t *testing.T) {
 		t.Fatalf("Expected the second run to list as 16 ranges, got %d listings and %d ranges", n, len(r))
 	}
 
-	second := hostPrefix + "from=2026-05-01/date=2026-05-02.tar.gz"
-	members := readTarGz(t, dst.file(second))
+	second := hostPrefix + "from=2026-05-01/date=2026-05-02.tar.zst"
+	members := readArchive(t, dst.file(second))
 	if len(members) == 0 || members[0].name != "index.txt" {
 		t.Fatalf("Expected index.txt first in %s", second)
 	}

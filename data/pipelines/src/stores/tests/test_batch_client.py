@@ -5,7 +5,6 @@ import base64
 import hashlib
 import io
 import sys
-import tarfile
 
 import pytest
 from google.api_core import exceptions as gcs_exceptions
@@ -15,6 +14,7 @@ from scrapers.article.crawler import CrawlOptions, CrawlResult
 from scrapers.stores import CrawlQueueItem
 from stores import config, download
 from stores.storage import BatchClient, BatchUploadError
+from util.zst import open_tar_stream
 
 
 class Blob:
@@ -71,7 +71,8 @@ def cache_dir(tmp_path, monkeypatch):
 
 
 def members(data: bytes) -> dict[str, bytes]:
-    with tarfile.open(fileobj=io.BytesIO(data)) as tar:
+    assert data[:4] == b"\x28\xb5\x2f\xfd", "a .tar.zst"
+    with open_tar_stream(io.BytesIO(data)) as tar:
         return {
             m.name: tar.extractfile(m).read()  # type: ignore[union-attr]
             for m in tar
