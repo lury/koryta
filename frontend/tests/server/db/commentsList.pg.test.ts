@@ -16,6 +16,7 @@ import {
 } from "./pgHarness";
 import { syncStored, type StoredDocs } from "./storedDocs";
 import type { LoggedQuery } from "./queryLog";
+import { validatedQuery } from "../h3Validation";
 
 /** /api/comments/list on Postgres: the comments under a page.
  *
@@ -86,8 +87,11 @@ vi.mock("~~/server/utils/handlers", () => ({
   },
 }));
 
-let query: Record<string, string> = {};
-(globalThis as Record<string, unknown>).getQuery = () => query;
+let query: Record<string, unknown> = {};
+(globalThis as Record<string, unknown>).getValidatedQuery = (
+  _event: unknown,
+  parse: (query: unknown) => unknown,
+) => validatedQuery(query, parse);
 let stored: StoredDocs = {};
 
 const call = async () => {
@@ -132,5 +136,38 @@ describe.runIf(PG_TEST_DATABASE_URL)("/api/comments/list on Postgres", () => {
     const comments = await call();
 
     expect(comments.map((each) => each.id)).toEqual(["earlier", "later"]);
+  });
+
+  it("lists the leads, or an edge's comments", async () => {
+    stored["comments/lead"] = { ...comment("", "2026-09-01T08:00:00Z"), nodeId: null };
+    stored["comments/on-edge"] = {
+      ...comment("", "2026-09-02T08:00:00Z"),
+      nodeId: null,
+      edgeId: "edge-1",
+    };
+    stored["comments/on-page"] = comment("person-1", "2026-09-03T08:00:00Z");
+
+    query = { onlyLeads: "true", nodeId: "person-1" };
+    expect((await call()).map((each) => each.id)).toEqual(["lead"]);
+    query = { edgeId: "edge-1" };
+    expect((await call()).map((each) => each.id)).toEqual(["on-edge"]);
+  });
+
+  it("takes a blank id for none", async () => {
+    stored["comments/on-edge"] = {
+      ...comment("", "2026-09-02T08:00:00Z"),
+      nodeId: null,
+      edgeId: "edge-1",
+    };
+    query = { nodeId: "", edgeId: "edge-1" };
+    expect((await call()).map((each) => each.id)).toEqual(["on-edge"]);
+  });
+
+  it("refuses an id that is a list or a path, before any query", async () => {
+    for (const nodeId of [["person-1", "person-2"], "nodes/person-1"]) {
+      query = { nodeId };
+      await expect(call()).rejects.toMatchObject({ statusCode: 400 });
+      expect(queries).toEqual([]);
+    }
   });
 });

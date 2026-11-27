@@ -498,6 +498,34 @@ describe.runIf(PG_TEST_DATABASE_URL)("declarations, the endpoints", () => {
       ).toEqual(crops.slice(10).sort());
     });
 
+    it("clamps `count` to five, and refuses one that is not a whole number or an `exclude` past ten crops' room", async () => {
+      const crops = Array.from({ length: 7 }, (_, i) => cropId(i + 1));
+      crops.forEach((id, i) => {
+        table("declarationExtracts")[id] = crop({
+          personIds: [`p${i}`],
+          rand: i / 100,
+        });
+        table("declarationExtractImages")[id] = { date: PNG };
+      });
+      await sync();
+      const asked = async (count: string) => {
+        const queue = await call<DeclarationQueue>(nextGet, "anna,verified", {
+          query: { count },
+        });
+        return [queue.task, ...queue.upcoming].filter(Boolean).length;
+      };
+      expect(await asked("9")).toBe(await asked("5"));
+      for (const query of [
+        { count: "many" },
+        { count: "2.5" },
+        { exclude: "x".repeat(2001) },
+      ]) {
+        expect(
+          await statusOf(call(nextGet, "anna,verified", { query })),
+        ).toBe(400);
+      }
+    });
+
     it("gives a voter their settled crops never to be cached, and an unconfirmed account none", async () => {
       table("declarationExtracts")[cropId(1)] = crop({ status: "agreed" });
       for (const uid of ["anna", "ewa"]) {

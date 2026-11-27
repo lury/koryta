@@ -1,6 +1,14 @@
 import type { Comment } from "~~/shared/model";
 import { editorFreshCachedEventHandler } from "~~/server/utils/handlers";
+import { z } from "zod";
 import { listCommentsPg } from "~~/server/db/feedback";
+import { optionalDocumentId } from "~~/server/utils/requestIds";
+
+const queryValidator = z.object({
+  onlyLeads: z.string().optional(),
+  nodeId: optionalDocumentId,
+  edgeId: optionalDocumentId,
+});
 
 /** The comments under a page, oldest first.
  *
@@ -14,14 +22,16 @@ import { listCommentsPg } from "~~/server/db/feedback";
  * has commented on. Anybody asking without `latest` is still served from the
  * six-hour cache. */
 export default editorFreshCachedEventHandler(async (event) => {
-  const query = getQuery(event);
+  const query = await getValidatedQuery(event, (query) =>
+    queryValidator.parse(query),
+  );
   const filter =
     query.onlyLeads === "true"
       ? ({ onlyLeads: true } as const)
       : query.nodeId
-        ? { nodeId: String(query.nodeId) }
+        ? { nodeId: query.nodeId }
         : query.edgeId
-          ? { edgeId: String(query.edgeId) }
+          ? { edgeId: query.edgeId }
           : null;
   if (!filter) return [];
   return oldestFirst(await listCommentsPg(filter));

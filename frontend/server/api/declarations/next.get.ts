@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { getReader } from "~~/server/utils/declarations";
 import { EXTRACT_ID_PATTERN } from "~~/shared/declarations";
 import { admitToQueuePg, queueForPg } from "~~/server/db/declarationReading";
@@ -7,6 +8,14 @@ import { admitToQueuePg, queueForPg } from "~~/server/db/declarationReading";
  * queue reads past, and a list long enough to cover a page of the queue would
  * make every ask read page after page. */
 const MAX_EXCLUDED = 10;
+
+const queryValidator = z.object({
+  /** Clamped to 1-5 below rather than refused. */
+  count: z.coerce.number().int().optional(),
+  /** Room for the ten crops a page may name, about 70 characters each, with
+   * slack; anything past ten is dropped below. */
+  exclude: z.string().max(2000).optional(),
+});
 
 /**
  * The crops a reader should read next, for /oswiadczenia: a signed-in reader
@@ -22,10 +31,12 @@ const MAX_EXCLUDED = 10;
  */
 export default defineEventHandler(async (event) => {
   const reader = await getReader(event);
-  const query = getQuery(event);
-  const count = Math.min(5, Math.max(1, Number(query.count) || 1));
+  const query = await getValidatedQuery(event, (query) =>
+    queryValidator.parse(query),
+  );
+  const count = Math.min(5, Math.max(1, query.count || 1));
   const exclude = new Set(
-    String(query.exclude ?? "")
+    (query.exclude ?? "")
       .split(",")
       .filter((id) => EXTRACT_ID_PATTERN.test(id))
       .slice(0, MAX_EXCLUDED),

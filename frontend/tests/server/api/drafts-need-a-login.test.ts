@@ -56,8 +56,9 @@ vi.mock("../../../server/utils/auth", () => ({
 vi.mock("h3", async (importOriginal) => ({
   ...(await importOriginal<typeof import("h3")>()),
   defineEventHandler: (fn: unknown) => fn,
+  // /api/revisions/byNode refuses a request that names no page.
   getValidatedQuery: async (_event: unknown, parse: (q: unknown) => unknown) =>
-    parse({}),
+    parse({ nodeId: "person-1" }),
   setResponseHeader: (_event: unknown, name: string, value: string) => {
     if (name === "Cache-Control") state.cacheControl = value;
   },
