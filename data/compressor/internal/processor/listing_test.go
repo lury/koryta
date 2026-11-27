@@ -202,14 +202,15 @@ func TestListSourceListsInOneGoWithoutBounds(t *testing.T) {
 
 // A range that cannot be listed fails the host, and nothing is archived: an
 // archive of the other ranges would move the chain past what the failed one
-// held, and the next run would never archive it.
+// held, and the next run would never archive it. Ranges are for a chain too
+// old to list by its days.
 func TestFailedRangeFailsTheHost(t *testing.T) {
 	ctx := context.Background()
 	src, dst := NewMockStorageClient(), NewMockStorageClient()
-	archived := crawl(2400, "2026-05-01")
+	archived := crawl(2400, "2026-02-01")
 	addAll(src, archived)
 	addAll(src, crawl(10, "2026-05-27"))
-	dst.AddObject(hostPrefix+"from=2025-01-01/date=2026-05-26.tar.gz", 1<<20, archiveWithIndex(t, archived))
+	dst.AddObject(hostPrefix+"from=2025-01-01/date=2026-02-26.tar.gz", 1<<20, archiveWithIndex(t, archived))
 
 	names := append([]string(nil), archived...)
 	sort.Strings(names)
@@ -226,16 +227,16 @@ func TestFailedRangeFailsTheHost(t *testing.T) {
 	}
 }
 
-// Night after night: the archive one run writes is what the next run splits
-// its listing by, and that run archives exactly what is new, in name order.
-func TestIncrementalRunsSplitByTheChain(t *testing.T) {
+// Night after night: the first run lists the host whole, as it has no chain
+// to start from; the next lists only the day since its archive, and archives
+// exactly what is new, in name order.
+func TestTheNextNightListsOnlyItsDay(t *testing.T) {
 	ctx := context.Background()
 	src, dst := NewMockStorageClient(), NewMockStorageClient()
 	addAll(src, crawl(2400, "2026-05-01"))
 	cfg := &config.Config{Incremental: true, ListingRanges: 16, DownloadWorkers: 8, CompressWorkers: 1}
 	dumper := NewDumper(src, dst, cfg)
 
-	// The first run has no archive to split by.
 	if err := dumper.processHostnameIncremental(ctx, host, "2026-05-02", "2026-05-01"); err != nil {
 		t.Fatalf("First run: %v", err)
 	}
@@ -248,8 +249,11 @@ func TestIncrementalRunsSplitByTheChain(t *testing.T) {
 	if err := dumper.processHostnameIncremental(ctx, host, "2026-05-03", "2026-05-02"); err != nil {
 		t.Fatalf("Second run: %v", err)
 	}
-	if n, r := src.Listings.Load(), src.ranges(); n != 1 || len(r) != 16 {
-		t.Fatalf("Expected the second run to list as 16 ranges, got %d listings and %d ranges", n, len(r))
+	if n, r := src.Listings.Load(), src.ranges(); n != 1 || len(r) != 0 {
+		t.Fatalf("Expected the second run not to list the host, got %d listings and %d ranges", n, len(r))
+	}
+	if globs := src.globListings(); !reflect.DeepEqual(globs, []string{hostPrefix + "**date={2026-05-02}**"}) {
+		t.Fatalf("Expected one listing of 05-02, got %v", globs)
 	}
 
 	second := hostPrefix + "from=2026-05-01/date=2026-05-02.tar.zst"

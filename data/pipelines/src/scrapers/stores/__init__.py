@@ -133,7 +133,7 @@ class IO(metaclass=ABCMeta):
         include_query=True,
         verbose=True,
     ) -> str:
-        """Batches data for upload (e.g. to GCS in a tar.gz).
+        """Batches data for upload (e.g. to GCS in a tar.zst).
 
         Returns: The path of the archive the data goes to. It is not stored
         until `batch_state` of that path says so."""

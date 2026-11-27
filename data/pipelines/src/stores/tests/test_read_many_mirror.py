@@ -6,6 +6,7 @@ The compressed mirror is rebuilt by hand, so it is usually behind: on
 stood two months earlier, without a word.
 """
 
+from datetime import date
 from pathlib import Path
 
 import pytest
@@ -27,8 +28,16 @@ def url(path: str) -> str:
 class FakeMirror:
     bulk_reads_enabled = True
 
-    def __init__(self, objects: dict[str, bytes] | None):
+    def __init__(
+        self,
+        objects: dict[str, bytes] | None,
+        covered: tuple[str, set[str]] | None = None,
+    ):
         self.objects = objects
+        self.covered = covered
+
+    def covered_until(self, host: str):
+        return self.covered
 
     def _resolve_tar_paths(self, host: str) -> list[Path]:
         if self.objects is None:
@@ -48,12 +57,18 @@ class FakeStorage:
         self.broken = broken
         self.downloaded: list[str] = []
         self.seeded: list[tuple[str, set[str]]] = []
+        self.listed: list[CloudStorage] = []
 
     def seed_listing_ranges(self, ref: CloudStorage, names) -> None:
         self.seeded.append((ref.prefix, set(names)))
 
     def list_blobs(self, ref: CloudStorage):
+        self.listed.append(ref)
+        # As the `**date={a,b}**` glob does: the day anywhere in the name.
+        days = ref.namespace_values.get("date", "").strip("{}").split(",")
         for blob_name, body in self.objects.items():
+            if ref.namespace_values and not any(f"date={d}" in blob_name for d in days):
+                continue
             if blob_name.startswith(ref.prefix):
                 yield DownloadableFile(
                     f"gs://{CRAWLED_BUCKET}/{blob_name}",
@@ -188,3 +203,44 @@ def test_a_memo_is_kept_for_the_next_run_on_this_machine(tmp_path, monkeypatch):
 
     assert io.read_memo("odpis-seats", "a.pdf") == '{"rows": []}'
     assert not list(tmp_path.rglob("*.part")), "written whole, then renamed"
+
+
+def test_with_a_manifest_only_the_days_after_the_archive_are_listed(monkeypatch):
+    monkeypatch.setattr(Conductor, "_today", staticmethod(lambda: date(2026, 11, 27)))
+    archived = {name("1/date=2026-11-20"): b"archived"}
+    storage = FakeStorage(
+        {
+            name("1/date=2026-11-20"): "archived",
+            name("1/date=2026-11-26"): "newer",
+            name("2/date=2026-11-27"): "today",
+            # The glob matches the day anywhere; only the stamp counts.
+            name("3/?od=2026-11-26/date=2026-11-19"): "old, in the archive's days",
+        }
+    )
+    mirror = FakeMirror(archived, covered=("2026-11-25", set(archived)))
+    io = conductor(mirror, storage)
+
+    assert read(io) == {
+        url("1/date=2026-11-20"): "archived",
+        url("1/date=2026-11-26"): "newer",
+        url("2/date=2026-11-27"): "today",
+    }
+    [listing] = storage.listed
+    assert listing.namespace_values == {"date": "{2026-11-26,2026-11-27}"}
+    assert storage.seeded == [], "no whole listing to split"
+
+
+def test_a_mirror_past_the_day_listing_is_listed_whole(monkeypatch):
+    monkeypatch.setattr(Conductor, "_today", staticmethod(lambda: date(2026, 11, 27)))
+    archived = {name("1/date=2026-01-20"): b"archived"}
+    storage = FakeStorage(
+        {name("1/date=2026-01-20"): "archived", name("1/date=2026-11-26"): "newer"}
+    )
+    io = conductor(FakeMirror(archived, covered=("2026-01-25", set(archived))), storage)
+
+    assert read(io) == {
+        url("1/date=2026-01-20"): "archived",
+        url("1/date=2026-11-26"): "newer",
+    }
+    [listing] = storage.listed
+    assert listing.namespace_values == {}

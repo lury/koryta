@@ -4,6 +4,9 @@ import argparse
 import io
 import tarfile
 
+import pyarrow as pa
+import pyarrow.parquet as pq
+
 from stores.download import CompressedMirror
 from util import zst
 
@@ -41,3 +44,22 @@ def test_a_chain_of_gzip_and_zstd_archives_is_read_whole(tmp_path):
         f"hostname={HOST}/a/date=2026-11-19": b"old",
         f"hostname={HOST}/b/?x=1/date=2026-11-25": b"new",
     }
+
+
+def test_the_newest_archive_s_manifest_says_how_far_the_mirror_goes(tmp_path):
+    host_dir = tmp_path / f"hostname={HOST}"
+    test_a_chain_of_gzip_and_zstd_archives_is_read_whole(tmp_path)
+    mirror = CompressedMirror()
+    mirror.__dict__["args"] = argparse.Namespace(
+        compressed_mirror_bucket=str(tmp_path), no_mirror=False
+    )
+    assert mirror.covered_until(HOST) is None, "no manifest, no promise"
+
+    names = [f"hostname={HOST}/b/?x=1/date=2026-11-25"]
+    pq.write_table(
+        pa.table({"name": names, "bytes": [3]}),
+        host_dir / "from=2026-11-20/date=2026-11-26.manifest.parquet",
+        compression="zstd",
+    )
+
+    assert mirror.covered_until(HOST) == ("2026-11-26", set(names))

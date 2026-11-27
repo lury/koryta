@@ -196,11 +196,10 @@ func TestRunConcurrency(t *testing.T) {
 	}
 
 	// Because of concurrency, all 3 should have been processed.
-	mockDst.mu.RLock()
-	defer mockDst.mu.RUnlock()
+	written := mockDst.written()
 
-	if len(mockDst.WriteTracker) != 3 {
-		t.Errorf("Expected 3 tarballs to be created, got %d", len(mockDst.WriteTracker))
+	if len(written) != 3 {
+		t.Errorf("Expected 3 tarballs to be created, got %d", len(written))
 	}
 }
 
@@ -224,10 +223,9 @@ func TestRunFailsWhenOneHostnameFails(t *testing.T) {
 		t.Errorf("Expected the error to count and name the failed host, got: %v", err)
 	}
 
-	mockDst.mu.RLock()
-	defer mockDst.mu.RUnlock()
-	if len(mockDst.WriteTracker) != 1 || !strings.HasPrefix(mockDst.WriteTracker[0], "hostname=good.com/") {
-		t.Errorf("Expected good.com to be archived regardless, got %v", mockDst.WriteTracker)
+	written := mockDst.written()
+	if len(written) != 1 || !strings.HasPrefix(written[0], "hostname=good.com/") {
+		t.Errorf("Expected good.com to be archived regardless, got %v", written)
 	}
 }
 
@@ -250,11 +248,10 @@ func TestProcessHostnameIncremental_SkipRedundant(t *testing.T) {
 		t.Fatalf("Failed: %v", err)
 	}
 
-	mockDst.mu.RLock()
-	defer mockDst.mu.RUnlock()
+	written := mockDst.written()
 	// Should be no newly created tarballs because state hasn't changed since 05-25
-	if len(mockDst.WriteTracker) != 0 {
-		t.Errorf("Expected 0 tarballs to be created, got %d", len(mockDst.WriteTracker))
+	if len(written) != 0 {
+		t.Errorf("Expected 0 tarballs to be created, got %d", len(written))
 	}
 }
 
@@ -278,15 +275,14 @@ func TestProcessHostnameIncremental_CreatesWhenNewData(t *testing.T) {
 		t.Fatalf("Failed: %v", err)
 	}
 
-	mockDst.mu.RLock()
-	defer mockDst.mu.RUnlock()
 	// Should have created a dump because there was a new file on 05-26 (which is > 05-25)
-	if len(mockDst.WriteTracker) != 1 {
-		t.Errorf("Expected 1 tarball to be created, got %d", len(mockDst.WriteTracker))
+	written := mockDst.written()
+	if len(written) != 1 {
+		t.Fatalf("Expected 1 tarball to be created, got %d", len(written))
 	}
 	expected := "hostname=example.com/from=2026-05-25/date=2026-05-27.tar.zst"
-	if mockDst.WriteTracker[0] != expected {
-		t.Errorf("Expected dump %s, got %s", expected, mockDst.WriteTracker[0])
+	if written[0] != expected {
+		t.Errorf("Expected dump %s, got %s", expected, written[0])
 	}
 }
 
@@ -322,14 +318,13 @@ func TestRunHostnameFilter(t *testing.T) {
 		t.Fatalf("Run failed: %v", err)
 	}
 
-	mockDst.mu.RLock()
-	defer mockDst.mu.RUnlock()
+	written := mockDst.written()
 
-	if len(mockDst.WriteTracker) != 1 {
-		t.Fatalf("Expected 1 tarball, got %d: %v", len(mockDst.WriteTracker), mockDst.WriteTracker)
+	if len(written) != 1 {
+		t.Fatalf("Expected 1 tarball, got %d: %v", len(written), written)
 	}
-	if !strings.Contains(mockDst.WriteTracker[0], "hostname=rejestr.io/") {
-		t.Errorf("Expected the rejestr.io dump, got %s", mockDst.WriteTracker[0])
+	if !strings.Contains(written[0], "hostname=rejestr.io/") {
+		t.Errorf("Expected the rejestr.io dump, got %s", written[0])
 	}
 }
 

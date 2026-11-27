@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Callable, Iterator
 
 import google.cloud.storage as gcs_lib
+import pyarrow.parquet as pq
 import requests
 from tqdm import tqdm
 
@@ -183,6 +184,27 @@ def download_teryt(destination_path):
 downloads["download_teryt"] = download_teryt
 
 
+#: A manifest sits beside its archive: `…/date=Y.manifest.parquet`.
+MANIFEST_SUFFIX = ".manifest.parquet"
+
+_ARCHIVE_DAY = re.compile(
+    r"date=(\d{4}-\d{2}-\d{2})\.(?:tar\.(?:gz|zst)|manifest\.parquet)$"
+)
+
+
+def _archive_day(name: str) -> str:
+    match = _ARCHIVE_DAY.search(name)
+    return match.group(1) if match else ""
+
+
+def manifest_name(archive: str) -> str:
+    """Where the compressor puts the manifest of `archive`."""
+    for suffix in TAR_SUFFIXES:
+        if archive.endswith(suffix):
+            return archive.removesuffix(suffix) + MANIFEST_SUFFIX
+    return archive + MANIFEST_SUFFIX
+
+
 class CompressedMirror:
     def __init__(self) -> None:
         self._extracted: set[str] = set()  # hosts already extracted
@@ -250,32 +272,56 @@ class CompressedMirror:
             fs.download()
         return fs.downloaded_path
 
-    def _resolve_tar_paths(self, host: str) -> list[Path]:
+    def _mirror_names(self, host: str) -> list[str]:
+        """Every archive and manifest the mirror holds for a host: blob names
+        in a bucket, paths in a local mirror."""
         bucket = self.args.compressed_mirror_bucket
         if bucket.startswith("gs://"):
             bucket_name = bucket.removeprefix("gs://")
-            blobs = [
+            return [
                 b.name
                 for b in gcs_lib.Client()
                 .bucket(bucket_name)
                 .list_blobs(prefix=f"hostname={host}/")
-                if is_tar_archive(b.name)
+                if is_tar_archive(b.name) or b.name.endswith(MANIFEST_SUFFIX)
             ]
-            if not blobs:
-                raise NotInMirrorError(f"{host} has no snapshot in mirror")
-            return [
-                self._download_blob(bucket_name, name)
-                for name in self._pick_archives(blobs)
-            ]
-
-        candidates = [
+        return [
             str(p)
-            for suffix in TAR_SUFFIXES
+            for suffix in (*TAR_SUFFIXES, MANIFEST_SUFFIX)
             for p in Path(bucket).glob(f"hostname={host}/**/date=*{suffix}")
         ]
-        if not candidates:
+
+    def _fetch(self, name: str) -> Path:
+        bucket = self.args.compressed_mirror_bucket
+        if bucket.startswith("gs://"):
+            return self._download_blob(bucket.removeprefix("gs://"), name)
+        return Path(name)
+
+    def _resolve_tar_paths(self, host: str) -> list[Path]:
+        archives = [n for n in self._mirror_names(host) if is_tar_archive(n)]
+        if not archives:
             raise NotInMirrorError(f"{host} has no snapshot in mirror")
-        return [Path(p) for p in self._pick_archives(candidates)]
+        return [self._fetch(name) for name in self._pick_archives(archives)]
+
+    def covered_until(self, host: str) -> tuple[str, set[str]] | None:
+        """The day the host's newest archive holds every crawl up to, and the
+        names its manifest lists; None without a manifest.
+
+        The compressor writes a manifest beside each archive since 2026-11-27,
+        and an archive up to a day holds all objects stamped with it or
+        earlier: a crawl is stamped with the day it is written on. An archive
+        without one is older, and only a listing says what it lacks.
+        """
+        names = self._mirror_names(host)
+        archives = self._pick_archives([n for n in names if is_tar_archive(n)])
+        if not archives:
+            return None
+        newest = max(archives, key=_archive_day)
+        manifest = manifest_name(newest)
+        if manifest not in names:
+            return None
+        table = pq.read_table(self._fetch(manifest), columns=["name"])
+        return _archive_day(newest), set(table.column("name").to_pylist())
 
     def _resolve_tar_path(self, host: str) -> Path:
         return self._resolve_tar_paths(host)[-1]

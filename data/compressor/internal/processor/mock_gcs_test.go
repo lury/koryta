@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"regexp"
 	"sort"
 	"strings"
 	"sync"
@@ -81,6 +82,8 @@ type MockStorageClient struct {
 	Ranges [][2]string
 	// Listings counts the listings asked for in one go.
 	Listings atomic.Int32
+	// Globs is every match glob listed by.
+	Globs []string
 }
 
 func NewMockStorageClient() *MockStorageClient {
@@ -103,10 +106,24 @@ func (m *MockStorageClient) file(name string) []byte {
 	return m.Files[name]
 }
 
+// written is the archives created, in order; their manifests are left out.
 func (m *MockStorageClient) written() []string {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
-	return append([]string(nil), m.WriteTracker...)
+	var archives []string
+	for _, name := range m.WriteTracker {
+		if isArchive(name) {
+			archives = append(archives, name)
+		}
+	}
+	return archives
+}
+
+// GlobListings counts the listings by match glob.
+func (m *MockStorageClient) globListings() []string {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	return append([]string(nil), m.Globs...)
 }
 
 // ListObjects lists in name order, as GCS does.
@@ -128,6 +145,50 @@ func (m *MockStorageClient) ListObjectsRange(ctx context.Context, prefix, start,
 		return nil, err
 	}
 	return m.list(prefix, start, end)
+}
+
+// ListObjectsGlob matches as GCS does: "*" within a segment, "**" across
+// them, "{a,b}" either.
+func (m *MockStorageClient) ListObjectsGlob(ctx context.Context, prefix, glob string) ([]*storage.ObjectAttrs, error) {
+	m.mu.Lock()
+	m.Globs = append(m.Globs, glob)
+	m.mu.Unlock()
+	re := regexp.MustCompile("^" + globToRegexp(glob) + "$")
+	all, err := m.list(prefix, "", "")
+	if err != nil {
+		return nil, err
+	}
+	var out []*storage.ObjectAttrs
+	for _, a := range all {
+		if re.MatchString(a.Name) {
+			out = append(out, a)
+		}
+	}
+	return out, nil
+}
+
+func globToRegexp(glob string) string {
+	var b strings.Builder
+	for i := 0; i < len(glob); i++ {
+		switch c := glob[i]; {
+		case c == '*' && i+1 < len(glob) && glob[i+1] == '*':
+			b.WriteString(".*")
+			i++
+		case c == '*':
+			b.WriteString("[^/]*")
+		case c == '?':
+			b.WriteString("[^/]")
+		case c == '{':
+			b.WriteString("(?:")
+		case c == '}':
+			b.WriteString(")")
+		case c == ',':
+			b.WriteString("|")
+		default:
+			b.WriteString(regexp.QuoteMeta(string(c)))
+		}
+	}
+	return b.String()
 }
 
 func (m *MockStorageClient) list(prefix, start, end string) ([]*storage.ObjectAttrs, error) {
