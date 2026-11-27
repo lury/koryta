@@ -2,9 +2,12 @@ import collections
 import io
 import logging
 import os
+import re
 import typing
 from concurrent.futures import Future, ThreadPoolExecutor
+from datetime import date, datetime, timedelta
 from functools import cached_property
+from zoneinfo import ZoneInfo
 
 import duckdb
 from duckdb.sqltypes import VARCHAR
@@ -44,6 +47,11 @@ from stores.storage import Client as CloudStorageClient
 from stores.utils import UtilsImpl
 from stores.web import WebImpl
 from tracing import setup_tracing, traced
+
+warsaw_tz = ZoneInfo("Europe/Warsaw")
+
+#: The day a crawl's name is stamped with, as the compressor reads it.
+_CRAWL_DAY = re.compile(r"date=([^/.]+)")
 
 
 class Conductor(IO):
@@ -181,6 +189,11 @@ class Conductor(IO):
                     url = f"gs://{CRAWLED_BUCKET}/{name}"
                     yield url, file.FromBytesIO(data, url)
 
+                covered = self.mirror.covered_until(host)
+                if covered is not None:
+                    yield from self._read_since(path, archived, *covered)
+                    return
+
                 # The archive is only as new as its last build, and the bucket
                 # has gone on filling since - on 2026-09-28 the newest archive
                 # was two months old and missed 21% of rejestr.io and 41% of
@@ -201,6 +214,61 @@ class Conductor(IO):
                 return
 
         yield from self._read_each(self.list_files(path))
+
+    #: How many days past its newest archive a host is listed day by day;
+    #: a mirror older than that is listed whole.
+    DAY_LISTING_AT_MOST = 62
+
+    def _read_since(
+        self, path: CloudStorage, archived: set[str], day: str, manifest: set[str]
+    ) -> typing.Iterable[tuple[str, File]]:
+        """What was crawled after `day`, the newest archive's, read from the bucket.
+
+        Listed by those days alone, where a listing of the prefix pages
+        through the host's whole history: 45 pages for api-krs on 2026-10-21,
+        for a night's few hundred objects.
+        """
+        missing = {n for n in manifest if n.startswith(path.prefix)} - archived
+        if missing:
+            logging.warning(
+                "%d objects the manifest lists are not in the archives, e.g. %s",
+                len(missing),
+                sorted(missing)[0],
+            )
+        today = self._today()
+        days: list[str] = []
+        d = date.fromisoformat(day) + timedelta(days=1)
+        while d <= today and len(days) <= self.DAY_LISTING_AT_MOST:
+            days.append(d.isoformat())
+            d += timedelta(days=1)
+        if len(days) > self.DAY_LISTING_AT_MOST:
+            self.storage.seed_listing_ranges(path, archived)
+            refs = self.list_files(path)
+        else:
+            print(f"Listing {path.prefix} for {len(days)} days after {day}")
+            refs = self.list_files(
+                CloudStorage(
+                    prefix=path.prefix,
+                    namespace_values={"date": "{" + ",".join(days) + "}"},
+                    binary=path.binary,
+                )
+            )
+        wanted = set(days) if len(days) <= self.DAY_LISTING_AT_MOST else None
+
+        def new(ref: DataRef) -> bool:
+            name = getattr(ref, "url", "").removeprefix(f"gs://{CRAWLED_BUCKET}/")
+            if name in archived:
+                return False
+            # The glob matches `date=D` anywhere; the day is its first.
+            stamp = _CRAWL_DAY.search(name)
+            return wanted is None or (stamp is not None and stamp.group(1) in wanted)
+
+        yield from self._read_each(ref for ref in refs if new(ref))
+
+    @staticmethod
+    def _today() -> date:
+        """The day a crawl written now is stamped with."""
+        return datetime.now(warsaw_tz).date()
 
     #: How many objects `_read_each` fetches at once. One GET for a small
     #: object costs about a third of a second, so one at a time a runner
@@ -285,7 +353,7 @@ class Conductor(IO):
 
     @traced("conductor.upload")
     def upload(
-        self, source, data, content_type, include_query=False, verbose=True
+        self, source, data, content_type, include_query=True, verbose=True
     ) -> bool:
         return self.storage.upload(
             source, data, content_type, include_query=include_query, verbose=verbose
@@ -293,11 +361,28 @@ class Conductor(IO):
 
     @traced("conductor.batch_upload")
     def batch_upload(
-        self, source, data, content_type, include_query=False, verbose=True
+        self, source, data, content_type, include_query=True, verbose=True
     ) -> str:
         return self.storage.batch_upload(
             source, data, content_type, include_query=include_query, verbose=verbose
         )
+
+    def batch_state(self, path: str) -> str:
+        if isinstance(self.storage, BatchClient):
+            return self.storage.batch_state(path)
+        return "stored"
+
+    def batch_error(self, path: str) -> str | None:
+        if isinstance(self.storage, BatchClient):
+            return self.storage.batch_error(path)
+        return None
+
+    def flush_batches(self, paths: typing.Iterable[str] | None = None) -> None:
+        # Not built just to be flushed: a run that never batched has no client.
+        if self._batch_upload and "storage" in self.__dict__:
+            storage = self.storage
+            if isinstance(storage, BatchClient):
+                storage.flush_batches(paths)
 
     def list_namespaces(self, ref: CloudStorage, namespace: str) -> list[str]:
         return self.storage.list_namespaces(ref, namespace)

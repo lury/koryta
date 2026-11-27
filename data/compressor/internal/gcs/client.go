@@ -77,6 +77,29 @@ func (c *Client) ListObjectsRange(ctx context.Context, prefix, start, end string
 	return objects, nil
 }
 
+// ListObjectsGlob lists the objects under prefix whose names match glob, a
+// GCS match glob, in name order.
+func (c *Client) ListObjectsGlob(ctx context.Context, prefix, glob string) ([]*storage.ObjectAttrs, error) {
+	q, err := newQuery(prefix, "")
+	if err != nil {
+		return nil, err
+	}
+	q.MatchGlob = glob
+	var objects []*storage.ObjectAttrs
+	it := c.bucket.Objects(ctx, q)
+	for {
+		attrs, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return nil, fmt.Errorf("failed to list objects: %w", err)
+		}
+		objects = append(objects, attrs)
+	}
+	return objects, nil
+}
+
 func (c *Client) ListPrefixes(ctx context.Context, prefix string) ([]string, error) {
 	// The selection keeps prefixes: the client always asks for them
 	// alongside the selected object fields.

@@ -116,7 +116,7 @@ class IO(metaclass=ABCMeta):
         source: Any,
         data: Any,
         content_type: str,
-        include_query=False,
+        include_query=True,
         verbose=True,
     ) -> bool | None:
         """Uploads data to storage (e.g. GCS).
@@ -131,13 +131,28 @@ class IO(metaclass=ABCMeta):
         source: Any,
         data: Any,
         content_type: str,
-        include_query=False,
+        include_query=True,
         verbose=True,
     ) -> str:
-        """Batches data for upload (e.g. to GCS in a tar.gz).
+        """Batches data for upload (e.g. to GCS in a tar.zst).
 
-        Returns: The path to the uploaded batch file."""
+        Returns: The path of the archive the data goes to. It is not stored
+        until `batch_state` of that path says so."""
         raise NotImplementedError()
+
+    def batch_state(self, path: str) -> str:
+        """`open`, `stored` or `failed`: where the archive `batch_upload`
+        named stands. An io that writes at once has stored it already."""
+        return "stored"
+
+    def batch_error(self, path: str) -> str | None:
+        """Why the archive at `path` could not be stored, if it could not."""
+        return None
+
+    def flush_batches(self, paths: typing.Iterable[str] | None = None) -> None:
+        """Store the open archives now (those named, or all), and raise if
+        any could not be."""
+        return None
 
     # TODO get rid of this - it should be just a library call
     @abstractmethod

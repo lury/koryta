@@ -2,7 +2,6 @@ package processor
 
 import (
 	"archive/tar"
-	"compress/gzip"
 	"context"
 	"fmt"
 	"io"
@@ -110,7 +109,7 @@ func (d *Dumper) rangeBounds(ctx context.Context, prefix string, archives []*sto
 
 	var largest []*storage.ObjectAttrs
 	for _, a := range archives {
-		if strings.HasSuffix(a.Name, ".tar.gz") {
+		if isArchive(a.Name) {
 			largest = append(largest, a)
 		}
 	}
@@ -177,11 +176,12 @@ func (d *Dumper) archiveIndex(ctx context.Context, name string) ([]string, error
 		return nil, err
 	}
 	defer r.Close()
-	gr, err := gzip.NewReader(r)
+	zr, err := newArchiveReader(r, name)
 	if err != nil {
-		return nil, fmt.Errorf("not a gzip stream: %w", err)
+		return nil, err
 	}
-	tr := tar.NewReader(gr)
+	defer zr.Close()
+	tr := tar.NewReader(zr)
 	header, err := tr.Next()
 	if err != nil {
 		return nil, fmt.Errorf("not a tar archive: %w", err)

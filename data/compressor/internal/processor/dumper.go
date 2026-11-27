@@ -2,8 +2,9 @@ package processor
 
 import (
 	"archive/tar"
-	"compress/gzip"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"io"
@@ -24,6 +25,9 @@ type StorageClient interface {
 	// ListObjectsRange lists the objects under prefix named at or after start
 	// and before end, in name order; an empty start or end leaves that side open.
 	ListObjectsRange(ctx context.Context, prefix, start, end string) ([]*storage.ObjectAttrs, error)
+	// ListObjectsGlob lists the objects under prefix whose whole names match
+	// a GCS match glob, in name order.
+	ListObjectsGlob(ctx context.Context, prefix, glob string) ([]*storage.ObjectAttrs, error)
 	ListPrefixes(ctx context.Context, prefix string) ([]string, error)
 	ReadObject(ctx context.Context, name string) (io.ReadCloser, error)
 	WriteObject(ctx context.Context, name string) io.WriteCloser
@@ -49,6 +53,8 @@ type FileInfo struct {
 	Hostname string
 	Date     string
 	Size     int64
+	// Updated is when the object was written: when the page was fetched.
+	Updated time.Time
 }
 
 func (d *Dumper) Run(ctx context.Context) error {
@@ -160,10 +166,9 @@ func (d *Dumper) processHostname(ctx context.Context, hostname, today string) er
 		return err
 	}
 
-	// Dump format: hostname=<hostname>/date=<date>.tar.gz
-	dumpRegex := regexp.MustCompile(`date=([^.]+)\.tar\.gz$`)
+	// Dump format: hostname=<hostname>/date=<date>.tar.zst (.tar.gz before)
 	for _, obj := range dumpObjects {
-		matches := dumpRegex.FindStringSubmatch(obj.Name)
+		matches := archiveDate.FindStringSubmatch(obj.Name)
 		if len(matches) == 2 {
 			processed[matches[1]] = true
 		}
@@ -196,6 +201,7 @@ func (d *Dumper) processHostname(ctx context.Context, hostname, today string) er
 			Hostname: hostname,
 			Date:     date,
 			Size:     obj.Size,
+			Updated:  obj.Updated,
 		}
 
 		byDate[date] = append(byDate[date], info)
@@ -249,7 +255,7 @@ func (d *Dumper) processHostnameIncremental(ctx context.Context, hostname, today
 		return nil
 	}
 
-	destPath := fmt.Sprintf("hostname=%s/from=%s/date=%s.tar.gz", hostname, fromDate, yesterday)
+	destPath := fmt.Sprintf("hostname=%s/from=%s/date=%s%s", hostname, fromDate, yesterday, archiveExt)
 
 	exists, err := d.outClient.ObjectExists(ctx, destPath)
 	if err != nil {
@@ -262,7 +268,12 @@ func (d *Dumper) processHostnameIncremental(ctx context.Context, hostname, today
 
 	// List files for this hostname in the source bucket
 	sourcePrefix := fmt.Sprintf("%shostname=%s/", d.cfg.SourcePrefix, hostname)
-	sourceObjects, err := d.listSource(ctx, sourcePrefix, archives)
+	var sourceObjects []*storage.ObjectAttrs
+	if days := daysAfter(fromDate, yesterday); maxDumpDate != "" && len(days) <= maxGlobDays {
+		sourceObjects, err = d.listDays(ctx, sourcePrefix, days)
+	} else {
+		sourceObjects, err = d.listSource(ctx, sourcePrefix, archives)
+	}
 	if err != nil {
 		return err
 	}
@@ -291,6 +302,7 @@ func (d *Dumper) processHostnameIncremental(ctx context.Context, hostname, today
 				Hostname: hostname,
 				Date:     date,
 				Size:     obj.Size,
+				Updated:  obj.Updated,
 			})
 		}
 	}
@@ -309,7 +321,7 @@ func (d *Dumper) processHostnameIncremental(ctx context.Context, hostname, today
 	}
 	indexContent := strings.Join(fileList, "\n") + "\n"
 
-	return d.createTarGz(ctx, destPath, allFiles, indexContent)
+	return d.createArchive(ctx, destPath, allFiles, indexContent)
 }
 
 // incrementalArchives lists the hostname's from=/date= archives, and the date
@@ -321,10 +333,9 @@ func (d *Dumper) incrementalArchives(ctx context.Context, hostname string) ([]*s
 		return nil, "", err
 	}
 
-	dumpRegex := regexp.MustCompile(`date=([^.]+)\.tar\.gz$`)
 	maxDate := ""
 	for _, obj := range objects {
-		matches := dumpRegex.FindStringSubmatch(obj.Name)
+		matches := archiveDate.FindStringSubmatch(obj.Name)
 		if len(matches) == 2 {
 			if maxDate == "" || matches[1] > maxDate {
 				maxDate = matches[1]
@@ -335,7 +346,7 @@ func (d *Dumper) incrementalArchives(ctx context.Context, hostname string) ([]*s
 }
 
 func (d *Dumper) processDump(ctx context.Context, hostname, date string, files []FileInfo) error {
-	destPath := fmt.Sprintf("hostname=%s/date=%s.tar.gz", hostname, date)
+	destPath := fmt.Sprintf("hostname=%s/date=%s%s", hostname, date, archiveExt)
 
 	// List of files/dates included
 	var fileList []string
@@ -345,18 +356,20 @@ func (d *Dumper) processDump(ctx context.Context, hostname, date string, files [
 
 	indexContent := strings.Join(fileList, "\n") + "\n"
 
-	return d.createTarGz(ctx, destPath, files, indexContent)
+	return d.createArchive(ctx, destPath, files, indexContent)
 }
 
-type downloadedFile struct {
+// openedFile is a source object whose download has started: the writer
+// streams it into the archive and closes it.
+type openedFile struct {
 	file FileInfo
-	data []byte
+	body io.ReadCloser
 }
 
-// createTarGz uploads files to destPath as one tar.gz, with indexContent as
-// its first member, index.txt. Either the whole archive is published or
+// createArchive uploads files to destPath as one tar.zst, with indexContent
+// as its first member, index.txt. Either the whole archive is published or
 // nothing is.
-func (d *Dumper) createTarGz(ctx context.Context, destPath string, files []FileInfo, indexContent string) error {
+func (d *Dumper) createArchive(ctx context.Context, destPath string, files []FileInfo, indexContent string) error {
 	if d.cfg.DryRun {
 		log.Printf("[DRY-RUN] Would create %s with %d files", destPath, len(files))
 		return nil
@@ -374,7 +387,14 @@ func (d *Dumper) createTarGz(ctx context.Context, destPath string, files []FileI
 	defer abortUpload()
 	w := d.outClient.WriteObject(uploadCtx, destPath)
 
-	if err := d.writeTarGz(ctx, w, destPath, files, indexContent); err != nil {
+	rows, err := d.writeArchive(ctx, w, destPath, files, indexContent)
+	if err == nil {
+		// Before the archive is published, so that no archive is without
+		// one; a manifest whose archive then fails is rewritten by the run
+		// that writes the archive.
+		err = d.writeManifest(ctx, destPath, rows)
+	}
+	if err != nil {
 		abortUpload()
 		_ = w.Close() // Waits for the abandoned upload; err already says why.
 		log.Printf("Abandoned %s, nothing was published", destPath)
@@ -390,13 +410,23 @@ func (d *Dumper) createTarGz(ctx context.Context, destPath string, files []FileI
 	return nil
 }
 
-// writeTarGz streams the archive into w and finishes the tar and gzip streams,
-// but leaves closing w, which publishes it, to the caller. It returns only
-// once every download worker has exited.
-func (d *Dumper) writeTarGz(ctx context.Context, w io.Writer, destPath string, files []FileInfo, indexContent string) error {
+// writeArchive streams the archive into w and finishes the tar and zstd
+// streams, but leaves closing w, which publishes it, to the caller. It returns
+// only once every download worker has exited.
+//
+// Workers only open the objects, up to DownloadWorkers ahead of the writer,
+// so the GETs overlap; each body is copied straight into the tar, and no
+// object is held in memory whole.
+func (d *Dumper) writeArchive(ctx context.Context, w io.Writer, destPath string, files []FileInfo, indexContent string) ([]manifestRow, error) {
 	timeNow := time.Now().UTC()
-	gw := gzip.NewWriter(w)
-	tw := tar.NewWriter(gw)
+	zw, err := newArchiveWriter(w, d.cfg.ZstdWindowMB)
+	if err != nil {
+		return nil, fmt.Errorf("failed to start the zstd stream: %w", err)
+	}
+	// Counts the uncompressed tar stream, for where each body starts.
+	tarBytes := &countingWriter{w: zw}
+	tw := tar.NewWriter(tarBytes)
+	rows := make([]manifestRow, 0, len(files))
 
 	// Write index file
 	indexBytes := []byte(indexContent)
@@ -407,13 +437,12 @@ func (d *Dumper) writeTarGz(ctx context.Context, w io.Writer, destPath string, f
 		ModTime: time.Now(),
 	}
 	if err := tw.WriteHeader(indexHeader); err != nil {
-		return fmt.Errorf("failed to write index header: %w", err)
+		return nil, fmt.Errorf("failed to write index header: %w", err)
 	}
 	if _, err := tw.Write(indexBytes); err != nil {
-		return fmt.Errorf("failed to write index content: %w", err)
+		return nil, fmt.Errorf("failed to write index content: %w", err)
 	}
 
-	// Write actual files
 	workers := d.cfg.DownloadWorkers
 	if workers <= 0 {
 		workers = 10
@@ -437,7 +466,7 @@ func (d *Dumper) writeTarGz(ctx context.Context, w io.Writer, destPath string, f
 				dCount := downloadedCount.Load()
 				aCount := appendedCount.Load()
 				elapsed := time.Since(timeNow).Round(time.Second)
-				log.Printf("[%s] running for %s: %d/%d downloaded, %d/%d appended", destPath, elapsed, dCount, totalFiles, aCount, totalFiles)
+				log.Printf("[%s] running for %s: %d/%d opened, %d/%d appended", destPath, elapsed, dCount, totalFiles, aCount, totalFiles)
 			}
 		}
 	}()
@@ -455,7 +484,7 @@ func (d *Dumper) writeTarGz(ctx context.Context, w io.Writer, destPath string, f
 	}
 	close(jobs)
 
-	results := make(chan downloadedFile, workers)
+	results := make(chan openedFile, workers)
 
 	for i := 0; i < workers; i++ {
 		g.Go(func() error {
@@ -463,15 +492,16 @@ func (d *Dumper) writeTarGz(ctx context.Context, w io.Writer, destPath string, f
 				if err := gCtx.Err(); err != nil {
 					return err
 				}
-				data, err := d.downloadFile(gCtx, file.Name)
+				body, err := d.client.ReadObject(gCtx, file.Name)
 				if err != nil {
-					return err
+					return fmt.Errorf("failed to read %s: %w", file.Name, err)
 				}
 				downloadedCount.Add(1)
 
 				select {
-				case results <- downloadedFile{file: file, data: data}:
+				case results <- openedFile{file: file, body: body}:
 				case <-gCtx.Done():
+					body.Close()
 					return gCtx.Err()
 				}
 			}
@@ -484,25 +514,48 @@ func (d *Dumper) writeTarGz(ctx context.Context, w io.Writer, destPath string, f
 		close(results)
 	}()
 
-	for res := range results {
-		if err := d.appendDataToTar(ctx, tw, res.file, res.data); err != nil {
-			stopDownloads()
-			g.Wait()
-			return err
+	// closeRest closes what the workers opened and nobody will read.
+	closeRest := func() {
+		stopDownloads()
+		for res := range results {
+			res.body.Close()
 		}
+		g.Wait()
+	}
+	buf := make([]byte, 64<<10)
+	for res := range results {
+		sum, err := appendToTar(tw, res.file, res.body, buf)
+		res.body.Close()
+		if err != nil {
+			closeRest()
+			return nil, err
+		}
+		rows = append(rows, manifestRow{
+			Name:      res.file.Name,
+			URL:       urlOf(res.file.Hostname, res.file.Name),
+			Host:      res.file.Hostname,
+			Day:       res.file.Date,
+			FetchedAt: res.file.Updated.UTC(),
+			SHA256:    sum,
+			Bytes:     res.file.Size,
+			Archive:   destPath,
+			Offset:    tarBytes.n - res.file.Size,
+		})
 		appendedCount.Add(1)
 	}
 	if err := g.Wait(); err != nil {
-		return err
+		return nil, err
 	}
 
 	if err := tw.Close(); err != nil {
-		return fmt.Errorf("failed to finish the tar stream: %w", err)
+		return nil, fmt.Errorf("failed to finish the tar stream: %w", err)
 	}
-	if err := gw.Close(); err != nil {
-		return fmt.Errorf("failed to finish the gzip stream: %w", err)
+	if err := zw.Close(); err != nil {
+		return nil, fmt.Errorf("failed to finish the zstd stream: %w", err)
 	}
-	return nil
+	// Only a finished encoder is kept; one abandoned mid-stream is dropped.
+	releaseArchiveWriter(zw, d.cfg.ZstdWindowMB)
+	return rows, nil
 }
 
 func getTarHeaderName(hostname, filename string) string {
@@ -520,32 +573,84 @@ func getTarHeaderName(hostname, filename string) string {
 	return fmt.Sprintf("%s/%s", hostname, relPath)
 }
 
-func (d *Dumper) downloadFile(ctx context.Context, name string) ([]byte, error) {
-	r, err := d.client.ReadObject(ctx, name)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read %s: %w", name, err)
-	}
-	defer r.Close()
-	return io.ReadAll(r)
-}
-
-func (d *Dumper) appendDataToTar(ctx context.Context, tw *tar.Writer, file FileInfo, data []byte) error {
-	headerName := getTarHeaderName(file.Hostname, file.Name)
-
+// appendToTar copies one object into the archive under the size its listing
+// gave, which the tar header needs before the body. A crawl object is written
+// once and never changes, so a body of another length is an error, not
+// something to archive.
+func appendToTar(tw *tar.Writer, file FileInfo, body io.Reader, buf []byte) (string, error) {
 	header := &tar.Header{
-		Name:    headerName,
-		Size:    int64(len(data)),
+		Name:    getTarHeaderName(file.Hostname, file.Name),
+		Size:    file.Size,
 		Mode:    0644,
 		ModTime: time.Now(),
 	}
-
 	if err := tw.WriteHeader(header); err != nil {
-		return fmt.Errorf("failed to write header for %s: %w", file.Name, err)
+		return "", fmt.Errorf("failed to write header for %s: %w", file.Name, err)
 	}
-
-	if _, err := tw.Write(data); err != nil {
-		return fmt.Errorf("failed to write content for %s: %w", file.Name, err)
+	hash := sha256.New()
+	n, err := io.CopyBuffer(io.MultiWriter(tw, hash), io.LimitReader(body, file.Size), buf)
+	if err == nil && n < file.Size {
+		err = io.EOF
 	}
+	if err != nil {
+		if errors.Is(err, io.EOF) {
+			return "", fmt.Errorf("%s is %d bytes, its listing said %d", file.Name, n, file.Size)
+		}
+		return "", fmt.Errorf("failed to write content for %s: %w", file.Name, err)
+	}
+	var extra [1]byte
+	if m, _ := body.Read(extra[:]); m > 0 {
+		return "", fmt.Errorf("%s is longer than the %d bytes its listing said", file.Name, file.Size)
+	}
+	return hex.EncodeToString(hash.Sum(nil)), nil
+}
 
-	return nil
+type countingWriter struct {
+	w io.Writer
+	n int64
+}
+
+func (c *countingWriter) Write(p []byte) (int, error) {
+	n, err := c.w.Write(p)
+	c.n += int64(n)
+	return n, err
+}
+
+// maxGlobDays is how many days back a night lists by date rather than the
+// whole host; a chain that old is listed whole, as before there were dates.
+const maxGlobDays = 62
+
+// daysAfter is every day after from up to and including to, as YYYY-MM-DD.
+func daysAfter(from, to string) []string {
+	start, err1 := time.Parse("2006-01-02", from)
+	end, err2 := time.Parse("2006-01-02", to)
+	if err1 != nil || err2 != nil {
+		return nil
+	}
+	var days []string
+	for d := start.AddDate(0, 0, 1); !d.After(end); d = d.AddDate(0, 0, 1) {
+		days = append(days, d.Format("2006-01-02"))
+		if len(days) > maxGlobDays {
+			break
+		}
+	}
+	return days
+}
+
+// listDays lists only the objects of prefix stamped with one of days, where
+// a listing of the whole prefix would page through the host's history every
+// night. The caller filters by date as it does a whole listing, so the two
+// give the same files.
+func (d *Dumper) listDays(ctx context.Context, prefix string, days []string) ([]*storage.ObjectAttrs, error) {
+	if len(days) == 0 {
+		return nil, nil
+	}
+	started := time.Now()
+	glob := prefix + "**date={" + strings.Join(days, ",") + "}**"
+	objects, err := d.client.ListObjectsGlob(ctx, prefix, glob)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list %s by %s: %w", prefix, glob, err)
+	}
+	log.Printf("Listed %d objects under %s for %d days in %v", len(objects), prefix, len(days), time.Since(started).Round(time.Second))
+	return objects, nil
 }

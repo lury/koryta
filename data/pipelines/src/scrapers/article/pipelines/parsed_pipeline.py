@@ -190,7 +190,7 @@ def _parse_domain_batches(
 
     print(
         f"Parsing {total_work} pages across "
-        f"{len(by_storage)} tar.gz files with {workers} workers"
+        f"{len(by_storage)} archives with {workers} workers"
     )
 
     # Limit in-flight futures to bound memory: each future holds parsed

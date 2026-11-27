@@ -143,7 +143,7 @@ class MockIO(IO):
         self.output.append((source, data, content_type))
 
     def batch_upload(
-        self, source, data, content_type, include_query=False, verbose=True
+        self, source, data, content_type, include_query=True, verbose=True
     ) -> str:
         self.upload(source, data, content_type)
         return ""
@@ -208,7 +208,7 @@ class DictMockIO(IO):
         self.output.append((source, data, content_type))
 
     def batch_upload(
-        self, source, data, content_type, include_query=False, verbose=True
+        self, source, data, content_type, include_query=True, verbose=True
     ):
         self.upload(source, data, content_type)
 
