@@ -1,0 +1,31 @@
+# Traces of the prod-like stack in a local Jaeger, on top of compose.prodlike.yaml:
+#
+#   docker compose -f compose.prodlike.yaml -f compose.tracing.yaml up --build -d
+#   open http://127.0.0.1:16686   (service "koryta-frontend")
+#
+# Nothing goes to Sentry, as from anywhere but a deployed backend; the server's
+# spans go to Jaeger instead (frontend/sentry.localTracing.ts). Jaeger alone,
+# for `npm run dev` on the host or a pipeline run (data/pipelines/src/tracing.py):
+#
+#   docker compose -f compose.prodlike.yaml -f compose.tracing.yaml up -d jaeger
+#   OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318 npm run dev
+#
+# Traces live in Jaeger's memory and go with the container.
+services:
+  jaeger:
+    image: jaegertracing/jaeger:2.23.0
+    environment:
+      # Its OTLP receivers listen on localhost unless told otherwise.
+      JAEGER_LISTEN_HOST: 0.0.0.0
+    ports:
+      - "127.0.0.1:16686:16686"
+      - "127.0.0.1:4317:4317"
+      - "127.0.0.1:4318:4318"
+
+  app:
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: koryta-frontend
+    depends_on:
+      jaeger:
+        condition: service_started

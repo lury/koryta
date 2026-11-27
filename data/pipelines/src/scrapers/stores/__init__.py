@@ -34,6 +34,7 @@ from stores.config import PESEL_SALT_FILE as PESEL_SALT_FILE
 from stores.config import VERSIONED_DIR as VERSIONED_DIR
 from stores.config import backup_disabled
 from stores.config import pesel_salt as pesel_salt
+from tracing import traced
 
 if TYPE_CHECKING:
     from duckdb import DuckDBPyConnection
@@ -1071,6 +1072,7 @@ Should I run it? (y/n) [n]",
                 any_refreshed = True
         return any_refreshed
 
+    @traced(lambda self, *_: f"pipeline {self.pipeline_name}")
     def run_pipeline(
         self,
         ctx: Context,

@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/nuxt";
 import type { Event } from "@sentry/nuxt";
+import { localTracingOptions } from "./sentry.localTracing";
 
 /** Only a deployed nitro server reports.
  *
@@ -105,4 +106,7 @@ Sentry.init({
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
+
+  // Spans to a local Jaeger instead, when OTEL_EXPORTER_OTLP_ENDPOINT is set.
+  ...localTracingOptions(enabled),
 });
