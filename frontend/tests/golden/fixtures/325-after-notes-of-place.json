@@ -1,0 +1,27 @@
+{
+ "step": 325,
+ "name": "after: notes of place",
+ "request": {
+  "method": "GET",
+  "path": "/api/notes?nodeId=fakeplace1006",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "notes": [
+   {
+    "createdAt": "<now>",
+    "id": "fakeplace1006_test-user",
+    "nodeId": "fakeplace1006",
+    "sources": [
+     {
+      "kind": "source",
+      "note": "wzorcowe źródło"
+     }
+    ],
+    "updatedAt": "<now>",
+    "userUid": "test-user"
+   }
+  ]
+ }
+}

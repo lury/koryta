@@ -28,7 +28,15 @@ let listedNodes: Record<string, ListedNode> = {};
 /** Which kinds were asked for whole, so a test can say the listing happened. */
 let askedForTypes: string[] = [];
 
+/** What /api/search/pages answers, and the queries it was asked. */
+let pages: { id: string; name: string | null; url?: string }[] = [];
+let pageQueries: Record<string, unknown>[] = [];
+
 registerEndpoint("/api/search", () => searched);
+registerEndpoint("/api/search/pages", (event) => {
+  pageQueries.push(getQuery(event));
+  return pages;
+});
 registerEndpoint("/api/nodes", (event) => {
   const type = getQuery(event).type as string | undefined;
   if (type) askedForTypes.push(type);
@@ -90,6 +98,8 @@ describe("EntityPicker", () => {
     searched = [];
     listedNodes = {};
     askedForTypes = [];
+    pages = [];
+    pageQueries = [];
   });
 
   it("offers to add a person the search could not find", async () => {
@@ -234,108 +244,91 @@ describe("EntityPicker", () => {
       expect(rendered).toContain("Zatwierdzony");
       expect(rendered).not.toContain("Szkic");
     });
+  });
 
-    describe("articles", () => {
-      /** One of them has no headline at all, which is the state of the base:
-       * a facebook post, a scan behind a `plik.php?id=`, and one article whose
-       * `name` field is missing outright. */
-      const nodes = {
-        "art-1": {
-          name: "Krzywda sędziego z Olsztyna",
-          sourceURL:
-            "https://olsztyn.wyborcza.pl/olsztyn/7,48726,32842906,krzywda-sedziego.html",
-        },
-        "art-2": {
-          name: null,
-          sourceURL: "https://bip.powiat.pruszkow.pl/plik.php?id=275783",
-        },
-      };
+  /** Articles grow with the base, so the server finds them by headline or by
+   * link (/api/search/pages) and the picker draws what it answers; which
+   * pages match is server/db/nodes.ts' `nodeOptions`, tested in
+   * tests/server/db/nodeOptions.pg.test.ts. */
+  describe("articles", () => {
+    const olsztyn = {
+      id: "art-1",
+      name: "Krzywda sędziego z Olsztyna",
+      url: "https://olsztyn.wyborcza.pl/olsztyn/7,48726,32842906,krzywda-sedziego.html",
+    };
+    /** No headline at all, the state of some of the base. */
+    const nameless = {
+      id: "art-2",
+      name: null,
+      url: "https://bip.powiat.pruszkow.pl/plik.php?id=275783",
+    };
 
-      it("finds an article by its headline", async () => {
-        respondWith({ nodes });
+    it("finds an article by its headline", async () => {
+      pages = [olsztyn];
 
-        const wrapper = mountPicker("article");
-        await wrapper.find("input").trigger("focus");
-        await searchFor(wrapper, "sędziego");
+      const wrapper = mountPicker("article");
+      await wrapper.find("input").trigger("focus");
+      await searchFor(wrapper, "sędziego");
 
-        expect(askedForTypes).toContain("article");
-        expect(document.body.textContent).toContain(
-          "Krzywda sędziego z Olsztyna",
-        );
-      });
+      expect(pageQueries.at(-1)).toEqual({ type: "article", q: "sędziego" });
+      expect(askedForTypes).not.toContain("article");
+      expect(document.body.textContent).toContain(
+        "Krzywda sędziego z Olsztyna",
+      );
+    });
 
-      it("keeps listing the others when one article has no name", async () => {
-        // The regression this pins: the filter called `toLowerCase` on every
-        // entry's name, so the one article with none threw on each render of
-        // the picker and no term found anything at all.
-        respondWith({ nodes });
+    it("keeps drawing the others when one article has no name", async () => {
+      pages = [olsztyn, nameless];
 
-        const wrapper = mountPicker("article");
-        await wrapper.find("input").trigger("focus");
-        await searchFor(wrapper, "Olsztyn");
+      const wrapper = mountPicker("article");
+      await wrapper.find("input").trigger("focus");
+      await searchFor(wrapper, "Olsztyn");
 
-        expect(document.body.textContent).toContain(
-          "Krzywda sędziego z Olsztyna",
-        );
-      });
+      expect(document.body.textContent).toContain(
+        "Krzywda sędziego z Olsztyna",
+      );
+    });
 
-      it("calls a nameless article by its link", async () => {
-        respondWith({ nodes });
+    it("calls a nameless article by its link", async () => {
+      pages = [nameless];
 
-        const wrapper = mountPicker("article");
-        await wrapper.find("input").trigger("focus");
-        await searchFor(wrapper, "plik.php");
+      const wrapper = mountPicker("article");
+      await wrapper.find("input").trigger("focus");
+      await searchFor(wrapper, "plik.php");
 
-        expect(document.body.textContent).toContain(
-          "bip.powiat.pruszkow.pl/plik.php?id=275783",
-        );
-      });
+      expect(document.body.textContent).toContain(
+        "bip.powiat.pruszkow.pl/plik.php?id=275783",
+      );
+    });
 
-      it("finds an article by a pasted link", async () => {
-        // What comes off the address bar is not what was stored: `www.`, a
-        // trailing slash, and the Polish letters spelled out rather than
-        // percent-encoded.
-        respondWith({
-          nodes: {
-            "art-3": {
-              name: "Pełna lista absolwentów",
-              sourceURL:
-                "https://facebook.com/posts/pe%C5%82na-lista-absolwent%C3%B3w",
-            },
-          },
-        });
+    it("asks for a pasted link as the stored ones are spelled", async () => {
+      // What comes off the address bar is not what was stored: `www.`, a
+      // trailing slash, and the Polish letters spelled out rather than
+      // percent-encoded. Both spellings go to the server.
+      const wrapper = mountPicker("article");
+      await wrapper.find("input").trigger("focus");
+      await searchFor(
+        wrapper,
+        "https://www.facebook.com/posts/pełna-lista-absolwentów/",
+      );
 
-        const wrapper = mountPicker("article");
-        await wrapper.find("input").trigger("focus");
-        await searchFor(
-          wrapper,
-          "https://www.facebook.com/posts/pełna-lista-absolwentów/",
-        );
+      expect(pageQueries.at(-1)?.url).toEqual([
+        "facebook.com/posts/pełna-lista-absolwentów",
+        "facebook.com/posts/pe%c5%82na-lista-absolwent%c3%b3w",
+      ]);
+    });
 
-        expect(document.body.textContent).toContain("Pełna lista absolwentów");
-      });
+    it("asks by link only for a term that reads as one", async () => {
+      // A slug holds the words of the headline, so matching every term
+      // against it would answer "sad" with most of the base. Only something
+      // with a slash or a dotted domain in it is taken for a link.
+      const wrapper = mountPicker("article");
+      await wrapper.find("input").trigger("focus");
+      await searchFor(wrapper, "okregowy");
+      expect(pageQueries.at(-1)).not.toHaveProperty("url");
 
-      it("tries the links only for a term that reads as one", async () => {
-        // A slug holds the words of the headline, so matching every term
-        // against it would answer "sad" with most of the base. Only something
-        // with a slash or a dotted domain in it is taken for a link.
-        respondWith({
-          nodes: {
-            "art-1": {
-              name: "Zupełnie inna sprawa",
-              sourceURL: "https://example.pl/sad-okregowy",
-            },
-          },
-        });
-
-        const wrapper = mountPicker("article");
-        await wrapper.find("input").trigger("focus");
-        await searchFor(wrapper, "okregowy");
-        expect(document.body.textContent).not.toContain("Zupełnie inna sprawa");
-
-        await searchFor(wrapper, "example.pl/sad-okregowy");
-        expect(document.body.textContent).toContain("Zupełnie inna sprawa");
-      });
+      await searchFor(wrapper, "example.pl/sad-okregowy");
+      expect(pageQueries.at(-1)).toHaveProperty("url");
     });
   });
 });

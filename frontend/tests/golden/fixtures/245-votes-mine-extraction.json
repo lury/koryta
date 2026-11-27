@@ -1,0 +1,13 @@
+{
+ "step": 245,
+ "name": "votes mine extraction",
+ "request": {
+  "method": "GET",
+  "path": "/api/votes/mine?kind=extraction",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "votes": {}
+ }
+}

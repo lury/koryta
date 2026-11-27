@@ -1,0 +1,14 @@
+{
+ "step": 66,
+ "name": "edges successions person",
+ "request": {
+  "method": "GET",
+  "path": "/api/edges/successions?personId=fakeperson1066",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "hidden": 0,
+  "posts": []
+ }
+}

@@ -1,0 +1,60 @@
+{
+ "step": 310,
+ "name": "ingest declarations",
+ "request": {
+  "method": "POST",
+  "path": "/api/ingest/declarations",
+  "as": "admin",
+  "body": {
+   "candidacies": [
+    {
+     "files": 1,
+     "key": "0123456789abcdef",
+     "kids": [
+      "fakeperson1104"
+     ],
+     "level": "gmina",
+     "office": "Rada gminy",
+     "reason": "named",
+     "status": "found",
+     "teryt": "021704",
+     "unitName": "Strzelin (gmina miejsko-wiejska)",
+     "year": 2024
+    }
+   ],
+   "extracts": [
+    {
+     "candidacies": [
+      "0123456789abcdef"
+     ],
+     "declarationYear": 2023,
+     "images": {
+      "date": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
+      "name": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+     },
+     "outcome": "crop",
+     "page": 0,
+     "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+     "url": "https://bip.example.test/download/golden-2023"
+    }
+   ],
+   "runId": "golden-1",
+   "tag": "golden-v1"
+  }
+ },
+ "status": 200,
+ "body": {
+  "candidacies": {
+   "created": 1,
+   "skipped": [],
+   "updated": 0
+  },
+  "extracts": {
+   "created": 1,
+   "kept": 0,
+   "skipped": [],
+   "updated": 0
+  },
+  "status": "ok"
+ }
+}

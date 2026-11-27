@@ -1,15 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
 import { logIn, USERS } from "./helpers/auth";
-
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
-
-const app =
-  getApps().length === 0
-    ? initializeApp({ projectId: "demo-koryta-pl" })
-    : getApp();
-const db = getFirestore(app, "koryta-pl");
+import { deleteDocs, putDoc } from "./helpers/db";
 
 /** "Artykuł bez krawędzi" (node 8) in scripts/nodes.json, which the seed gives
  * no facts. */
@@ -33,26 +24,23 @@ const factId = `e2e-full-load-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
 // seeded fact, so the queue deals it last and extraction_person_match still
 // opens on its own card.
 test.beforeAll(async () => {
-  await db
-    .collection("extractions")
-    .doc(factId)
-    .set({
-      url: ARTICLE.url,
-      articleUrl: ARTICLE.url,
-      articleDomain: "lone-article.com",
-      fact_type: "employment",
-      person: "Ewa Wczytana",
-      organization: "Spolka Od Nowa",
-      role: "prezes zarzadu",
-      justification: QUOTE,
-      tag: "e2e",
-      createdAt: new Date("2026-01-01T10:00:00.000Z"),
-      stats: { votes: { interesting: 0, quality: 0, humanVoted: false } },
-    });
+  await putDoc("extractions", factId, {
+    url: ARTICLE.url,
+    articleUrl: ARTICLE.url,
+    articleDomain: "lone-article.com",
+    fact_type: "employment",
+    person: "Ewa Wczytana",
+    organization: "Spolka Od Nowa",
+    role: "prezes zarzadu",
+    justification: QUOTE,
+    tag: "e2e",
+    createdAt: new Date("2026-01-01T10:00:00.000Z"),
+    stats: { votes: { interesting: 0, quality: 0, humanVoted: false } },
+  });
 });
 
 test.afterAll(async () => {
-  await db.collection("extractions").doc(factId).delete();
+  await deleteDocs("extractions", [factId]);
 });
 
 /** Facts reach a signed in reader who loads the page from scratch: a reload, a

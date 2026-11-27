@@ -1,0 +1,97 @@
+{
+ "step": 264,
+ "name": "revisions relations",
+ "request": {
+  "method": "GET",
+  "path": "/api/revisions/relations?nodeId=fakeperson1066",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "drafts": 0,
+  "nodePublished": true,
+  "proposals": 0,
+  "relations": [
+   {
+    "approvedRevisionId": null,
+    "byElection": false,
+    "committee": null,
+    "deleted": false,
+    "direction": "outgoing",
+    "elected": true,
+    "endDate": null,
+    "id": "fakerunfakeperson1066_0",
+    "name": null,
+    "other": {
+     "id": "teryt1615011",
+     "name": "Żerków",
+     "path": "/region/zerkow-teryt1615011",
+     "published": true,
+     "type": "region"
+    },
+    "position": "Wójt",
+    "publishable": true,
+    "published": true,
+    "revisions": [],
+    "startDate": "2018",
+    "state": "settled",
+    "type": "election",
+    "waiting": 0
+   },
+   {
+    "approvedRevisionId": "rev_fakeperson1066",
+    "byElection": false,
+    "committee": null,
+    "deleted": false,
+    "direction": "outgoing",
+    "elected": false,
+    "endDate": null,
+    "id": "fakejob1066_0",
+    "name": "Przewodniczący Rady Nadzorczej",
+    "other": {
+     "id": "fakeplace444",
+     "name": "GOLEC Z O.O SP. Z O.O.",
+     "path": "/instytucja/golec-z-o-o-sp-z-o-o-fakeplace444",
+     "published": true,
+     "type": "place"
+    },
+    "position": null,
+    "publishable": true,
+    "published": true,
+    "revisions": [],
+    "startDate": "2005-04-08",
+    "state": "settled",
+    "type": "employed",
+    "waiting": 0
+   },
+   {
+    "approvedRevisionId": null,
+    "byElection": false,
+    "committee": null,
+    "deleted": false,
+    "direction": "outgoing",
+    "elected": false,
+    "endDate": null,
+    "id": "fakeconn1066",
+    "name": null,
+    "other": {
+     "id": "fakeperson1019",
+     "name": "Włodzimierz Karwowski",
+     "path": "/osoba/wlodzimierz-karwowski-fakeperson1019",
+     "published": false,
+     "type": "person"
+    },
+    "position": null,
+    "publishable": false,
+    "published": true,
+    "revisions": [],
+    "startDate": null,
+    "state": "settled",
+    "type": "connection",
+    "waiting": 0
+   }
+  ],
+  "total": 3,
+  "withProposals": 0
+ }
+}

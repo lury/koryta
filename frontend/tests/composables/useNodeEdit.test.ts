@@ -30,14 +30,6 @@ vi.mock("~/composables/auth", () => ({
   authFetch: mockedFetch,
 }));
 
-vi.mock("firebase/firestore", () => ({
-  getFirestore: vi.fn(),
-  doc: vi.fn(),
-  getDoc: vi.fn(() =>
-    Promise.resolve({ exists: () => true, data: () => ({ type: "person" }) }),
-  ),
-}));
-
 describe.todo("useNodeEdit", () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let mockRoute: any;

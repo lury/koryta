@@ -1,0 +1,116 @@
+{
+ "step": 271,
+ "name": "ops jobs",
+ "request": {
+  "method": "GET",
+  "path": "/api/ops/jobs",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "generatedAt": "<now>",
+  "jobs": [
+   {
+    "captureStats": {
+     "byState": {
+      "failed": 0,
+      "partial": 0,
+      "queued": 0,
+      "running": 0,
+      "succeeded": 0
+     },
+     "since": "<now>"
+    },
+    "id": "capture_extraction",
+    "record": null,
+    "runs": []
+   },
+   {
+    "id": "extraction_import",
+    "probe": null,
+    "record": null,
+    "runs": []
+   },
+   {
+    "id": "people_request",
+    "probe": null,
+    "record": null,
+    "runs": []
+   },
+   {
+    "id": "nightly",
+    "probe": null,
+    "record": null,
+    "runs": []
+   },
+   {
+    "id": "krs_scrape_free",
+    "probe": null,
+    "record": null,
+    "runs": []
+   },
+   {
+    "id": "krs_scrape_paid",
+    "probe": null,
+    "record": null,
+    "runs": []
+   },
+   {
+    "id": "krs_odpis",
+    "probe": null,
+    "record": null,
+    "runs": []
+   },
+   {
+    "id": "krs_register_owners",
+    "probe": null,
+    "record": null,
+    "runs": []
+   },
+   {
+    "id": "compressor",
+    "probe": {
+     "error": "Could not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.",
+     "kind": "compressedMirror"
+    },
+    "record": null,
+    "runs": []
+   },
+   {
+    "id": "firestore_export",
+    "probe": {
+     "error": "Could not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.",
+     "kind": "firestoreExport"
+    },
+    "record": null,
+    "runs": []
+   },
+   {
+    "id": "company_import",
+    "probe": null,
+    "record": null,
+    "runs": []
+   },
+   {
+    "id": "people_import",
+    "probe": null,
+    "record": null,
+    "runs": []
+   },
+   {
+    "id": "score_import",
+    "probe": null,
+    "record": null,
+    "runs": []
+   },
+   {
+    "id": "article_crawl",
+    "probe": null,
+    "record": null,
+    "runs": []
+   }
+  ],
+  "others": [],
+  "problems": []
+ }
+}

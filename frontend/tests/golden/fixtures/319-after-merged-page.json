@@ -1,0 +1,123 @@
+{
+ "step": 319,
+ "name": "after: merged page",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes/fakeperson1079",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "node": {
+   "birthDate": "1964-05-06",
+   "content_changed_at": "<now>",
+   "id": "fakeperson1077",
+   "name": "Gabriel Grudzień",
+   "parties": [
+    "Lewica",
+    "PiS"
+   ],
+   "published": true,
+   "revision_id": "revisions/<id>",
+   "revisions": {
+    "has_unapproved": false,
+    "latest_id": "<id>",
+    "latest_time": "<now>",
+    "total": 2
+   },
+   "stats": {
+    "edges": {
+     "approved": {
+      "currentlyEmployed": true,
+      "currentlyEmployedTargetNodeIds": [
+       "fakeplace1006",
+       "fakeplace1118",
+       "fakeplace1235",
+       "fakeplace523",
+       "fakeplace54",
+       "fakeplace908",
+       "fakeplace948",
+       "teryt0819032",
+       "teryt1013032",
+       "teryt1212022",
+       "teryt1405013",
+       "teryt1618013",
+       "teryt1806013",
+       "teryt1818",
+       "teryt2216"
+      ],
+      "elections": [],
+      "experienceMonths": 24.5,
+      "latestEmploymentStart": "2024-02-06",
+      "seatNodeIds": [],
+      "targetNodeIds": [
+       "fakeperson1077",
+       "fakeplace1006",
+       "fakeplace1118",
+       "fakeplace1235",
+       "fakeplace1261",
+       "fakeplace265",
+       "fakeplace523",
+       "fakeplace54",
+       "fakeplace548",
+       "fakeplace613",
+       "fakeplace71",
+       "fakeplace763",
+       "fakeplace908",
+       "fakeplace948",
+       "teryt0811033",
+       "teryt0819032",
+       "teryt1013032",
+       "teryt1212022",
+       "teryt1405013",
+       "teryt1409012",
+       "teryt1618013",
+       "teryt1806013",
+       "teryt1816012",
+       "teryt1818",
+       "teryt2002032",
+       "teryt2216",
+       "teryt3019011",
+       "teryt3214031"
+      ]
+     },
+     "hiddenTargets": 0
+    },
+    "factsCount": 0,
+    "isApproved": true,
+    "nodeGroupSize": 150,
+    "notesCount": 0,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace548"
+      ],
+      "what": "MALISZEWSKI-SZWARC SP. Z O.O.",
+      "where": "Rychwał"
+     },
+     "approved": {
+      "ties": [
+       "fakeplace548"
+      ],
+      "what": "MALISZEWSKI-SZWARC SP. Z O.O.",
+      "where": "Rychwał"
+     },
+     "teaser": {
+      "ties": [
+       "fakeplace548"
+      ],
+      "what": "MALISZEWSKI-SZWARC SP. Z O.O.",
+      "where": "Rychwał"
+     }
+    },
+    "votes": {
+     "humanVoted": false,
+     "interesting": 0,
+     "quality": 0
+    }
+   },
+   "type": "person"
+  }
+ }
+}

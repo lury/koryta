@@ -1,0 +1,69 @@
+{
+ "step": 262,
+ "name": "edges byNode",
+ "request": {
+  "method": "GET",
+  "path": "/api/edges/byNode?nodeId=fakeperson1066",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "nodeParties": [],
+  "nodePublished": true,
+  "relations": [
+   {
+    "byElection": false,
+    "direction": "outgoing",
+    "hasPendingRevision": false,
+    "id": "fakejob1066_0",
+    "name": "Przewodniczący Rady Nadzorczej",
+    "otherId": "fakeplace444",
+    "otherName": "GOLEC Z O.O SP. Z O.O.",
+    "otherPublished": true,
+    "parties": [],
+    "position": null,
+    "publishable": true,
+    "published": true,
+    "revisionToApprove": null,
+    "startDate": "2005-04-08",
+    "type": "employed"
+   },
+   {
+    "byElection": false,
+    "direction": "outgoing",
+    "hasPendingRevision": false,
+    "id": "fakerunfakeperson1066_0",
+    "name": null,
+    "otherId": "teryt1615011",
+    "otherName": "Żerków",
+    "otherPublished": true,
+    "parties": [
+     "Konfederacja"
+    ],
+    "position": "Wójt",
+    "publishable": true,
+    "published": true,
+    "revisionToApprove": null,
+    "startDate": "2018",
+    "type": "election"
+   },
+   {
+    "byElection": false,
+    "direction": "outgoing",
+    "hasPendingRevision": false,
+    "id": "fakeconn1066",
+    "name": null,
+    "otherId": "fakeperson1019",
+    "otherName": "Włodzimierz Karwowski",
+    "otherPublished": false,
+    "parties": [],
+    "position": null,
+    "publishable": false,
+    "published": true,
+    "revisionToApprove": null,
+    "startDate": null,
+    "type": "connection"
+   }
+  ]
+ }
+}

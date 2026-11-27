@@ -1,34 +1,20 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import type { Firestore, WriteBatch } from "firebase-admin/firestore";
+import { describe, it, expect } from "vitest";
 import {
-  applyNodeMerge,
   carriedFields,
   countDispositions,
   votesToMove,
   mergeRefusal,
   planEdgeMoves,
-  resolveMergedNode,
   type MergeEdgePlan,
-  type MergePlan,
 } from "../../../server/utils/merge";
-
-// `server/utils/revisions` reaches for `Timestamp` and `FieldValue` at import
-// time; nothing here reads either value back, so the shapes are enough.
-vi.mock("firebase-admin/firestore", () => ({
-  Timestamp: { now: () => ({ toMillis: () => 1234567890 }) },
-  FieldValue: { delete: () => "<delete>" },
-}));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 globalThis.createError = (err: any) => err;
 
 /** A stored relation in the shape `planEdgeMoves` reads it: an id and the
- * document behind it, which is all a QueryDocumentSnapshot is used for here. */
+ * document behind it. */
 function edgeDoc(id: string, data: Record<string, unknown>) {
-  return {
-    id,
-    data: () => data,
-  } as unknown as FirebaseFirestore.QueryDocumentSnapshot;
+  return { id, data: () => data };
 }
 
 /** A spell of employment, the ordinary `identicalMeansSame: true` case. */
@@ -411,95 +397,6 @@ describe("countDispositions", () => {
   });
 });
 
-/** A database of nodes only, counting the reads so a cycle can be shown to
- * stop rather than merely to answer. */
-function nodeDb(nodes: Record<string, Record<string, unknown>>) {
-  const reads: string[] = [];
-  const db = {
-    collection: (collection: string) => ({
-      doc: (id: string) => ({
-        id,
-        path: `${collection}/${id}`,
-        parent: { id: collection },
-        get: async () => {
-          reads.push(id);
-          return {
-            id,
-            exists: nodes[id] !== undefined,
-            data: () => nodes[id],
-          };
-        },
-      }),
-    }),
-  };
-  return { db: db as unknown as Firestore, reads };
-}
-
-describe("resolveMergedNode", () => {
-  it("answers with the page itself when it was never merged, at one read", async () => {
-    const { db, reads } = nodeDb({ a: { name: "Andrzej Golimont" } });
-
-    const resolved = await resolveMergedNode(db, "a");
-
-    expect(resolved.id).toBe("a");
-    expect(resolved.snapshot?.data()).toMatchObject({
-      name: "Andrzej Golimont",
-    });
-    expect(reads).toEqual(["a"]);
-  });
-
-  it("follows a merged page to the one that survived it", async () => {
-    const { db } = nodeDb({
-      a: { name: "Andrzej Golimont", merged_into: "b" },
-      b: { name: "Andrzej Marcin Golimont" },
-    });
-
-    const resolved = await resolveMergedNode(db, "a");
-
-    expect(resolved.id).toBe("b");
-    expect(resolved.snapshot?.data()).toMatchObject({
-      name: "Andrzej Marcin Golimont",
-    });
-  });
-
-  it("follows a chain to the end of it", async () => {
-    // Merges are resolved on the way in, so a chain should not form - but two
-    // admins merging in opposite directions can build one, and a reader landing
-    // half way along it would see a page that says nothing.
-    const { db } = nodeDb({
-      a: { merged_into: "b" },
-      b: { merged_into: "c" },
-      c: { name: "the page that stayed" },
-    });
-
-    expect((await resolveMergedNode(db, "a")).id).toBe("c");
-  });
-
-  it("stops on a cycle rather than hanging the page load", async () => {
-    // Two pages merged into each other is a bug in whatever wrote the second
-    // pointer; the page it was reached from is still a better answer than a
-    // request that never returns.
-    const { db, reads } = nodeDb({
-      a: { merged_into: "b" },
-      b: { merged_into: "a" },
-    });
-
-    const resolved = await resolveMergedNode(db, "a");
-
-    expect(["a", "b"]).toContain(resolved.id);
-    expect(reads.length).toBeLessThanOrEqual(8);
-  });
-
-  it("gives back the id it could not find, with no snapshot", async () => {
-    const { db } = nodeDb({ a: { merged_into: "gone" } });
-
-    const resolved = await resolveMergedNode(db, "a");
-
-    expect(resolved.id).toBe("gone");
-    expect(resolved.snapshot).toBeUndefined();
-  });
-});
-
 /** A snapshot as `mergeRefusal` reads one. */
 function nodeSnap(data: Record<string, unknown> | undefined) {
   return data === undefined
@@ -571,197 +468,6 @@ describe("mergeRefusal", () => {
         person,
       ),
     ).toContain("c");
-  });
-});
-
-describe("applyNodeMerge", () => {
-  const updates: [string, Record<string, unknown>][] = [];
-  const sets: [string, Record<string, unknown>][] = [];
-  let generated = 0;
-
-  const db = {
-    collection: (collection: string) => ({
-      doc: (id?: string) => {
-        const docId = id ?? `generated-${++generated}`;
-        return {
-          id: docId,
-          path: `${collection}/${docId}`,
-          parent: { id: collection },
-        };
-      },
-    }),
-  } as unknown as Firestore;
-
-  const batch = {
-    update: (ref: { path: string }, data: Record<string, unknown>) =>
-      updates.push([ref.path, data]),
-    set: (ref: { path: string }, data: Record<string, unknown>) =>
-      sets.push([ref.path, data]),
-  } as unknown as WriteBatch;
-
-  beforeEach(() => {
-    updates.length = 0;
-    sets.length = 0;
-    generated = 0;
-  });
-
-  /** What the batch wrote to one path, whichever way it wrote it. */
-  function wrote(path: string) {
-    return (
-      updates.find((call) => call[0] === path)?.[1] ??
-      sets.find((call) => call[0] === path)?.[1]
-    );
-  }
-
-  function writtenTo(prefix: string) {
-    return sets.find((call) => call[0].startsWith(prefix))?.[1];
-  }
-
-  const plan: MergePlan = {
-    duplicate_id: "dup",
-    survivor_id: "surv",
-    votes: [],
-    edges: [
-      {
-        edge_id: "out",
-        type: "employed",
-        role: "source",
-        disposition: "moved",
-      },
-      {
-        edge_id: "in",
-        type: "mentions",
-        role: "target",
-        disposition: "moved",
-      },
-      {
-        edge_id: "same",
-        type: "employed",
-        role: "source",
-        disposition: "collapsed",
-        duplicate_of: "s1",
-      },
-      {
-        edge_id: "kandydatura",
-        type: "election",
-        role: "source",
-        disposition: "review",
-        duplicate_of: "s2",
-      },
-      { edge_id: "loop", type: "employed", role: "both", disposition: "self" },
-    ],
-    counts: { moved: 2, collapsed: 1, review: 1, self: 1 },
-  };
-
-  const storedEdges = new Map<string, Record<string, unknown>>([
-    ["out", employed("dup", "firma")],
-    ["in", { type: "mentions", source: "artykul", target: "dup" }],
-    ["same", { ...employed("dup", "firma"), published: true, stats: { c: 1 } }],
-    ["kandydatura", election("dup", "powiat")],
-    ["loop", employed("dup", "dup")],
-  ]);
-
-  function apply(reason = "Jedna osoba, dwie strony") {
-    applyNodeMerge(db, batch, { uid: "admin-uid" }, plan, reason, storedEdges);
-  }
-
-  it("re-points the moved relation at the survivor, and only the end that named the duplicate", async () => {
-    apply();
-
-    expect(wrote("edges/out")).toEqual({ source: "surv" });
-    expect(wrote("edges/in")).toEqual({ target: "surv" });
-  });
-
-  it("moves a relation held for review rather than removing it", async () => {
-    // A candidacy the survivor appears to state already is still kept: the
-    // report is what a human reads, and nothing is thrown away on it.
-    apply();
-
-    expect(wrote("edges/kandydatura")).toEqual({ source: "surv" });
-  });
-
-  it("removes a collapsed relation with a revision saying why", async () => {
-    // The half of the merge most likely to have been wrong, so it goes the way
-    // /api/edges/delete removes one - soft, reasoned, and approved as written,
-    // because an admin merging two pages is the review of what it removes.
-    apply();
-
-    expect(wrote("edges/same")).toMatchObject({
-      deleted: true,
-      delete_reason: expect.stringContaining("s1"),
-    });
-    expect(writtenTo("revisions/")).toMatchObject({
-      node_id: "same",
-      collection: "edges",
-      status: "approved",
-      review_user: "admin-uid",
-      data: expect.objectContaining({ deleted: true }),
-    });
-  });
-
-  it("keeps the counters the collapsed relation's document owns", async () => {
-    // The write is a `set`; anything the revision does not carry is dropped
-    // unless it is layered back on.
-    apply();
-
-    expect(wrote("edges/same")).toMatchObject({ stats: { c: 1 } });
-  });
-
-  it("says a loop went because it led to itself, not because something else said it", async () => {
-    apply();
-
-    expect(wrote("edges/loop")).toMatchObject({
-      deleted: true,
-      delete_reason: expect.stringContaining("samo do siebie"),
-    });
-  });
-
-  it("puts the duplicate to rest pointing at the survivor", async () => {
-    // The document stays: its url still resolves, its votes and revisions still
-    // have something to hang off, and `pageIsPublic` reads `deleted` already -
-    // so it leaves the public site without anything learning a new rule.
-    apply("Jedna osoba, dwie strony");
-
-    expect(wrote("nodes/dup")).toEqual({
-      deleted: true,
-      delete_reason: "Jedna osoba, dwie strony",
-      merged_into: "surv",
-      published: false,
-    });
-  });
-
-  it("files the merge naming both pages and every relation it touched", async () => {
-    // This entry is what an undo would need: nothing else records which
-    // relations were on which page before the merge.
-    apply();
-
-    expect(writtenTo("audit/")).toMatchObject({
-      action: "merge",
-      collection: "nodes",
-      target_id: "dup",
-      user: "admin-uid",
-      reason: "Jedna osoba, dwie strony",
-      merge: {
-        into: "surv",
-        moved: ["out", "in", "kandydatura"],
-        collapsed: ["same", "loop"],
-      },
-    });
-  });
-
-  it("skips a relation that has gone since the plan was made", async () => {
-    // The plan is read before the batch; an edge deleted in between would
-    // otherwise be written back into existence by the removal revision.
-    applyNodeMerge(
-      db,
-      batch,
-      { uid: "admin-uid" },
-      { ...plan, edges: [plan.edges[0]!] },
-      "Powód",
-      new Map(),
-    );
-
-    expect(updates.map((call) => call[0])).toEqual(["nodes/dup"]);
   });
 });
 

@@ -1,0 +1,21 @@
+{
+ "step": 156,
+ "name": "revisions mine",
+ "request": {
+  "method": "GET",
+  "path": "/api/revisions/mine?limit=20",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "counts": {
+   "approved": 0,
+   "pending": 0,
+   "rejected": 0,
+   "superseded": 0
+  },
+  "revisions": [],
+  "total": 0,
+  "truncated": false
+ }
+}

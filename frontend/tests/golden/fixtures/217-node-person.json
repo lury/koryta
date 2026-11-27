@@ -1,0 +1,81 @@
+{
+ "step": 217,
+ "name": "node person",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes/fakeperson1066",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "node": {
+   "id": "fakeperson1066",
+   "name": "Berta Dąbkowski",
+   "parties": [],
+   "published": true,
+   "revision_id": "rev_fakeperson1066",
+   "revisions": {
+    "has_unapproved": false,
+    "latest_id": "rev_fakeperson1066",
+    "latest_time": "2026-08-10T12:00:00Z",
+    "total": 1
+   },
+   "stats": {
+    "edges": {
+     "approved": {
+      "currentlyEmployed": false,
+      "currentlyEmployedTargetNodeIds": [],
+      "elections": [
+       "local-2018",
+       "local-2018:won"
+      ],
+      "experienceMonths": 0,
+      "latestEmploymentStart": null,
+      "seatNodeIds": [],
+      "targetNodeIds": [
+       "fakeperson1019",
+       "fakeplace444",
+       "teryt1615011",
+       "teryt2405031"
+      ]
+     },
+     "hiddenTargets": 0
+    },
+    "factsCount": 0,
+    "isApproved": true,
+    "nodeGroupSize": 79,
+    "notesCount": 0,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace444"
+      ],
+      "what": "GOLEC Z O.O SP. Z O.O.",
+      "where": "Rybnik"
+     },
+     "approved": {
+      "ties": [
+       "fakeplace444"
+      ],
+      "what": "GOLEC Z O.O SP. Z O.O.",
+      "where": "Rybnik"
+     },
+     "teaser": {
+      "ties": [
+       "fakeplace444"
+      ],
+      "what": "GOLEC Z O.O SP. Z O.O.",
+      "where": "Rybnik"
+     }
+    },
+    "votes": {
+     "humanVoted": false,
+     "interesting": 0,
+     "quality": 0
+    }
+   },
+   "type": "person"
+  }
+ }
+}

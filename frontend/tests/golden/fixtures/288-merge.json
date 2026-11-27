@@ -1,0 +1,101 @@
+{
+ "step": 288,
+ "name": "merge",
+ "request": {
+  "method": "POST",
+  "path": "/api/nodes/merge",
+  "as": "admin",
+  "body": {
+   "duplicate_id": "fakeperson1079",
+   "reason": "Ta sama osoba",
+   "survivor_id": "fakeperson1077"
+  }
+ },
+ "status": 200,
+ "body": {
+  "applied": true,
+  "plan": {
+   "carried": {
+    "birthDate": "1964-05-06",
+    "parties": [
+     "Lewica",
+     "PiS"
+    ]
+   },
+   "counts": {
+    "collapsed": 0,
+    "enriched": 0,
+    "moved": 10,
+    "review": 0,
+    "self": 0
+   },
+   "duplicate_id": "fakeperson1079",
+   "duplicate_name": "Maryna Grześkowiak",
+   "edges": [
+    {
+     "disposition": "moved",
+     "edge_id": "fakejob1079_0",
+     "role": "source",
+     "type": "employed"
+    },
+    {
+     "disposition": "moved",
+     "edge_id": "fakejob1079_1",
+     "role": "source",
+     "type": "employed"
+    },
+    {
+     "disposition": "moved",
+     "edge_id": "fakejob1079_2",
+     "role": "source",
+     "type": "employed"
+    },
+    {
+     "disposition": "moved",
+     "edge_id": "fakejob1079_3",
+     "role": "source",
+     "type": "employed"
+    },
+    {
+     "disposition": "moved",
+     "edge_id": "fakejob1079_4",
+     "role": "source",
+     "type": "employed"
+    },
+    {
+     "disposition": "moved",
+     "edge_id": "fakejob1079_5",
+     "role": "source",
+     "type": "employed"
+    },
+    {
+     "disposition": "moved",
+     "edge_id": "fakejob1079_6",
+     "role": "source",
+     "type": "employed"
+    },
+    {
+     "disposition": "moved",
+     "edge_id": "fakejob1079_7",
+     "role": "source",
+     "type": "employed"
+    },
+    {
+     "disposition": "moved",
+     "edge_id": "fakejob1079_8",
+     "role": "source",
+     "type": "employed"
+    },
+    {
+     "disposition": "moved",
+     "edge_id": "fakementions49_4",
+     "role": "target",
+     "type": "mentions"
+    }
+   ],
+   "survivor_id": "fakeperson1077",
+   "survivor_name": "Gabriel Grudzień",
+   "votes": []
+  }
+ }
+}

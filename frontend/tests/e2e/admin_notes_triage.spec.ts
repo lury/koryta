@@ -1,13 +1,9 @@
 import { test, expect } from "@playwright/test";
 import { waitForLoginFormHydrated } from "./helpers/login";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
-
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
-process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
+import { putDoc, readDoc } from "./helpers/db";
 
 /** The phone queue at /admin/notatki/kategoryzacja: one entry, one tap. What
- * matters end to end is that the tap reaches Firestore and that an entry the
+ * matters end to end is that the tap reaches the database and that an entry the
  * queue cannot judge lands in the table view instead of coming round again. */
 test.describe("Kategoryzacja notatek", () => {
   test("classifies one entry and hands the next to the table", async ({
@@ -16,12 +12,6 @@ test.describe("Kategoryzacja notatek", () => {
     // Seeds, logs in, opens a person's page and a company's, and works through
     // a queue
     test.setTimeout(150000);
-
-    const app =
-      getApps().length === 0
-        ? initializeApp({ projectId: "demo-koryta-pl" })
-        : getApp();
-    const db = getFirestore(app, "koryta-pl");
 
     const stamp = Date.now();
     // No hyphen: the person's page reads the id off after the last one, and
@@ -34,19 +24,16 @@ test.describe("Kategoryzacja notatek", () => {
 
     // Something for the record under the choices to show: a party, and a post
     // at a company that has a note of its own further down the queue.
-    await db
-      .collection("nodes")
-      .doc(personId)
-      .set({
-        name: `Bogdan Kategoria ${stamp}`,
-        type: "person",
-        parties: ["PiS"],
-      });
-    await db
-      .collection("nodes")
-      .doc(companyId)
-      .set({ name: `Wodociagi Kategoria ${stamp}`, type: "place" });
-    await db.collection("edges").doc(`triage-edge-job-${stamp}`).set({
+    await putDoc("nodes", personId, {
+      name: `Bogdan Kategoria ${stamp}`,
+      type: "person",
+      parties: ["PiS"],
+    });
+    await putDoc("nodes", companyId, {
+      name: `Wodociagi Kategoria ${stamp}`,
+      type: "place",
+    });
+    await putDoc("edges", `triage-edge-job-${stamp}`, {
       source: personId,
       target: companyId,
       type: "employed",
@@ -56,33 +43,27 @@ test.describe("Kategoryzacja notatek", () => {
 
     // The queue is newest first, so the first entry seeded is the second one
     // judged. Both are untyped, which is what puts them in the queue at all.
-    await db
-      .collection("notes")
-      .doc(noteId)
-      .set({
-        nodeId: personId,
-        userUid: "test-user",
-        createdAt: new Date(stamp).toISOString(),
-        sources: [
-          {
-            note: `do oceny ${stamp}`,
-            kind: "change_request",
-            url: "https://example.com/artykul",
-          },
-          { note: `bez kontekstu ${stamp}`, kind: "missing" },
-        ],
-      });
+    await putDoc("notes", noteId, {
+      nodeId: personId,
+      userUid: "test-user",
+      createdAt: new Date(stamp).toISOString(),
+      sources: [
+        {
+          note: `do oceny ${stamp}`,
+          kind: "change_request",
+          url: "https://example.com/artykul",
+        },
+        { note: `bez kontekstu ${stamp}`, kind: "missing" },
+      ],
+    });
     // A millisecond older, so it is the entry right after both of those, and
     // about another node - which is what the record has to follow.
-    await db
-      .collection("notes")
-      .doc(companyNoteId)
-      .set({
-        nodeId: companyId,
-        userUid: "test-user",
-        createdAt: new Date(stamp - 1).toISOString(),
-        sources: [{ note: `o spolce ${stamp}`, kind: "change_request" }],
-      });
+    await putDoc("notes", companyNoteId, {
+      nodeId: companyId,
+      userUid: "test-user",
+      createdAt: new Date(stamp - 1).toISOString(),
+      sources: [{ note: `o spolce ${stamp}`, kind: "change_request" }],
+    });
 
     const target = "/admin/notatki/kategoryzacja";
     await page.goto(`/login?redirect=${encodeURIComponent(target)}`);
@@ -141,7 +122,7 @@ test.describe("Kategoryzacja notatek", () => {
 
     await page.getByText("Brakujące dane / Błąd").click();
 
-    // The card moves on, and the verdict reaches Firestore rather than living
+    // The card moves on, and the verdict reaches the database rather than living
     // in the page's optimistic state.
     await expect(card.locator(".note-text")).not.toHaveText(first, {
       timeout: 15000,
@@ -149,9 +130,7 @@ test.describe("Kategoryzacja notatek", () => {
     await expect
       .poll(
         async () => {
-          const sources = (
-            await db.collection("notes").doc(noteId).get()
-          ).data()?.sources;
+          const sources = (await readDoc("notes", noteId))?.sources;
           return sources?.find((s: { note: string }) => s.note === first.trim())
             ?.adminType;
         },
@@ -178,9 +157,7 @@ test.describe("Kategoryzacja notatek", () => {
     await expect
       .poll(
         async () => {
-          const sources = (
-            await db.collection("notes").doc(noteId).get()
-          ).data()?.sources;
+          const sources = (await readDoc("notes", noteId))?.sources;
           return sources?.find(
             (s: { note: string }) => s.note === second.trim(),
           )?.adminTypeDeferred;
@@ -208,8 +185,7 @@ test.describe("Kategoryzacja notatek", () => {
     await expect
       .poll(
         async () =>
-          (await db.collection("notes").doc(companyNoteId).get()).data()
-            ?.sources?.[0]?.adminType,
+          (await readDoc("notes", companyNoteId))?.sources?.[0]?.adminType,
         { timeout: 15000 },
       )
       .toBe("context");

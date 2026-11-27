@@ -70,23 +70,13 @@ vi.mock("vuefire", () => ({
   useDocument: vi.fn(() => ref(null)),
 }));
 
-// `useAuthState` names the database it wants (`getFirestore(app, "koryta-pl")`)
-// rather than taking vuefire's default-database handle, so the stub above is no
-// longer enough on its own - the real `getFirestore` would reject the fake app.
-vi.mock("firebase/firestore", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("firebase/firestore")>();
-  return { ...actual, getFirestore: vi.fn(() => ({})) };
-});
-
-vi.stubGlobal("useEntities", (type: string) => {
-  if (type === "place") {
-    return { entities: ref({}) };
-  }
-  if (type === "region") {
-    return { entities: ref({}) };
-  }
-  return { entities: ref({}) };
-});
+// Auto-imported, so mocked as the modules Nuxt resolves them to.
+const { useEntities, usePlaceOptions } = vi.hoisted(() => ({
+  useEntities: vi.fn(),
+  usePlaceOptions: vi.fn(),
+}));
+vi.mock("~/composables/entity", () => ({ useEntities }));
+vi.mock("~/composables/placeOptions", () => ({ usePlaceOptions }));
 
 // Mock NuxtLink component
 const NuxtLinkStub = {
@@ -96,6 +86,11 @@ const NuxtLinkStub = {
 async function mountPage(query: Record<string, string> = {}) {
   routeQuery.value = query;
   lastQuery.value = null;
+  useEntities.mockImplementation(() => ({ entities: ref({}) }));
+  usePlaceOptions.mockImplementation(() => ({
+    places: ref({}),
+    placeSearch: ref(""),
+  }));
 
   const wrapper = mount(
     {
@@ -129,6 +124,13 @@ describe("AutografPage", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
     vi.clearAllMocks();
+  });
+
+  it("asks for the places it names, never for every place", async () => {
+    await mountPage({ place: "orlen" });
+
+    expect(usePlaceOptions).toHaveBeenCalled();
+    expect(useEntities.mock.calls.map(([type]) => type)).not.toContain("place");
   });
 
   it("renders correctly with empty data", async () => {

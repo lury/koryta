@@ -1,0 +1,28 @@
+{
+ "step": 260,
+ "name": "admin summary",
+ "request": {
+  "method": "GET",
+  "path": "/api/admin/summary",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "feedback": {
+   "needsAction": 0,
+   "sample": []
+  },
+  "notes": {
+   "needsAction": 0,
+   "sample": [],
+   "uncategorized": 57
+  },
+  "revisions": {
+   "inspected": 300,
+   "sample": [],
+   "truncated": true,
+   "unapproved": 2315,
+   "unapprovedManual": 0
+  }
+ }
+}

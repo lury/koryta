@@ -136,4 +136,33 @@ describe("VisualisationCompanies", () => {
     expect(segments[0].attributes("style")).toContain("width: 100%");
     // We can't strictly assert the background color due to how browsers parse it (rgb vs hex) but we know it's rendered
   });
+  it("links a bar to the employer the rows name", () => {
+    const wrapper = mount(VisualisationCompanies, {
+      global: {
+        plugins: [vuetify],
+        stubs: {
+          NuxtLink: {
+            props: ["to"],
+            template: '<a :href="to"><slot /></a>',
+          },
+        },
+      },
+      props: {
+        people: [
+          {
+            id: "1",
+            name: "Jan Kowalski",
+            companies: ["Firma A", "Firma B"],
+            companyIds: { "Firma A": "firma-a" },
+            parties: ["PO"],
+            elections: [],
+            visibility: true,
+          },
+        ] as any,
+      },
+    });
+
+    const links = wrapper.findAll("a").map((a) => a.attributes("href"));
+    expect(links).toEqual(["/eksploruj/tabela?place=firma-a"]);
+  });
 });

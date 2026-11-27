@@ -1,0 +1,1890 @@
+{
+ "step": 24,
+ "name": "nodes szpitale current selected",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes?type=person&category=szpitale&currentlyEmployed=selected&limit=20",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "matched": {
+   "fakeperson1005": [
+    "fakeplace875"
+   ],
+   "fakeperson1013": [
+    "fakeplace840"
+   ],
+   "fakeperson1032": [
+    "fakeplace426"
+   ],
+   "fakeperson1068": [
+    "fakeplace704"
+   ],
+   "fakeperson1069": [
+    "fakeplace1006"
+   ],
+   "fakeperson1077": [
+    "fakeplace54"
+   ],
+   "fakeperson1079": [
+    "fakeplace908"
+   ],
+   "fakeperson109": [
+    "fakeplace246"
+   ],
+   "fakeperson1117": [
+    "fakeplace1234",
+    "fakeplace875"
+   ],
+   "fakeperson1128": [
+    "fakeplace123"
+   ],
+   "fakeperson113": [
+    "fakeplace632"
+   ],
+   "fakeperson1144": [
+    "fakeplace148"
+   ],
+   "fakeperson1146": [
+    "fakeplace456"
+   ],
+   "fakeperson1158": [
+    "fakeplace456"
+   ],
+   "fakeperson1176": [
+    "fakeplace762",
+    "fakeplace986"
+   ],
+   "fakeperson1188": [
+    "fakeplace25"
+   ],
+   "fakeperson1195": [
+    "fakeplace644",
+    "fakeplace997"
+   ],
+   "fakeperson1200": [
+    "fakeplace666"
+   ],
+   "fakeperson1209": [
+    "fakeplace647"
+   ],
+   "fakeperson121": [
+    "fakeplace1027",
+    "fakeplace151"
+   ]
+  },
+  "matchedPlaces": {
+   "fakeplace1006": "Centrum Medyczne „colonialism” w Orzesze",
+   "fakeplace1027": "Wojewódzki Szpital Specjalistyczny im. Irena Szymański w Sokołów Małopolski",
+   "fakeplace123": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Wojkowice",
+   "fakeplace1234": "Centrum Medyczne „hexagon” w Wąsosz",
+   "fakeplace148": "Wojewódzki Szpital Specjalistyczny im. Modest Zagórski w Lubliniec",
+   "fakeplace151": "Szpital Powiatowy w Opatów Sp. z o.o.",
+   "fakeplace246": "Szpital Powiatowy w Jarocin Sp. z o.o.",
+   "fakeplace25": "Centrum Medyczne „shark” w Marki",
+   "fakeplace426": "Wojewódzki Szpital Specjalistyczny im. Stefania Balcerzak w Mirosławiec",
+   "fakeplace456": "Wojewódzki Szpital Specjalistyczny im. Eugeniusz Sokołowski w Kosów Lacki",
+   "fakeplace54": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Ożarów Mazowiecki",
+   "fakeplace632": "Szpital Powiatowy w Ustrzyki Dolne Sp. z o.o.",
+   "fakeplace644": "Wojewódzki Szpital Specjalistyczny im. Monika Głąb w Olsztyn",
+   "fakeplace647": "Centrum Medyczne „parsnip” w Choroszcz",
+   "fakeplace666": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Głuchołazy",
+   "fakeplace704": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Krzanowice",
+   "fakeplace762": "Centrum Medyczne „allocation” w Woźniki",
+   "fakeplace840": "Szpital Powiatowy w Skwierzyna Sp. z o.o.",
+   "fakeplace875": "Wojewódzki Szpital Specjalistyczny im. Krystyna Czyż w Kostrzyn nad Odrą",
+   "fakeplace908": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Słubice",
+   "fakeplace986": "Centrum Medyczne „guacamole” w Opoczno",
+   "fakeplace997": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Siemiatycze"
+  },
+  "nodes": {
+   "fakeperson1005": {
+    "id": "fakeperson1005",
+    "name": "Anastazja Romanowski",
+    "parties": [
+     "PSL",
+     "Lewica"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1005",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1005",
+     "latest_time": "2026-02-10T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace565",
+        "fakeplace875",
+        "teryt0818032",
+        "teryt3211022"
+       ],
+       "elections": [],
+       "experienceMonths": 25.2,
+       "latestEmploymentStart": "2010-12-11",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1011",
+        "fakeplace1045",
+        "fakeplace1073",
+        "fakeplace1117",
+        "fakeplace167",
+        "fakeplace269",
+        "fakeplace333",
+        "fakeplace565",
+        "fakeplace870",
+        "fakeplace875",
+        "teryt0203032",
+        "teryt0818032",
+        "teryt1007012",
+        "teryt1202031",
+        "teryt1801021",
+        "teryt1802022",
+        "teryt2811011",
+        "teryt3009031",
+        "teryt3015033",
+        "teryt3211022"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 130,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace269"
+       ],
+       "what": "TUREK, LISIECKI AND GAWROŃSKI SP. Z O.O.",
+       "where": "Dolsk"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace269"
+       ],
+       "what": "TUREK, LISIECKI AND GAWROŃSKI SP. Z O.O.",
+       "where": "Dolsk"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace269"
+       ],
+       "what": "TUREK, LISIECKI AND GAWROŃSKI SP. Z O.O.",
+       "where": "Dolsk"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1013": {
+    "id": "fakeperson1013",
+    "name": "Ewelina Kapusta",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1013",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1013",
+     "latest_time": "2025-07-19T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1118",
+        "fakeplace364",
+        "fakeplace495",
+        "fakeplace840",
+        "teryt0606031",
+        "teryt1219022",
+        "teryt1602",
+        "teryt1618013",
+        "teryt2016031"
+       ],
+       "elections": [],
+       "experienceMonths": 24.1,
+       "latestEmploymentStart": "2022-02-10",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1118",
+        "fakeplace1239",
+        "fakeplace364",
+        "fakeplace495",
+        "fakeplace840",
+        "teryt0606031",
+        "teryt1219022",
+        "teryt1602",
+        "teryt1618013",
+        "teryt2016031",
+        "teryt3008023"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 56,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace364"
+       ],
+       "what": "KUCHARSKI-MUSIAŁ SP. Z O.O.",
+       "where": "Lipsk"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace364"
+       ],
+       "what": "KUCHARSKI-MUSIAŁ SP. Z O.O.",
+       "where": "Lipsk"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace364"
+       ],
+       "what": "KUCHARSKI-MUSIAŁ SP. Z O.O.",
+       "where": "Lipsk"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1032": {
+    "birthDate": "1989-08-18",
+    "id": "fakeperson1032",
+    "name": "Karolina Frankowski",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1032",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1032",
+     "latest_time": "2025-10-10T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace426",
+        "fakeplace99",
+        "teryt0618023",
+        "teryt1018012",
+        "teryt2216"
+       ],
+       "elections": [],
+       "experienceMonths": 23.2,
+       "latestEmploymentStart": "2024-07-15",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace266",
+        "fakeplace372",
+        "fakeplace426",
+        "fakeplace99",
+        "teryt0618023",
+        "teryt1018012",
+        "teryt2216",
+        "teryt2218012",
+        "teryt2418023"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 38,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace426"
+       ],
+       "what": "Wojewódzki Szpital Specjalistyczny im. Stefania Balcerzak w Mirosławiec",
+       "where": "Lipiany"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace426"
+       ],
+       "what": "Wojewódzki Szpital Specjalistyczny im. Stefania Balcerzak w Mirosławiec",
+       "where": "Lipiany"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace426"
+       ],
+       "what": "Wojewódzki Szpital Specjalistyczny im. Stefania Balcerzak w Mirosławiec",
+       "where": "Lipiany"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1068": {
+    "id": "fakeperson1068",
+    "name": "Izabela Tomys",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1068",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1068",
+     "latest_time": "2026-09-22T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace704",
+        "teryt2604031",
+        "teryt3219"
+       ],
+       "elections": [],
+       "experienceMonths": 26.6,
+       "latestEmploymentStart": "2021-01-07",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1068",
+        "fakeperson898",
+        "fakeplace353",
+        "fakeplace594",
+        "fakeplace641",
+        "fakeplace704",
+        "fakeplace939",
+        "teryt1217032",
+        "teryt2604031",
+        "teryt2806022",
+        "teryt2809021",
+        "teryt3019011",
+        "teryt3219"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 619,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace641"
+       ],
+       "what": "MADEJ SP. K. SP. Z O.O.",
+       "where": "Orneta"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace641"
+       ],
+       "what": "MADEJ SP. K. SP. Z O.O.",
+       "where": "Orneta"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace641"
+       ],
+       "what": "MADEJ SP. K. SP. Z O.O.",
+       "where": "Orneta"
+      }
+     },
+     "votes": {
+      "humanCount": 1,
+      "humanVoted": true,
+      "interesting": -5,
+      "lastVotedAt": "<now>",
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1069": {
+    "birthDate": "1980-11-23",
+    "id": "fakeperson1069",
+    "name": "Brygida Karpiński",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1069",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1069",
+     "latest_time": "2026-10-09T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1006",
+        "fakeplace523",
+        "fakeplace966",
+        "teryt1405013",
+        "teryt3210011"
+       ],
+       "elections": [],
+       "experienceMonths": 22.4,
+       "latestEmploymentStart": "2021-05-04",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson80",
+        "fakeplace1006",
+        "fakeplace195",
+        "fakeplace523",
+        "fakeplace748",
+        "fakeplace752",
+        "fakeplace966",
+        "teryt1405013",
+        "teryt1603022",
+        "teryt2010021",
+        "teryt3210011"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 218,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace1006"
+       ],
+       "what": "„colonialism”",
+       "where": "Pyzdry"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace1006"
+       ],
+       "what": "„colonialism”",
+       "where": "Pyzdry"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace1006"
+       ],
+       "what": "„colonialism”",
+       "where": "Pyzdry"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1077": {
+    "id": "fakeperson1077",
+    "name": "Gabriel Grudzień",
+    "parties": [
+     "PiS"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1077",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1077",
+     "latest_time": "2026-02-04T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace54",
+        "teryt0819032",
+        "teryt1818"
+       ],
+       "elections": [],
+       "experienceMonths": 24.2,
+       "latestEmploymentStart": "2006-03-14",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1077",
+        "fakeplace54",
+        "fakeplace763",
+        "teryt0819032",
+        "teryt1818",
+        "teryt2002032"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 25,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace54"
+       ],
+       "what": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Ożarów Mazowiecki",
+       "where": "Darłowo"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace54"
+       ],
+       "what": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Ożarów Mazowiecki",
+       "where": "Darłowo"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace54"
+       ],
+       "what": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Ożarów Mazowiecki",
+       "where": "Darłowo"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1079": {
+    "birthDate": "1964-05-06",
+    "id": "fakeperson1079",
+    "name": "Maryna Grześkowiak",
+    "parties": [
+     "Lewica"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1079",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1079",
+     "latest_time": "2026-10-15T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1118",
+        "fakeplace1235",
+        "fakeplace908",
+        "fakeplace948",
+        "teryt1013032",
+        "teryt1212022",
+        "teryt1618013",
+        "teryt1806013",
+        "teryt2216"
+       ],
+       "elections": [],
+       "experienceMonths": 24.5,
+       "latestEmploymentStart": "2024-02-06",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1079",
+        "fakeplace1118",
+        "fakeplace1235",
+        "fakeplace1261",
+        "fakeplace265",
+        "fakeplace548",
+        "fakeplace613",
+        "fakeplace71",
+        "fakeplace908",
+        "fakeplace948",
+        "teryt0811033",
+        "teryt1013032",
+        "teryt1212022",
+        "teryt1409012",
+        "teryt1618013",
+        "teryt1806013",
+        "teryt1816012",
+        "teryt2216",
+        "teryt3019011",
+        "teryt3214031"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 105,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace548"
+       ],
+       "what": "MALISZEWSKI-SZWARC SP. Z O.O.",
+       "where": "Rychwał"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace548"
+       ],
+       "what": "MALISZEWSKI-SZWARC SP. Z O.O.",
+       "where": "Rychwał"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace548"
+       ],
+       "what": "MALISZEWSKI-SZWARC SP. Z O.O.",
+       "where": "Rychwał"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson109": {
+    "birthDate": "1977-02-01",
+    "id": "fakeperson109",
+    "name": "Maksym Grabowski",
+    "parties": [
+     "PiS"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson109",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson109",
+     "latest_time": "2025-11-05T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace246",
+        "teryt2814012"
+       ],
+       "elections": [],
+       "experienceMonths": 15.8,
+       "latestEmploymentStart": "2025-06-10",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson109",
+        "fakeplace115",
+        "fakeplace178",
+        "fakeplace246",
+        "fakeplace399",
+        "teryt0404031",
+        "teryt0405021",
+        "teryt2814012",
+        "teryt3003022"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 278,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace178"
+       ],
+       "what": "WŁODARSKI, WĄSOWSKI AND MISIAK SP. Z O.O.",
+       "where": "Piechowice"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace178"
+       ],
+       "what": "WŁODARSKI, WĄSOWSKI AND MISIAK SP. Z O.O.",
+       "where": "Piechowice"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace178"
+       ],
+       "what": "WŁODARSKI, WĄSOWSKI AND MISIAK SP. Z O.O.",
+       "where": "Piechowice"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1117": {
+    "birthDate": "1965-01-01",
+    "id": "fakeperson1117",
+    "name": "Martyna Bielak",
+    "parties": [
+     "Konfederacja"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1117",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1117",
+     "latest_time": "2026-05-10T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1234",
+        "fakeplace517",
+        "fakeplace531",
+        "fakeplace635",
+        "fakeplace875",
+        "fakeplace930",
+        "fakeplace988",
+        "fakeplace991",
+        "teryt1203023",
+        "teryt2220032",
+        "teryt2604013",
+        "teryt2604031",
+        "teryt3207013",
+        "teryt3211022"
+       ],
+       "elections": [
+        "european-2019",
+        "european-2019:won"
+       ],
+       "experienceMonths": 26.5,
+       "latestEmploymentStart": "2024-06-17",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1234",
+        "fakeplace1239",
+        "fakeplace517",
+        "fakeplace531",
+        "fakeplace635",
+        "fakeplace735",
+        "fakeplace763",
+        "fakeplace875",
+        "fakeplace930",
+        "fakeplace988",
+        "fakeplace991",
+        "teryt0216013",
+        "teryt1203023",
+        "teryt2002032",
+        "teryt2220032",
+        "teryt2604013",
+        "teryt2604031",
+        "teryt3008023",
+        "teryt32",
+        "teryt3207013",
+        "teryt3211022"
+       ]
+      },
+      "hiddenTargets": 1
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 118,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace635"
+       ],
+       "what": "MŁYNARCZYK, KNAPIK AND KAPUSTA QUAERAT INCIDUNT NISI EXPLICABO PRAESENTIUM QUIDEM SIMILIQUE MAXIME VOLUPTATE TOTAM PLACEAT VEL SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
+       "where": "Braniewo"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace635"
+       ],
+       "what": "MŁYNARCZYK, KNAPIK AND KAPUSTA QUAERAT INCIDUNT NISI EXPLICABO PRAESENTIUM QUIDEM SIMILIQUE MAXIME VOLUPTATE TOTAM PLACEAT VEL SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
+       "where": "Braniewo"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace635"
+       ],
+       "what": "MŁYNARCZYK, KNAPIK AND KAPUSTA QUAERAT INCIDUNT NISI EXPLICABO PRAESENTIUM QUIDEM SIMILIQUE MAXIME VOLUPTATE TOTAM PLACEAT VEL SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
+       "where": "Braniewo"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1128": {
+    "birthDate": "1974-11-03",
+    "id": "fakeperson1128",
+    "name": "Oliwia Świątek",
+    "parties": [
+     "PO"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1128",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1128",
+     "latest_time": "2025-06-20T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace123",
+        "fakeplace186",
+        "fakeplace637",
+        "fakeplace898",
+        "teryt1403031",
+        "teryt2608031",
+        "teryt2807",
+        "teryt3006011",
+        "teryt3019011"
+       ],
+       "elections": [],
+       "experienceMonths": 19,
+       "latestEmploymentStart": "2023-07-02",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1127",
+        "fakeplace123",
+        "fakeplace186",
+        "fakeplace315",
+        "fakeplace376",
+        "fakeplace617",
+        "fakeplace637",
+        "fakeplace755",
+        "fakeplace76",
+        "fakeplace898",
+        "teryt0415022",
+        "teryt0613011",
+        "teryt1003012",
+        "teryt1403031",
+        "teryt2003022",
+        "teryt2603012",
+        "teryt2608031",
+        "teryt2807",
+        "teryt3006011",
+        "teryt3013023",
+        "teryt3019011"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 107,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace123"
+       ],
+       "what": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Wojkowice",
+       "where": "Wieliczka"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace123"
+       ],
+       "what": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Wojkowice",
+       "where": "Wieliczka"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace123"
+       ],
+       "what": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Wojkowice",
+       "where": "Wieliczka"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson113": {
+    "id": "fakeperson113",
+    "name": "Teodor Rybak",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson113",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson113",
+     "latest_time": "2025-09-04T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace276",
+        "fakeplace632",
+        "teryt1612011",
+        "teryt2808",
+        "teryt3009022"
+       ],
+       "elections": [],
+       "experienceMonths": 20.8,
+       "latestEmploymentStart": "2026-09-19",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1161",
+        "fakeplace200",
+        "fakeplace276",
+        "fakeplace632",
+        "fakeplace807",
+        "teryt0802012",
+        "teryt1612011",
+        "teryt2015032",
+        "teryt2808",
+        "teryt3009022",
+        "teryt3011",
+        "teryt3218021"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 80,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace1161"
+       ],
+       "what": "ŁUKASIK-MAŁECKI SP. Z O.O.",
+       "where": "Jasień"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace1161"
+       ],
+       "what": "ŁUKASIK-MAŁECKI SP. Z O.O.",
+       "where": "Jasień"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace1161"
+       ],
+       "what": "ŁUKASIK-MAŁECKI SP. Z O.O.",
+       "where": "Jasień"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1144": {
+    "id": "fakeperson1144",
+    "name": "Rozalia Siedlecki",
+    "parties": [
+     "Inne",
+     "Konfederacja"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1144",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1144",
+     "latest_time": "2026-05-29T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace148",
+        "teryt1409012",
+        "teryt2608"
+       ],
+       "elections": [],
+       "experienceMonths": 23.6,
+       "latestEmploymentStart": "2021-05-07",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1144",
+        "fakeplace1115",
+        "fakeplace148",
+        "fakeplace487",
+        "fakeplace54",
+        "fakeplace990",
+        "teryt0404011",
+        "teryt0819032",
+        "teryt1409012",
+        "teryt1612022",
+        "teryt1818",
+        "teryt2608",
+        "teryt2612023"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 63,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace1115"
+       ],
+       "what": "MAKOWSKI, KRAKOWIAK AND MALEC SP. Z O.O.",
+       "where": "Sulechów"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace1115"
+       ],
+       "what": "MAKOWSKI, KRAKOWIAK AND MALEC SP. Z O.O.",
+       "where": "Sulechów"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace1115"
+       ],
+       "what": "MAKOWSKI, KRAKOWIAK AND MALEC SP. Z O.O.",
+       "where": "Sulechów"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1146": {
+    "id": "fakeperson1146",
+    "name": "Gloria Kwiecień",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1146",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1146",
+     "latest_time": "2026-01-19T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace456",
+        "teryt0409033",
+        "teryt1619"
+       ],
+       "elections": [
+        "european-2024",
+        "european-2024:lost"
+       ],
+       "experienceMonths": 26.1,
+       "latestEmploymentStart": "2004-06-03",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1174",
+        "fakeplace155",
+        "fakeplace190",
+        "fakeplace39",
+        "fakeplace456",
+        "fakeplace868",
+        "teryt0409033",
+        "teryt0417031",
+        "teryt0820023",
+        "teryt1603033",
+        "teryt1604011",
+        "teryt1619",
+        "teryt32"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 57,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace190"
+       ],
+       "what": "MILEWSKI-GRZELAK SP. Z O.O.",
+       "where": "Jastrowie"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace190"
+       ],
+       "what": "MILEWSKI-GRZELAK SP. Z O.O.",
+       "where": "Jastrowie"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace190"
+       ],
+       "what": "MILEWSKI-GRZELAK SP. Z O.O.",
+       "where": "Jastrowie"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1158": {
+    "id": "fakeperson1158",
+    "name": "Eugenia Iwanowski",
+    "parties": [
+     "Konfederacja",
+     "Inne"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1158",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1158",
+     "latest_time": "<now>",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace456",
+        "teryt0409033",
+        "teryt1619"
+       ],
+       "elections": [],
+       "experienceMonths": 22.2,
+       "latestEmploymentStart": "2025-01-02",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1232",
+        "fakeplace272",
+        "fakeplace36",
+        "fakeplace391",
+        "fakeplace456",
+        "fakeplace523",
+        "fakeplace560",
+        "fakeplace571",
+        "fakeplace940",
+        "fakeplace947",
+        "teryt0408022",
+        "teryt0409033",
+        "teryt1602023",
+        "teryt1610033",
+        "teryt1612031",
+        "teryt1619",
+        "teryt1804013",
+        "teryt2011023",
+        "teryt2015021",
+        "teryt2420013",
+        "teryt2618033"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 134,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace940"
+       ],
+       "what": "BEDNAREK S.A. SP. Z O.O.",
+       "where": "Połczyn-Zdrój"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace940"
+       ],
+       "what": "BEDNAREK S.A. SP. Z O.O.",
+       "where": "Połczyn-Zdrój"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace940"
+       ],
+       "what": "BEDNAREK S.A. SP. Z O.O.",
+       "where": "Połczyn-Zdrój"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1176": {
+    "id": "fakeperson1176",
+    "name": "Walentyna Drozdowski",
+    "parties": [
+     "Polska2050"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1176",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1176",
+     "latest_time": "2025-11-07T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace762",
+        "fakeplace986",
+        "teryt0420",
+        "teryt2201022",
+        "teryt2420013"
+       ],
+       "elections": [],
+       "experienceMonths": 26.6,
+       "latestEmploymentStart": "2019-10-09",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1176",
+        "fakeplace1016",
+        "fakeplace113",
+        "fakeplace554",
+        "fakeplace634",
+        "fakeplace662",
+        "fakeplace749",
+        "fakeplace762",
+        "fakeplace986",
+        "teryt0206022",
+        "teryt0420",
+        "teryt0606",
+        "teryt0616033",
+        "teryt0809033",
+        "teryt1819021",
+        "teryt2201022",
+        "teryt2420013",
+        "teryt3206"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 114,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace986"
+       ],
+       "what": "„guacamole”",
+       "where": "Września"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace986"
+       ],
+       "what": "„guacamole”",
+       "where": "Września"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace986"
+       ],
+       "what": "„guacamole”",
+       "where": "Września"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1188": {
+    "birthDate": "1979-12-16",
+    "id": "fakeperson1188",
+    "name": "Judyta Rogalski",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1188",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1188",
+     "latest_time": "2025-07-08T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1273",
+        "fakeplace25",
+        "fakeplace96",
+        "teryt0812011",
+        "teryt1210033",
+        "teryt1216023",
+        "teryt2218"
+       ],
+       "elections": [],
+       "experienceMonths": 18.5,
+       "latestEmploymentStart": "2022-08-11",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1188",
+        "fakeplace1243",
+        "fakeplace1273",
+        "fakeplace234",
+        "fakeplace25",
+        "fakeplace304",
+        "fakeplace345",
+        "fakeplace781",
+        "fakeplace96",
+        "teryt0206032",
+        "teryt0812011",
+        "teryt1210033",
+        "teryt1216023",
+        "teryt1815031",
+        "teryt2218",
+        "teryt2605011",
+        "teryt3016011",
+        "teryt3019",
+        "teryt3213033"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 117,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace345"
+       ],
+       "what": "SKALSKI SP. K. SP. Z O.O.",
+       "where": "Bierutów"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace345"
+       ],
+       "what": "SKALSKI SP. K. SP. Z O.O.",
+       "where": "Bierutów"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace345"
+       ],
+       "what": "SKALSKI SP. K. SP. Z O.O.",
+       "where": "Bierutów"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1195": {
+    "birthDate": "1945-03-04",
+    "id": "fakeperson1195",
+    "name": "Laurencjusz Radomski-Domański",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1195",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1195",
+     "latest_time": "<now>",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace212",
+        "fakeplace386",
+        "fakeplace644",
+        "fakeplace948",
+        "fakeplace997",
+        "teryt0809022",
+        "teryt1212022",
+        "teryt1216023",
+        "teryt2607012",
+        "teryt2814",
+        "teryt3010031"
+       ],
+       "elections": [],
+       "experienceMonths": 25.8,
+       "latestEmploymentStart": "2025-12-14",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace212",
+        "fakeplace386",
+        "fakeplace435",
+        "fakeplace485",
+        "fakeplace644",
+        "fakeplace682",
+        "fakeplace704",
+        "fakeplace810",
+        "fakeplace948",
+        "fakeplace997",
+        "teryt0606023",
+        "teryt0809022",
+        "teryt1212022",
+        "teryt1216023",
+        "teryt2016012",
+        "teryt2019011",
+        "teryt2604031",
+        "teryt2605011",
+        "teryt2607012",
+        "teryt2814",
+        "teryt3010031",
+        "teryt3219"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 126,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace212"
+       ],
+       "what": "KUCHTA-MATUSIAK SP. Z O.O.",
+       "where": "Pasym"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace212"
+       ],
+       "what": "KUCHTA-MATUSIAK SP. Z O.O.",
+       "where": "Pasym"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace212"
+       ],
+       "what": "KUCHTA-MATUSIAK SP. Z O.O.",
+       "where": "Pasym"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1200": {
+    "id": "fakeperson1200",
+    "name": "Eleazar Rzepka",
+    "parties": [
+     "PiS"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1200",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1200",
+     "latest_time": "<now>",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace186",
+        "fakeplace666",
+        "fakeplace757",
+        "fakeplace863",
+        "fakeplace864",
+        "teryt0410032",
+        "teryt0612022",
+        "teryt1204011",
+        "teryt1211032",
+        "teryt2810",
+        "teryt3019011"
+       ],
+       "elections": [],
+       "experienceMonths": 26.1,
+       "latestEmploymentStart": "2023-09-06",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1200",
+        "fakeplace104",
+        "fakeplace1156",
+        "fakeplace186",
+        "fakeplace563",
+        "fakeplace666",
+        "fakeplace757",
+        "fakeplace863",
+        "fakeplace864",
+        "fakeplace872",
+        "teryt0410032",
+        "teryt0413022",
+        "teryt0612022",
+        "teryt0802021",
+        "teryt1204011",
+        "teryt1211032",
+        "teryt1418011",
+        "teryt2413023",
+        "teryt2810",
+        "teryt3019011"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 154,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace863"
+       ],
+       "what": "ŚLIWIŃSKI-BIERNACKI SP. Z O.O.",
+       "where": "Wysokie Mazowieckie"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace863"
+       ],
+       "what": "ŚLIWIŃSKI-BIERNACKI SP. Z O.O.",
+       "where": "Wysokie Mazowieckie"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace863"
+       ],
+       "what": "ŚLIWIŃSKI-BIERNACKI SP. Z O.O.",
+       "where": "Wysokie Mazowieckie"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1209": {
+    "birthDate": "1983-02-23",
+    "id": "fakeperson1209",
+    "name": "Maryna Kujawski",
+    "parties": [
+     "Konfederacja",
+     "Lewica"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1209",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1209",
+     "latest_time": "2026-09-27T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace124",
+        "fakeplace1240",
+        "fakeplace647",
+        "fakeplace761",
+        "teryt0210033",
+        "teryt1020012",
+        "teryt1611",
+        "teryt2416012",
+        "teryt2619022"
+       ],
+       "elections": [],
+       "experienceMonths": 26.4,
+       "latestEmploymentStart": "2025-03-16",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson100",
+        "fakeplace1139",
+        "fakeplace1165",
+        "fakeplace124",
+        "fakeplace1240",
+        "fakeplace377",
+        "fakeplace647",
+        "fakeplace719",
+        "fakeplace753",
+        "fakeplace761",
+        "fakeplace934",
+        "teryt0210033",
+        "teryt1020012",
+        "teryt1611",
+        "teryt1620031",
+        "teryt2212031",
+        "teryt2405012",
+        "teryt2415",
+        "teryt2416012",
+        "teryt2619022",
+        "teryt3012023",
+        "teryt3205022",
+        "teryt3207033"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 149,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace124"
+       ],
+       "what": "STEC-WOJTASIK SP. Z O.O.",
+       "where": "Oborniki"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace124"
+       ],
+       "what": "STEC-WOJTASIK SP. Z O.O.",
+       "where": "Oborniki"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace124"
+       ],
+       "what": "STEC-WOJTASIK SP. Z O.O.",
+       "where": "Oborniki"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson121": {
+    "birthDate": "1973-06-08",
+    "id": "fakeperson121",
+    "name": "Ksenofont Pawlikowski",
+    "parties": [
+     "PiS",
+     "Konfederacja"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson121",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson121",
+     "latest_time": "2025-11-02T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1027",
+        "fakeplace124",
+        "fakeplace151",
+        "fakeplace985",
+        "teryt1017",
+        "teryt1020012",
+        "teryt1214032",
+        "teryt1614033",
+        "teryt3214",
+        "teryt3215011"
+       ],
+       "elections": [
+        "local-2018",
+        "local-2018:lost"
+       ],
+       "experienceMonths": 16.9,
+       "latestEmploymentStart": "2023-05-18",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1027",
+        "fakeplace1082",
+        "fakeplace12",
+        "fakeplace124",
+        "fakeplace1253",
+        "fakeplace151",
+        "fakeplace26",
+        "fakeplace667",
+        "fakeplace839",
+        "fakeplace985",
+        "teryt0204012",
+        "teryt1017",
+        "teryt1020012",
+        "teryt1214032",
+        "teryt1614033",
+        "teryt1815031",
+        "teryt2216013",
+        "teryt2804033",
+        "teryt2811011",
+        "teryt3014032",
+        "teryt3202013",
+        "teryt3214",
+        "teryt3215011"
+       ]
+      },
+      "hiddenTargets": 1
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 194,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "ties": [
+        "fakeplace1253"
+       ],
+       "what": "KRAJEWSKI-RACZYŃSKI SP. Z O.O.",
+       "where": "Pyrzyce"
+      },
+      "approved": {
+       "ties": [
+        "fakeplace1253"
+       ],
+       "what": "KRAJEWSKI-RACZYŃSKI SP. Z O.O.",
+       "where": "Pyrzyce"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace1253"
+       ],
+       "what": "KRAJEWSKI-RACZYŃSKI SP. Z O.O.",
+       "where": "Pyrzyce"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   }
+  },
+  "total": 192
+ }
+}

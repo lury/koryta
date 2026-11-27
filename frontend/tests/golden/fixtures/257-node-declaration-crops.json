@@ -1,0 +1,17 @@
+{
+ "step": 257,
+ "name": "node declaration crops",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes/fakeperson1066/declaration-crops",
+  "as": "admin"
+ },
+ "status": 404,
+ "body": {
+  "error": true,
+  "message": "No draft fakeperson1066",
+  "statusCode": 404,
+  "statusMessage": "Server Error",
+  "url": "http://127.0.0.1:23200/api/nodes/fakeperson1066/declaration-crops"
+ }
+}

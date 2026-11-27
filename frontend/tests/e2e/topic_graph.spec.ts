@@ -78,7 +78,7 @@ test.describe("Topic graph", () => {
   test("a story drawn from the article tagged into it", async ({ page }) => {
     test.setTimeout(180_000);
 
-    // Unique, so parallel workers and repeat runs against a warm emulator do
+    // Unique, so parallel workers and repeat runs against a warm database do
     // not collide on the topic name.
     const topicName = `Powodzianie KRR ${Date.now()}`;
 

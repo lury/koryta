@@ -1,0 +1,25 @@
+{
+ "step": 242,
+ "name": "interactions mine",
+ "request": {
+  "method": "GET",
+  "path": "/api/interactions/mine?limit=20",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "counts": {
+   "approved": 0,
+   "pending": 0,
+   "rejected": 0,
+   "superseded": 0,
+   "votes": 0
+  },
+  "items": [],
+  "total": 0,
+  "truncated": {
+   "proposals": false,
+   "votes": false
+  }
+ }
+}

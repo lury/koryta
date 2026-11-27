@@ -16,3 +16,6 @@ CLAUDE.md
 # something MDC parses differently - a chart's `unit` ended up inside its
 # series. tests/content/blogPosts.test.ts checks these files instead.
 content/blog
+
+# Recorded by `npm run golden:record`; rewritten whole on every recording.
+tests/golden/fixtures

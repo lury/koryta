@@ -1,0 +1,2015 @@
+{
+ "step": 254,
+ "name": "nodes pending",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes/pending",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "fakeperson1": {
+   "id": "fakeperson1",
+   "name": "Dorota Wysocki",
+   "parties": [
+    "Lewica",
+    "PSL"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Dorota Wysocki",
+      "parties": [
+       "Lewica",
+       "PSL"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1",
+     "node_id": "fakeperson1",
+     "update_automatic": true,
+     "update_time": "2025-08-04T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 656,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace553"
+      ],
+      "what": "BOCHENEK SP. J. SP. Z O.O.",
+      "when": "do 2016",
+      "where": "Zdzieszowice"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson10": {
+   "id": "fakeperson10",
+   "name": "Miron Olszewski",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Miron Olszewski",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson10",
+     "node_id": "fakeperson10",
+     "update_automatic": true,
+     "update_time": "2026-02-06T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 100,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace1128"
+      ],
+      "what": "ŁUKASZEWSKI SP. K. SP. Z O.O.",
+      "where": "Turek"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson100": {
+   "birthDate": "1999-11-25",
+   "id": "fakeperson100",
+   "name": "Klarencjusz Kostecki",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1999-11-25",
+      "name": "Klarencjusz Kostecki",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson100",
+     "node_id": "fakeperson100",
+     "update_automatic": true,
+     "update_time": "2026-08-24T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 149,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace480"
+      ],
+      "what": "STAWICKI, SKRZYPEK AND FLIS SP. Z O.O.",
+      "where": "Brwinów"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1001": {
+   "id": "fakeperson1001",
+   "name": "Olaf Piekarski",
+   "parties": [
+    "Konfederacja"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Olaf Piekarski",
+      "parties": [
+       "Konfederacja"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1001",
+     "node_id": "fakeperson1001",
+     "update_automatic": true,
+     "update_time": "2025-12-28T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 121,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace358"
+      ],
+      "what": "MICHALIK, ROSIŃSKI AND CZERWIŃSKI SP. Z O.O.",
+      "where": "Oleszyce"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1002": {
+   "id": "fakeperson1002",
+   "name": "Sylwia Marta Urbanowicz",
+   "parties": [
+    "Konfederacja",
+    "Lewica"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Sylwia Marta Urbanowicz",
+      "parties": [
+       "Konfederacja",
+       "Lewica"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1002",
+     "node_id": "fakeperson1002",
+     "update_automatic": true,
+     "update_time": "2026-09-11T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 57,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace194"
+      ],
+      "what": "STOLARSKI SKA SP. Z O.O.",
+      "where": "Dąbrowa Górnicza"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1003": {
+   "id": "fakeperson1003",
+   "name": "Laurenty Błaszczak",
+   "parties": [
+    "PiS",
+    "Inne"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Laurenty Błaszczak",
+      "parties": [
+       "PiS",
+       "Inne"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1003",
+     "node_id": "fakeperson1003",
+     "update_automatic": true,
+     "update_time": "2026-09-04T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 28,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace928"
+      ],
+      "what": "„flat”",
+      "when": "do 2018",
+      "where": "Olesno"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1004": {
+   "id": "fakeperson1004",
+   "name": "Elżbieta Jabłoński",
+   "parties": [
+    "PSL"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Elżbieta Jabłoński",
+      "parties": [
+       "PSL"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1004",
+     "node_id": "fakeperson1004",
+     "update_automatic": true,
+     "update_time": "2026-08-21T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 22,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace1027"
+      ],
+      "what": "Wojewódzki Szpital Specjalistyczny im. Irena Szymański w Sokołów Małopolski",
+      "when": "do 2015",
+      "where": "Pisz"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1006": {
+   "id": "fakeperson1006",
+   "name": "Bruno Kwieciński",
+   "parties": [
+    "Lewica"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Bruno Kwieciński",
+      "parties": [
+       "Lewica"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1006",
+     "node_id": "fakeperson1006",
+     "update_automatic": true,
+     "update_time": "2025-11-15T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 141,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace1168"
+      ],
+      "what": "KOZIOŁ, MIKA AND STAWICKI SP. Z O.O.",
+      "where": "Nowogrodziec"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1007": {
+   "birthDate": "1969-07-28",
+   "id": "fakeperson1007",
+   "name": "Krystian Michalski",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1969-07-28",
+      "name": "Krystian Michalski",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1007",
+     "node_id": "fakeperson1007",
+     "update_automatic": true,
+     "update_time": "2026-07-16T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 208,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace680"
+      ],
+      "what": "RÓŻAŃSKI, NOWAK AND CICHOCKI SP. Z O.O.",
+      "where": "Debrzno"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1009": {
+   "birthDate": "1977-10-23",
+   "id": "fakeperson1009",
+   "name": "Dorian Majcher",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1977-10-23",
+      "name": "Dorian Majcher",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1009",
+     "node_id": "fakeperson1009",
+     "update_automatic": true,
+     "update_time": "2025-06-05T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 102,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace1187"
+      ],
+      "what": "DRZEWIECKI-FLOREK SP. Z O.O.",
+      "where": "Legionowo"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson101": {
+   "id": "fakeperson101",
+   "name": "Rozalia Kulik",
+   "parties": [
+    "PSL"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Rozalia Kulik",
+      "parties": [
+       "PSL"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson101",
+     "node_id": "fakeperson101",
+     "update_automatic": true,
+     "update_time": "2025-12-10T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 229,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace200"
+      ],
+      "what": "Wojewódzki Szpital Specjalistyczny im. Emil Baran w Zawichost",
+      "where": "Chorzele"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1010": {
+   "id": "fakeperson1010",
+   "name": "Gracja Mazurek",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Gracja Mazurek",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1010",
+     "node_id": "fakeperson1010",
+     "update_automatic": true,
+     "update_time": "2025-07-06T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 269,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace1108"
+      ],
+      "what": "MURAWSKI-KOPCZYŃSKI SP. Z O.O.",
+      "where": "Łaziska Górne"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1011": {
+   "id": "fakeperson1011",
+   "name": "Tobiasz Drozd",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Tobiasz Drozd",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1011",
+     "node_id": "fakeperson1011",
+     "update_automatic": true,
+     "update_time": "2025-08-15T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 155,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace487"
+      ],
+      "what": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Mszczonów",
+      "where": "Kcynia"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1012": {
+   "birthDate": "1977-05-14",
+   "id": "fakeperson1012",
+   "name": "Greta Niedzielski",
+   "parties": [
+    "Konfederacja",
+    "PiS"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1977-05-14",
+      "name": "Greta Niedzielski",
+      "parties": [
+       "Konfederacja",
+       "PiS"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1012",
+     "node_id": "fakeperson1012",
+     "update_automatic": true,
+     "update_time": "2025-08-22T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 172,
+    "queueTier": 2,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace246"
+      ],
+      "what": "Szpital Powiatowy w Jarocin Sp. z o.o.",
+      "where": "Mosina"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1014": {
+   "id": "fakeperson1014",
+   "name": "Roksana Filipa Maćkowiak",
+   "parties": [
+    "Polska2050",
+    "PiS"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Roksana Filipa Maćkowiak",
+      "parties": [
+       "Polska2050",
+       "PiS"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1014",
+     "node_id": "fakeperson1014",
+     "update_automatic": true,
+     "update_time": "2026-06-09T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 94,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace235"
+      ],
+      "what": "CEBULA-MAŁECKI SP. Z O.O.",
+      "where": "Przecław"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1015": {
+   "id": "fakeperson1015",
+   "name": "Ryszard Grzesiak",
+   "parties": [
+    "Inne"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Ryszard Grzesiak",
+      "parties": [
+       "Inne"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1015",
+     "node_id": "fakeperson1015",
+     "update_automatic": true,
+     "update_time": "2026-04-24T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 66,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace588"
+      ],
+      "what": "WOLAK, SKIBIŃSKI AND PIECHOTA SP. Z O.O.",
+      "where": "Krapkowice"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1017": {
+   "birthDate": "1956-07-05",
+   "id": "fakeperson1017",
+   "name": "Roman Rogala",
+   "parties": [
+    "PSL",
+    "PO"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1956-07-05",
+      "name": "Roman Rogala",
+      "parties": [
+       "PSL",
+       "PO"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1017",
+     "node_id": "fakeperson1017",
+     "update_automatic": true,
+     "update_time": "2025-09-10T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 154,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace386"
+      ],
+      "what": "MARKIEWICZ Z O.O SP. Z O.O.",
+      "where": "Nowogard"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1018": {
+   "id": "fakeperson1018",
+   "name": "Lucjan Kamiński-Broda",
+   "parties": [
+    "PSL"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Lucjan Kamiński-Broda",
+      "parties": [
+       "PSL"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1018",
+     "node_id": "fakeperson1018",
+     "update_automatic": true,
+     "update_time": "2026-05-13T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 52,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace516"
+      ],
+      "what": "Szpital Powiatowy w Wieliczka Sp. z o.o.",
+      "where": "Jabłonowo Pomorskie"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1019": {
+   "id": "fakeperson1019",
+   "name": "Włodzimierz Karwowski",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Włodzimierz Karwowski",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1019",
+     "node_id": "fakeperson1019",
+     "update_automatic": true,
+     "update_time": "2026-01-13T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 79,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace969"
+      ],
+      "what": "MATUSIAK-GĄSIOROWSKI SP. Z O.O.",
+      "where": "Łochów"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson102": {
+   "birthDate": "1956-01-27",
+   "id": "fakeperson102",
+   "name": "Rozalia Rosa",
+   "parties": [
+    "PSL"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1956-01-27",
+      "name": "Rozalia Rosa",
+      "parties": [
+       "PSL"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson102",
+     "node_id": "fakeperson102",
+     "update_automatic": true,
+     "update_time": "2026-07-19T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 278,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace1193"
+      ],
+      "what": "„step-mother”",
+      "where": "Lwówek"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1020": {
+   "id": "fakeperson1020",
+   "name": "Lucja Nina Jóźwik",
+   "parties": [
+    "Lewica"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Lucja Nina Jóźwik",
+      "parties": [
+       "Lewica"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1020",
+     "node_id": "fakeperson1020",
+     "update_automatic": true,
+     "update_time": "2026-04-07T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 583,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace402"
+      ],
+      "what": "NOWAKOWSKI, SOWA AND FRĄTCZAK SP. Z O.O.",
+      "where": "Rydułtowy"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1021": {
+   "birthDate": "1999-04-09",
+   "id": "fakeperson1021",
+   "name": "Rachela Kania",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1999-04-09",
+      "name": "Rachela Kania",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1021",
+     "node_id": "fakeperson1021",
+     "update_automatic": true,
+     "update_time": "2026-04-30T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 69,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace803"
+      ],
+      "what": "SZULC S.A. SP. Z O.O.",
+      "where": "Ostrów Wielkopolski"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1022": {
+   "birthDate": "1967-09-11",
+   "id": "fakeperson1022",
+   "name": "Rebeka Krukowski",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1967-09-11",
+      "name": "Rebeka Krukowski",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1022",
+     "node_id": "fakeperson1022",
+     "update_automatic": true,
+     "update_time": "2026-03-19T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 32,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace960"
+      ],
+      "what": "KRUPA, PILCH AND AUGUSTYN SP. Z O.O.",
+      "where": "Wysoka"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1023": {
+   "id": "fakeperson1023",
+   "name": "Wincenty Brzozowski",
+   "parties": [
+    "Konfederacja"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Wincenty Brzozowski",
+      "parties": [
+       "Konfederacja"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1023",
+     "node_id": "fakeperson1023",
+     "update_automatic": true,
+     "update_time": "2026-02-24T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 114,
+    "queueTier": 3,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace827"
+      ],
+      "what": "OSIŃSKI-BIAŁAS SP. Z O.O.",
+      "where": "Sulechów"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1024": {
+   "birthDate": "1957-04-05",
+   "id": "fakeperson1024",
+   "name": "Wirginia Kubacki",
+   "parties": [
+    "Inne",
+    "PiS"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1957-04-05",
+      "name": "Wirginia Kubacki",
+      "parties": [
+       "Inne",
+       "PiS"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1024",
+     "node_id": "fakeperson1024",
+     "update_automatic": true,
+     "update_time": "2026-08-31T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 25,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace762"
+      ],
+      "what": "„allocation”",
+      "where": "Muszyna"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1026": {
+   "birthDate": "1984-04-02",
+   "id": "fakeperson1026",
+   "name": "Makary Tomczyk",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1984-04-02",
+      "name": "Makary Tomczyk",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1026",
+     "node_id": "fakeperson1026",
+     "update_automatic": true,
+     "update_time": "2026-09-24T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 58,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace918"
+      ],
+      "what": "LEŚNIAK, SOKOŁOWSKI AND NOWAK SP. Z O.O.",
+      "where": "Kruszwica"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1027": {
+   "birthDate": "1970-02-19",
+   "id": "fakeperson1027",
+   "name": "Karolina Andrzejewski",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1970-02-19",
+      "name": "Karolina Andrzejewski",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1027",
+     "node_id": "fakeperson1027",
+     "update_automatic": true,
+     "update_time": "2026-09-05T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 121,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace182"
+      ],
+      "what": "STEFANIAK S.C. SP. Z O.O.",
+      "where": "Głuchołazy"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1028": {
+   "id": "fakeperson1028",
+   "name": "Ida Miklaś",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Ida Miklaś",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1028",
+     "node_id": "fakeperson1028",
+     "update_automatic": true,
+     "update_time": "2025-06-25T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 28,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace160"
+      ],
+      "what": "KWIECIŃSKI-KUBICKI SP. Z O.O.",
+      "where": "Pszów"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1029": {
+   "id": "fakeperson1029",
+   "name": "Seweryn Czech",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Seweryn Czech",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1029",
+     "node_id": "fakeperson1029",
+     "update_automatic": true,
+     "update_time": "2025-07-16T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 41,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace919"
+      ],
+      "what": "WĄSOWSKI-PIĄTKOWSKI SP. Z O.O.",
+      "where": "Błonie"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson103": {
+   "id": "fakeperson103",
+   "name": "Berta Stolarczyk",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Berta Stolarczyk",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson103",
+     "node_id": "fakeperson103",
+     "update_automatic": true,
+     "update_time": "2025-07-28T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 110,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace564"
+      ],
+      "what": "MAZUR S.C. SP. Z O.O.",
+      "where": "Legnica"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1030": {
+   "id": "fakeperson1030",
+   "name": "Izydor Kurek-Adamiec",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Izydor Kurek-Adamiec",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1030",
+     "node_id": "fakeperson1030",
+     "update_automatic": true,
+     "update_time": "2026-01-27T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 98,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace681"
+      ],
+      "what": "„turret”",
+      "where": "Korfantów"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1031": {
+   "id": "fakeperson1031",
+   "name": "Elżbieta Szczęsny",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Elżbieta Szczęsny",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1031",
+     "node_id": "fakeperson1031",
+     "update_automatic": true,
+     "update_time": "<now>",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 5,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace597"
+      ],
+      "what": "SZOSTAK, TOMYS AND BĄKOWSKI SP. Z O.O.",
+      "when": "do 2014",
+      "where": "Kowalewo Pomorskie"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1034": {
+   "birthDate": "1985-08-28",
+   "id": "fakeperson1034",
+   "name": "Krzysztof Sokół",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1985-08-28",
+      "name": "Krzysztof Sokół",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1034",
+     "node_id": "fakeperson1034",
+     "update_automatic": true,
+     "update_time": "2025-10-29T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 7,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace178"
+      ],
+      "what": "WŁODARSKI, WĄSOWSKI AND MISIAK SP. Z O.O.",
+      "where": "Piechowice"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1035": {
+   "id": "fakeperson1035",
+   "name": "Szczepan Urbański",
+   "parties": [
+    "PO"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Szczepan Urbański",
+      "parties": [
+       "PO"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1035",
+     "node_id": "fakeperson1035",
+     "update_automatic": true,
+     "update_time": "2026-05-16T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 109,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace740"
+      ],
+      "what": "SROKA, PILCH AND PIOTROWSKI SP. Z O.O.",
+      "where": "Bojanowo"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1036": {
+   "id": "fakeperson1036",
+   "name": "Kornel Więcek",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Kornel Więcek",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1036",
+     "node_id": "fakeperson1036",
+     "update_automatic": true,
+     "update_time": "2026-09-28T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 57,
+    "queueTier": 2,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace1007"
+      ],
+      "what": "PAJĄK-RUSIN SP. Z O.O.",
+      "where": "Przemyśl"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1037": {
+   "birthDate": "1965-07-10",
+   "id": "fakeperson1037",
+   "name": "Patrycjusz Bartnik",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1965-07-10",
+      "name": "Patrycjusz Bartnik",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1037",
+     "node_id": "fakeperson1037",
+     "update_automatic": true,
+     "update_time": "2025-11-10T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 77,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace905"
+      ],
+      "what": "LESZCZYŃSKI-KULIK SP. Z O.O.",
+      "where": "Lublin"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1038": {
+   "birthDate": "1945-03-15",
+   "id": "fakeperson1038",
+   "name": "Katarzyna Turek",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1945-03-15",
+      "name": "Katarzyna Turek",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1038",
+     "node_id": "fakeperson1038",
+     "update_automatic": true,
+     "update_time": "2026-06-13T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 35,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace1164"
+      ],
+      "what": "Szpital Powiatowy w Opole Sp. z o.o.",
+      "where": "Radomyśl Wielki"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1039": {
+   "birthDate": "1995-01-16",
+   "id": "fakeperson1039",
+   "name": "Ksenia Pawłowski",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1995-01-16",
+      "name": "Ksenia Pawłowski",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1039",
+     "node_id": "fakeperson1039",
+     "update_automatic": true,
+     "update_time": "2026-08-26T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 306,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace1156"
+      ],
+      "what": "BUCZEK, SKIBA AND CZECHOWSKI SP. Z O.O.",
+      "where": "Susz"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson104": {
+   "birthDate": "1950-08-10",
+   "id": "fakeperson104",
+   "name": "Błażej Madej",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1950-08-10",
+      "name": "Błażej Madej",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson104",
+     "node_id": "fakeperson104",
+     "update_automatic": true,
+     "update_time": "2026-10-07T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 251,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace567"
+      ],
+      "what": "NIEMIEC, MACIEJEWSKI AND ŻUREK SP. Z O.O.",
+      "where": "Hajnówka"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1040": {
+   "birthDate": "1950-09-27",
+   "id": "fakeperson1040",
+   "name": "Walgierz Bujak",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1950-09-27",
+      "name": "Walgierz Bujak",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1040",
+     "node_id": "fakeperson1040",
+     "update_automatic": true,
+     "update_time": "2025-07-04T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 131,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace772"
+      ],
+      "what": "BĄK, RYBICKI AND PILCH SP. Z O.O.",
+      "where": "Dąbrowa Górnicza"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1041": {
+   "id": "fakeperson1041",
+   "name": "Wincenty Zaręba",
+   "parties": [
+    "PiS",
+    "PSL"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Wincenty Zaręba",
+      "parties": [
+       "PiS",
+       "PSL"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1041",
+     "node_id": "fakeperson1041",
+     "update_automatic": true,
+     "update_time": "2025-10-14T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 245,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace1164"
+      ],
+      "what": "Szpital Powiatowy w Opole Sp. z o.o.",
+      "where": "Radomyśl Wielki"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1042": {
+   "birthDate": "1965-07-26",
+   "id": "fakeperson1042",
+   "name": "Hubert Piechota",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1965-07-26",
+      "name": "Hubert Piechota",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1042",
+     "node_id": "fakeperson1042",
+     "update_automatic": true,
+     "update_time": "2025-10-18T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 183,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace1234"
+      ],
+      "what": "„hexagon”",
+      "where": "Dęblin"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1043": {
+   "birthDate": "1997-11-25",
+   "id": "fakeperson1043",
+   "name": "Samson Tomczyk",
+   "parties": [
+    "Konfederacja",
+    "Inne"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1997-11-25",
+      "name": "Samson Tomczyk",
+      "parties": [
+       "Konfederacja",
+       "Inne"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1043",
+     "node_id": "fakeperson1043",
+     "update_automatic": true,
+     "update_time": "2026-06-20T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 358,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace713"
+      ],
+      "what": "„beret”",
+      "where": "Wyrzysk"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1044": {
+   "id": "fakeperson1044",
+   "name": "Klementyna Prus",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Klementyna Prus",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1044",
+     "node_id": "fakeperson1044",
+     "update_automatic": true,
+     "update_time": "2026-03-07T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 153,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace38"
+      ],
+      "what": "SOBIERAJ SP. P. SP. Z O.O.",
+      "where": "Tarnowskie Góry"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1045": {
+   "id": "fakeperson1045",
+   "name": "Sergiusz Skrzypek",
+   "parties": [
+    "Polska2050"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Sergiusz Skrzypek",
+      "parties": [
+       "Polska2050"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1045",
+     "node_id": "fakeperson1045",
+     "update_automatic": true,
+     "update_time": "2025-11-28T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 125,
+    "queueTier": 3,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace492"
+      ],
+      "what": "JĘDRZEJCZYK, KRUPA AND ZWOLIŃSKI SP. Z O.O.",
+      "where": "Ciężkowice"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1046": {
+   "id": "fakeperson1046",
+   "name": "Lidia Jaros",
+   "parties": [
+    "Konfederacja"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Lidia Jaros",
+      "parties": [
+       "Konfederacja"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1046",
+     "node_id": "fakeperson1046",
+     "update_automatic": true,
+     "update_time": "2026-08-24T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 155,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace9"
+      ],
+      "what": "ŻAK-BUCZEK SP. Z O.O.",
+      "where": "Głogówek"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1047": {
+   "id": "fakeperson1047",
+   "name": "Borys Wolak",
+   "parties": [
+    "Konfederacja",
+    "PSL"
+   ],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Borys Wolak",
+      "parties": [
+       "Konfederacja",
+       "PSL"
+      ],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1047",
+     "node_id": "fakeperson1047",
+     "update_automatic": true,
+     "update_time": "2025-08-15T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 28,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace567"
+      ],
+      "what": "NIEMIEC, MACIEJEWSKI AND ŻUREK SP. Z O.O.",
+      "where": "Hajnówka"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1048": {
+   "id": "fakeperson1048",
+   "name": "Harald Adamski",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Harald Adamski",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1048",
+     "node_id": "fakeperson1048",
+     "update_automatic": true,
+     "update_time": "2026-03-14T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 50,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace467"
+      ],
+      "what": "„sock”",
+      "where": "Rajgród"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1049": {
+   "birthDate": "1998-07-22",
+   "id": "fakeperson1049",
+   "name": "Grzegorz Jaśkiewicz",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "birthDate": "1998-07-22",
+      "name": "Grzegorz Jaśkiewicz",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1049",
+     "node_id": "fakeperson1049",
+     "update_automatic": true,
+     "update_time": "2026-01-24T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 41,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace53"
+      ],
+      "what": "Szpital Powiatowy w Kazimierza Wielka Sp. z o.o.",
+      "where": "Ciechanów"
+     }
+    }
+   },
+   "type": "person"
+  },
+  "fakeperson1050": {
+   "id": "fakeperson1050",
+   "name": "Tamara Sołtys",
+   "parties": [],
+   "published": false,
+   "revision_id": null,
+   "revisions": [
+    {
+     "collection": "nodes",
+     "data": {
+      "name": "Tamara Sołtys",
+      "parties": [],
+      "published": false,
+      "type": "person"
+     },
+     "id": "rev_fakeperson1050",
+     "node_id": "fakeperson1050",
+     "update_automatic": true,
+     "update_time": "2025-08-21T12:00:00Z",
+     "update_user": "pipeline"
+    }
+   ],
+   "stats": {
+    "nodeGroupSize": 162,
+    "queueTier": 0,
+    "searchLine": {
+     "all": {
+      "ties": [
+       "fakeplace962"
+      ],
+      "what": "ROSA, NIEDZIELA AND STACHOWIAK SP. Z O.O.",
+      "when": "do 2023",
+      "where": "Ścinawa"
+     }
+    }
+   },
+   "type": "person"
+  }
+ }
+}

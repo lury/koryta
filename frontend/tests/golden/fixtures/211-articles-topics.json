@@ -1,0 +1,13 @@
+{
+ "step": 211,
+ "name": "articles topics",
+ "request": {
+  "method": "GET",
+  "path": "/api/articles/topics",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "byArticle": {}
+ }
+}

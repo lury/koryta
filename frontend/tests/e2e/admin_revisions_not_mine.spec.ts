@@ -1,25 +1,22 @@
 import { test, expect } from "@playwright/test";
 import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
 import { logIn, USERS } from "./helpers/auth";
+import { at, deleteDocs, putDoc } from "./helpers/db";
 
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
 process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
 
 /** "Bez moich" in the review queue on /admin/rewizje: the admin's own
  * proposals left out, so what somebody else filed stands out.
  *
- * Here rather than only in the unit tests because the endpoint leaves them out
- * with a `!=` ordered by another field, and only a real Firestore says whether
- * it takes that query. (Not whether production has the index for it - the
- * emulator needs none.)
+ * Here rather than only in the pg tests because it is the queue's chip, the
+ * endpoint and the auth between them.
  */
 const RUN = Date.now();
 const MINE = `000-moja-${RUN}`;
 const THEIRS = `000-cudza-${RUN}`;
 
-/** The emulator app, created on first use. `getAuth()` with no argument does
+/** The Auth emulator's app, created on first use. `getAuth()` with no argument does
  * not create it - it throws unless something in this worker already has, which
  * is only true when another spec happened to run first. */
 const app = () =>
@@ -27,26 +24,18 @@ const app = () =>
     ? initializeApp({ projectId: "demo-koryta-pl" })
     : getApp();
 
-const db = () => getFirestore(app(), "koryta-pl");
-
 /** A pending proposal filed through the dialog, on an entry of its own. */
 async function propose(id: string, uid: string) {
-  await db()
-    .collection("nodes")
-    .doc(id)
-    .set({ name: id, type: "person", published: false });
-  await db()
-    .collection("revisions")
-    .doc(id)
-    .set({
-      node_id: id,
-      collection: "nodes",
-      data: { name: id, type: "person", content: `Propozycja ${id}` },
-      update_time: Timestamp.now(),
-      update_user: uid,
-      update_automatic: false,
-      status: "pending",
-    });
+  await putDoc("nodes", id, { name: id, type: "person", published: false });
+  await putDoc("revisions", id, {
+    node_id: id,
+    collection: "nodes",
+    data: { name: id, type: "person", content: `Propozycja ${id}` },
+    update_time: at(),
+    update_user: uid,
+    update_automatic: false,
+    status: "pending",
+  });
 }
 
 test.beforeAll(async () => {
@@ -57,8 +46,8 @@ test.beforeAll(async () => {
 
 test.afterAll(async () => {
   for (const id of [MINE, THEIRS]) {
-    await db().collection("revisions").doc(id).delete();
-    await db().collection("nodes").doc(id).delete();
+    await deleteDocs("revisions", [id]);
+    await deleteDocs("nodes", [id]);
   }
 });
 

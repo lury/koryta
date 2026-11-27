@@ -1,0 +1,13 @@
+{
+ "step": 273,
+ "name": "pages",
+ "request": {
+  "method": "GET",
+  "path": "/api/pages?limit=20",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "captures": []
+ }
+}

@@ -1,19 +1,7 @@
 import { test, expect } from "@playwright/test";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
 import { logIn, USERS } from "./helpers/auth";
-import { OPS_DATABASE } from "../../shared/tasks";
 import { JOBS_COLLECTION, JOB_RUNS_COLLECTION } from "../../shared/jobs";
-
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
-process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
-
-const app = () =>
-  getApps().length === 0
-    ? initializeApp({ projectId: "demo-koryta-pl" })
-    : getApp();
-const opsDb = () => getFirestore(app(), OPS_DATABASE);
-const siteDb = () => getFirestore(app(), "koryta-pl");
+import { deleteDocs, putDoc } from "./helpers/db";
 
 /** /admin/procesy against the real route: runs written the way the Python
  * reporter writes them (data/pipelines/src/stores/job_runs.py), into the ops
@@ -34,8 +22,7 @@ test.describe("Procesy", () => {
     const otherRun = `e2e${stamp}failed`;
     const captureId = `e2e${stamp}capture`;
 
-    const batch = opsDb().batch();
-    batch.set(opsDb().collection(JOB_RUNS_COLLECTION).doc(runId), {
+    await putDoc(JOB_RUNS_COLLECTION, runId, {
       job: "krs_scrape_free",
       state: "running",
       trigger: "manual",
@@ -52,8 +39,9 @@ test.describe("Procesy", () => {
       summaryPath: null,
       version: null,
     });
-    batch.set(
-      opsDb().collection(JOBS_COLLECTION).doc("krs_scrape_free"),
+    await putDoc(
+      JOBS_COLLECTION,
+      "krs_scrape_free",
       {
         job: "krs_scrape_free",
         lastRunId: runId,
@@ -63,7 +51,7 @@ test.describe("Procesy", () => {
       },
       { merge: true },
     );
-    batch.set(opsDb().collection(JOB_RUNS_COLLECTION).doc(otherRun), {
+    await putDoc(JOB_RUNS_COLLECTION, otherRun, {
       job: otherJob,
       state: "failed",
       trigger: "manual",
@@ -80,26 +68,22 @@ test.describe("Procesy", () => {
       summaryPath: null,
       version: null,
     });
-    await batch.commit();
-    await siteDb()
-      .collection("articlePages")
-      .doc(captureId)
-      .set({
-        url: `https://example.pl/${captureId}`,
-        normalizedUrl: `example.pl/${captureId}`,
-        domain: "example.pl",
-        title: `Strona ${captureId}`,
-        storagePath: `file:///tmp/${captureId}.tar.gz`,
-        htmlSha256: "0".repeat(64),
-        htmlBytes: 1024,
-        selection: null,
-        source: "extension",
-        status: "done",
-        capturedBy: "e2e",
-        capturedAt: now,
-        updatedAt: now,
-        extraction: { factCount: 2, finishedAt: now, tag: "capture_v1" },
-      });
+    await putDoc("articlePages", captureId, {
+      url: `https://example.pl/${captureId}`,
+      normalizedUrl: `example.pl/${captureId}`,
+      domain: "example.pl",
+      title: `Strona ${captureId}`,
+      storagePath: `file:///tmp/${captureId}.tar.gz`,
+      htmlSha256: "0".repeat(64),
+      htmlBytes: 1024,
+      selection: null,
+      source: "extension",
+      status: "done",
+      capturedBy: "e2e",
+      capturedAt: now,
+      updatedAt: now,
+      extraction: { factCount: 2, finishedAt: now, tag: "capture_v1" },
+    });
 
     try {
       await logIn(page, USERS.admin, "/admin/procesy");
@@ -129,14 +113,10 @@ test.describe("Procesy", () => {
         "unknown",
       );
     } finally {
-      const cleanup = opsDb().batch();
-      cleanup.delete(opsDb().collection(JOB_RUNS_COLLECTION).doc(runId));
-      cleanup.delete(opsDb().collection(JOB_RUNS_COLLECTION).doc(otherRun));
-      cleanup.delete(
-        opsDb().collection(JOBS_COLLECTION).doc("krs_scrape_free"),
-      );
-      await cleanup.commit();
-      await siteDb().collection("articlePages").doc(captureId).delete();
+      await deleteDocs(JOB_RUNS_COLLECTION, [runId]);
+      await deleteDocs(JOB_RUNS_COLLECTION, [otherRun]);
+      await deleteDocs(JOBS_COLLECTION, ["krs_scrape_free"]);
+      await deleteDocs("articlePages", [captureId]);
     }
   });
 });

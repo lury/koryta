@@ -19,7 +19,6 @@ const { mockFetchNodes, cacheOptions, posts } = vi.hoisted(() => {
   globals.createError = (error: object) => Object.assign(new Error(), error);
 
   const mockFetchNodes = vi.fn();
-  globals.fetchNodes = mockFetchNodes;
   const posts: {
     path: string;
     date: string;
@@ -29,7 +28,7 @@ const { mockFetchNodes, cacheOptions, posts } = vi.hoisted(() => {
   return { mockFetchNodes, cacheOptions, posts };
 });
 
-vi.mock("~~/server/utils/fetch", () => ({ fetchNodes: mockFetchNodes }));
+vi.mock("~~/server/db/nodes", () => ({ readSitemapPages: mockFetchNodes }));
 
 // Blog posts reach the sitemap through Nuxt Content, which has no database
 // here; the tests hand it the posts.
@@ -50,7 +49,7 @@ const revisions = (latest_time: string, has_unapproved = false) => ({
   has_unapproved,
 });
 
-/** Answers `fetchNodes(type)` from one flat map of nodes. */
+/** Answers `readSitemapPages(type)` from one flat map of nodes. */
 const nodesByType = (nodes: Record<string, Record<string, unknown>>) => {
   mockFetchNodes.mockImplementation(async (type: string) =>
     Object.fromEntries(

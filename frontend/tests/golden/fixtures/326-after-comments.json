@@ -1,0 +1,23 @@
+{
+ "step": 326,
+ "name": "after: comments",
+ "request": {
+  "method": "GET",
+  "path": "/api/comments/list?nodeId=fakeperson109",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": [
+  {
+   "authorId": "test-user",
+   "authorName": "test-user",
+   "content": "Wzorcowy komentarz.",
+   "createdAt": "<now>",
+   "edgeId": null,
+   "id": "<id>",
+   "isLead": false,
+   "nodeId": "fakeperson109",
+   "parentId": null
+  }
+ ]
+}

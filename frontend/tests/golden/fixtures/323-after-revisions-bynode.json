@@ -1,0 +1,48 @@
+{
+ "step": 323,
+ "name": "after: revisions byNode",
+ "request": {
+  "method": "GET",
+  "path": "/api/revisions/byNode?nodeId=fakeperson1066",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "approvedRevisionId": "proposal_fakeperson1066_test-user_dYpPbcalmb",
+  "exists": true,
+  "published": true,
+  "revisions": [
+   {
+    "collection": "nodes",
+    "data": {
+     "content": "Nowy opis.",
+     "name": "Zmieniona Osoba Wzorca",
+     "parties": [],
+     "type": "person"
+    },
+    "id": "proposal_fakeperson1066_test-user_dYpPbcalmb",
+    "node_id": "fakeperson1066",
+    "review_time": "<now>",
+    "review_user": "test-admin",
+    "status": "approved",
+    "update_automatic": false,
+    "update_time": "<now>",
+    "update_user": "test-user"
+   },
+   {
+    "collection": "nodes",
+    "data": {
+     "name": "Berta Dąbkowski",
+     "parties": [],
+     "published": true,
+     "type": "person"
+    },
+    "id": "rev_fakeperson1066",
+    "node_id": "fakeperson1066",
+    "update_automatic": false,
+    "update_time": "2026-08-10T12:00:00Z",
+    "update_user": "admin@koryta.pl"
+   }
+  ]
+ }
+}

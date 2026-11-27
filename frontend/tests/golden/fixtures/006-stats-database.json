@@ -1,0 +1,124 @@
+{
+ "step": 6,
+ "name": "stats database",
+ "request": {
+  "method": "GET",
+  "path": "/api/stats/database",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "comments": 0,
+  "edges": 18825,
+  "extractions": {
+   "reviewed": 0,
+   "total": 101
+  },
+  "generatedAt": "<now>",
+  "nodes": {
+   "articles": 93,
+   "people": 2766,
+   "places": 1284,
+   "regions": 1296,
+   "total": 5439
+  },
+  "notes": {
+   "annotatedNodes": 29,
+   "byKind": {
+    "change_request": 0,
+    "missing": 0,
+    "source": 57
+   },
+   "notes": 29,
+   "resolved": 0,
+   "sources": 57,
+   "unresolved": 0,
+   "untriaged": 57
+  },
+  "people": {
+   "<id>": 2598,
+   "approved": 447,
+   "currentlyEmployed": 2211,
+   "reviewed": 111,
+   "toCheck": 2208,
+   "total": 2766,
+   "withNotes": 29,
+   "withVotes": 95
+  },
+  "places": {
+   "confirmedPrivate": 0,
+   "publicSector": 691,
+   "total": 1284,
+   "unknown": 593
+  },
+  "publicationCandidates": [
+   {
+    "approved": 4,
+    "floor": 1,
+    "open": false,
+    "pending": 39
+   },
+   {
+    "approved": 2,
+    "floor": 2,
+    "open": false,
+    "pending": 35
+   },
+   {
+    "approved": 5,
+    "floor": 3,
+    "open": false,
+    "pending": 28
+   },
+   {
+    "approved": 3,
+    "floor": 4,
+    "open": false,
+    "pending": 23
+   },
+   {
+    "approved": 2,
+    "floor": 5,
+    "open": true,
+    "pending": 14
+   }
+  ],
+  "revisions": {
+   "total": 5439,
+   "unapprovedNodes": 2315
+  },
+  "votes": {
+   "distribution": {
+    "interesting": {
+     "1": 16,
+     "2": 26,
+     "3": 18,
+     "4": 10,
+     "5": 15,
+     "-1": 9,
+     "-2": 17,
+     "-3": 18,
+     "-4": 13,
+     "-5": 21
+    },
+    "quality": {
+     "1": 0,
+     "2": 0,
+     "3": 0,
+     "4": 0,
+     "5": 0,
+     "-1": 0,
+     "-2": 0,
+     "-3": 0,
+     "-4": 0,
+     "-5": 0
+    }
+   },
+   "onExtractions": 0,
+   "onNodes": 173,
+   "total": 173,
+   "voters": 31,
+   "withComment": 0
+  }
+ }
+}

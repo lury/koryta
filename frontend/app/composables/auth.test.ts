@@ -239,7 +239,8 @@ describe("useAuthState idToken", () => {
     expect(idToken.value).toBeInstanceOf(Promise);
     await flushPromises();
 
-    expect(reads).toBe(1);
+    // The idToken once; the /api/me read of the settings asks for it too.
+    expect(reads).toBeGreaterThanOrEqual(1);
     expect(unhandled).not.toHaveBeenCalled();
   });
 });

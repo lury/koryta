@@ -1,0 +1,56 @@
+{
+ "step": 219,
+ "name": "node article",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes/fakearticle0",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "node": {
+   "id": "fakearticle0",
+   "name": "Labore fuga unde enim doloribus quo harum quasi.",
+   "published": true,
+   "publishedDate": "2016-09-03T00:00:00.000Z",
+   "revision_id": "rev_fakearticle0",
+   "revisions": {
+    "has_unapproved": false,
+    "latest_id": "rev_fakearticle0",
+    "latest_time": "2026-03-16T12:00:00Z",
+    "total": 1
+   },
+   "sourceURL": "https://orange-toaster.miasta.pl/",
+   "stats": {
+    "edges": {
+     "approved": {
+      "currentlyEmployed": false,
+      "currentlyEmployedTargetNodeIds": [],
+      "elections": [],
+      "experienceMonths": 0,
+      "latestEmploymentStart": null,
+      "seatNodeIds": [],
+      "targetNodeIds": [
+       "fakeperson1576",
+       "fakeperson2333",
+       "fakeperson2376",
+       "fakeperson2606",
+       "fakeperson570"
+      ]
+     },
+     "hiddenTargets": 0
+    },
+    "factsCount": 0,
+    "isApproved": true,
+    "nodeGroupSize": 0,
+    "notesCount": 0,
+    "votes": {
+     "humanVoted": false,
+     "interesting": 0,
+     "quality": 0
+    }
+   },
+   "type": "article"
+  }
+ }
+}

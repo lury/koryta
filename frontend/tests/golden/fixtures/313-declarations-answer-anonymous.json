@@ -1,0 +1,29 @@
+{
+ "step": 313,
+ "name": "declarations answer anonymous",
+ "request": {
+  "method": "POST",
+  "path": "/api/declarations/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-p0/answer",
+  "as": "anon",
+  "body": {
+   "value": "1979-07-15",
+   "verdict": "date"
+  }
+ },
+ "status": 200,
+ "body": {
+  "answered": {
+   "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-p0"
+  },
+  "mine": {
+   "found": 0,
+   "today": 1,
+   "total": 1
+  },
+  "open": 1,
+  "settled": false,
+  "settledCrops": 0,
+  "task": null,
+  "upcoming": []
+ }
+}

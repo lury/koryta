@@ -34,7 +34,6 @@ vi.mock("h3", async (importOriginal) => {
   };
 });
 
-vi.mock("firebase-admin/firestore", () => ({ getFirestore: () => ({}) }));
 vi.mock("~~/server/utils/auth", () => ({ requireOwner: vi.fn() }));
 vi.mock("~~/server/utils/mailAudience", () => ({
   loadAudience: vi.fn(),
@@ -101,7 +100,7 @@ describe("the owner's mail routes", () => {
 
   it("list the audience with the queue count", async () => {
     expect(await call(audienceHandler)).toBe(AUDIENCE);
-    expect(loadAudience).toHaveBeenCalledWith(expect.anything(), {
+    expect(loadAudience).toHaveBeenCalledWith({
       toCheck: 12,
     });
   });
@@ -109,7 +108,7 @@ describe("the owner's mail routes", () => {
   it("save a draft only if its button links somewhere on the site", async () => {
     vi.mocked(saveCampaign).mockResolvedValue({ id: "new" } as never);
     await call(saveHandler, { body: { content: CONTENT } });
-    expect(saveCampaign).toHaveBeenCalledWith(expect.anything(), {
+    expect(saveCampaign).toHaveBeenCalledWith({
       id: undefined,
       content: CONTENT,
       by: "owner",
@@ -130,7 +129,6 @@ describe("the owner's mail routes", () => {
     vi.mocked(queueCampaign).mockResolvedValue({ outcomes: {} } as never);
     await call(sendHandler, { body: { id: "2026-10-09-temat", uids: ["a"] } });
     expect(queueCampaign).toHaveBeenCalledWith(
-      expect.anything(),
       expect.objectContaining({
         campaign: { id: "2026-10-09-temat" },
         members: AUDIENCE.members,
@@ -158,7 +156,6 @@ describe("the owner's mail routes", () => {
     vi.mocked(queueTest).mockResolvedValue({ outcome: "queued" } as never);
     await call(testHandler, { body: { id: "2026-10-09-temat" } });
     expect(queueTest).toHaveBeenCalledWith(
-      expect.anything(),
       expect.objectContaining({ member: { uid: "owner" } }),
     );
   });
@@ -172,7 +169,7 @@ describe("unsubscribing", () => {
         body: { u: "a", t: "tok", k: "recentPeople", c: "2026-10-09-temat" },
       }),
     ).toEqual({ outcome: "unsubscribed", topic: "recentPeople" });
-    expect(unsubscribe).toHaveBeenCalledWith(expect.anything(), {
+    expect(unsubscribe).toHaveBeenCalledWith({
       uid: "a",
       token: "tok",
       topic: "recentPeople",
@@ -186,7 +183,7 @@ describe("unsubscribing", () => {
       query: { u: "a", t: "tok", k: "callsToAction" },
       body: { "List-Unsubscribe": "One-Click" },
     });
-    expect(unsubscribe).toHaveBeenCalledWith(expect.anything(), {
+    expect(unsubscribe).toHaveBeenCalledWith({
       uid: "a",
       token: "tok",
       topic: "callsToAction",

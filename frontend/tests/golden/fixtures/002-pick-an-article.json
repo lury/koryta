@@ -1,0 +1,240 @@
+{
+ "step": 2,
+ "name": "pick an article",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes?type=article&limit=5",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "nodes": {
+   "fakearticle0": {
+    "id": "fakearticle0",
+    "name": "Labore fuga unde enim doloribus quo harum quasi.",
+    "published": true,
+    "publishedDate": "2016-09-03T00:00:00.000Z",
+    "revision_id": "rev_fakearticle0",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle0",
+     "latest_time": "2026-03-16T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://orange-toaster.miasta.pl/",
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1576",
+        "fakeperson2333",
+        "fakeperson2376",
+        "fakeperson2606",
+        "fakeperson570"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle1": {
+    "id": "fakearticle1",
+    "name": "Ab odit ex ab sunt dolor distinctio vitae.",
+    "published": true,
+    "publishedDate": "2024-07-04T00:00:00.000Z",
+    "revision_id": "rev_fakearticle1",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle1",
+     "latest_time": "2026-02-08T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://noted-whale.auto.pl",
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1165",
+        "fakeperson119",
+        "fakeperson1437",
+        "fakeperson1790",
+        "fakeperson2308"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle10": {
+    "id": "fakearticle10",
+    "name": "Facilis aliquam repellat doloremque itaque quasi quaerat necessitatibus dolorem quae.",
+    "published": true,
+    "publishedDate": "2023-01-18T00:00:00.000Z",
+    "revision_id": "rev_fakearticle10",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle10",
+     "latest_time": "2026-06-29T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://forceful-guacamole.miasta.pl",
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson2001",
+        "fakeperson2100",
+        "fakeperson2500",
+        "fakeperson592",
+        "fakeperson924"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle11": {
+    "id": "fakearticle11",
+    "name": "Reiciendis nihil nulla quae aliquid ipsum fugiat vel.",
+    "published": true,
+    "publishedDate": "2019-01-01T00:00:00.000Z",
+    "revision_id": "rev_fakearticle11",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle11",
+     "latest_time": "2026-07-19T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://rapid-haircut.gov.pl",
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1864",
+        "fakeperson2428",
+        "fakeperson2721",
+        "fakeperson2729",
+        "fakeperson900"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle12": {
+    "id": "fakearticle12",
+    "name": "Qui atque animi iusto quaerat quaerat quod delectus harum.",
+    "published": true,
+    "publishedDate": "2015-03-18T00:00:00.000Z",
+    "revision_id": "rev_fakearticle12",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle12",
+     "latest_time": "2025-11-28T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://glass-cod.gmina.pl/",
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson2493",
+        "fakeperson330",
+        "fakeperson495",
+        "fakeperson70",
+        "fakeperson753"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   }
+  },
+  "total": 93
+ }
+}

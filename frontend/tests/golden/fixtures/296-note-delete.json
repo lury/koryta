@@ -1,0 +1,13 @@
+{
+ "step": 296,
+ "name": "note delete",
+ "request": {
+  "method": "DELETE",
+  "path": "/api/notes/fakeperson109",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "ok": true
+ }
+}

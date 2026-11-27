@@ -1,0 +1,241 @@
+{
+  "$comment": "Budgets of the golden scenario (scripts/pg/bench-api.ts) at x10 in the test configuration (Postgres --cpus 6 --memory 24g, app --cpus 4 --memory 4g): warmMs is the median of the warm runs, coldMs the first request after a restart, bytes the answer, blocks the shared blocks the request's statements touched (8 kB each). reads and writes are the defaults; steps lists, by step name, the ones measured over the defaults on 2026-11-27, each an open item rather than a target. See frontend/server/db/CLAUDE.md.",
+  "scale": "x10",
+  "config": "B",
+  "reads": {
+    "warmMs": 200,
+    "coldMs": 1000,
+    "bytes": 1000000,
+    "blocks": 20000
+  },
+  "writes": {
+    "warmMs": 1000,
+    "coldMs": 1000,
+    "blocks": 200000
+  },
+  "steps": {
+    "admin summary": {
+      "blocks": 180000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "after: nodes minVotes": {
+      "blocks": 247000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "after: nodes szpitale": {
+      "blocks": 41000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "after: revisions queue": {
+      "blocks": 41000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "article notes": {
+      "blocks": 35000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "edge create": {
+      "blocks": 351000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "edge delete": {
+      "blocks": 319000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "home timeline": {
+      "coldMs": 8100,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "ingest article": {
+      "blocks": 319000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "ingest person 0": {
+      "blocks": 1070000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "ingest person 1": {
+      "blocks": 1070000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "ingest person 2": {
+      "blocks": 1070000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "ingest person 3": {
+      "blocks": 1070000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "ingest person 4": {
+      "blocks": 1071000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "ingest person again": {
+      "blocks": 664000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "interactions mine": {
+      "blocks": 32000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "merge": {
+      "warmMs": 1950,
+      "coldMs": 2000,
+      "blocks": 745000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes companyTeryt 14": {
+      "blocks": 94000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes election local-2024": {
+      "blocks": 425000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes elections won": {
+      "blocks": 100000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes minVotes": {
+      "blocks": 247000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes party PO": {
+      "blocks": 48000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes party none": {
+      "blocks": 46000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes person page 1": {
+      "blocks": 229000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes person page 3": {
+      "blocks": 229000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes queueTier 1": {
+      "blocks": 122000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes queueTier 2": {
+      "blocks": 150000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes region": {
+      "bytes": 2600000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes revisions": {
+      "blocks": 177000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes sort by name desc": {
+      "blocks": 272000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes szpitale": {
+      "blocks": 41000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes teryt 14": {
+      "blocks": 88000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "nodes teryt 14 szpitale": {
+      "blocks": 482000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "notes admin": {
+      "blocks": 35000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "pick people": {
+      "blocks": 36000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "progress partia": {
+      "blocks": 234000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "progress województwo": {
+      "blocks": 42000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "revision approve publish": {
+      "blocks": 429000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "revisions mine": {
+      "blocks": 32000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "revisions queue": {
+      "blocks": 41000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "search empty": {
+      "warmMs": 500,
+      "blocks": 91000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "search ko": {
+      "blocks": 56000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "search sp z": {
+      "blocks": 122000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "search szpital": {
+      "blocks": 211000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "seat move: biggest region": {
+      "bytes": 1700000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "seat move: create": {
+      "warmMs": 1750,
+      "coldMs": 1800,
+      "blocks": 602000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "seat move: delete": {
+      "blocks": 600000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "sitemap person": {
+      "bytes": 5800000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "sitemap place": {
+      "bytes": 20800000,
+      "coldMs": 3200,
+      "warmMs": 700,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "split mark": {
+      "blocks": 405000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "stats hospitals": {
+      "warmMs": 500,
+      "bytes": 3300000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "stats queueTiers": {
+      "warmMs": 500,
+      "blocks": 1745000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    },
+    "unpublish a page": {
+      "warmMs": 6500,
+      "coldMs": 6500,
+      "blocks": 829000,
+      "why": "Measured over the default at x10 on pg-perf (2026-11-27); an open item, not a target: see the PR's open items."
+    }
+  }
+}

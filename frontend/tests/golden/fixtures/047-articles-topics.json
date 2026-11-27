@@ -1,0 +1,13 @@
+{
+ "step": 47,
+ "name": "articles topics",
+ "request": {
+  "method": "GET",
+  "path": "/api/articles/topics",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "byArticle": {}
+ }
+}

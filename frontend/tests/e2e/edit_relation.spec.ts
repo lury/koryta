@@ -1,16 +1,8 @@
 import { test, expect } from "@playwright/test";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
 import { logIn, USERS } from "./helpers/auth";
+import { deleteDocs, putDoc, readDoc, readDocs } from "./helpers/db";
 
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
 process.env.GCLOUD_PROJECT = "demo-koryta-pl";
-
-const app =
-  getApps().length === 0
-    ? initializeApp({ projectId: "demo-koryta-pl" })
-    : getApp();
-const db = getFirestore(app, "koryta-pl");
 
 /** A stamp per run, so a rerun never collides with the last one and the suite's
  * `fullyParallel` workers never read each other's fixtures. */
@@ -50,8 +42,6 @@ const QUEUE_SCORE = 899;
  * to the relations it reads and the seed is shared between specs. Written with
  * `set`, so a retry restores the fixture rather than finding it corrected. */
 async function seed() {
-  const batch = db.batch();
-
   const employment = {
     experienceMonths: 12,
     latestEmploymentStart: "2019-03-01",
@@ -59,7 +49,7 @@ async function seed() {
     currentlyEmployed: true,
   };
 
-  batch.set(db.collection("nodes").doc(ids.worker), {
+  await putDoc("nodes", ids.worker, {
     name: `Poprawiany Pracownik ${stamp}`,
     type: "person",
     revision_id: `rev-${stamp}`,
@@ -70,7 +60,7 @@ async function seed() {
       edges: { all: employment, approved: employment },
     },
   });
-  batch.set(db.collection("nodes").doc(ids.company), {
+  await putDoc("nodes", ids.company, {
     name: `Spolka Poprawiana ${stamp}`,
     type: "place",
     revision_id: `rev-${stamp}`,
@@ -78,7 +68,7 @@ async function seed() {
     stats: { isApproved: true, nodeGroupSize: 1 },
   });
 
-  batch.set(db.collection("edges").doc(edges.job), {
+  await putDoc("edges", edges.job, {
     source: ids.worker,
     target: ids.company,
     type: "employed",
@@ -90,13 +80,13 @@ async function seed() {
   // A local candidacy the way the pipeline stores every one of them: as
   // „Samorząd", because it does not keep which office the run was for. Saying
   // which one it was is the correction the kind-of-election field is for.
-  batch.set(db.collection("nodes").doc(ids.region), {
+  await putDoc("nodes", ids.region, {
     name: `Gmina Poprawiana ${stamp}`,
     type: "region",
     revision_id: `rev-${stamp}`,
     published: true,
   });
-  batch.set(db.collection("edges").doc(edges.candidacy), {
+  await putDoc("edges", edges.candidacy, {
     source: ids.worker,
     target: ids.region,
     type: "election",
@@ -110,7 +100,7 @@ async function seed() {
     ...employment,
     latestEmploymentStart: "2030-06-01",
   };
-  batch.set(db.collection("nodes").doc(ids.queued), {
+  await putDoc("nodes", ids.queued, {
     name: `Kolejkowy Poprawiany ${stamp}`,
     type: "person",
     revision_id: `rev-${stamp}`,
@@ -123,7 +113,7 @@ async function seed() {
       edges: { all: queuedEmployment, approved: queuedEmployment },
     },
   });
-  batch.set(db.collection("edges").doc(edges.queuedJob), {
+  await putDoc("edges", edges.queuedJob, {
     source: ids.queued,
     target: ids.company,
     type: "employed",
@@ -131,18 +121,15 @@ async function seed() {
     start_date: "2030-06-01",
     published: true,
   });
-
-  await batch.commit();
 }
 
 /** The pending revisions standing against one relation. */
 async function proposalsFor(edgeId: string) {
-  const snapshot = await db
-    .collection("revisions")
-    .where("node_id", "==", edgeId)
-    .where("status", "==", "pending")
-    .get();
-  return snapshot.docs.map((doc) => doc.data());
+  const rows = await readDocs("revisions", {
+    node_id: edgeId,
+    status: "pending",
+  });
+  return rows.map((row) => row.data);
 }
 
 test.describe("Correcting a relation", () => {
@@ -164,14 +151,12 @@ test.describe("Correcting a relation", () => {
    * the documents. See the same hook in remove_edge.spec.ts.
    */
   test.afterAll(async () => {
-    const batch = db.batch();
     for (const id of Object.values(ids)) {
-      batch.delete(db.collection("nodes").doc(id));
+      await deleteDocs("nodes", [id]);
     }
     for (const id of Object.values(edges)) {
-      batch.delete(db.collection("edges").doc(id));
+      await deleteDocs("edges", [id]);
     }
-    await batch.commit();
   });
 
   test("an admin fixes a job title and it sticks", async ({ page }) => {
@@ -291,9 +276,7 @@ test.describe("Correcting a relation", () => {
 
     // With the date it was stored with, not the election day the row shows -
     // which is what the pipeline knows this candidacy by.
-    const stored = (
-      await db.collection("edges").doc(edges.candidacy).get()
-    ).data();
+    const stored = await readDoc("edges", edges.candidacy);
     expect(stored).toMatchObject({
       position: "Sejmik",
       start_date: "2024-01-01",

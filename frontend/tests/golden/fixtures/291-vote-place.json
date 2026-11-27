@@ -1,0 +1,25 @@
+{
+ "step": 291,
+ "name": "vote place",
+ "request": {
+  "method": "PUT",
+  "path": "/api/votes/fakeplace1006",
+  "as": "admin",
+  "body": {
+   "categoryVotes": {
+    "interesting": 5
+   }
+  }
+ },
+ "status": 200,
+ "body": {
+  "vote": {
+   "categoryVotes": {
+    "interesting": 5
+   },
+   "nodeId": "fakeplace1006",
+   "updatedAt": "<now>",
+   "userUid": "test-admin"
+  }
+ }
+}

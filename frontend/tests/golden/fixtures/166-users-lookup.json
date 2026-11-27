@@ -1,0 +1,17 @@
+{
+ "step": 166,
+ "name": "users lookup",
+ "request": {
+  "method": "GET",
+  "path": "/api/users/lookup?uids=test-user%2Ctest-admin",
+  "as": "user"
+ },
+ "status": 403,
+ "body": {
+  "error": true,
+  "message": "Tylko administratorzy mogą wyszukiwać użytkowników.",
+  "statusCode": 403,
+  "statusMessage": "Server Error",
+  "url": "http://127.0.0.1:23200/api/users/lookup?uids=test-user%2Ctest-admin"
+ }
+}

@@ -1,0 +1,88 @@
+{
+ "step": 330,
+ "name": "after: search",
+ "request": {
+  "method": "GET",
+  "path": "/api/search?q=wzorc",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": [
+  {
+   "id": "fakeperson1066",
+   "line": {
+    "what": "Wójt",
+    "when": "2018",
+    "where": "Żerków"
+   },
+   "name": "Zmieniona Osoba Wzorca",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "<id>",
+   "line": {
+    "what": "„colonialism”",
+    "where": "Pyzdry"
+   },
+   "name": "Złota OsobaE Wzorcowa4",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "<id>",
+   "line": {
+    "what": "„colonialism”",
+    "where": "Pyzdry"
+   },
+   "name": "Złota OsobaC Wzorcowa2",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "<id>",
+   "line": {
+    "parties": [
+     "PiS"
+    ],
+    "what": "„colonialism”",
+    "where": "Pyzdry"
+   },
+   "name": "Złota OsobaA Wzorcowa0",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "<id>",
+   "name": "Nowa Osoba Wzorca",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "<id>",
+   "name": "WZORCOWA SPÓŁKA Z O.O.",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "<id>",
+   "line": {
+    "what": "„colonialism”",
+    "where": "Pyzdry"
+   },
+   "name": "Złota OsobaD Wzorcowa3",
+   "published": false,
+   "type": "person"
+  },
+  {
+   "id": "<id>",
+   "line": {
+    "what": "„colonialism”",
+    "where": "Pyzdry"
+   },
+   "name": "Złota OsobaB Wzorcowa1",
+   "published": false,
+   "type": "person"
+  }
+ ]
+}

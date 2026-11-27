@@ -1,0 +1,21 @@
+{
+ "step": 283,
+ "name": "edge create",
+ "request": {
+  "method": "POST",
+  "path": "/api/edges/create",
+  "as": "user",
+  "body": {
+   "name": "Członek Zarządu",
+   "source": "fakeperson1077",
+   "start_date": "2022-01-01",
+   "target": "fakeplace1006",
+   "type": "employed"
+  }
+ },
+ "status": 200,
+ "body": {
+  "created": true,
+  "id": "edge_fakeperson1077_fakeplace1006_employed_SDuvEXhwx3"
+ }
+}

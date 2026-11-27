@@ -1,10 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
 import { logIn, USERS } from "./helpers/auth";
-
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
-process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
+import { readDocs } from "./helpers/db";
 
 /** A source somebody adds to a note is an article from then on.
  *
@@ -14,14 +10,6 @@ process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
  */
 const COMPANY_KRS = "0000357114";
 const COMPANY_VIEW = `/eksploruj/tabela?krs=${COMPANY_KRS}`;
-
-const db = () =>
-  getFirestore(
-    getApps().length === 0
-      ? initializeApp({ projectId: "demo-koryta-pl" })
-      : getApp(),
-    "koryta-pl",
-  );
 
 test("a source added to a note becomes an article node", async ({ page }) => {
   // Logs in, saves a note and waits for the article to be written.
@@ -48,15 +36,14 @@ test("a source added to a note becomes an article node", async ({ page }) => {
   // later - and only once, however the same url is spelled.
   let articleId = "";
   await expect(async () => {
-    const articles = await db()
-      .collection("nodes")
-      .where("sourceURL", "==", url)
-      .get();
-    expect(articles.size).toBe(1);
-    expect(articles.docs[0]!.data().type).toBe("article");
+    const articles = await readDocs("nodes", {
+      sourceURL: url,
+    });
+    expect(articles).toHaveLength(1);
+    expect(articles[0]!.data.type).toBe("article");
     // No title to be had, so the article goes in under its address.
-    expect(articles.docs[0]!.data().name).toBe(url);
-    articleId = articles.docs[0]!.id;
+    expect(articles[0]!.data.name).toBe(url);
+    articleId = articles[0]!.id;
   }).toPass({ timeout: 60_000 });
 
   // And the note entry now points at the article it became - that one, by id.

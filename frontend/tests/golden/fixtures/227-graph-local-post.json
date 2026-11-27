@@ -1,0 +1,2308 @@
+{
+ "step": 227,
+ "name": "graph local post",
+ "request": {
+  "method": "POST",
+  "path": "/api/graph/local/fakeperson1066",
+  "as": "admin",
+  "body": {
+   "distance": 2,
+   "subjects": [
+    "fakeperson1066",
+    "fakeperson1068",
+    "fakeperson1069"
+   ]
+  }
+ },
+ "status": 200,
+ "body": {
+  "edges": [
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1066_0",
+    "label": "Przewodniczący Rady Nadzorczej",
+    "name": "Przewodniczący Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1066",
+    "start_date": "2005-04-08",
+    "target": "fakeplace444",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1068_0",
+    "label": "Członek Rady Nadzorczej",
+    "name": "Członek Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1068",
+    "start_date": "2012-08-14",
+    "target": "fakeplace704",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2025-08-27",
+    "id": "fakejob1068_1",
+    "label": "Członek Zarządu",
+    "name": "Członek Zarządu",
+    "references": [],
+    "source": "fakeperson1068",
+    "start_date": "2021-01-07",
+    "target": "fakeplace939",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2021-07-09",
+    "id": "fakejob1068_2",
+    "label": "Członek Rady Nadzorczej",
+    "name": "Członek Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1068",
+    "start_date": "2000-03-16",
+    "target": "fakeplace353",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1068_3",
+    "label": "Przewodniczący Rady Nadzorczej",
+    "name": "Przewodniczący Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1068",
+    "start_date": "2004-01-19",
+    "target": "fakeplace594",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1068_4",
+    "label": "Prezes Zarządu",
+    "name": "Prezes Zarządu",
+    "references": [],
+    "source": "fakeperson1068",
+    "start_date": "2014-07-04",
+    "target": "fakeplace641",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1069_0",
+    "label": "Dyrektor",
+    "name": "Dyrektor",
+    "references": [],
+    "source": "fakeperson1069",
+    "start_date": "2019-06-10",
+    "target": "fakeplace748",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2015-04-12",
+    "id": "fakejob1069_1",
+    "label": "Przewodniczący Rady Nadzorczej",
+    "name": "Przewodniczący Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1069",
+    "start_date": "2011-05-22",
+    "target": "fakeplace752",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2022-10-29",
+    "id": "fakejob1069_2",
+    "label": "Członek Zarządu",
+    "name": "Członek Zarządu",
+    "references": [],
+    "source": "fakeperson1069",
+    "start_date": "2021-05-18",
+    "target": "fakeplace195",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1069_3",
+    "label": "Członek Zarządu",
+    "name": "Członek Zarządu",
+    "references": [],
+    "source": "fakeperson1069",
+    "start_date": "2021-05-04",
+    "target": "fakeplace1006",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1069_4",
+    "label": "Zastępca Dyrektora",
+    "name": "Zastępca Dyrektora",
+    "references": [],
+    "source": "fakeperson1069",
+    "start_date": "2004-06-18",
+    "target": "fakeplace966",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "elected": true,
+    "end_date": "2018-10-21",
+    "id": "fakerunfakeperson1066_0",
+    "label": "kandydował",
+    "party": "Konfederacja",
+    "position": "Wójt",
+    "references": [],
+    "source": "fakeperson1066",
+    "start_date": "2018-10-21",
+    "target": "teryt1615011",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "dead_end"
+    },
+    "type": "election",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2018-02-11",
+    "id": "fakejob1110_1",
+    "label": "Zastępca Dyrektora",
+    "name": "Zastępca Dyrektora",
+    "references": [],
+    "source": "fakeperson1110",
+    "start_date": "2009-12-02",
+    "target": "fakeplace353",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2025-12-20",
+    "id": "fakejob1359_4",
+    "label": "Przewodniczący Rady Nadzorczej",
+    "name": "Przewodniczący Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1359",
+    "start_date": "2024-11-26",
+    "target": "fakeplace353",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2024-06-18",
+    "id": "fakejob1405_3",
+    "label": "Członek Rady Nadzorczej",
+    "name": "Członek Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1405",
+    "start_date": "2009-02-20",
+    "target": "fakeplace752",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2007-01-01",
+    "id": "fakejob157_7",
+    "label": "Zastępca Dyrektora",
+    "name": "Zastępca Dyrektora",
+    "references": [],
+    "source": "fakeperson157",
+    "start_date": "2003-04-08",
+    "target": "fakeplace1006",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1607_0",
+    "label": "Prokurent",
+    "name": "Prokurent",
+    "references": [],
+    "source": "fakeperson1607",
+    "start_date": "2010-04-12",
+    "target": "fakeplace704",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1615_5",
+    "label": "Członek Zarządu",
+    "name": "Członek Zarządu",
+    "references": [],
+    "source": "fakeperson1615",
+    "start_date": "2008-12-08",
+    "target": "fakeplace353",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2019-10-18",
+    "id": "fakejob1756_2",
+    "label": "Przewodniczący Rady Nadzorczej",
+    "name": "Przewodniczący Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1756",
+    "start_date": "2002-06-28",
+    "target": "fakeplace939",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2013-07-14",
+    "id": "fakejob1862_2",
+    "label": "Prezes Zarządu",
+    "name": "Prezes Zarządu",
+    "references": [],
+    "source": "fakeperson1862",
+    "start_date": "2012-08-13",
+    "target": "fakeplace966",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1946_7",
+    "label": "Przewodniczący Rady Nadzorczej",
+    "name": "Przewodniczący Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1946",
+    "start_date": "2017-05-05",
+    "target": "fakeplace641",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1949_5",
+    "label": "Prezes Zarządu",
+    "name": "Prezes Zarządu",
+    "references": [],
+    "source": "fakeperson1949",
+    "start_date": "2026-07-16",
+    "target": "fakeplace195",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob2144_1",
+    "label": "Dyrektor",
+    "name": "Dyrektor",
+    "references": [],
+    "source": "fakeperson2144",
+    "start_date": "2001-07-01",
+    "target": "fakeplace966",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob390_0",
+    "label": "Dyrektor",
+    "name": "Dyrektor",
+    "references": [],
+    "source": "fakeperson390",
+    "start_date": "2018-06-07",
+    "target": "fakeplace1006",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2025-10-10",
+    "id": "fakejob465_0",
+    "label": "Członek Zarządu",
+    "name": "Członek Zarządu",
+    "references": [],
+    "source": "fakeperson465",
+    "start_date": "2024-10-23",
+    "target": "fakeplace748",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob772_2",
+    "label": "Zastępca Dyrektora",
+    "name": "Zastępca Dyrektora",
+    "references": [],
+    "source": "fakeperson772",
+    "start_date": "2004-06-26",
+    "target": "fakeplace939",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob84_1",
+    "label": "Przewodniczący Rady Nadzorczej",
+    "name": "Przewodniczący Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson84",
+    "start_date": "2007-03-28",
+    "target": "fakeplace704",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2021-08-19",
+    "id": "fakejob972_2",
+    "label": "Dyrektor",
+    "name": "Dyrektor",
+    "references": [],
+    "source": "fakeperson972",
+    "start_date": "2012-04-08",
+    "target": "fakeplace594",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "id": "fakeown1006",
+    "label": "właściciel",
+    "references": [],
+    "source": "fakeplace523",
+    "target": "fakeplace1006",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "owns",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "id": "fakeown704",
+    "label": "właściciel",
+    "references": [],
+    "source": "teryt3219",
+    "target": "fakeplace704",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "owns",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "id": "fakeseat1006",
+    "label": "siedziba",
+    "references": [],
+    "source": "teryt1405013",
+    "target": "fakeplace1006",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "dead_end"
+    },
+    "type": "seat",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "id": "fakeseat195",
+    "label": "siedziba",
+    "references": [],
+    "source": "teryt1603022",
+    "target": "fakeplace195",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "dead_end"
+    },
+    "type": "seat",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "id": "fakeseat353",
+    "label": "siedziba",
+    "references": [],
+    "source": "teryt1217032",
+    "target": "fakeplace353",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "dead_end"
+    },
+    "type": "seat",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "id": "fakeseat444",
+    "label": "siedziba",
+    "references": [],
+    "source": "teryt2405031",
+    "target": "fakeplace444",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "dead_end"
+    },
+    "type": "seat",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "id": "fakeseat594",
+    "label": "siedziba",
+    "references": [],
+    "source": "teryt2806022",
+    "target": "fakeplace594",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "dead_end"
+    },
+    "type": "seat",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "id": "fakeseat641",
+    "label": "siedziba",
+    "references": [],
+    "source": "teryt2809021",
+    "target": "fakeplace641",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "dead_end"
+    },
+    "type": "seat",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "id": "fakeseat704",
+    "label": "siedziba",
+    "references": [],
+    "source": "teryt2604031",
+    "target": "fakeplace704",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "dead_end"
+    },
+    "type": "seat",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "id": "fakeseat748",
+    "label": "siedziba",
+    "references": [],
+    "source": "teryt2010021",
+    "target": "fakeplace748",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "dead_end"
+    },
+    "type": "seat",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "id": "fakeseat752",
+    "label": "siedziba",
+    "references": [],
+    "source": "teryt3210011",
+    "target": "fakeplace752",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "dead_end"
+    },
+    "type": "seat",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "id": "fakeseat939",
+    "label": "siedziba",
+    "references": [],
+    "source": "teryt3019011",
+    "target": "fakeplace939",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "dead_end"
+    },
+    "type": "seat",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "id": "fakeseat966",
+    "label": "siedziba",
+    "references": [],
+    "source": "teryt3210011",
+    "target": "fakeplace966",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "dead_end"
+    },
+    "type": "seat",
+    "visibility": true
+   }
+  ],
+  "nodeGroups": [
+   {
+    "connected": [
+     "fakeperson1068",
+     "fakeplace704",
+     "fakeperson1068",
+     "fakeperson1195",
+     "fakeperson1607",
+     "fakeperson1800",
+     "fakeperson422",
+     "fakeperson84",
+     "teryt3219",
+     "teryt2604031",
+     "fakeplace939",
+     "fakeperson1756",
+     "fakeperson338",
+     "fakeperson348",
+     "fakeperson772",
+     "teryt3019011",
+     "fakeplace353",
+     "fakeperson1110",
+     "fakeperson1359",
+     "fakeperson1615",
+     "teryt1217032",
+     "fakeplace594",
+     "fakeperson972",
+     "teryt2806022",
+     "fakeplace641",
+     "fakeperson1946",
+     "teryt2809021"
+    ],
+    "id": "fakeperson1068",
+    "name": "Izabela Tomys",
+    "stats": {
+     "people": 15
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1069",
+     "fakeplace748",
+     "fakeperson1069",
+     "fakeperson465",
+     "teryt2010021",
+     "fakeplace752",
+     "fakeperson1405",
+     "teryt3210011",
+     "fakeplace195",
+     "fakeperson1949",
+     "teryt1603022",
+     "fakeplace1006",
+     "fakeperson157",
+     "fakeperson1710",
+     "fakeperson390",
+     "fakeperson733",
+     "fakeplace523",
+     "teryt1405013",
+     "fakeplace966",
+     "fakeperson1862",
+     "fakeperson2144"
+    ],
+    "id": "fakeperson1069",
+    "name": "Brygida Karpiński",
+    "stats": {
+     "people": 10
+    }
+   },
+   {
+    "connected": [
+     "fakeplace704",
+     "fakeperson1068",
+     "fakeperson1195",
+     "fakeperson1607",
+     "fakeperson1800",
+     "fakeperson422",
+     "fakeperson84",
+     "teryt3219",
+     "teryt2604031"
+    ],
+    "id": "fakeplace704",
+    "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Krzanowice",
+    "stats": {
+     "people": 6
+    }
+   },
+   {
+    "connected": [
+     "teryt3219",
+     "fakeplace704",
+     "fakeperson1068",
+     "fakeperson1195",
+     "fakeperson1607",
+     "fakeperson1800",
+     "fakeperson422",
+     "fakeperson84",
+     "teryt3219",
+     "teryt2604031"
+    ],
+    "id": "teryt3219",
+    "name": "powiat Pasłęk",
+    "stats": {
+     "people": 6
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1607",
+     "fakeplace704",
+     "fakeperson1068",
+     "fakeperson1195",
+     "fakeperson1607",
+     "fakeperson1800",
+     "fakeperson422",
+     "fakeperson84",
+     "teryt3219",
+     "teryt2604031"
+    ],
+    "id": "fakeperson1607",
+    "name": "Florian Biernat",
+    "stats": {
+     "people": 6
+    }
+   },
+   {
+    "connected": [
+     "fakeperson84",
+     "fakeplace704",
+     "fakeperson1068",
+     "fakeperson1195",
+     "fakeperson1607",
+     "fakeperson1800",
+     "fakeperson422",
+     "fakeperson84",
+     "teryt3219",
+     "teryt2604031"
+    ],
+    "id": "fakeperson84",
+    "name": "Eleonora Bożek",
+    "stats": {
+     "people": 6
+    }
+   },
+   {
+    "connected": [
+     "fakeplace939",
+     "fakeperson1068",
+     "fakeperson1756",
+     "fakeperson338",
+     "fakeperson348",
+     "fakeperson772",
+     "teryt3019011"
+    ],
+    "id": "fakeplace939",
+    "name": "SŁAWIŃSKI, BIAŁEK AND CZECHOWSKI SP. Z O.O.",
+    "stats": {
+     "people": 5
+    }
+   },
+   {
+    "connected": [
+     "fakeplace1006",
+     "fakeperson1069",
+     "fakeperson157",
+     "fakeperson1710",
+     "fakeperson390",
+     "fakeperson733",
+     "fakeplace523",
+     "teryt1405013"
+    ],
+    "id": "fakeplace1006",
+    "name": "Centrum Medyczne „colonialism” w Orzesze",
+    "stats": {
+     "people": 5
+    }
+   },
+   {
+    "connected": [
+     "fakeplace523",
+     "fakeplace1006",
+     "fakeperson1069",
+     "fakeperson157",
+     "fakeperson1710",
+     "fakeperson390",
+     "fakeperson733",
+     "fakeplace523",
+     "teryt1405013"
+    ],
+    "id": "fakeplace523",
+    "name": "GRUSZKA-MARSZAŁEK SP. Z O.O.",
+    "stats": {
+     "people": 5
+    }
+   },
+   {
+    "connected": [
+     "fakeperson157",
+     "fakeplace1006",
+     "fakeperson1069",
+     "fakeperson157",
+     "fakeperson1710",
+     "fakeperson390",
+     "fakeperson733",
+     "fakeplace523",
+     "teryt1405013"
+    ],
+    "id": "fakeperson157",
+    "name": "Andrzej Sobolewski",
+    "stats": {
+     "people": 5
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1756",
+     "fakeplace939",
+     "fakeperson1068",
+     "fakeperson1756",
+     "fakeperson338",
+     "fakeperson348",
+     "fakeperson772",
+     "teryt3019011"
+    ],
+    "id": "fakeperson1756",
+    "name": "Hilary Ptak",
+    "stats": {
+     "people": 5
+    }
+   },
+   {
+    "connected": [
+     "fakeperson390",
+     "fakeplace1006",
+     "fakeperson1069",
+     "fakeperson157",
+     "fakeperson1710",
+     "fakeperson390",
+     "fakeperson733",
+     "fakeplace523",
+     "teryt1405013"
+    ],
+    "id": "fakeperson390",
+    "name": "Miron Smoliński",
+    "stats": {
+     "people": 5
+    }
+   },
+   {
+    "connected": [
+     "fakeperson772",
+     "fakeplace939",
+     "fakeperson1068",
+     "fakeperson1756",
+     "fakeperson338",
+     "fakeperson348",
+     "fakeperson772",
+     "teryt3019011"
+    ],
+    "id": "fakeperson772",
+    "name": "Samuel Jędrzejczak",
+    "stats": {
+     "people": 5
+    }
+   },
+   {
+    "connected": [
+     "fakeplace353",
+     "fakeperson1068",
+     "fakeperson1110",
+     "fakeperson1359",
+     "fakeperson1615",
+     "teryt1217032"
+    ],
+    "id": "fakeplace353",
+    "name": "BIERNAT SP. J. SP. Z O.O.",
+    "stats": {
+     "people": 4
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1110",
+     "fakeplace353",
+     "fakeperson1068",
+     "fakeperson1110",
+     "fakeperson1359",
+     "fakeperson1615",
+     "teryt1217032"
+    ],
+    "id": "fakeperson1110",
+    "name": "Serafina Wasiak",
+    "stats": {
+     "people": 4
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1359",
+     "fakeplace353",
+     "fakeperson1068",
+     "fakeperson1110",
+     "fakeperson1359",
+     "fakeperson1615",
+     "teryt1217032"
+    ],
+    "id": "fakeperson1359",
+    "name": "Klemens Sowa",
+    "stats": {
+     "people": 4
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1615",
+     "fakeplace353",
+     "fakeperson1068",
+     "fakeperson1110",
+     "fakeperson1359",
+     "fakeperson1615",
+     "teryt1217032"
+    ],
+    "id": "fakeperson1615",
+    "name": "Waleria Kulig",
+    "stats": {
+     "people": 4
+    }
+   },
+   {
+    "connected": [
+     "fakeplace966",
+     "fakeperson1069",
+     "fakeperson1862",
+     "fakeperson2144",
+     "teryt3210011"
+    ],
+    "id": "fakeplace966",
+    "name": "BOCHENEK SP. J. QUIDEM NATUS DESERUNT VOLUPTAS NEQUE NAM PLACEAT ODIT ODIO NON MAGNI TEMPORE SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
+    "stats": {
+     "people": 3
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1862",
+     "fakeplace966",
+     "fakeperson1069",
+     "fakeperson1862",
+     "fakeperson2144",
+     "teryt3210011"
+    ],
+    "id": "fakeperson1862",
+    "name": "Teodora Nowakowski",
+    "stats": {
+     "people": 3
+    }
+   },
+   {
+    "connected": [
+     "fakeperson2144",
+     "fakeplace966",
+     "fakeperson1069",
+     "fakeperson1862",
+     "fakeperson2144",
+     "teryt3210011"
+    ],
+    "id": "fakeperson2144",
+    "name": "Edyta Janik",
+    "stats": {
+     "people": 3
+    }
+   },
+   {
+    "connected": [
+     "fakeplace594",
+     "fakeperson1068",
+     "fakeperson972",
+     "teryt2806022"
+    ],
+    "id": "fakeplace594",
+    "name": "JANUSZ-JASIŃSKI SP. Z O.O.",
+    "stats": {
+     "people": 2
+    }
+   },
+   {
+    "connected": [
+     "fakeplace641",
+     "fakeperson1068",
+     "fakeperson1946",
+     "teryt2809021"
+    ],
+    "id": "fakeplace641",
+    "name": "MADEJ SP. K. SP. Z O.O.",
+    "stats": {
+     "people": 2
+    }
+   },
+   {
+    "connected": [
+     "fakeplace748",
+     "fakeperson1069",
+     "fakeperson465",
+     "teryt2010021"
+    ],
+    "id": "fakeplace748",
+    "name": "NAPIERAŁA S.A. SP. Z O.O.",
+    "stats": {
+     "people": 2
+    }
+   },
+   {
+    "connected": [
+     "fakeplace752",
+     "fakeperson1069",
+     "fakeperson1405",
+     "teryt3210011"
+    ],
+    "id": "fakeplace752",
+    "name": "ROBAK, KMIEĆ AND JANKOWSKI SP. Z O.O.",
+    "stats": {
+     "people": 2
+    }
+   },
+   {
+    "connected": [
+     "fakeplace195",
+     "fakeperson1069",
+     "fakeperson1949",
+     "teryt1603022"
+    ],
+    "id": "fakeplace195",
+    "name": "BEDNAREK-DROZDOWSKI SP. Z O.O.",
+    "stats": {
+     "people": 2
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1405",
+     "fakeplace752",
+     "fakeperson1069",
+     "fakeperson1405",
+     "teryt3210011"
+    ],
+    "id": "fakeperson1405",
+    "name": "Ansgary Budziński",
+    "stats": {
+     "people": 2
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1946",
+     "fakeplace641",
+     "fakeperson1068",
+     "fakeperson1946",
+     "teryt2809021"
+    ],
+    "id": "fakeperson1946",
+    "name": "Pelagia Filipek",
+    "stats": {
+     "people": 2
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1949",
+     "fakeplace195",
+     "fakeperson1069",
+     "fakeperson1949",
+     "teryt1603022"
+    ],
+    "id": "fakeperson1949",
+    "name": "Noemi Sobieraj",
+    "stats": {
+     "people": 2
+    }
+   },
+   {
+    "connected": [
+     "fakeperson465",
+     "fakeplace748",
+     "fakeperson1069",
+     "fakeperson465",
+     "teryt2010021"
+    ],
+    "id": "fakeperson465",
+    "name": "Wilfryd Sosnowski",
+    "stats": {
+     "people": 2
+    }
+   },
+   {
+    "connected": [
+     "fakeperson972",
+     "fakeplace594",
+     "fakeperson1068",
+     "fakeperson972",
+     "teryt2806022"
+    ],
+    "id": "fakeperson972",
+    "name": "Roman Pytel",
+    "stats": {
+     "people": 2
+    }
+   },
+   {
+    "connected": [
+     "fakeplace444",
+     "fakeperson1066",
+     "teryt2405031"
+    ],
+    "id": "fakeplace444",
+    "name": "GOLEC Z O.O SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "teryt1615011",
+     "fakeperson1066"
+    ],
+    "id": "teryt1615011",
+    "name": "Żerków",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1066",
+     "fakeplace444",
+     "fakeperson1066",
+     "teryt2405031",
+     "teryt1615011"
+    ],
+    "id": "fakeperson1066",
+    "name": "Berta Dąbkowski",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "teryt1405013",
+     "fakeplace1006"
+    ],
+    "id": "teryt1405013",
+    "name": "Pyzdry",
+    "stats": {
+     "people": 0
+    }
+   },
+   {
+    "connected": [
+     "teryt1603022",
+     "fakeplace195"
+    ],
+    "id": "teryt1603022",
+    "name": "Rudnik nad Sanem",
+    "stats": {
+     "people": 0
+    }
+   },
+   {
+    "connected": [
+     "teryt1217032",
+     "fakeplace353"
+    ],
+    "id": "teryt1217032",
+    "name": "Ogrodzieniec",
+    "stats": {
+     "people": 0
+    }
+   },
+   {
+    "connected": [
+     "teryt2405031",
+     "fakeplace444"
+    ],
+    "id": "teryt2405031",
+    "name": "Rybnik",
+    "stats": {
+     "people": 0
+    }
+   },
+   {
+    "connected": [
+     "teryt2806022",
+     "fakeplace594"
+    ],
+    "id": "teryt2806022",
+    "name": "Świnoujście",
+    "stats": {
+     "people": 0
+    }
+   },
+   {
+    "connected": [
+     "teryt2809021",
+     "fakeplace641"
+    ],
+    "id": "teryt2809021",
+    "name": "Orneta",
+    "stats": {
+     "people": 0
+    }
+   },
+   {
+    "connected": [
+     "teryt2604031",
+     "fakeplace704"
+    ],
+    "id": "teryt2604031",
+    "name": "Dęblin",
+    "stats": {
+     "people": 0
+    }
+   },
+   {
+    "connected": [
+     "teryt2010021",
+     "fakeplace748"
+    ],
+    "id": "teryt2010021",
+    "name": "Rawicz",
+    "stats": {
+     "people": 0
+    }
+   },
+   {
+    "connected": [
+     "teryt3210011",
+     "fakeplace752",
+     "fakeplace966"
+    ],
+    "id": "teryt3210011",
+    "name": "Górzno",
+    "stats": {
+     "people": 0
+    }
+   },
+   {
+    "connected": [
+     "teryt3019011",
+     "fakeplace939"
+    ],
+    "id": "teryt3019011",
+    "name": "Rychwał",
+    "stats": {
+     "people": 0
+    }
+   }
+  ],
+  "nodes": {
+   "fakeperson1066": {
+    "color": "#898781",
+    "depth": 0,
+    "entityType": "person",
+    "id": "fakeperson1066",
+    "name": "Berta Dąbkowski",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1066",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1066",
+     "latest_time": "2026-08-10T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson1068": {
+    "color": "#898781",
+    "depth": 0,
+    "entityType": "person",
+    "id": "fakeperson1068",
+    "name": "Izabela Tomys",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1068",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1068",
+     "latest_time": "2026-09-22T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 15
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson1069": {
+    "birthDate": "1980-11-23",
+    "color": "#898781",
+    "depth": 0,
+    "entityType": "person",
+    "id": "fakeperson1069",
+    "name": "Brygida Karpiński",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1069",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1069",
+     "latest_time": "2026-10-09T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 10
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson1110": {
+    "color": "#2ed396",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson1110",
+    "name": "Serafina Wasiak",
+    "parties": [
+     "PSL"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1110",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1110",
+     "latest_time": "2026-06-18T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 4
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson1359": {
+    "birthDate": "1986-01-05",
+    "color": "#898781",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson1359",
+    "name": "Klemens Sowa",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1359",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1359",
+     "latest_time": "2026-06-03T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 4
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson1405": {
+    "birthDate": "1989-05-21",
+    "color": "#c3c2b7",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson1405",
+    "name": "Ansgary Budziński",
+    "parties": [
+     "Inne"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1405",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1405",
+     "latest_time": "2026-10-16T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 2
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson157": {
+    "color": "#fca241",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson157",
+    "name": "Andrzej Sobolewski",
+    "parties": [
+     "PO"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson157",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson157",
+     "latest_time": "2026-04-11T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 5
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson1607": {
+    "birthDate": "1971-02-15",
+    "color": "#898781",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson1607",
+    "name": "Florian Biernat",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1607",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1607",
+     "latest_time": "<now>",
+     "total": 1
+    },
+    "stats": {
+     "people": 6
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson1615": {
+    "color": "#102440",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson1615",
+    "name": "Waleria Kulig",
+    "parties": [
+     "Konfederacja",
+     "Polska2050"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1615",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1615",
+     "latest_time": "2026-09-23T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 4
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson1756": {
+    "color": "#898781",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson1756",
+    "name": "Hilary Ptak",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1756",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1756",
+     "latest_time": "2026-08-24T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 5
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson1862": {
+    "color": "#fca241",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson1862",
+    "name": "Teodora Nowakowski",
+    "parties": [
+     "PO",
+     "Konfederacja"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1862",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1862",
+     "latest_time": "2025-09-03T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 3
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson1946": {
+    "birthDate": "1953-04-21",
+    "color": "#898781",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson1946",
+    "name": "Pelagia Filipek",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1946",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1946",
+     "latest_time": "2026-09-20T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 2
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson1949": {
+    "color": "#898781",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson1949",
+    "name": "Noemi Sobieraj",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1949",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1949",
+     "latest_time": "2026-07-01T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 2
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson2144": {
+    "birthDate": "1962-07-03",
+    "color": "#102440",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson2144",
+    "name": "Edyta Janik",
+    "parties": [
+     "Polska2050",
+     "Konfederacja"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson2144",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson2144",
+     "latest_time": "2025-08-24T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 3
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson390": {
+    "birthDate": "1971-08-31",
+    "color": "#073b76",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson390",
+    "name": "Miron Smoliński",
+    "parties": [
+     "PiS",
+     "PO"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson390",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson390",
+     "latest_time": "2026-09-18T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 5
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson465": {
+    "color": "#898781",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson465",
+    "name": "Wilfryd Sosnowski",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson465",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson465",
+     "latest_time": "2025-12-13T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 2
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson772": {
+    "birthDate": "1990-11-29",
+    "color": "#c3c2b7",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson772",
+    "name": "Samuel Jędrzejczak",
+    "parties": [
+     "Inne"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson772",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson772",
+     "latest_time": "2026-08-11T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 5
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson84": {
+    "birthDate": "1979-04-12",
+    "color": "#898781",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson84",
+    "name": "Eleonora Bożek",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson84",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson84",
+     "latest_time": "2026-07-08T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 6
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson972": {
+    "color": "#102440",
+    "depth": 2,
+    "entityType": "person",
+    "id": "fakeperson972",
+    "name": "Roman Pytel",
+    "parties": [
+     "Inne",
+     "Konfederacja"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson972",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson972",
+     "latest_time": "2025-12-20T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 2
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeplace1006": {
+    "categories": [
+     "szpitale"
+    ],
+    "color": "#6b7a83",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace1006",
+    "isPublic": true,
+    "krsNumber": "0000100372",
+    "name": "Centrum Medyczne „colonialism” w Orzesze",
+    "published": true,
+    "revision_id": "rev_fakeplace1006",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace1006",
+     "latest_time": "2026-03-24T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 5
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace195": {
+    "categories": [],
+    "color": "#6b7a83",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace195",
+    "isPublic": false,
+    "krsNumber": "0000341146",
+    "name": "BEDNAREK-DROZDOWSKI SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace195",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace195",
+     "latest_time": "2026-04-12T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 2
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace353": {
+    "categories": [],
+    "color": "#6b7a83",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace353",
+    "isPublic": true,
+    "krsNumber": "0000665769",
+    "name": "BIERNAT SP. J. SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace353",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace353",
+     "latest_time": "2026-03-31T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 4
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace444": {
+    "categories": [
+     "sport"
+    ],
+    "color": "#6b7a83",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace444",
+    "isPublic": false,
+    "krsNumber": "0000258579",
+    "name": "GOLEC Z O.O SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace444",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace444",
+     "latest_time": "2026-01-19T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace523": {
+    "categories": [
+     "koleje"
+    ],
+    "color": "#6b7a83",
+    "depth": 2,
+    "entityType": "place",
+    "id": "fakeplace523",
+    "isPublic": false,
+    "krsNumber": "0000249467",
+    "name": "GRUSZKA-MARSZAŁEK SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace523",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace523",
+     "latest_time": "2026-05-02T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 5
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace594": {
+    "categories": [],
+    "color": "#6b7a83",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace594",
+    "isPublic": false,
+    "krsNumber": "0000299223",
+    "name": "JANUSZ-JASIŃSKI SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace594",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace594",
+     "latest_time": "2025-07-30T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 2
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace641": {
+    "categories": [],
+    "color": "#6b7a83",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace641",
+    "isPublic": false,
+    "krsNumber": "0000085981",
+    "name": "MADEJ SP. K. SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace641",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace641",
+     "latest_time": "2026-07-21T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 2
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace704": {
+    "categories": [
+     "szpitale"
+    ],
+    "color": "#6b7a83",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace704",
+    "isPublic": true,
+    "krsNumber": "0000749688",
+    "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Krzanowice",
+    "published": true,
+    "revision_id": "rev_fakeplace704",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace704",
+     "latest_time": "2026-08-26T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 6
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace748": {
+    "categories": [],
+    "color": "#6b7a83",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace748",
+    "isPublic": false,
+    "krsNumber": "0001006204",
+    "name": "NAPIERAŁA S.A. SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace748",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace748",
+     "latest_time": "2025-08-10T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 2
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace752": {
+    "categories": [],
+    "color": "#6b7a83",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace752",
+    "isPublic": true,
+    "krsNumber": "0000538906",
+    "name": "ROBAK, KMIEĆ AND JANKOWSKI SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace752",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace752",
+     "latest_time": "2026-06-02T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 2
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace939": {
+    "categories": [],
+    "color": "#6b7a83",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace939",
+    "isPublic": true,
+    "krsNumber": "0000027776",
+    "name": "SŁAWIŃSKI, BIAŁEK AND CZECHOWSKI SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace939",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace939",
+     "latest_time": "2025-09-08T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 5
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace966": {
+    "categories": [
+     "odpady"
+    ],
+    "color": "#6b7a83",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace966",
+    "isPublic": true,
+    "krsNumber": "0000645717",
+    "name": "BOCHENEK SP. J. QUIDEM NATUS DESERUNT VOLUPTAS NEQUE NAM PLACEAT ODIT ODIO NON MAGNI TEMPORE SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
+    "published": true,
+    "revision_id": "rev_fakeplace966",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace966",
+     "latest_time": "2025-11-14T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 3
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "teryt1217032": {
+    "color": "#3f7d58",
+    "depth": 2,
+    "entityType": "region",
+    "id": "teryt1217032",
+    "name": "Ogrodzieniec",
+    "published": true,
+    "revision_id": "rev_teryt1217032",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_teryt1217032",
+     "latest_time": "2026-02-15T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 0
+    },
+    "teryt": "1217032",
+    "type": "document",
+    "visibility": true
+   },
+   "teryt1405013": {
+    "color": "#3f7d58",
+    "depth": 2,
+    "entityType": "region",
+    "id": "teryt1405013",
+    "name": "Pyzdry",
+    "published": true,
+    "revision_id": "rev_teryt1405013",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_teryt1405013",
+     "latest_time": "2025-08-19T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 0
+    },
+    "teryt": "1405013",
+    "type": "document",
+    "visibility": true
+   },
+   "teryt1603022": {
+    "color": "#3f7d58",
+    "depth": 2,
+    "entityType": "region",
+    "id": "teryt1603022",
+    "name": "Rudnik nad Sanem",
+    "published": true,
+    "revision_id": "rev_teryt1603022",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_teryt1603022",
+     "latest_time": "2025-12-31T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 0
+    },
+    "teryt": "1603022",
+    "type": "document",
+    "visibility": true
+   },
+   "teryt1615011": {
+    "color": "#3f7d58",
+    "depth": 1,
+    "entityType": "region",
+    "id": "teryt1615011",
+    "name": "Żerków",
+    "published": true,
+    "revision_id": "rev_teryt1615011",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_teryt1615011",
+     "latest_time": "2026-09-03T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "teryt": "1615011",
+    "type": "document",
+    "visibility": true
+   },
+   "teryt2010021": {
+    "color": "#3f7d58",
+    "depth": 2,
+    "entityType": "region",
+    "id": "teryt2010021",
+    "name": "Rawicz",
+    "published": true,
+    "revision_id": "rev_teryt2010021",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_teryt2010021",
+     "latest_time": "2025-07-01T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 0
+    },
+    "teryt": "2010021",
+    "type": "document",
+    "visibility": true
+   },
+   "teryt2405031": {
+    "color": "#3f7d58",
+    "depth": 2,
+    "entityType": "region",
+    "id": "teryt2405031",
+    "name": "Rybnik",
+    "published": true,
+    "revision_id": "rev_teryt2405031",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_teryt2405031",
+     "latest_time": "2025-07-27T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 0
+    },
+    "teryt": "2405031",
+    "type": "document",
+    "visibility": true
+   },
+   "teryt2604031": {
+    "color": "#3f7d58",
+    "depth": 2,
+    "entityType": "region",
+    "id": "teryt2604031",
+    "name": "Dęblin",
+    "published": true,
+    "revision_id": "rev_teryt2604031",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_teryt2604031",
+     "latest_time": "2026-06-13T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 0
+    },
+    "teryt": "2604031",
+    "type": "document",
+    "visibility": true
+   },
+   "teryt2806022": {
+    "color": "#3f7d58",
+    "depth": 2,
+    "entityType": "region",
+    "id": "teryt2806022",
+    "name": "Świnoujście",
+    "published": true,
+    "revision_id": "rev_teryt2806022",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_teryt2806022",
+     "latest_time": "2025-08-31T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 0
+    },
+    "teryt": "2806022",
+    "type": "document",
+    "visibility": true
+   },
+   "teryt2809021": {
+    "color": "#3f7d58",
+    "depth": 2,
+    "entityType": "region",
+    "id": "teryt2809021",
+    "name": "Orneta",
+    "published": true,
+    "revision_id": "rev_teryt2809021",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_teryt2809021",
+     "latest_time": "2026-02-10T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 0
+    },
+    "teryt": "2809021",
+    "type": "document",
+    "visibility": true
+   },
+   "teryt3019011": {
+    "color": "#3f7d58",
+    "depth": 2,
+    "entityType": "region",
+    "id": "teryt3019011",
+    "name": "Rychwał",
+    "published": true,
+    "revision_id": "rev_teryt3019011",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_teryt3019011",
+     "latest_time": "2025-09-05T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 0
+    },
+    "teryt": "3019011",
+    "type": "document",
+    "visibility": true
+   },
+   "teryt3210011": {
+    "color": "#3f7d58",
+    "depth": 2,
+    "entityType": "region",
+    "id": "teryt3210011",
+    "name": "Górzno",
+    "published": true,
+    "revision_id": "rev_teryt3210011",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_teryt3210011",
+     "latest_time": "2025-07-04T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 0
+    },
+    "teryt": "3210011",
+    "type": "document",
+    "visibility": true
+   },
+   "teryt3219": {
+    "color": "#3f7d58",
+    "depth": 2,
+    "entityType": "region",
+    "id": "teryt3219",
+    "name": "powiat Pasłęk",
+    "published": true,
+    "revision_id": "rev_teryt3219",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_teryt3219",
+     "latest_time": "2026-09-08T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 6
+    },
+    "teryt": "3219",
+    "type": "document",
+    "visibility": true
+   }
+  },
+  "omitted": 7
+ }
+}

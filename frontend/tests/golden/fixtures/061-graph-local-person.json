@@ -1,0 +1,157 @@
+{
+ "step": 61,
+ "name": "graph local person",
+ "request": {
+  "method": "GET",
+  "path": "/api/graph/local/fakeperson1066",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "edges": [
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1066_0",
+    "label": "Przewodniczący Rady Nadzorczej",
+    "name": "Przewodniczący Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1066",
+    "start_date": "2005-04-08",
+    "target": "fakeplace444",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "elected": true,
+    "end_date": "2018-10-21",
+    "id": "fakerunfakeperson1066_0",
+    "label": "kandydował",
+    "party": "Konfederacja",
+    "position": "Wójt",
+    "references": [],
+    "source": "fakeperson1066",
+    "start_date": "2018-10-21",
+    "target": "teryt1615011",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "dead_end"
+    },
+    "type": "election",
+    "visibility": true
+   }
+  ],
+  "nodeGroups": [
+   {
+    "connected": [
+     "fakeplace444",
+     "fakeperson1066"
+    ],
+    "id": "fakeplace444",
+    "name": "GOLEC Z O.O SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "teryt1615011",
+     "fakeperson1066"
+    ],
+    "id": "teryt1615011",
+    "name": "Żerków",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1066",
+     "fakeplace444",
+     "fakeperson1066",
+     "teryt1615011"
+    ],
+    "id": "fakeperson1066",
+    "name": "Berta Dąbkowski",
+    "stats": {
+     "people": 1
+    }
+   }
+  ],
+  "nodes": {
+   "fakeperson1066": {
+    "color": "#898781",
+    "depth": 0,
+    "entityType": "person",
+    "id": "fakeperson1066",
+    "name": "Berta Dąbkowski",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1066",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1066",
+     "latest_time": "2026-08-10T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeplace444": {
+    "categories": [
+     "sport"
+    ],
+    "color": "#6b7a83",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace444",
+    "isPublic": false,
+    "krsNumber": "0000258579",
+    "name": "GOLEC Z O.O SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace444",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace444",
+     "latest_time": "2026-01-19T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "teryt1615011": {
+    "color": "#3f7d58",
+    "depth": 1,
+    "entityType": "region",
+    "id": "teryt1615011",
+    "name": "Żerków",
+    "published": true,
+    "revision_id": "rev_teryt1615011",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_teryt1615011",
+     "latest_time": "2026-09-03T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "teryt": "1615011",
+    "type": "document",
+    "visibility": true
+   }
+  },
+  "omitted": 0
+ }
+}

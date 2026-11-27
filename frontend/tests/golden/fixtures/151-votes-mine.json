@@ -1,0 +1,13 @@
+{
+ "step": 151,
+ "name": "votes mine",
+ "request": {
+  "method": "GET",
+  "path": "/api/votes/mine?targets=fakeperson1066%2Cfakeplace1006",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "votes": {}
+ }
+}

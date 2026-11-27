@@ -1,0 +1,24 @@
+{
+ "step": 298,
+ "name": "qa check",
+ "request": {
+  "method": "PUT",
+  "path": "/api/qa/checks/qa-changelog",
+  "as": "user",
+  "body": {
+   "feedback": "dalej nie",
+   "status": "issue"
+  }
+ },
+ "status": 200,
+ "body": {
+  "check": {
+   "createdAt": "<now>",
+   "feedback": "dalej nie",
+   "itemId": "qa-changelog",
+   "status": "issue",
+   "updatedAt": "<now>",
+   "userUid": "test-user"
+  }
+ }
+}

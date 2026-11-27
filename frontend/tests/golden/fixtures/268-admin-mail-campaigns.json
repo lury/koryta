@@ -1,0 +1,13 @@
+{
+ "step": 268,
+ "name": "admin mail campaigns",
+ "request": {
+  "method": "GET",
+  "path": "/api/admin/mail/campaigns",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "campaigns": []
+ }
+}

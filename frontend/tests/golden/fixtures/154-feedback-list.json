@@ -1,0 +1,17 @@
+{
+ "step": 154,
+ "name": "feedback list",
+ "request": {
+  "method": "GET",
+  "path": "/api/feedback/list?limit=20",
+  "as": "user"
+ },
+ "status": 403,
+ "body": {
+  "error": true,
+  "message": "Brak uprawnień administratora.",
+  "statusCode": 403,
+  "statusMessage": "Server Error",
+  "url": "http://127.0.0.1:23200/api/feedback/list?limit=20"
+ }
+}

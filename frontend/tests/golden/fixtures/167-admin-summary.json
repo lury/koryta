@@ -1,0 +1,17 @@
+{
+ "step": 167,
+ "name": "admin summary",
+ "request": {
+  "method": "GET",
+  "path": "/api/admin/summary",
+  "as": "user"
+ },
+ "status": 403,
+ "body": {
+  "error": true,
+  "message": "Brak uprawnień administratora.",
+  "statusCode": 403,
+  "statusMessage": "Server Error",
+  "url": "http://127.0.0.1:23200/api/admin/summary"
+ }
+}

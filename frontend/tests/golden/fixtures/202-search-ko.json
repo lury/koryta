@@ -1,0 +1,256 @@
+{
+ "step": 202,
+ "name": "search ko",
+ "request": {
+  "method": "GET",
+  "path": "/api/search?q=ko",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": [
+  {
+   "id": "fakeperson455",
+   "line": {
+    "what": "CZAJKA, ADAMSKI AND ŚLIWIŃSKI SP. Z O.O.",
+    "where": "Nowogard"
+   },
+   "name": "Korneli Żuk",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson886",
+   "line": {
+    "parties": [
+     "PSL"
+    ],
+    "what": "ŻUKOWSKI, KASPRZYK AND KRUPA SP. Z O.O.",
+    "where": "Knurów"
+   },
+   "name": "Konrad Broda",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson722",
+   "line": {
+    "parties": [
+     "PO",
+     "Konfederacja"
+    ],
+    "what": "DUDEK S.C. SP. Z O.O.",
+    "when": "do 2017",
+    "where": "Sędziszów Małopolski"
+   },
+   "name": "Stefania Kołakowski",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson1476",
+   "line": {
+    "parties": [
+     "Polska2050"
+    ],
+    "what": "ROGALA-ROGALSKI SP. Z O.O.",
+    "where": "Łomianki"
+   },
+   "name": "Hanna Konieczna",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson1693",
+   "line": {
+    "parties": [
+     "Konfederacja"
+    ],
+    "what": "BIELECKI-STEC SP. Z O.O.",
+    "where": "Ząbkowice Śląskie"
+   },
+   "name": "Walentyn Kosowski",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson2605",
+   "line": {
+    "parties": [
+     "Lewica"
+    ],
+    "what": "GOŁĘBIEWSKI, STEC AND ADAMUS SP. Z O.O.",
+    "where": "Ząbkowice Śląskie"
+   },
+   "name": "Eleonora Kot",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson667",
+   "line": {
+    "parties": [
+     "PSL",
+     "Konfederacja"
+    ],
+    "what": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Wieliczka",
+    "where": "Czempiń"
+   },
+   "name": "Zofia Kozieł",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson404",
+   "line": {
+    "what": "SZELĄG, SKOCZYLAS AND KNAPIK SP. Z O.O.",
+    "where": "Żychlin"
+   },
+   "name": "Korneli Łuczak",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson987",
+   "line": {
+    "parties": [
+     "Lewica",
+     "PSL"
+    ],
+    "what": "SZELĄG, SKOCZYLAS AND KNAPIK SP. Z O.O.",
+    "where": "Żychlin"
+   },
+   "name": "Laurenty Piątek-Kot",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson733",
+   "line": {
+    "what": "TARNOWSKI-JĘDRZEJCZYK SP. Z O.O.",
+    "where": "Szamocin"
+   },
+   "name": "Korneliusz Rakowski",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson2481",
+   "line": {
+    "what": "NAWROCKI-ROSIŃSKI SP. Z O.O.",
+    "where": "Niemodlin"
+   },
+   "name": "Jozue Kopeć",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson1469",
+   "line": {
+    "what": "LESIAK-WĄSOWSKI SP. Z O.O.",
+    "where": "Pułtusk"
+   },
+   "name": "Konstanty Kasperek",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson1800",
+   "line": {
+    "parties": [
+     "Polska2050",
+     "PSL"
+    ],
+    "what": "TOMCZYK, URBANEK AND PRUS TEMPORE ODIO PLACEAT A RECUSANDAE EVENIET LAUDANTIUM CORPORIS QUAM HARUM ACCUSAMUS NEQUE SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
+    "where": "Maków Podhalański"
+   },
+   "name": "Korneliusz Sitek",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson511",
+   "line": {
+    "what": "Sejmik",
+    "when": "2024",
+    "where": "woj. łódzkie"
+   },
+   "name": "Natan Kosiński",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson1293",
+   "line": {
+    "parties": [
+     "Polska2050",
+     "Lewica"
+    ],
+    "what": "„beret”",
+    "where": "Wyrzysk"
+   },
+   "name": "Konstancja Smoliński",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson1887",
+   "line": {
+    "parties": [
+     "PiS"
+    ],
+    "what": "RUSIN-CIEŚLA SP. Z O.O.",
+    "where": "Ożarów"
+   },
+   "name": "Ksawera Kogut",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson2192",
+   "line": {
+    "what": "WITCZAK, JEZIERSKI AND SZWARC SP. Z O.O.",
+    "where": "Cedynia"
+   },
+   "name": "Florencja Konieczna",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson2507",
+   "line": {
+    "what": "KAWA Z O.O SP. Z O.O.",
+    "where": "Koluszki"
+   },
+   "name": "Koralia Zygmunt",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson2413",
+   "line": {
+    "parties": [
+     "PSL"
+    ],
+    "what": "„validity”",
+    "where": "Lipsko"
+   },
+   "name": "Władysław Kogut",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson2050",
+   "line": {
+    "parties": [
+     "Polska2050"
+    ],
+    "what": "BARAŃSKI, BEDNARCZYK AND STANEK SP. Z O.O.",
+    "when": "do 2022",
+    "where": "Połczyn-Zdrój"
+   },
+   "name": "Koralia Chojnowski",
+   "published": true,
+   "type": "person"
+  }
+ ]
+}

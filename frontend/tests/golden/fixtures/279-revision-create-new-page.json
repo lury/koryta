@@ -1,0 +1,20 @@
+{
+ "step": 279,
+ "name": "revision create new page",
+ "request": {
+  "method": "POST",
+  "path": "/api/revisions/create",
+  "as": "user",
+  "body": {
+   "content": "Nowa.",
+   "name": "Nowa Osoba Wzorca",
+   "type": "person"
+  }
+ },
+ "status": 200,
+ "body": {
+  "duplicate": false,
+  "id": "<id>",
+  "node_id": "<id>"
+ }
+}

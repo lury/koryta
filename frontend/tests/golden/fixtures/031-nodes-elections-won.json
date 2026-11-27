@@ -1,0 +1,2296 @@
+{
+ "step": 31,
+ "name": "nodes elections won",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes?type=person&election=local-2024&election=parliament-2023&electionResult=won&limit=10000",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "nodes": {
+   "fakeperson1000": {
+    "id": "fakeperson1000",
+    "name": "Agaton Ratajczak",
+    "parties": [
+     "Inne"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1000",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1000",
+     "latest_time": "2025-11-28T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace462",
+        "teryt0617031"
+       ],
+       "elections": [
+        "european-2024",
+        "european-2024:lost",
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 23.2,
+       "latestEmploymentStart": "2007-04-13",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace152",
+        "fakeplace189",
+        "fakeplace462",
+        "fakeplace584",
+        "fakeplace73",
+        "fakeplace735",
+        "fakeplace984",
+        "teryt0216013",
+        "teryt0617031",
+        "teryt10",
+        "teryt1202",
+        "teryt14",
+        "teryt1419011",
+        "teryt2011032",
+        "teryt2218012",
+        "teryt3013011",
+        "teryt3204011"
+       ]
+      },
+      "hiddenTargets": 1
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 182,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt14",
+        "fakeplace152"
+       ],
+       "what": "Sejmik",
+       "when": "2024",
+       "where": "Jędrzejów"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt14",
+        "fakeplace152"
+       ],
+       "what": "Sejmik",
+       "when": "2024",
+       "where": "Jędrzejów"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace735"
+       ],
+       "what": "MICHALSKI-GAWEŁ SP. Z O.O.",
+       "where": "Hel"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1206": {
+    "birthDate": "1986-10-11",
+    "id": "fakeperson1206",
+    "name": "Bertram Michałek",
+    "parties": [
+     "Polska2050"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1206",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1206",
+     "latest_time": "2026-09-14T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1219",
+        "fakeplace201",
+        "fakeplace210",
+        "fakeplace318",
+        "fakeplace61",
+        "teryt1019021",
+        "teryt1618031",
+        "teryt2410022",
+        "teryt2616011"
+       ],
+       "elections": [
+        "local-2018",
+        "local-2018:won",
+        "parliament-2023",
+        "parliament-2023:won"
+       ],
+       "experienceMonths": 18.3,
+       "latestEmploymentStart": "2025-01-22",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1219",
+        "fakeplace126",
+        "fakeplace201",
+        "fakeplace210",
+        "fakeplace26",
+        "fakeplace311",
+        "fakeplace318",
+        "fakeplace43",
+        "fakeplace61",
+        "fakeplace632",
+        "fakeplace81",
+        "teryt0604021",
+        "teryt08",
+        "teryt0808033",
+        "teryt0819013",
+        "teryt1019021",
+        "teryt1403022",
+        "teryt1612011",
+        "teryt1618031",
+        "teryt2410022",
+        "teryt2411013",
+        "teryt2616011",
+        "teryt2808"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 116,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "parliament-2023:won",
+       "ties": [
+        "teryt08",
+        "fakeplace81"
+       ],
+       "what": "Sejm",
+       "when": "2023",
+       "where": "Nowogród Bobrzański"
+      },
+      "approved": {
+       "election": "parliament-2023:won",
+       "ties": [
+        "teryt08",
+        "fakeplace81"
+       ],
+       "what": "Sejm",
+       "when": "2023",
+       "where": "Nowogród Bobrzański"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace61"
+       ],
+       "what": "CZECHOWSKI-POLAK SP. Z O.O.",
+       "where": "Skarszewy"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1286": {
+    "birthDate": "1956-06-10",
+    "id": "fakeperson1286",
+    "name": "Amabela Cebula",
+    "parties": [
+     "Polska2050",
+     "Inne"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1286",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1286",
+     "latest_time": "2025-08-23T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace607",
+        "fakeplace661",
+        "teryt1204032",
+        "teryt2404011"
+       ],
+       "elections": [
+        "parliament-2023",
+        "parliament-2023:won"
+       ],
+       "experienceMonths": 26.8,
+       "latestEmploymentStart": "2023-01-18",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace298",
+        "fakeplace413",
+        "fakeplace607",
+        "fakeplace661",
+        "fakeplace722",
+        "fakeplace763",
+        "teryt0204012",
+        "teryt0209",
+        "teryt0404021",
+        "teryt1204032",
+        "teryt20",
+        "teryt2002032",
+        "teryt2404011",
+        "teryt3010022"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 72,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "parliament-2023:won",
+       "ties": [
+        "teryt20",
+        "fakeplace763"
+       ],
+       "what": "Sejm",
+       "when": "2023",
+       "where": "Baranów Sandomierski"
+      },
+      "approved": {
+       "election": "parliament-2023:won",
+       "ties": [
+        "teryt20",
+        "fakeplace763"
+       ],
+       "what": "Sejm",
+       "when": "2023",
+       "where": "Baranów Sandomierski"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace661"
+       ],
+       "what": "SŁOWIK, MATYSIAK AND WILCZEK SP. Z O.O.",
+       "where": "Chodzież"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1658": {
+    "id": "fakeperson1658",
+    "name": "Kleopatra Witkowski",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1658",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1658",
+     "latest_time": "2025-11-08T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 7.3,
+       "latestEmploymentStart": "2011-11-11",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace640",
+        "teryt2616011",
+        "teryt3011011"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 24,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt2616011"
+       ],
+       "what": "Rada gminy",
+       "when": "2024",
+       "where": "Zator"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt2616011"
+       ],
+       "what": "Rada gminy",
+       "when": "2024",
+       "where": "Zator"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace640"
+       ],
+       "what": "Wojewódzki Szpital Specjalistyczny im. Piotr Kowalczyk w Jedwabne",
+       "when": "do 2019",
+       "where": "Sandomierz"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1708": {
+    "id": "fakeperson1708",
+    "name": "Barbara Bieniek",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1708",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1708",
+     "latest_time": "2025-11-08T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace336",
+        "teryt0618031",
+        "teryt1214"
+       ],
+       "elections": [
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 25.5,
+       "latestEmploymentStart": "2018-06-01",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1581",
+        "fakeplace1252",
+        "fakeplace336",
+        "fakeplace660",
+        "teryt0618031",
+        "teryt1214",
+        "teryt1216032",
+        "teryt1404032",
+        "teryt32"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 414,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt32"
+       ],
+       "what": "Sejmik",
+       "when": "2024",
+       "where": "woj. lubelskie"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt32"
+       ],
+       "what": "Sejmik",
+       "when": "2024",
+       "where": "woj. lubelskie"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace336"
+       ],
+       "what": "Szpital Powiatowy w Kowary Sp. z o.o.",
+       "where": "Wielichowo"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1824": {
+    "id": "fakeperson1824",
+    "name": "Rufina Mazurek",
+    "parties": [
+     "PO",
+     "Inne"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1824",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1824",
+     "latest_time": "2026-08-25T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1231",
+        "fakeplace579",
+        "teryt0607032",
+        "teryt0808012",
+        "teryt3017"
+       ],
+       "elections": [
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 9.1,
+       "latestEmploymentStart": "2026-08-12",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1824",
+        "fakeplace1055",
+        "fakeplace1231",
+        "fakeplace1243",
+        "fakeplace579",
+        "fakeplace654",
+        "teryt0418",
+        "teryt0607032",
+        "teryt0808012",
+        "teryt0820013",
+        "teryt1815031",
+        "teryt2218031",
+        "teryt3017"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 64,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt0418"
+       ],
+       "what": "Rada powiatu",
+       "when": "2024",
+       "where": "powiat Żelechów"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt0418"
+       ],
+       "what": "Rada powiatu",
+       "when": "2024",
+       "where": "powiat Żelechów"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace579"
+       ],
+       "what": "KWIECIEŃ, MALEC AND KRZYŻANOWSKI SP. Z O.O.",
+       "where": "Sosnowiec"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1847": {
+    "id": "fakeperson1847",
+    "name": "Kazimierz Niewiadomski",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1847",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1847",
+     "latest_time": "2025-10-16T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace540",
+        "fakeplace749",
+        "teryt0206022",
+        "teryt1820032",
+        "teryt3206"
+       ],
+       "elections": [
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 25.6,
+       "latestEmploymentStart": "2023-01-22",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1052",
+        "fakeplace1098",
+        "fakeplace1111",
+        "fakeplace145",
+        "fakeplace321",
+        "fakeplace540",
+        "fakeplace602",
+        "fakeplace749",
+        "fakeplace889",
+        "fakeplace945",
+        "teryt0206022",
+        "teryt0610022",
+        "teryt1001032",
+        "teryt1820021",
+        "teryt1820032",
+        "teryt2001013",
+        "teryt2004031",
+        "teryt2607012",
+        "teryt2809021",
+        "teryt2817011",
+        "teryt3014011",
+        "teryt3206"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 126,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt1820021"
+       ],
+       "what": "Wójt",
+       "when": "2024",
+       "where": "Lipsko"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt1820021"
+       ],
+       "what": "Wójt",
+       "when": "2024",
+       "where": "Lipsko"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace540"
+       ],
+       "what": "ROSIŃSKI-BIAŁEK EXERCITATIONEM ADIPISCI QUAE EOS SUNT VOLUPTATES ODIT DELENITI PROVIDENT ATQUE ARCHITECTO AD SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
+       "where": "Piła"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 3.7,
+      "models": {
+       "pipeline-pagerank": 4.3,
+       "pipeline-publishable": 3.7
+      },
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1879": {
+    "id": "fakeperson1879",
+    "name": "Terencjusz Frąckowiak",
+    "parties": [
+     "Polska2050",
+     "Lewica"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1879",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1879",
+     "latest_time": "2026-01-22T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace227",
+        "fakeplace304",
+        "teryt2412033",
+        "teryt3019",
+        "teryt3213033"
+       ],
+       "elections": [
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 13,
+       "latestEmploymentStart": "2026-07-10",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1879",
+        "fakeplace227",
+        "fakeplace304",
+        "fakeplace383",
+        "fakeplace626",
+        "teryt0816033",
+        "teryt1817031",
+        "teryt2412033",
+        "teryt3019",
+        "teryt3213033",
+        "teryt3215031"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 68,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt3215031"
+       ],
+       "what": "Wójt",
+       "when": "2024",
+       "where": "Rypin"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt3215031"
+       ],
+       "what": "Wójt",
+       "when": "2024",
+       "where": "Rypin"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace304"
+       ],
+       "what": "Wojewódzki Szpital Specjalistyczny im. Romeo Górski w Lesko",
+       "where": "Karlino"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1941": {
+    "birthDate": "1959-08-04",
+    "id": "fakeperson1941",
+    "name": "Zachariasz Iwanowski",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1941",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1941",
+     "latest_time": "2025-09-25T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace621",
+        "fakeplace929",
+        "teryt1415011",
+        "teryt2417023"
+       ],
+       "elections": [
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 10.7,
+       "latestEmploymentStart": "2021-04-12",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1090",
+        "fakeplace281",
+        "fakeplace324",
+        "fakeplace407",
+        "fakeplace584",
+        "fakeplace621",
+        "fakeplace755",
+        "fakeplace907",
+        "fakeplace929",
+        "teryt0217033",
+        "teryt0613011",
+        "teryt0802012",
+        "teryt1204032",
+        "teryt1415011",
+        "teryt1613011",
+        "teryt2010031",
+        "teryt2218012",
+        "teryt2407033",
+        "teryt2417023"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 125,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt1204032"
+       ],
+       "what": "Wójt",
+       "when": "2024",
+       "where": "Nowogród Bobrzański"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt1204032"
+       ],
+       "what": "Wójt",
+       "when": "2024",
+       "where": "Nowogród Bobrzański"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace407"
+       ],
+       "what": "CYGAN-MAJCHRZAK SP. Z O.O.",
+       "where": "Żarów"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson1958": {
+    "birthDate": "1992-09-05",
+    "id": "fakeperson1958",
+    "name": "Włodzimierz Sowiński",
+    "parties": [
+     "Konfederacja"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1958",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1958",
+     "latest_time": "2025-09-30T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace177",
+        "fakeplace326",
+        "teryt0409033",
+        "teryt1006011",
+        "teryt1816"
+       ],
+       "elections": [
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 14.2,
+       "latestEmploymentStart": "2025-07-25",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace175",
+        "fakeplace177",
+        "fakeplace183",
+        "fakeplace326",
+        "fakeplace340",
+        "fakeplace464",
+        "fakeplace730",
+        "fakeplace943",
+        "teryt0409033",
+        "teryt0416033",
+        "teryt0820031",
+        "teryt1006011",
+        "teryt1620013",
+        "teryt1807",
+        "teryt1811021",
+        "teryt1816",
+        "teryt2418013",
+        "teryt2619022",
+        "teryt3019011"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 107,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt1620013"
+       ],
+       "what": "Wójt",
+       "when": "2024",
+       "where": "Szczucin"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt1620013"
+       ],
+       "what": "Wójt",
+       "when": "2024",
+       "where": "Szczucin"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace326"
+       ],
+       "what": "Wojewódzki Szpital Specjalistyczny im. Sybilla Aleksandrowicz w Rybnik",
+       "where": "Gdynia"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson2000": {
+    "birthDate": "1973-04-28",
+    "id": "fakeperson2000",
+    "name": "Ginewra Jagodziński",
+    "parties": [
+     "Lewica",
+     "Konfederacja"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson2000",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson2000",
+     "latest_time": "2026-03-11T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace244",
+        "fakeplace795",
+        "fakeplace930",
+        "teryt1203023",
+        "teryt1802012",
+        "teryt2814022"
+       ],
+       "elections": [
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 22.9,
+       "latestEmploymentStart": "2026-02-20",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson2000",
+        "fakeplace1123",
+        "fakeplace135",
+        "fakeplace165",
+        "fakeplace244",
+        "fakeplace652",
+        "fakeplace795",
+        "fakeplace930",
+        "teryt1203023",
+        "teryt1212032",
+        "teryt1214013",
+        "teryt1215013",
+        "teryt1802012",
+        "teryt1805013",
+        "teryt1813013",
+        "teryt2814022",
+        "teryt3214031"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 92,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt1212032"
+       ],
+       "what": "Rada gminy",
+       "when": "2024",
+       "where": "Zagórów"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt1212032"
+       ],
+       "what": "Rada gminy",
+       "when": "2024",
+       "where": "Zagórów"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace244"
+       ],
+       "what": "BIELSKI, WIECZOREK AND GIL SP. Z O.O.",
+       "where": "Mosina"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson2028": {
+    "id": "fakeperson2028",
+    "name": "Rozalia Biernat",
+    "parties": [
+     "Lewica"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson2028",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson2028",
+     "latest_time": "2025-08-09T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson788",
+        "fakeplace411",
+        "teryt1612022",
+        "teryt1814032"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 33,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt1814032"
+       ],
+       "what": "Rada gminy",
+       "when": "2024",
+       "where": "Lubawka"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt1814032"
+       ],
+       "what": "Rada gminy",
+       "when": "2024",
+       "where": "Lubawka"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace411"
+       ],
+       "what": "MALINOWSKI SP. P. SP. Z O.O.",
+       "where": "Kcynia"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson2294": {
+    "id": "fakeperson2294",
+    "name": "Kazimierz Białas",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson2294",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson2294",
+     "latest_time": "2025-09-15T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [
+        "parliament-2023",
+        "parliament-2023:won"
+       ],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1213",
+        "teryt02",
+        "teryt1214032"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 11,
+     "notesCount": 0,
+     "queueTier": 0,
+     "searchLine": {
+      "all": {
+       "election": "parliament-2023:won",
+       "ties": [
+        "teryt02"
+       ],
+       "what": "Sejm",
+       "when": "2023",
+       "where": "woj. małopolskie"
+      },
+      "approved": {
+       "election": "parliament-2023:won",
+       "ties": [
+        "teryt02"
+       ],
+       "what": "Sejm",
+       "when": "2023",
+       "where": "woj. małopolskie"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace1213"
+       ],
+       "what": "ŁUKASIEWICZ, MIKULSKI AND LEŚNIAK SP. Z O.O.",
+       "when": "do 2023",
+       "where": "Pisz"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson2627": {
+    "id": "fakeperson2627",
+    "name": "Marcin Adamczyk",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson2627",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson2627",
+     "latest_time": "2025-08-16T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1137",
+        "fakeplace955",
+        "teryt1017",
+        "teryt1803033",
+        "teryt2201",
+        "teryt2209013"
+       ],
+       "elections": [
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 26.5,
+       "latestEmploymentStart": "2025-12-25",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1034",
+        "fakeplace1137",
+        "fakeplace1175",
+        "fakeplace369",
+        "fakeplace687",
+        "fakeplace955",
+        "teryt08",
+        "teryt1017",
+        "teryt16",
+        "teryt1607021",
+        "teryt1803033",
+        "teryt2201",
+        "teryt2203011",
+        "teryt2209013",
+        "teryt2212012",
+        "teryt2414033"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 67,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt16",
+        "fakeplace369"
+       ],
+       "what": "Sejmik",
+       "when": "2024",
+       "where": "Bychawa"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt16",
+        "fakeplace369"
+       ],
+       "what": "Sejmik",
+       "when": "2024",
+       "where": "Bychawa"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace955"
+       ],
+       "what": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Kalisz",
+       "where": "Sucha Beskidzka"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson2660": {
+    "id": "fakeperson2660",
+    "name": "Aurora Turek",
+    "parties": [
+     "PSL",
+     "Konfederacja"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson2660",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson2660",
+     "latest_time": "2026-05-03T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1",
+        "teryt1618023"
+       ],
+       "elections": [
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 22.8,
+       "latestEmploymentStart": "2022-09-03",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1",
+        "fakeplace1203",
+        "fakeplace18",
+        "fakeplace388",
+        "fakeplace733",
+        "teryt0212",
+        "teryt0815013",
+        "teryt14",
+        "teryt1617013",
+        "teryt1618023",
+        "teryt2009033",
+        "teryt3215011"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 49,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt14"
+       ],
+       "what": "Sejmik",
+       "when": "2024",
+       "where": "woj. kujawsko-pomorskie"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt14"
+       ],
+       "what": "Sejmik",
+       "when": "2024",
+       "where": "woj. kujawsko-pomorskie"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace1"
+       ],
+       "what": "ŻAK Z O.O SP. Z O.O.",
+       "where": "Gryfów Śląski"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson291": {
+    "birthDate": "1997-11-14",
+    "id": "fakeperson291",
+    "name": "Fabian Nowak",
+    "parties": [
+     "Inne",
+     "Konfederacja"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson291",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson291",
+     "latest_time": "2026-09-06T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace114",
+        "fakeplace446",
+        "teryt1208012",
+        "teryt2012",
+        "teryt2206013"
+       ],
+       "elections": [
+        "local-2018",
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 17.5,
+       "latestEmploymentStart": "2015-05-20",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson291",
+        "fakeplace114",
+        "fakeplace446",
+        "fakeplace57",
+        "teryt08",
+        "teryt1208012",
+        "teryt2012",
+        "teryt2206013",
+        "teryt2402012",
+        "teryt3009012"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 37,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt3009012"
+       ],
+       "what": "Wójt",
+       "when": "2024",
+       "where": "Zgorzelec"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt3009012"
+       ],
+       "what": "Wójt",
+       "when": "2024",
+       "where": "Zgorzelec"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace446"
+       ],
+       "what": "„makeover”",
+       "where": "Oborniki Śląskie"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson472": {
+    "id": "fakeperson472",
+    "name": "Horacy Wojtczak",
+    "parties": [
+     "Polska2050",
+     "PO"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson472",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson472",
+     "latest_time": "2026-05-30T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace338",
+        "fakeplace745",
+        "teryt1405031",
+        "teryt3002012"
+       ],
+       "elections": [
+        "european-2019",
+        "european-2019:lost",
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 20.9,
+       "latestEmploymentStart": "2020-06-16",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1187",
+        "fakeplace136",
+        "fakeplace338",
+        "fakeplace352",
+        "fakeplace616",
+        "fakeplace745",
+        "fakeplace751",
+        "fakeplace837",
+        "fakeplace882",
+        "teryt0804013",
+        "teryt1007032",
+        "teryt1404013",
+        "teryt1405031",
+        "teryt1417031",
+        "teryt1806031",
+        "teryt1808033",
+        "teryt24",
+        "teryt3002012",
+        "teryt3218013"
+       ]
+      },
+      "hiddenTargets": 1
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 138,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt3218013"
+       ],
+       "what": "Rada gminy",
+       "when": "2024",
+       "where": "Głowno"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt3218013"
+       ],
+       "what": "Rada gminy",
+       "when": "2024",
+       "where": "Głowno"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace882"
+       ],
+       "what": "SERAFIN, KULIŃSKI AND MARCZAK SP. Z O.O.",
+       "where": "Bytom Odrzański"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson479": {
+    "birthDate": "1973-09-08",
+    "id": "fakeperson479",
+    "name": "Dorota Zagórski",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson479",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson479",
+     "latest_time": "2026-05-18T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 23.4,
+       "latestEmploymentStart": "2017-12-09",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson221",
+        "fakeplace1121",
+        "fakeplace358",
+        "fakeplace484",
+        "teryt02",
+        "teryt1013032",
+        "teryt1602031",
+        "teryt2409022",
+        "teryt3204011",
+        "teryt3213"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 117,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt02"
+       ],
+       "what": "Sejmik",
+       "when": "2024",
+       "where": "woj. małopolskie"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt02"
+       ],
+       "what": "Sejmik",
+       "when": "2024",
+       "where": "woj. małopolskie"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace358"
+       ],
+       "what": "MICHALIK, ROSIŃSKI AND CZERWIŃSKI SP. Z O.O.",
+       "where": "Oleszyce"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson511": {
+    "birthDate": "1947-04-26",
+    "id": "fakeperson511",
+    "name": "Natan Kosiński",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson511",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson511",
+     "latest_time": "2026-05-11T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1123",
+        "fakeplace823",
+        "teryt1205023",
+        "teryt1215013"
+       ],
+       "elections": [
+        "local-2014",
+        "local-2014:lost",
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 18.2,
+       "latestEmploymentStart": "2026-05-08",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1123",
+        "fakeplace323",
+        "fakeplace823",
+        "fakeplace929",
+        "fakeplace942",
+        "teryt1205023",
+        "teryt1207023",
+        "teryt1215013",
+        "teryt20",
+        "teryt2216033",
+        "teryt2417023",
+        "teryt2805031"
+       ]
+      },
+      "hiddenTargets": 1
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 110,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt20"
+       ],
+       "what": "Sejmik",
+       "when": "2024",
+       "where": "woj. łódzkie"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt20"
+       ],
+       "what": "Sejmik",
+       "when": "2024",
+       "where": "woj. łódzkie"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace1123"
+       ],
+       "what": "JÓŹWIAK, STACHOWICZ AND NAWROT SP. Z O.O.",
+       "where": "Wrocław"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson515": {
+    "id": "fakeperson515",
+    "name": "Lilla Duda",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson515",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson515",
+     "latest_time": "2026-06-09T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1036",
+        "fakeplace1236",
+        "fakeplace286",
+        "fakeplace814",
+        "teryt1008033",
+        "teryt1615021",
+        "teryt2412022",
+        "teryt3002032"
+       ],
+       "elections": [
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 21.6,
+       "latestEmploymentStart": "2018-01-18",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson515",
+        "fakeplace1036",
+        "fakeplace1043",
+        "fakeplace1106",
+        "fakeplace1236",
+        "fakeplace286",
+        "fakeplace373",
+        "fakeplace814",
+        "fakeplace827",
+        "teryt0617031",
+        "teryt1001012",
+        "teryt1008033",
+        "teryt1207023",
+        "teryt1615021",
+        "teryt2412022",
+        "teryt2612023",
+        "teryt3002032",
+        "teryt3014011"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 172,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt1001012"
+       ],
+       "what": "Rada gminy",
+       "when": "2024",
+       "where": "Malbork"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt1001012"
+       ],
+       "what": "Rada gminy",
+       "when": "2024",
+       "where": "Malbork"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace827"
+       ],
+       "what": "OSIŃSKI-BIAŁAS SP. Z O.O.",
+       "where": "Sulechów"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson532": {
+    "id": "fakeperson532",
+    "name": "Edgar Sowiński",
+    "parties": [
+     "Konfederacja",
+     "PiS"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson532",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson532",
+     "latest_time": "2026-06-21T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1217",
+        "fakeplace326",
+        "teryt1006011",
+        "teryt1816",
+        "teryt2411013"
+       ],
+       "elections": [
+        "parliament-2023",
+        "parliament-2023:won"
+       ],
+       "experienceMonths": 14.5,
+       "latestEmploymentStart": "2015-05-12",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1174",
+        "fakeplace1204",
+        "fakeplace1217",
+        "fakeplace326",
+        "teryt0817032",
+        "teryt0820023",
+        "teryt1006011",
+        "teryt1816",
+        "teryt20",
+        "teryt2411013"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 48,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "parliament-2023:won",
+       "ties": [
+        "teryt20"
+       ],
+       "what": "Sejm",
+       "when": "2023",
+       "where": "woj. łódzkie"
+      },
+      "approved": {
+       "election": "parliament-2023:won",
+       "ties": [
+        "teryt20"
+       ],
+       "what": "Sejm",
+       "when": "2023",
+       "where": "woj. łódzkie"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace1217"
+       ],
+       "what": "ZAJĄC, RYBAK AND PIWOWARCZYK SP. Z O.O.",
+       "where": "Gąbin"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson663": {
+    "birthDate": "1999-03-31",
+    "id": "fakeperson663",
+    "name": "Ilona Kubica",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson663",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson663",
+     "latest_time": "2025-10-27T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1090",
+        "fakeplace451",
+        "teryt1404013",
+        "teryt2407033"
+       ],
+       "elections": [
+        "local-2018",
+        "local-2018:won",
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 24.3,
+       "latestEmploymentStart": "2026-06-24",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson663",
+        "fakeplace1023",
+        "fakeplace1043",
+        "fakeplace1090",
+        "fakeplace1199",
+        "fakeplace175",
+        "fakeplace23",
+        "fakeplace423",
+        "fakeplace451",
+        "fakeplace498",
+        "fakeplace653",
+        "teryt1404013",
+        "teryt1419032",
+        "teryt1815013",
+        "teryt1820032",
+        "teryt2015",
+        "teryt2201011",
+        "teryt2407033",
+        "teryt2417033",
+        "teryt2418013",
+        "teryt2803012",
+        "teryt3014011"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 111,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt1419032"
+       ],
+       "what": "Wójt",
+       "when": "2024",
+       "where": "Pilawa"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt1419032"
+       ],
+       "what": "Wójt",
+       "when": "2024",
+       "where": "Pilawa"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace451"
+       ],
+       "what": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Raszków",
+       "where": "Legionowo"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson71": {
+    "id": "fakeperson71",
+    "name": "Edyta Leśniewski",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson71",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson71",
+     "latest_time": "2026-07-14T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1092",
+        "fakeplace1154",
+        "teryt0402033",
+        "teryt1007021",
+        "teryt1020",
+        "teryt1203"
+       ],
+       "elections": [
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 19.3,
+       "latestEmploymentStart": "2025-01-02",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1087",
+        "fakeplace1092",
+        "fakeplace1154",
+        "fakeplace207",
+        "fakeplace626",
+        "fakeplace787",
+        "fakeplace944",
+        "teryt0402033",
+        "teryt0801031",
+        "teryt1007021",
+        "teryt1008033",
+        "teryt1020",
+        "teryt1203",
+        "teryt1609021",
+        "teryt1817031",
+        "teryt2810",
+        "teryt2819012"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 105,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt2810"
+       ],
+       "what": "Rada powiatu",
+       "when": "2024",
+       "where": "powiat Głuszyca"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt2810"
+       ],
+       "what": "Rada powiatu",
+       "when": "2024",
+       "where": "powiat Głuszyca"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace1092"
+       ],
+       "what": "Wojewódzki Szpital Specjalistyczny im. Igor Niemiec w Kowary",
+       "where": "Janowiec Wielkopolski"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson758": {
+    "id": "fakeperson758",
+    "name": "Onufry Pilarski",
+    "parties": [
+     "Polska2050"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson758",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson758",
+     "latest_time": "2026-02-27T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace47",
+        "teryt0405021",
+        "teryt2215"
+       ],
+       "elections": [
+        "local-2024",
+        "local-2024:won"
+       ],
+       "experienceMonths": 22.6,
+       "latestEmploymentStart": "2004-03-31",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace47",
+        "teryt0405021",
+        "teryt2215",
+        "teryt3208"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 14,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt3208"
+       ],
+       "what": "Rada powiatu",
+       "when": "2024",
+       "where": "powiat Złotów"
+      },
+      "approved": {
+       "election": "local-2024:won",
+       "ties": [
+        "teryt3208"
+       ],
+       "what": "Rada powiatu",
+       "when": "2024",
+       "where": "powiat Złotów"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace47"
+       ],
+       "what": "„plumber”",
+       "where": "Przemków"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   },
+   "fakeperson833": {
+    "id": "fakeperson833",
+    "name": "Agrypina Zawada",
+    "parties": [
+     "PSL"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson833",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson833",
+     "latest_time": "2025-09-06T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1122",
+        "fakeplace472",
+        "fakeplace648",
+        "teryt0413012",
+        "teryt1402022",
+        "teryt2609012"
+       ],
+       "elections": [
+        "parliament-2023",
+        "parliament-2023:won"
+       ],
+       "experienceMonths": 21.2,
+       "latestEmploymentStart": "2020-08-27",
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeplace1013",
+        "fakeplace1122",
+        "fakeplace341",
+        "fakeplace446",
+        "fakeplace472",
+        "fakeplace648",
+        "fakeplace989",
+        "teryt0413012",
+        "teryt1208012",
+        "teryt1402022",
+        "teryt1606031",
+        "teryt18",
+        "teryt2012",
+        "teryt2609012",
+        "teryt2817011"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 65,
+     "notesCount": 0,
+     "queueTier": 2,
+     "searchLine": {
+      "all": {
+       "election": "parliament-2023:won",
+       "ties": [
+        "teryt18"
+       ],
+       "what": "Sejm",
+       "when": "2023",
+       "where": "woj. małopolskie"
+      },
+      "approved": {
+       "election": "parliament-2023:won",
+       "ties": [
+        "teryt18"
+       ],
+       "what": "Sejm",
+       "when": "2023",
+       "where": "woj. małopolskie"
+      },
+      "teaser": {
+       "ties": [
+        "fakeplace648"
+       ],
+       "what": "MROZEK SKA SP. Z O.O.",
+       "where": "Grajewo"
+      }
+     },
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "person",
+    "visibility": true
+   }
+  },
+  "total": 25
+ }
+}

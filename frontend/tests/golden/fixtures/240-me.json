@@ -1,0 +1,13 @@
+{
+ "step": 240,
+ "name": "me",
+ "request": {
+  "method": "GET",
+  "path": "/api/me",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "config": null
+ }
+}

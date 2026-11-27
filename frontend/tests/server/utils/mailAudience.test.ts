@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import type { Firestore } from "firebase-admin/firestore";
 import { loadAudience, queueToCheck } from "../../../server/utils/mailAudience";
 import { daysBetween } from "../../../server/utils/activityStats";
 import type { DailyRollup } from "../../../server/utils/activityRollup";
@@ -18,8 +17,8 @@ vi.mock("firebase-admin/auth", () => ({
   getAuth: () => ({ listUsers: mockListUsers }),
 }));
 
-vi.mock("~~/server/utils/activityWindow", () => ({
-  loadActivityRollups: mockLoadRollups,
+vi.mock("~~/server/db/activity", () => ({
+  loadActivityRollupsFromDb: mockLoadRollups,
 }));
 
 vi.mock("~~/server/utils/newsletterSubscribers", () => ({
@@ -29,17 +28,20 @@ vi.mock("~~/server/utils/newsletterSubscribers", () => ({
 const NOW = new Date("2026-10-09T12:00:00Z");
 const SPANNED = daysBetween("2026-07-12", "2026-10-09");
 
-/** `users/<uid>` documents, as the owners wrote them. */
+/** `users/<uid>` documents, as the owners wrote them. What leaves Postgres
+ * is the two fields alone (tests/server/db/opsMail.pg.test.ts). */
 let userDocs: Record<string, Record<string, unknown>> = {};
-const getAll = vi.fn(async (...args: unknown[]) =>
-  (args.filter((a) => (a as { id?: string }).id) as { id: string }[]).map(
-    (ref) => ({ id: ref.id, data: () => userDocs[ref.id] }),
-  ),
-);
-const db = {
-  collection: () => ({ doc: (id: string) => ({ id }) }),
-  getAll,
-} as unknown as Firestore;
+vi.mock("~~/server/db/mail", () => ({
+  readMailPreferencesPg: async (uids: string[]) =>
+    new Map(
+      uids.flatMap((uid) => {
+        const doc = userDocs[uid];
+        return doc
+          ? [[uid, { newsletter: doc.newsletter, teamMail: doc.teamMail }]]
+          : [];
+      }),
+    ),
+}));
 
 function account(uid: string, overrides: Record<string, unknown> = {}) {
   return {
@@ -109,7 +111,7 @@ describe("loadAudience", () => {
       },
     ]);
 
-    const { members } = await loadAudience(db, { now: NOW });
+    const { members } = await loadAudience({ now: NOW });
     expect(members.map((m) => m.uid)).toEqual(["ania", "sub_abc"]);
     expect(members[1]).toMatchObject({
       kind: "subscriber",
@@ -136,7 +138,7 @@ describe("loadAudience", () => {
       owner: { teamMail: false, displayName: "ignored" },
     };
 
-    const { members } = await loadAudience(db, { now: NOW });
+    const { members } = await loadAudience({ now: NOW });
     const ania = members.find((m) => m.uid === "ania")!;
     expect(ania).toMatchObject({
       email: "ania@example.com",
@@ -155,10 +157,6 @@ describe("loadAudience", () => {
       owner: true,
       newAdmin: false,
       preferences: { teamMail: false },
-    });
-    // Only the two fields campaigns read leave Firestore.
-    expect(getAll.mock.calls[0]!.at(-1)).toEqual({
-      fieldMask: ["newsletter", "teamMail"],
     });
   });
 
@@ -188,7 +186,7 @@ describe("loadAudience", () => {
       rollups: [day("2026-10-05", { voter: { vote: 3 } })],
     });
 
-    const { members } = await loadAudience(db, { now: NOW });
+    const { members } = await loadAudience({ now: NOW });
     expect(members.map((m) => [m.uid, m.lastSeenAt])).toEqual([
       // Most recently seen first, never seen last.
       ["tab", "2026-10-08T20:00:00.000Z"],
@@ -213,7 +211,7 @@ describe("loadAudience", () => {
       ],
     });
 
-    const { community } = await loadAudience(db, { now: NOW, toCheck: 1204 });
+    const { community } = await loadAudience({ now: NOW, toCheck: 1204 });
     expect(community).toEqual({
       days: 30,
       votes: 7,
@@ -229,7 +227,7 @@ describe("loadAudience", () => {
       .mockResolvedValueOnce({ users: [account("a")], pageToken: "next" })
       .mockResolvedValueOnce({ users: [account("b")], pageToken: undefined });
 
-    const { members } = await loadAudience(db, { now: NOW });
+    const { members } = await loadAudience({ now: NOW });
     expect(members.map((m) => m.uid).sort()).toEqual(["a", "b"]);
     expect(mockListUsers).toHaveBeenLastCalledWith(1000, "next");
   });

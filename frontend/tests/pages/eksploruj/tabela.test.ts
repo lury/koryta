@@ -90,11 +90,6 @@ vi.mock("~/composables/companyLocations", () => ({
   })),
 }));
 
-vi.mock("firebase/firestore", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("firebase/firestore")>();
-  return { ...actual, getFirestore: vi.fn(() => ({})) };
-});
-
 vi.mock("vuefire", () => ({
   useCurrentUser: vi.fn(() => computed(() => authUser.value)),
   useFirestore: vi.fn(() => ({})),

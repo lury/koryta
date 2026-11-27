@@ -1,0 +1,13 @@
+{
+ "step": 153,
+ "name": "qa checks",
+ "request": {
+  "method": "GET",
+  "path": "/api/qa/checks",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "checks": []
+ }
+}

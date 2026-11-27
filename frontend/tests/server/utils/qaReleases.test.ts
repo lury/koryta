@@ -8,8 +8,14 @@ import {
   type QaReleaseRecord,
 } from "../../../server/utils/qaReleases";
 
-const { firestore } = vi.hoisted(() => ({
-  firestore: { db: null as unknown },
+const { store } = vi.hoisted(() => ({
+  store: {
+    /** The `recordQaReleasesPg` of the case at hand. */
+    record: null as unknown as (
+      backend: string,
+      added: Record<string, string>,
+    ) => Promise<Record<string, string>>,
+  },
 }));
 
 vi.mock("firebase-admin/app", () => ({ getApp: () => ({}) }));
@@ -32,36 +38,32 @@ vi.mock("../../../shared/qa", async (importOriginal) => {
     ],
   };
 });
-vi.mock("firebase-admin/firestore", () => ({
-  getFirestore: () => firestore.db,
+vi.mock("~~/server/db/ops", () => ({
+  recordQaReleasesPg: (backend: string, added: Record<string, string>) =>
+    store.record(backend, added),
 }));
 
-type Ref = { path: string };
-
-/** Just enough of a Firestore for `recordQaReleases`: one transaction at a
- * time over documents by path, merging a `set` into what is stored the way
- * `{ merge: true }` does for a map. */
+/** `recordQaReleasesPg` over rows by backend, as its SQL does it (checked
+ * against Postgres in tests/server/db/opsMail.pg.test.ts): a date already
+ * recorded wins, and nothing is written when every entry has one. */
 function fakeDb(stored: Record<string, QaReleaseRecord> = {}) {
   const writes: { path: string; data: QaReleaseRecord }[] = [];
-  const db = {
-    collection: (name: string) => ({
-      doc: (id: string): Ref => ({ path: `${name}/${id}` }),
-    }),
-    runTransaction: async <T>(
-      fn: (transaction: unknown) => Promise<T>,
-    ): Promise<T> =>
-      fn({
-        get: async (ref: Ref) => ({ data: () => stored[ref.path] }),
-        set: (ref: Ref, data: QaReleaseRecord, options: unknown) => {
-          expect(options).toEqual({ merge: true });
-          writes.push({ path: ref.path, data });
-          stored[ref.path] = {
-            items: { ...stored[ref.path]?.items, ...data.items },
-          };
-        },
-      }),
-  };
-  return { db: db as unknown as FirebaseFirestore.Firestore, writes, stored };
+  const record = vi.fn(
+    async (backend: string, added: Record<string, string>) => {
+      const path = `qaReleases/${backend}`;
+      const items = { ...stored[path]?.items };
+      const missing = Object.fromEntries(
+        Object.entries(added).filter(([id]) => !(id in items)),
+      );
+      if (Object.keys(missing).length > 0) {
+        writes.push({ path, data: { items: missing } });
+        stored[path] = { items: { ...items, ...missing } };
+      }
+      return { ...stored[path]?.items };
+    },
+  );
+  store.record = record;
+  return { record, writes, stored };
 }
 
 const ids = (...list: string[]) => list.map((id) => ({ id }));
@@ -150,10 +152,9 @@ describe("recordQaReleases", () => {
   );
 
   it("writes down the entries nothing dates yet, as live since the start", async () => {
-    const { db, writes } = fakeDb();
+    const { writes } = fakeDb();
 
     const record = await recordQaReleases(
-      db,
       "prod",
       items,
       "2026-09-27T08:00:00.000Z",
@@ -177,7 +178,7 @@ describe("recordQaReleases", () => {
   });
 
   it("keeps a date already recorded, and writes only what is missing", async () => {
-    const { db, writes, stored } = fakeDb({
+    const { writes, stored } = fakeDb({
       "qaReleases/prod": {
         items: {
           "new-1": "2026-09-27T08:00:00.000Z",
@@ -187,7 +188,6 @@ describe("recordQaReleases", () => {
     });
 
     const record = await recordQaReleases(
-      db,
       "prod",
       items,
       "2026-09-30T19:00:00.000Z",
@@ -208,7 +208,7 @@ describe("recordQaReleases", () => {
   });
 
   it("writes nothing once every entry is dated", async () => {
-    const { db, writes } = fakeDb({
+    const { writes } = fakeDb({
       "qaReleases/prod": {
         items: {
           "new-2": "2026-09-30T19:00:00.000Z",
@@ -217,14 +217,14 @@ describe("recordQaReleases", () => {
       },
     });
 
-    await recordQaReleases(db, "prod", items, "2026-10-01T08:00:00.000Z");
+    await recordQaReleases("prod", items, "2026-10-01T08:00:00.000Z");
 
     expect(writes).toEqual([]);
   });
 
   it("keeps a record per backend", async () => {
     // autopush rolls out on every push to main, prod by hand days later.
-    const { db, writes } = fakeDb({
+    const { writes } = fakeDb({
       "qaReleases/autopush": {
         items: {
           "new-2": "2026-09-26T10:00:00.000Z",
@@ -234,7 +234,6 @@ describe("recordQaReleases", () => {
     });
 
     const record = await recordQaReleases(
-      db,
       "prod",
       items,
       "2026-09-30T19:00:00.000Z",
@@ -282,8 +281,7 @@ describe("qaReleases", () => {
   });
 
   it("dates the history's entries by their rollout and the rest by the record", async () => {
-    const { db } = fakeDb();
-    firestore.db = db;
+    fakeDb();
     const { qaReleases } = await load();
 
     const releases = await qaReleases();
@@ -321,7 +319,7 @@ describe("qaReleases", () => {
   });
 
   it("lists newest first, a rollout's entries in the changelog's order", async () => {
-    firestore.db = fakeDb().db;
+    fakeDb();
     const { qaReleases } = await load();
 
     const releases = await qaReleases();
@@ -335,36 +333,25 @@ describe("qaReleases", () => {
   });
 
   it("records once per process", async () => {
-    const fake = fakeDb();
-    const runTransaction = vi.spyOn(
-      fake.db as unknown as { runTransaction: () => unknown },
-      "runTransaction",
-    );
-    firestore.db = fake.db;
+    const { record } = fakeDb();
     const { qaReleases, qaReleaseRecord } = await load();
 
     await qaReleaseRecord();
     await qaReleases();
     await qaReleases();
 
-    expect(runTransaction).toHaveBeenCalledTimes(1);
+    expect(record).toHaveBeenCalledTimes(1);
   });
 
   it("tries again after a failure rather than keeping it", async () => {
-    const fake = fakeDb();
-    const runTransaction = vi
-      .spyOn(
-        fake.db as unknown as { runTransaction: () => Promise<unknown> },
-        "runTransaction",
-      )
-      .mockRejectedValueOnce(new Error("UNAVAILABLE"));
-    firestore.db = fake.db;
+    const { record } = fakeDb();
+    record.mockRejectedValueOnce(new Error("UNAVAILABLE"));
     const { qaReleases, qaReleaseRecord } = await load();
 
     await expect(qaReleaseRecord()).rejects.toThrow("UNAVAILABLE");
     const releases = await qaReleases();
 
-    expect(runTransaction).toHaveBeenCalledTimes(2);
+    expect(record).toHaveBeenCalledTimes(2);
     expect(releases[0]!.item.id).toBe("po-rekordzie");
   });
 });

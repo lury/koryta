@@ -1,0 +1,55 @@
+{
+ "step": 172,
+ "name": "stats queueTiers",
+ "request": {
+  "method": "GET",
+  "path": "/api/stats/queueTiers",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "tiers": [
+   {
+    "examples": [],
+    "tier": 1,
+    "toCheck": 0
+   },
+   {
+    "examples": [
+     {
+      "id": "fakeperson1000",
+      "name": "Agaton Ratajczak"
+     },
+     {
+      "id": "fakeperson1117",
+      "name": "Martyna Bielak"
+     },
+     {
+      "id": "fakeperson1206",
+      "name": "Bertram Michałek"
+     }
+    ],
+    "tier": 2,
+    "toCheck": 186
+   },
+   {
+    "examples": [
+     {
+      "id": "fakeperson1416",
+      "name": "Walter Niedzielski"
+     },
+     {
+      "id": "fakeperson1446",
+      "name": "Lucja Pasternak"
+     },
+     {
+      "id": "fakeperson1888",
+      "name": "Jeremi Piekarski"
+     }
+    ],
+    "tier": 3,
+    "toCheck": 35
+   }
+  ]
+ }
+}

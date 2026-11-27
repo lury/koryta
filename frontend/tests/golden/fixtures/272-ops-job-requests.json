@@ -1,0 +1,13 @@
+{
+ "step": 272,
+ "name": "ops job requests",
+ "request": {
+  "method": "GET",
+  "path": "/api/ops/jobs/requests?node=thydra",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "runs": []
+ }
+}

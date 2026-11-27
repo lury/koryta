@@ -1,0 +1,710 @@
+{
+ "step": 324,
+ "name": "after: graph local",
+ "request": {
+  "method": "GET",
+  "path": "/api/graph/local/fakeperson1077",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "edges": [
+   {
+    "by_election": false,
+    "committee": "",
+    "content": "",
+    "id": "edge_fakeperson1077_fakeplace1006_employed_SDuvEXhwx3",
+    "label": "Prezes Zarządu",
+    "name": "Prezes Zarządu",
+    "party": "",
+    "position": "",
+    "references": [
+     "fakearticle0"
+    ],
+    "source": "fakeperson1077",
+    "start_date": "2022-02-01",
+    "target": "fakeplace1006",
+    "term": "",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2010-05-06",
+    "id": "fakejob1077_0",
+    "label": "Prokurent",
+    "name": "Prokurent",
+    "references": [],
+    "source": "fakeperson1077",
+    "start_date": "2006-03-14",
+    "target": "fakeplace763",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1077_1",
+    "label": "Zastępca Dyrektora",
+    "name": "Zastępca Dyrektora",
+    "references": [],
+    "source": "fakeperson1077",
+    "start_date": "2002-08-30",
+    "target": "fakeplace54",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1079_0",
+    "label": "Prokurent",
+    "name": "Prokurent",
+    "references": [],
+    "source": "fakeperson1077",
+    "start_date": "2007-10-10",
+    "target": "fakeplace908",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1079_1",
+    "label": "Prokurent",
+    "name": "Prokurent",
+    "references": [],
+    "source": "fakeperson1077",
+    "start_date": "2024-02-06",
+    "target": "fakeplace948",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2025-05-11",
+    "id": "fakejob1079_2",
+    "label": "Dyrektor",
+    "name": "Dyrektor",
+    "references": [],
+    "source": "fakeperson1077",
+    "start_date": "2010-08-04",
+    "target": "fakeplace613",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1079_3",
+    "label": "Członek Rady Nadzorczej",
+    "name": "Członek Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1077",
+    "start_date": "2022-07-02",
+    "target": "fakeplace71",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1079_4",
+    "label": "Dyrektor",
+    "name": "Dyrektor",
+    "references": [],
+    "source": "fakeperson1077",
+    "start_date": "2026-10-03",
+    "target": "fakeplace548",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2016-09-09",
+    "id": "fakejob1079_5",
+    "label": "Dyrektor",
+    "name": "Dyrektor",
+    "references": [],
+    "source": "fakeperson1077",
+    "start_date": "2016-06-28",
+    "target": "fakeplace265",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1079_6",
+    "label": "Członek Zarządu",
+    "name": "Członek Zarządu",
+    "references": [],
+    "source": "fakeperson1077",
+    "start_date": "2013-07-15",
+    "target": "fakeplace1261",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1079_7",
+    "label": "Członek Rady Nadzorczej",
+    "name": "Członek Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1077",
+    "start_date": "2012-08-19",
+    "target": "fakeplace1118",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1079_8",
+    "label": "Przewodniczący Rady Nadzorczej",
+    "name": "Przewodniczący Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1077",
+    "start_date": "2002-04-30",
+    "target": "fakeplace1235",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   }
+  ],
+  "nodeGroups": [
+   {
+    "connected": [
+     "fakeplace1006",
+     "fakeperson1077"
+    ],
+    "id": "fakeplace1006",
+    "name": "Centrum Medyczne „colonialism” w Orzesze",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace763",
+     "fakeperson1077"
+    ],
+    "id": "fakeplace763",
+    "name": "SIENKIEWICZ Z O.O SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace54",
+     "fakeperson1077"
+    ],
+    "id": "fakeplace54",
+    "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Ożarów Mazowiecki",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace908",
+     "fakeperson1077"
+    ],
+    "id": "fakeplace908",
+    "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Słubice",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace948",
+     "fakeperson1077"
+    ],
+    "id": "fakeplace948",
+    "name": "NOWAK SKA SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace613",
+     "fakeperson1077"
+    ],
+    "id": "fakeplace613",
+    "name": "KUCHARSKI-KACZOR SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace71",
+     "fakeperson1077"
+    ],
+    "id": "fakeplace71",
+    "name": "JÓŹWIAK SP. K. SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace548",
+     "fakeperson1077"
+    ],
+    "id": "fakeplace548",
+    "name": "MALISZEWSKI-SZWARC SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace265",
+     "fakeperson1077"
+    ],
+    "id": "fakeplace265",
+    "name": "GOŁĘBIEWSKI, STEC AND ADAMUS SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace1261",
+     "fakeperson1077"
+    ],
+    "id": "fakeplace1261",
+    "name": "MICHALAK, GRZYB AND CEBULA SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace1118",
+     "fakeperson1077"
+    ],
+    "id": "fakeplace1118",
+    "name": "RYBARCZYK S.C. SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace1235",
+     "fakeperson1077"
+    ],
+    "id": "fakeplace1235",
+    "name": "JÓŹWIK-BURZYŃSKI SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1077",
+     "fakeplace1006",
+     "fakeperson1077",
+     "fakeplace763",
+     "fakeplace54",
+     "fakeplace908",
+     "fakeplace948",
+     "fakeplace613",
+     "fakeplace71",
+     "fakeplace548",
+     "fakeplace265",
+     "fakeplace1261",
+     "fakeplace1118",
+     "fakeplace1235"
+    ],
+    "id": "fakeperson1077",
+    "name": "Gabriel Grudzień",
+    "stats": {
+     "people": 1
+    }
+   }
+  ],
+  "nodes": {
+   "fakeperson1077": {
+    "birthDate": "1964-05-06",
+    "color": "#073b76",
+    "content_changed_at": "<now>",
+    "depth": 0,
+    "entityType": "person",
+    "id": "fakeperson1077",
+    "name": "Gabriel Grudzień",
+    "parties": [
+     "Lewica",
+     "PiS"
+    ],
+    "published": true,
+    "revision_id": "revisions/<id>",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "<id>",
+     "latest_time": "<now>",
+     "total": 2
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeplace1006": {
+    "categories": [
+     "szpitale"
+    ],
+    "color": "#6b7a83",
+    "content_changed_at": "<now>",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace1006",
+    "isPublic": true,
+    "krsNumber": "0000100372",
+    "name": "Centrum Medyczne „colonialism” w Orzesze",
+    "published": true,
+    "revision_id": "rev_fakeplace1006",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace1006",
+     "latest_time": "2026-03-24T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace1118": {
+    "categories": [
+     "wodociagi"
+    ],
+    "color": "#6b7a83",
+    "content_changed_at": "<now>",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace1118",
+    "isPublic": true,
+    "krsNumber": "0000328858",
+    "name": "RYBARCZYK S.C. SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace1118",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace1118",
+     "latest_time": "2026-01-08T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace1235": {
+    "categories": [],
+    "color": "#6b7a83",
+    "content_changed_at": "<now>",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace1235",
+    "isPublic": true,
+    "krsNumber": "0000831403",
+    "name": "JÓŹWIK-BURZYŃSKI SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace1235",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace1235",
+     "latest_time": "2026-10-15T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace1261": {
+    "categories": [
+     "sport"
+    ],
+    "color": "#6b7a83",
+    "content_changed_at": "<now>",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace1261",
+    "isPublic": false,
+    "krsNumber": "0000508293",
+    "name": "MICHALAK, GRZYB AND CEBULA SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace1261",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace1261",
+     "latest_time": "<now>",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace265": {
+    "categories": [
+     "obronnosc"
+    ],
+    "color": "#6b7a83",
+    "content_changed_at": "<now>",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace265",
+    "isPublic": false,
+    "krsNumber": "0000495408",
+    "name": "GOŁĘBIEWSKI, STEC AND ADAMUS SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace265",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace265",
+     "latest_time": "2025-10-14T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace54": {
+    "categories": [
+     "szpitale"
+    ],
+    "color": "#6b7a83",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace54",
+    "isPublic": true,
+    "krsNumber": "0000216943",
+    "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Ożarów Mazowiecki",
+    "published": true,
+    "revision_id": "rev_fakeplace54",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace54",
+     "latest_time": "2025-09-15T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace548": {
+    "categories": [
+     "energetyka"
+    ],
+    "color": "#6b7a83",
+    "content_changed_at": "<now>",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace548",
+    "isPublic": false,
+    "krsNumber": "0000760547",
+    "name": "MALISZEWSKI-SZWARC SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace548",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace548",
+     "latest_time": "2026-10-11T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace613": {
+    "categories": [],
+    "color": "#6b7a83",
+    "content_changed_at": "<now>",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace613",
+    "isPublic": false,
+    "krsNumber": "0000174682",
+    "name": "KUCHARSKI-KACZOR SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace613",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace613",
+     "latest_time": "2025-12-05T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace71": {
+    "categories": [],
+    "color": "#6b7a83",
+    "content_changed_at": "<now>",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace71",
+    "isPublic": false,
+    "krsNumber": "0000887364",
+    "name": "JÓŹWIAK SP. K. SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace71",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace71",
+     "latest_time": "2025-08-23T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace763": {
+    "categories": [],
+    "color": "#6b7a83",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace763",
+    "isPublic": true,
+    "krsNumber": "0000771389",
+    "name": "SIENKIEWICZ Z O.O SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace763",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace763",
+     "latest_time": "2026-09-29T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace908": {
+    "categories": [
+     "szpitale"
+    ],
+    "color": "#6b7a83",
+    "content_changed_at": "<now>",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace908",
+    "isPublic": true,
+    "krsNumber": "0000341481",
+    "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Słubice",
+    "published": true,
+    "revision_id": "rev_fakeplace908",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace908",
+     "latest_time": "2025-09-08T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace948": {
+    "categories": [],
+    "color": "#6b7a83",
+    "content_changed_at": "<now>",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace948",
+    "isPublic": true,
+    "krsNumber": "0000918551",
+    "name": "NOWAK SKA SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace948",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace948",
+     "latest_time": "2026-08-05T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   }
+  },
+  "omitted": 0
+ }
+}

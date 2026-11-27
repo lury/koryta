@@ -1,0 +1,20 @@
+{
+ "step": 275,
+ "name": "revision create",
+ "request": {
+  "method": "POST",
+  "path": "/api/revisions/create",
+  "as": "user",
+  "body": {
+   "content": "Nowy opis.",
+   "name": "Zmieniona Osoba Wzorca",
+   "node_id": "fakeperson1066"
+  }
+ },
+ "status": 200,
+ "body": {
+  "duplicate": false,
+  "id": "proposal_fakeperson1066_test-user_dYpPbcalmb",
+  "node_id": "fakeperson1066"
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "step": 168,
+ "name": "notes admin",
+ "request": {
+  "method": "GET",
+  "path": "/api/notes/admin?limit=20",
+  "as": "user"
+ },
+ "status": 403,
+ "body": {
+  "error": true,
+  "message": "Brak uprawnień administratora.",
+  "statusCode": 403,
+  "statusMessage": "Server Error",
+  "url": "http://127.0.0.1:23200/api/notes/admin?limit=20"
+ }
+}

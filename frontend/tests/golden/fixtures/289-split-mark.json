@@ -1,0 +1,29 @@
+{
+ "step": 289,
+ "name": "split mark",
+ "request": {
+  "method": "POST",
+  "path": "/api/nodes/split",
+  "as": "admin",
+  "body": {
+   "mark_only": true,
+   "node_id": "fakeperson1068",
+   "reason": "Dwie osoby"
+  }
+ },
+ "status": 200,
+ "body": {
+  "applied": true,
+  "counts": {
+   "collapsed": 0,
+   "enriched": 0,
+   "moved": 0,
+   "review": 0,
+   "self": 0
+  },
+  "created_into": false,
+  "edges": [],
+  "marked": true,
+  "node_id": "fakeperson1068"
+ }
+}

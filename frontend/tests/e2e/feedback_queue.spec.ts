@@ -1,22 +1,10 @@
 import { test, expect, type Page } from "@playwright/test";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
 import { logIn, USERS } from "./helpers/auth";
 import { FEEDBACK_ID_PATTERN } from "../../shared/feedbackFixes";
 import type { Feedback } from "../../shared/model";
 import { QA_ITEMS } from "../../shared/qa";
 import { REPORT_FIXES } from "../../shared/reportFixes";
-
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
-process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
-
-const db = () =>
-  getFirestore(
-    getApps().length === 0
-      ? initializeApp({ projectId: "demo-koryta-pl" })
-      : getApp(),
-    "koryta-pl",
-  );
+import { putDoc, readDoc } from "./helpers/db";
 
 /** A report as `feedback/create` would have written it, dated `minutesAgo`
  * before `stamp` so the seeded ones keep a known age order. */
@@ -36,7 +24,7 @@ const report = (
 });
 
 /** The ids of this spec's own rows, in the order the page shows them. Other
- * specs write reports into the same emulator, so only the relative order of
+ * specs write reports into the same database, so only the relative order of
  * ours is ours to assert. */
 async function orderOf(page: Page, ids: string[]) {
   const shown = await page
@@ -61,8 +49,7 @@ const CODE_CLAIM = REPORT_FIXES.find((fix) =>
 );
 
 const rankOf = async (id: string) =>
-  (await db().collection("feedback").doc(id).get()).data()?.queueRank as
-    number | undefined;
+  (await readDoc("feedback", id))?.queueRank as number | undefined;
 
 test.describe("Kolejka zgłoszeń", () => {
   test("admin układa zgłoszenia w kolejkę, a kolejność zostaje po odświeżeniu", async ({
@@ -74,21 +61,10 @@ test.describe("Kolejka zgłoszeń", () => {
     // No hyphens in the ids: other specs' seeds parse the last dash segment.
     const [a, b, c, d] = ["a", "b", "c", "d"].map((x) => `kolejka${stamp}${x}`);
     const ours = [a!, b!, c!, d!];
-    const batch = db().batch();
-    batch.set(
-      db().collection("feedback").doc(a!),
-      report(stamp, "A", 4, { queueRank: 1024 }),
-    );
-    batch.set(
-      db().collection("feedback").doc(b!),
-      report(stamp, "B", 3, { queueRank: 2048 }),
-    );
-    batch.set(
-      db().collection("feedback").doc(c!),
-      report(stamp, "C", 2, { queueRank: 3072 }),
-    );
-    batch.set(db().collection("feedback").doc(d!), report(stamp, "D", 1));
-    await batch.commit();
+    await putDoc("feedback", a!, report(stamp, "A", 4, { queueRank: 1024 }));
+    await putDoc("feedback", b!, report(stamp, "B", 3, { queueRank: 2048 }));
+    await putDoc("feedback", c!, report(stamp, "C", 2, { queueRank: 3072 }));
+    await putDoc("feedback", d!, report(stamp, "D", 1));
 
     await logIn(page, USERS.admin, "/admin/opinie");
     await expect(page.locator(`[data-feedback-id="${d}"]`)).toBeVisible({
@@ -118,7 +94,7 @@ test.describe("Kolejka zgłoszeń", () => {
     await expect.poll(() => orderOf(page, ours)).toEqual([c, a, b, d]);
     await page.getByRole("button", { name: "Gotowe" }).click();
 
-    // What the page showed reached Firestore, rather than living in its
+    // What the page showed reached the database, rather than living in its
     // optimistic state.
     await expect
       .poll(async () => {
@@ -155,14 +131,11 @@ test.describe("Kolejka zgłoszeń", () => {
     const stamp = Date.now();
     const id = `kolejka${stamp}stary`;
     // Older than anything else, so only `include` brings it into the list.
-    await db()
-      .collection("feedback")
-      .doc(id)
-      .set({
-        ...report(stamp, "stary", 0),
-        createdAt: "2020-01-01T10:00:00.000Z",
-        adminStatus: "resolved",
-      });
+    await putDoc("feedback", id, {
+      ...report(stamp, "stary", 0),
+      createdAt: "2020-01-01T10:00:00.000Z",
+      adminStatus: "resolved",
+    });
 
     await logIn(page, USERS.admin, "/admin");
     // What Slack's "Otwórz w panelu" button opens.
@@ -195,23 +168,17 @@ test.describe("Kolejka zgłoszeń", () => {
     const stamp = Date.now();
     const checker = `e2echecker${stamp}`;
 
-    await db()
-      .collection("feedback")
-      .doc(id)
-      .set(report(stamp, "poprawiane", 0));
+    await putDoc("feedback", id, report(stamp, "poprawiane", 0));
     // Somebody else's verdict on the entry. Only its words are asserted:
     // qa.spec writes verdicts on the newest entries in parallel, so the colour
     // of the chip is not this spec's to know.
-    await db()
-      .collection("qaChecks")
-      .doc(`${entry.id}_${checker}`)
-      .set({
-        itemId: entry.id,
-        userUid: checker,
-        status: "ok",
-        feedback: `sprawdzone ${stamp}`,
-        updatedAt: new Date(stamp).toISOString(),
-      });
+    await putDoc("qaChecks", `${entry.id}_${checker}`, {
+      itemId: entry.id,
+      userUid: checker,
+      status: "ok",
+      feedback: `sprawdzone ${stamp}`,
+      updatedAt: new Date(stamp).toISOString(),
+    });
 
     await logIn(page, USERS.admin, "/admin/opinie");
     const row = page.locator(`#fb-${id}`);
@@ -240,10 +207,7 @@ test.describe("Kolejka zgłoszeń", () => {
 
     const claim = CODE_CLAIM!;
     const id = claim.fixes.find((fix) => FEEDBACK_ID_PATTERN.test(fix))!;
-    await db()
-      .collection("feedback")
-      .doc(id)
-      .set(report(Date.now(), "poprawione w kodzie", 0));
+    await putDoc("feedback", id, report(Date.now(), "poprawione w kodzie", 0));
 
     await logIn(page, USERS.admin, "/qa");
     const row = page.locator(`[data-section="fixed-reports"] ~ * #fb-${id}`);
@@ -255,11 +219,9 @@ test.describe("Kolejka zgłoszeń", () => {
 
     await row.getByRole("button", { name: "Zamknij jako załatwione" }).click();
     await expect
-      .poll(
-        async () =>
-          (await db().collection("feedback").doc(id).get()).data()?.adminStatus,
-        { timeout: 30_000 },
-      )
+      .poll(async () => (await readDoc("feedback", id))?.adminStatus, {
+        timeout: 30_000,
+      })
       .toBe("resolved");
   });
 });

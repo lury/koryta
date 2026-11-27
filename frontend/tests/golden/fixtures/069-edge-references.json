@@ -1,0 +1,14 @@
+{
+ "step": 69,
+ "name": "edge references",
+ "request": {
+  "method": "GET",
+  "path": "/api/edges/fakejob1066_0/references",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "id": "fakejob1066_0",
+  "sources": []
+ }
+}

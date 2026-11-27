@@ -1,0 +1,31 @@
+{
+ "step": 269,
+ "name": "admin mail deliveries",
+ "request": {
+  "method": "GET",
+  "path": "/api/admin/mail/deliveries",
+  "as": "admin"
+ },
+ "status": 400,
+ "body": {
+  "data": {
+   "issues": [
+    {
+     "code": "invalid_type",
+     "expected": "string",
+     "message": "Required",
+     "path": [
+      "id"
+     ],
+     "received": "undefined"
+    }
+   ],
+   "name": "ZodError"
+  },
+  "error": true,
+  "message": "[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"id\"\n    ],\n    \"message\": \"Required\"\n  }\n]",
+  "statusCode": 400,
+  "statusMessage": "Validation Error",
+  "url": "http://127.0.0.1:23200/api/admin/mail/deliveries"
+ }
+}

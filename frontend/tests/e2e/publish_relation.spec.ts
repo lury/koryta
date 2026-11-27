@@ -1,16 +1,8 @@
 import { test, expect } from "@playwright/test";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
 import { logIn, USERS } from "./helpers/auth";
+import { deleteDocs, putDoc, readDoc } from "./helpers/db";
 
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
 process.env.GCLOUD_PROJECT = "demo-koryta-pl";
-
-const app =
-  getApps().length === 0
-    ? initializeApp({ projectId: "demo-koryta-pl" })
-    : getApp();
-const db = getFirestore(app, "koryta-pl");
 
 /** A stamp per run, so a rerun never collides with the last one and the suite's
  * `fullyParallel` workers never read each other's fixtures. */
@@ -44,8 +36,6 @@ const edges = {
  * relation already published by the previous attempt.
  */
 async function seed() {
-  const batch = db.batch();
-
   const page = (name: string, published: boolean) => ({
     name,
     type: "person",
@@ -54,35 +44,24 @@ async function seed() {
     stats: { isApproved: published, nodeGroupSize: 1 },
   });
 
-  batch.set(
-    db.collection("nodes").doc(ids.friend),
-    page(`Publikowany Znajomy ${stamp}`, true),
-  );
-  batch.set(
-    db.collection("nodes").doc(ids.other),
-    page(`Druga Strona ${stamp}`, true),
-  );
-  batch.set(
-    db.collection("nodes").doc(ids.draft),
-    page(`Szkic Osoby ${stamp}`, false),
-  );
+  await putDoc("nodes", ids.friend, page(`Publikowany Znajomy ${stamp}`, true));
+  await putDoc("nodes", ids.other, page(`Druga Strona ${stamp}`, true));
+  await putDoc("nodes", ids.draft, page(`Szkic Osoby ${stamp}`, false));
 
-  batch.set(db.collection("edges").doc(edges.friendship), {
+  await putDoc("edges", edges.friendship, {
     source: ids.friend,
     target: ids.other,
     type: "connection",
     name: `znajomosc-${stamp}`,
     published: false,
   });
-  batch.set(db.collection("edges").doc(edges.toDraft), {
+  await putDoc("edges", edges.toDraft, {
     source: ids.friend,
     target: ids.draft,
     type: "connection",
     name: `mentor-${stamp}`,
     published: false,
   });
-
-  await batch.commit();
 }
 
 /** Publishing a relation from the row that draws it.
@@ -98,14 +77,12 @@ test.describe("Publishing a relation", () => {
   });
 
   test.afterAll(async () => {
-    const batch = db.batch();
     for (const id of Object.values(ids)) {
-      batch.delete(db.collection("nodes").doc(id));
+      await deleteDocs("nodes", [id]);
     }
     for (const id of Object.values(edges)) {
-      batch.delete(db.collection("edges").doc(id));
+      await deleteDocs("edges", [id]);
     }
-    await batch.commit();
   });
 
   test("an admin publishes one from the row, and only where it may be", async ({
@@ -138,8 +115,8 @@ test.describe("Publishing a relation", () => {
     // other.
     await expect(live).not.toContainText("szkic", { timeout: 30_000 });
     await expect(async () => {
-      const stored = await db.collection("edges").doc(edges.friendship).get();
-      expect(stored.get("published")).toBe(true);
+      const stored = await readDoc("edges", edges.friendship);
+      expect(stored?.published).toBe(true);
     }).toPass({ timeout: 30_000 });
 
     // Still gone after a reload, which reads the relation back rather than

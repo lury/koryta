@@ -1,0 +1,19 @@
+{
+ "step": 287,
+ "name": "edge delete",
+ "request": {
+  "method": "POST",
+  "path": "/api/edges/delete",
+  "as": "admin",
+  "body": {
+   "edge_id": "fakejob1066_0",
+   "reason": "Duplikat"
+  }
+ },
+ "status": 200,
+ "body": {
+  "deleted": true,
+  "edge_id": "fakejob1066_0",
+  "revision_id": "<id>"
+ }
+}

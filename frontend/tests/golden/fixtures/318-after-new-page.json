@@ -1,0 +1,51 @@
+{
+ "step": 318,
+ "name": "after: new page",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes/<id>",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "node": {
+   "content": "Nowa.",
+   "content_changed_at": "<now>",
+   "id": "<id>",
+   "name": "Nowa Osoba Wzorca",
+   "published": true,
+   "revision_id": "revisions/<id>",
+   "revisions": {
+    "has_unapproved": false,
+    "latest_id": "<id>",
+    "latest_time": "<now>",
+    "total": 1
+   },
+   "stats": {
+    "edges": {
+     "approved": {
+      "currentlyEmployed": false,
+      "currentlyEmployedTargetNodeIds": [],
+      "elections": [],
+      "experienceMonths": 0,
+      "latestEmploymentStart": null,
+      "seatNodeIds": [],
+      "targetNodeIds": []
+     },
+     "hiddenTargets": 0
+    },
+    "factsCount": 0,
+    "isApproved": true,
+    "nodeGroupSize": 0,
+    "notesCount": 0,
+    "queueTier": 0,
+    "votes": {
+     "humanVoted": false,
+     "interesting": 0,
+     "quality": 0
+    }
+   },
+   "type": "person"
+  }
+ }
+}

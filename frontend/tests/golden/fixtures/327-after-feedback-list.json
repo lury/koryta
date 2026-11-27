@@ -1,0 +1,39 @@
+{
+ "step": 327,
+ "name": "after: feedback list",
+ "request": {
+  "method": "GET",
+  "path": "/api/feedback/list?limit=20",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "feedback": [
+   {
+    "adminStatus": "new",
+    "context": {
+     "route": "/",
+     "userAgent": "node"
+    },
+    "createdAt": "<now>",
+    "id": "<id>",
+    "kind": "bug",
+    "message": "Wzorcowe zgłoszenie.",
+    "userUid": "test-user"
+   },
+   {
+    "adminStatus": "new",
+    "contact": "ktos@example.test",
+    "context": {
+     "route": "/eksploruj",
+     "userAgent": "node"
+    },
+    "createdAt": "<now>",
+    "id": "<id>",
+    "kind": "idea",
+    "message": "Bez konta."
+   }
+  ],
+  "openTruncated": false
+ }
+}

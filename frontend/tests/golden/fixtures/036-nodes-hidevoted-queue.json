@@ -1,0 +1,14 @@
+{
+ "step": 36,
+ "name": "nodes hideVoted queue",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes?type=person&category=szpitale&currentlyEmployed=selected&hideVoted=no_votes&visibility=private&limit=20",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "nodes": {},
+  "total": 0
+ }
+}

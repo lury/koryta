@@ -1,0 +1,30 @@
+{
+ "step": 49,
+ "name": "blog",
+ "request": {
+  "method": "GET",
+  "path": "/api/blog",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": [
+  {
+   "authors": [
+    "Zespół Koryta.pl"
+   ],
+   "date": "2026-11-15",
+   "description": "Data urodzenia z oświadczenia majątkowego mówi, czy samorządowiec z wyborów i członek zarządu z KRS to ta sama osoba. Spodziewamy się opublikować tym sposobem 3584 samorządowców.",
+   "draft": false,
+   "image": null,
+   "path": "/blog/sprawdzamy-samorzadowcow",
+   "readingMinutes": 2,
+   "slug": "sprawdzamy-samorzadowcow",
+   "tags": [
+    "oświadczenia majątkowe",
+    "samorząd",
+    "metoda"
+   ],
+   "title": "Jak sprawdzamy samorządowców w oświadczeniach majątkowych"
+  }
+ ]
+}

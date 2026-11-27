@@ -1,9 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import {
-  identify,
-  listNewAdmins,
-  readPublicProfiles,
-} from "../../../server/utils/contributors";
+import { identify, listNewAdmins } from "../../../server/utils/contributors";
 
 const { mockGetUsers, mockListUsers } = vi.hoisted(() => ({
   mockGetUsers: vi.fn(),
@@ -13,25 +9,6 @@ const { mockGetUsers, mockListUsers } = vi.hoisted(() => ({
 vi.mock("firebase-admin/auth", () => ({
   getAuth: () => ({ getUsers: mockGetUsers, listUsers: mockListUsers }),
 }));
-
-type Ref = { collection: string; id: string };
-
-/** Just enough of a Firestore for `readPublicProfiles`: `users` documents by
- * id, and a record of every `getAll` call with its read options. */
-function fakeDb(docs: Record<string, Record<string, unknown>>) {
-  const calls: { refs: Ref[]; options: unknown }[] = [];
-  const db = {
-    collection: (collection: string) => ({
-      doc: (id: string): Ref => ({ collection, id }),
-    }),
-    getAll: async (...args: unknown[]) => {
-      const refs = args.slice(0, -1) as Ref[];
-      calls.push({ refs, options: args[args.length - 1] });
-      return refs.map((ref) => ({ id: ref.id, data: () => docs[ref.id] }));
-    },
-  };
-  return { db: db as unknown as FirebaseFirestore.Firestore, calls };
-}
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -88,41 +65,6 @@ describe("identify", () => {
   it("asks nothing for nobody", async () => {
     expect(await identify([])).toEqual({});
     expect(mockGetUsers).not.toHaveBeenCalled();
-  });
-});
-
-describe("readPublicProfiles", () => {
-  it("names only those who turned the setting on", async () => {
-    const { db } = fakeDb({
-      on: { publicProfile: true },
-      off: { publicProfile: false },
-      unset: { newsletter: { recentPeople: true } },
-    });
-
-    expect(
-      await readPublicProfiles(db, ["on", "off", "unset", "gone"]),
-    ).toEqual({ on: true, off: false, unset: false, gone: false });
-  });
-
-  it("reads the one field and nothing else of an owner-writable document", async () => {
-    const { db, calls } = fakeDb({});
-
-    await readPublicProfiles(db, ["a"]);
-
-    expect(calls[0]!.options).toEqual({ fieldMask: ["publicProfile"] });
-  });
-
-  it("reads in chunks, and not at all for nobody", async () => {
-    const { db, calls } = fakeDb({});
-
-    await readPublicProfiles(db, []);
-    expect(calls).toHaveLength(0);
-
-    await readPublicProfiles(
-      db,
-      Array.from({ length: 301 }, (_, i) => `u${i}`),
-    );
-    expect(calls.map((call) => call.refs.length)).toEqual([300, 1]);
   });
 });
 

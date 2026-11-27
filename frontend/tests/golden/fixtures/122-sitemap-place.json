@@ -1,0 +1,5148 @@
+{
+ "step": 122,
+ "name": "sitemap place",
+ "request": {
+  "method": "GET",
+  "path": "/api/_sitemap-urls/place",
+  "as": "user"
+ },
+ "status": 200,
+ "body": [
+  {
+   "lastmod": "2026-02-02T12:00:00.000Z",
+   "loc": "/instytucja/kus-sp-j-sp-z-o-o-fakeplace0"
+  },
+  {
+   "lastmod": "2026-07-04T12:00:00.000Z",
+   "loc": "/instytucja/zak-z-o-o-sp-z-o-o-fakeplace1"
+  },
+  {
+   "lastmod": "2026-05-22T12:00:00.000Z",
+   "loc": "/instytucja/zietek-sp-k-sp-z-o-o-fakeplace10"
+  },
+  {
+   "lastmod": "2025-10-17T12:00:00.000Z",
+   "loc": "/instytucja/bakowski-ska-sp-z-o-o-fakeplace100"
+  },
+  {
+   "lastmod": "2026-04-16T12:00:00.000Z",
+   "loc": "/instytucja/rosa-maciejewski-and-mlynarczyk-sp-z-o-o-fakeplace1000"
+  },
+  {
+   "lastmod": "2025-11-25T12:00:00.000Z",
+   "loc": "/instytucja/kowalik-s-a-sp-z-o-o-fakeplace1001"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/szczepanik-stefaniak-and-zagorski-sp-z-o-o-fakeplace1002"
+  },
+  {
+   "lastmod": "2025-10-03T12:00:00.000Z",
+   "loc": "/instytucja/klimek-maslowski-and-malec-sp-z-o-o-fakeplace1003"
+  },
+  {
+   "lastmod": "2026-10-17T12:00:00.000Z",
+   "loc": "/instytucja/michalek-paszkowski-and-szydlowski-sp-z-o-o-fakeplace1004"
+  },
+  {
+   "lastmod": "2025-11-06T12:00:00.000Z",
+   "loc": "/instytucja/kasprzak-karas-sp-z-o-o-fakeplace1005"
+  },
+  {
+   "lastmod": "2026-03-24T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-colonialism-w-orzesze-fakeplace1006"
+  },
+  {
+   "lastmod": "2026-03-11T12:00:00.000Z",
+   "loc": "/instytucja/pajak-rusin-sp-z-o-o-fakeplace1007"
+  },
+  {
+   "lastmod": "2026-07-30T12:00:00.000Z",
+   "loc": "/instytucja/serafin-augustyniak-sp-z-o-o-fakeplace1008"
+  },
+  {
+   "lastmod": "2025-07-08T12:00:00.000Z",
+   "loc": "/instytucja/walkowiak-kaczynski-and-stolarski-sp-z-o-o-fakeplace1009"
+  },
+  {
+   "lastmod": "2025-12-17T12:00:00.000Z",
+   "loc": "/instytucja/lukasiewicz-niewiadomski-and-plonka-sp-z-o-o-fakeplace101"
+  },
+  {
+   "lastmod": "2026-05-22T12:00:00.000Z",
+   "loc": "/instytucja/rybicki-prokop-sp-z-o-o-fakeplace1010"
+  },
+  {
+   "lastmod": "2026-02-28T12:00:00.000Z",
+   "loc": "/instytucja/rybicki-bogucki-sp-z-o-o-fakeplace1011"
+  },
+  {
+   "lastmod": "2026-05-26T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-miejska-gorka-sp-z-o-o-fakeplace1012"
+  },
+  {
+   "lastmod": "2025-08-06T12:00:00.000Z",
+   "loc": "/instytucja/czech-s-c-repellendus-eius-officiis-harum-est-nemo-ipsa-repellendus-dolores-ipsam-unde-iusto-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace1013"
+  },
+  {
+   "lastmod": "2025-06-21T12:00:00.000Z",
+   "loc": "/instytucja/kowalewski-wolski-sp-z-o-o-fakeplace1014"
+  },
+  {
+   "lastmod": "2026-01-23T12:00:00.000Z",
+   "loc": "/instytucja/szczepaniak-mikolajczak-sp-z-o-o-fakeplace1015"
+  },
+  {
+   "lastmod": "2026-09-07T12:00:00.000Z",
+   "loc": "/instytucja/czyzewski-sp-p-sp-z-o-o-fakeplace1016"
+  },
+  {
+   "lastmod": "2025-06-10T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-plock-sp-z-o-o-fakeplace1017"
+  },
+  {
+   "lastmod": "2026-02-18T12:00:00.000Z",
+   "loc": "/instytucja/tarnowski-sokolowski-and-rybicki-sp-z-o-o-fakeplace1018"
+  },
+  {
+   "lastmod": "2026-04-03T12:00:00.000Z",
+   "loc": "/instytucja/kisiel-lasota-sp-z-o-o-fakeplace1019"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/kasperek-gruszczynski-and-adamski-sp-z-o-o-fakeplace102"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/chrzanowski-adamski-sp-z-o-o-fakeplace1020"
+  },
+  {
+   "lastmod": "2025-07-17T12:00:00.000Z",
+   "loc": "/instytucja/buczynski-sp-p-sp-z-o-o-fakeplace1021"
+  },
+  {
+   "lastmod": "2026-05-26T12:00:00.000Z",
+   "loc": "/instytucja/podgorski-ska-sp-z-o-o-fakeplace1022"
+  },
+  {
+   "lastmod": "2026-10-13T12:00:00.000Z",
+   "loc": "/instytucja/andrzejczak-grzyb-sp-z-o-o-fakeplace1023"
+  },
+  {
+   "lastmod": "2025-12-29T12:00:00.000Z",
+   "loc": "/instytucja/sliwinski-sosnowski-and-jurkowski-sp-z-o-o-fakeplace1024"
+  },
+  {
+   "lastmod": "2026-02-09T12:00:00.000Z",
+   "loc": "/instytucja/debski-majchrzak-and-rogalski-sp-z-o-o-fakeplace1025"
+  },
+  {
+   "lastmod": "2026-01-23T12:00:00.000Z",
+   "loc": "/instytucja/kowalik-sp-k-sp-z-o-o-fakeplace1026"
+  },
+  {
+   "lastmod": "2026-03-10T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-irena-szymanski-w-sokolow-malopolski-fakeplace1027"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/kujawski-slusarczyk-and-balcerzak-sp-z-o-o-fakeplace1028"
+  },
+  {
+   "lastmod": "2026-04-18T12:00:00.000Z",
+   "loc": "/instytucja/szwed-baranski-sp-z-o-o-fakeplace1029"
+  },
+  {
+   "lastmod": "2025-12-04T12:00:00.000Z",
+   "loc": "/instytucja/kurowski-gora-sp-z-o-o-fakeplace103"
+  },
+  {
+   "lastmod": "2025-07-23T12:00:00.000Z",
+   "loc": "/instytucja/grzegorczyk-sp-j-sp-z-o-o-fakeplace1030"
+  },
+  {
+   "lastmod": "2025-12-12T12:00:00.000Z",
+   "loc": "/instytucja/pietrzyk-s-c-sp-z-o-o-fakeplace1031"
+  },
+  {
+   "lastmod": "2026-04-26T12:00:00.000Z",
+   "loc": "/instytucja/kwiecinski-tomala-and-biernat-sp-z-o-o-fakeplace1032"
+  },
+  {
+   "lastmod": "2025-07-23T12:00:00.000Z",
+   "loc": "/instytucja/wrobel-majka-and-filipiak-sp-z-o-o-fakeplace1033"
+  },
+  {
+   "lastmod": "2026-09-04T12:00:00.000Z",
+   "loc": "/instytucja/owczarek-piekarski-and-filipek-sp-z-o-o-fakeplace1034"
+  },
+  {
+   "lastmod": "2025-12-01T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-chorzow-fakeplace1035"
+  },
+  {
+   "lastmod": "2026-09-28T12:00:00.000Z",
+   "loc": "/instytucja/drozd-broda-sp-z-o-o-fakeplace1036"
+  },
+  {
+   "lastmod": "2026-06-06T12:00:00.000Z",
+   "loc": "/instytucja/burzynski-cichocki-sp-z-o-o-fakeplace1037"
+  },
+  {
+   "lastmod": "2026-01-17T12:00:00.000Z",
+   "loc": "/instytucja/mrozek-prokop-sp-z-o-o-fakeplace1038"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/nowaczyk-pawlak-sp-z-o-o-fakeplace1039"
+  },
+  {
+   "lastmod": "2025-11-20T12:00:00.000Z",
+   "loc": "/instytucja/bielak-sp-j-sp-z-o-o-fakeplace104"
+  },
+  {
+   "lastmod": "2026-02-02T12:00:00.000Z",
+   "loc": "/instytucja/kubica-kosowski-sp-z-o-o-fakeplace1040"
+  },
+  {
+   "lastmod": "2026-03-31T12:00:00.000Z",
+   "loc": "/instytucja/lach-milewski-and-rogala-sp-z-o-o-fakeplace1041"
+  },
+  {
+   "lastmod": "2026-06-18T12:00:00.000Z",
+   "loc": "/instytucja/cebula-stawicki-and-napierala-sp-z-o-o-fakeplace1042"
+  },
+  {
+   "lastmod": "2026-02-07T12:00:00.000Z",
+   "loc": "/instytucja/dobrzynski-wilczek-sp-z-o-o-fakeplace1043"
+  },
+  {
+   "lastmod": "2025-09-15T12:00:00.000Z",
+   "loc": "/instytucja/grudzien-jakubiak-and-wos-sp-z-o-o-fakeplace1044"
+  },
+  {
+   "lastmod": "2026-01-15T12:00:00.000Z",
+   "loc": "/instytucja/marszalek-ossowski-and-lipski-sp-z-o-o-fakeplace1045"
+  },
+  {
+   "lastmod": "2026-03-08T12:00:00.000Z",
+   "loc": "/instytucja/czarnecki-s-c-sp-z-o-o-fakeplace1046"
+  },
+  {
+   "lastmod": "2025-09-21T12:00:00.000Z",
+   "loc": "/instytucja/kacprzak-szydlowski-a-quo-cumque-inventore-consectetur-delectus-blanditiis-aliquid-temporibus-veritatis-commodi-voluptas-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace1047"
+  },
+  {
+   "lastmod": "2025-08-28T12:00:00.000Z",
+   "loc": "/instytucja/januszewski-kulinski-sp-z-o-o-fakeplace1048"
+  },
+  {
+   "lastmod": "2025-06-29T12:00:00.000Z",
+   "loc": "/instytucja/marczak-grzegorczyk-and-matysiak-sp-z-o-o-fakeplace1049"
+  },
+  {
+   "lastmod": "2025-09-22T12:00:00.000Z",
+   "loc": "/instytucja/rosinski-podgorski-sp-z-o-o-fakeplace105"
+  },
+  {
+   "lastmod": "2025-10-02T12:00:00.000Z",
+   "loc": "/instytucja/urbanski-kubiak-and-gorka-sp-z-o-o-fakeplace1050"
+  },
+  {
+   "lastmod": "2026-03-08T12:00:00.000Z",
+   "loc": "/instytucja/pietruszka-s-a-sp-z-o-o-fakeplace1051"
+  },
+  {
+   "lastmod": "2025-12-06T12:00:00.000Z",
+   "loc": "/instytucja/zagorski-ska-sp-z-o-o-fakeplace1052"
+  },
+  {
+   "lastmod": "2026-07-27T12:00:00.000Z",
+   "loc": "/instytucja/dominiak-wojtczak-and-szczepaniak-sp-z-o-o-fakeplace1053"
+  },
+  {
+   "lastmod": "2026-07-15T12:00:00.000Z",
+   "loc": "/instytucja/chudzik-s-a-sp-z-o-o-fakeplace1054"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/wegrzyn-wojcicki-sp-z-o-o-fakeplace1055"
+  },
+  {
+   "lastmod": "2025-08-01T12:00:00.000Z",
+   "loc": "/instytucja/rusin-ciesla-sp-z-o-o-fakeplace1056"
+  },
+  {
+   "lastmod": "2026-05-04T12:00:00.000Z",
+   "loc": "/instytucja/kosinski-bartnik-sp-z-o-o-fakeplace1057"
+  },
+  {
+   "lastmod": "2026-05-19T12:00:00.000Z",
+   "loc": "/instytucja/lukaszewski-molenda-and-madej-necessitatibus-assumenda-dolores-commodi-impedit-maiores-a-necessitatibus-quia-voluptates-vero-voluptas-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace1058"
+  },
+  {
+   "lastmod": "2026-07-24T12:00:00.000Z",
+   "loc": "/instytucja/sienkiewicz-czechowski-sp-z-o-o-fakeplace1059"
+  },
+  {
+   "lastmod": "2025-09-23T12:00:00.000Z",
+   "loc": "/instytucja/orzechowski-sp-k-sp-z-o-o-fakeplace106"
+  },
+  {
+   "lastmod": "2026-09-14T12:00:00.000Z",
+   "loc": "/instytucja/wolski-tomczak-sp-z-o-o-fakeplace1060"
+  },
+  {
+   "lastmod": "2026-05-02T12:00:00.000Z",
+   "loc": "/instytucja/adamus-lesniewski-and-krakowiak-sp-z-o-o-fakeplace1061"
+  },
+  {
+   "lastmod": "2025-06-13T12:00:00.000Z",
+   "loc": "/instytucja/stanislawski-motyka-and-zuk-sp-z-o-o-fakeplace1062"
+  },
+  {
+   "lastmod": "2026-09-27T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-boguszow-gorce-sp-z-o-o-fakeplace1063"
+  },
+  {
+   "lastmod": "2026-09-01T12:00:00.000Z",
+   "loc": "/instytucja/debski-skiba-sp-z-o-o-fakeplace1064"
+  },
+  {
+   "lastmod": "2026-04-20T12:00:00.000Z",
+   "loc": "/instytucja/karczewski-socha-and-pawlowski-sp-z-o-o-fakeplace1065"
+  },
+  {
+   "lastmod": "2026-05-29T12:00:00.000Z",
+   "loc": "/instytucja/bartosik-wegrzyn-sp-z-o-o-fakeplace1066"
+  },
+  {
+   "lastmod": "2026-07-25T12:00:00.000Z",
+   "loc": "/instytucja/kruszewski-wasiak-sp-z-o-o-fakeplace1067"
+  },
+  {
+   "lastmod": "2026-06-20T12:00:00.000Z",
+   "loc": "/instytucja/stachura-kulinski-and-koziol-sp-z-o-o-fakeplace1068"
+  },
+  {
+   "lastmod": "2026-01-27T12:00:00.000Z",
+   "loc": "/instytucja/rak-urban-and-tkaczyk-sp-z-o-o-fakeplace1069"
+  },
+  {
+   "lastmod": "2025-12-11T12:00:00.000Z",
+   "loc": "/instytucja/borek-majchrzak-sp-z-o-o-fakeplace107"
+  },
+  {
+   "lastmod": "2026-03-24T12:00:00.000Z",
+   "loc": "/instytucja/pajak-szczepaniak-sp-z-o-o-fakeplace1070"
+  },
+  {
+   "lastmod": "2026-04-14T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-inowroclaw-fakeplace1071"
+  },
+  {
+   "lastmod": "2026-09-29T12:00:00.000Z",
+   "loc": "/instytucja/zurawski-sp-k-sp-z-o-o-fakeplace1072"
+  },
+  {
+   "lastmod": "2025-06-01T12:00:00.000Z",
+   "loc": "/instytucja/szczesny-gawron-sp-z-o-o-fakeplace1073"
+  },
+  {
+   "lastmod": "2026-08-13T12:00:00.000Z",
+   "loc": "/instytucja/borkowski-kalinowski-sp-z-o-o-fakeplace1074"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/michalek-ska-sp-z-o-o-fakeplace1075"
+  },
+  {
+   "lastmod": "2026-08-31T12:00:00.000Z",
+   "loc": "/instytucja/jedrzejczak-slusarczyk-sp-z-o-o-fakeplace1076"
+  },
+  {
+   "lastmod": "2026-09-13T12:00:00.000Z",
+   "loc": "/instytucja/lipinski-sp-j-sp-z-o-o-fakeplace1077"
+  },
+  {
+   "lastmod": "2026-09-24T12:00:00.000Z",
+   "loc": "/instytucja/sobczak-z-o-o-sp-z-o-o-fakeplace1078"
+  },
+  {
+   "lastmod": "2026-09-30T12:00:00.000Z",
+   "loc": "/instytucja/kosowski-furman-sp-z-o-o-fakeplace1079"
+  },
+  {
+   "lastmod": "2026-06-08T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-greta-sobieraj-w-baranow-sandomierski-fakeplace108"
+  },
+  {
+   "lastmod": "2025-07-16T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-jedlicze-fakeplace1080"
+  },
+  {
+   "lastmod": "2026-04-25T12:00:00.000Z",
+   "loc": "/instytucja/adamczak-z-o-o-sp-z-o-o-fakeplace1081"
+  },
+  {
+   "lastmod": "2026-07-02T12:00:00.000Z",
+   "loc": "/instytucja/stawicki-skibinski-sp-z-o-o-fakeplace1082"
+  },
+  {
+   "lastmod": "2026-09-28T12:00:00.000Z",
+   "loc": "/instytucja/kulesza-sp-j-sp-z-o-o-fakeplace1083"
+  },
+  {
+   "lastmod": "2026-07-27T12:00:00.000Z",
+   "loc": "/instytucja/herman-sp-p-sp-z-o-o-fakeplace1084"
+  },
+  {
+   "lastmod": "2026-03-18T12:00:00.000Z",
+   "loc": "/instytucja/adamus-s-c-sp-z-o-o-fakeplace1085"
+  },
+  {
+   "lastmod": "2025-08-25T12:00:00.000Z",
+   "loc": "/instytucja/pieczek-sp-k-sp-z-o-o-fakeplace1086"
+  },
+  {
+   "lastmod": "2025-06-24T12:00:00.000Z",
+   "loc": "/instytucja/kowalski-sp-j-sp-z-o-o-fakeplace1087"
+  },
+  {
+   "lastmod": "2026-04-23T12:00:00.000Z",
+   "loc": "/instytucja/slowinski-mika-sp-z-o-o-fakeplace1088"
+  },
+  {
+   "lastmod": "2026-06-09T12:00:00.000Z",
+   "loc": "/instytucja/jezierski-sobczak-and-czapla-sp-z-o-o-fakeplace1089"
+  },
+  {
+   "lastmod": "2025-09-06T12:00:00.000Z",
+   "loc": "/instytucja/kaniewski-misiak-and-bielawski-sp-z-o-o-fakeplace109"
+  },
+  {
+   "lastmod": "2026-06-26T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-yin-w-sierakow-fakeplace1090"
+  },
+  {
+   "lastmod": "2025-12-07T12:00:00.000Z",
+   "loc": "/instytucja/palacz-wrobel-sp-z-o-o-fakeplace1091"
+  },
+  {
+   "lastmod": "2026-09-26T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-igor-niemiec-w-kowary-fakeplace1092"
+  },
+  {
+   "lastmod": "2026-05-09T12:00:00.000Z",
+   "loc": "/instytucja/wasowski-czechowski-and-kolodziejczyk-sp-z-o-o-fakeplace1093"
+  },
+  {
+   "lastmod": "2026-07-28T12:00:00.000Z",
+   "loc": "/instytucja/kawa-golab-and-jurek-sp-z-o-o-fakeplace1094"
+  },
+  {
+   "lastmod": "2025-07-23T12:00:00.000Z",
+   "loc": "/instytucja/niedziela-strzelczyk-and-sobczak-sp-z-o-o-fakeplace1095"
+  },
+  {
+   "lastmod": "2025-09-07T12:00:00.000Z",
+   "loc": "/instytucja/kaluza-trzcinski-sp-z-o-o-fakeplace1096"
+  },
+  {
+   "lastmod": "2026-05-16T12:00:00.000Z",
+   "loc": "/instytucja/janus-gorski-sp-z-o-o-fakeplace1097"
+  },
+  {
+   "lastmod": "2026-07-29T12:00:00.000Z",
+   "loc": "/instytucja/dobrowolski-domanski-sp-z-o-o-fakeplace1098"
+  },
+  {
+   "lastmod": "2026-06-05T12:00:00.000Z",
+   "loc": "/instytucja/lech-wysocki-sp-z-o-o-fakeplace1099"
+  },
+  {
+   "lastmod": "2026-10-02T12:00:00.000Z",
+   "loc": "/instytucja/pilch-sp-j-sp-z-o-o-fakeplace11"
+  },
+  {
+   "lastmod": "2026-05-14T12:00:00.000Z",
+   "loc": "/instytucja/sowa-ciesla-sp-z-o-o-fakeplace110"
+  },
+  {
+   "lastmod": "2026-07-16T12:00:00.000Z",
+   "loc": "/instytucja/pajak-maslanka-and-dobrowolski-sp-z-o-o-fakeplace1100"
+  },
+  {
+   "lastmod": "2026-09-28T12:00:00.000Z",
+   "loc": "/instytucja/kopec-klimek-and-malicki-sp-z-o-o-fakeplace1101"
+  },
+  {
+   "lastmod": "2025-12-10T12:00:00.000Z",
+   "loc": "/instytucja/kowalik-sp-p-sp-z-o-o-fakeplace1102"
+  },
+  {
+   "lastmod": "2026-09-24T12:00:00.000Z",
+   "loc": "/instytucja/pawlicki-fijalkowski-and-kaluza-sp-z-o-o-fakeplace1103"
+  },
+  {
+   "lastmod": "2026-01-03T12:00:00.000Z",
+   "loc": "/instytucja/hajduk-wilczynski-sp-z-o-o-fakeplace1104"
+  },
+  {
+   "lastmod": "2026-07-30T12:00:00.000Z",
+   "loc": "/instytucja/lesiak-wasowski-sp-z-o-o-fakeplace1105"
+  },
+  {
+   "lastmod": "2025-08-26T12:00:00.000Z",
+   "loc": "/instytucja/jedrzejczak-sienkiewicz-sp-z-o-o-fakeplace1106"
+  },
+  {
+   "lastmod": "2026-10-15T12:00:00.000Z",
+   "loc": "/instytucja/jagiello-gruszka-and-nowicki-sp-z-o-o-fakeplace1107"
+  },
+  {
+   "lastmod": "2026-05-15T12:00:00.000Z",
+   "loc": "/instytucja/murawski-kopczynski-sp-z-o-o-fakeplace1108"
+  },
+  {
+   "lastmod": "2026-08-06T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-gryfino-sp-z-o-o-fakeplace1109"
+  },
+  {
+   "lastmod": "2026-09-15T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-bytom-sp-z-o-o-fakeplace111"
+  },
+  {
+   "lastmod": "2026-09-16T12:00:00.000Z",
+   "loc": "/instytucja/wisniewski-wojciechowski-and-chmiel-sp-z-o-o-fakeplace1110"
+  },
+  {
+   "lastmod": "2025-07-02T12:00:00.000Z",
+   "loc": "/instytucja/guzik-ska-sp-z-o-o-fakeplace1111"
+  },
+  {
+   "lastmod": "2026-04-03T12:00:00.000Z",
+   "loc": "/instytucja/ziolkowski-mroczkowski-and-zajac-sp-z-o-o-fakeplace1112"
+  },
+  {
+   "lastmod": "2025-08-22T12:00:00.000Z",
+   "loc": "/instytucja/kaczmarski-z-o-o-sp-z-o-o-fakeplace1113"
+  },
+  {
+   "lastmod": "2025-08-18T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-chloe-prus-w-choroszcz-fakeplace1114"
+  },
+  {
+   "lastmod": "2026-07-24T12:00:00.000Z",
+   "loc": "/instytucja/makowski-krakowiak-and-malec-sp-z-o-o-fakeplace1115"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/janowski-aleksandrowicz-and-zurawski-sp-z-o-o-fakeplace1116"
+  },
+  {
+   "lastmod": "2026-03-21T12:00:00.000Z",
+   "loc": "/instytucja/drozdz-sobieraj-sp-z-o-o-fakeplace1117"
+  },
+  {
+   "lastmod": "2026-01-08T12:00:00.000Z",
+   "loc": "/instytucja/rybarczyk-s-c-sp-z-o-o-fakeplace1118"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/stawicki-domanski-and-wojtasik-sp-z-o-o-fakeplace1119"
+  },
+  {
+   "lastmod": "2026-04-24T12:00:00.000Z",
+   "loc": "/instytucja/glowacki-s-a-sp-z-o-o-fakeplace112"
+  },
+  {
+   "lastmod": "2026-05-29T12:00:00.000Z",
+   "loc": "/instytucja/chudzik-lisowski-sp-z-o-o-fakeplace1120"
+  },
+  {
+   "lastmod": "2025-07-01T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-wlodzimierz-tomala-w-zgierz-fakeplace1121"
+  },
+  {
+   "lastmod": "2026-06-25T12:00:00.000Z",
+   "loc": "/instytucja/gorniak-s-a-sp-z-o-o-fakeplace1122"
+  },
+  {
+   "lastmod": "2026-01-23T12:00:00.000Z",
+   "loc": "/instytucja/jozwiak-stachowicz-and-nawrot-sp-z-o-o-fakeplace1123"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/rosiak-lasota-and-rozycki-sp-z-o-o-fakeplace1124"
+  },
+  {
+   "lastmod": "2026-10-11T12:00:00.000Z",
+   "loc": "/instytucja/guzik-sp-p-sp-z-o-o-fakeplace1125"
+  },
+  {
+   "lastmod": "2025-12-12T12:00:00.000Z",
+   "loc": "/instytucja/grzeskowiak-gutowski-and-adamiak-sp-z-o-o-fakeplace1126"
+  },
+  {
+   "lastmod": "2025-12-26T12:00:00.000Z",
+   "loc": "/instytucja/konieczny-pietras-and-koziol-sp-z-o-o-fakeplace1127"
+  },
+  {
+   "lastmod": "2026-01-02T12:00:00.000Z",
+   "loc": "/instytucja/lukaszewski-sp-k-sp-z-o-o-fakeplace1128"
+  },
+  {
+   "lastmod": "2025-11-30T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-luiza-lisiecki-w-sokolow-podlaski-fakeplace1129"
+  },
+  {
+   "lastmod": "2026-05-14T12:00:00.000Z",
+   "loc": "/instytucja/janiak-radecki-and-lapinski-sp-z-o-o-fakeplace113"
+  },
+  {
+   "lastmod": "2026-06-21T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-laurencja-jakubowski-w-goscino-fakeplace1130"
+  },
+  {
+   "lastmod": "2026-03-17T12:00:00.000Z",
+   "loc": "/instytucja/szczygiel-borowski-and-ratajczak-sp-z-o-o-fakeplace1131"
+  },
+  {
+   "lastmod": "2026-09-24T12:00:00.000Z",
+   "loc": "/instytucja/dobosz-kucinski-and-skrzypek-sp-z-o-o-fakeplace1132"
+  },
+  {
+   "lastmod": "2026-02-20T12:00:00.000Z",
+   "loc": "/instytucja/koziol-zygmunt-and-marchewka-sp-z-o-o-fakeplace1133"
+  },
+  {
+   "lastmod": "2025-12-17T12:00:00.000Z",
+   "loc": "/instytucja/lukasik-kania-and-bielak-sp-z-o-o-fakeplace1134"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/tomczyk-janik-sp-z-o-o-fakeplace1135"
+  },
+  {
+   "lastmod": "2025-11-23T12:00:00.000Z",
+   "loc": "/instytucja/gruszczynski-pawlicki-sp-z-o-o-fakeplace1136"
+  },
+  {
+   "lastmod": "2026-08-16T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-section-w-lubsko-fakeplace1137"
+  },
+  {
+   "lastmod": "2025-11-14T12:00:00.000Z",
+   "loc": "/instytucja/filipowicz-bogusz-sp-z-o-o-fakeplace1138"
+  },
+  {
+   "lastmod": "2025-10-06T12:00:00.000Z",
+   "loc": "/instytucja/urbanczyk-kalisz-sp-z-o-o-fakeplace1139"
+  },
+  {
+   "lastmod": "2026-10-12T12:00:00.000Z",
+   "loc": "/instytucja/rakowski-sp-k-sp-z-o-o-fakeplace114"
+  },
+  {
+   "lastmod": "2026-01-06T12:00:00.000Z",
+   "loc": "/instytucja/luczak-duda-sp-z-o-o-fakeplace1140"
+  },
+  {
+   "lastmod": "2026-02-28T12:00:00.000Z",
+   "loc": "/instytucja/jurkiewicz-rybak-and-jozwiak-sp-z-o-o-fakeplace1141"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/wasilewski-szczesny-sp-z-o-o-fakeplace1142"
+  },
+  {
+   "lastmod": "2026-08-10T12:00:00.000Z",
+   "loc": "/instytucja/witkowski-szczesny-sp-z-o-o-fakeplace1143"
+  },
+  {
+   "lastmod": "2025-11-08T12:00:00.000Z",
+   "loc": "/instytucja/fijalkowski-rutkowski-sp-z-o-o-fakeplace1144"
+  },
+  {
+   "lastmod": "2026-04-28T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-kwidzyn-fakeplace1145"
+  },
+  {
+   "lastmod": "2026-10-14T12:00:00.000Z",
+   "loc": "/instytucja/ksiazek-gil-and-pietras-sp-z-o-o-fakeplace1146"
+  },
+  {
+   "lastmod": "2026-06-18T12:00:00.000Z",
+   "loc": "/instytucja/ciszewski-dlugosz-sp-z-o-o-fakeplace1147"
+  },
+  {
+   "lastmod": "2025-11-13T12:00:00.000Z",
+   "loc": "/instytucja/bujak-sp-j-sp-z-o-o-fakeplace1148"
+  },
+  {
+   "lastmod": "2026-02-25T12:00:00.000Z",
+   "loc": "/instytucja/skrzypek-radecki-and-stanek-sp-z-o-o-fakeplace1149"
+  },
+  {
+   "lastmod": "2026-02-02T12:00:00.000Z",
+   "loc": "/instytucja/rosinski-czajkowski-and-niedzielski-sp-z-o-o-fakeplace115"
+  },
+  {
+   "lastmod": "2026-08-15T12:00:00.000Z",
+   "loc": "/instytucja/lesniewski-podgorski-and-matuszak-sp-z-o-o-fakeplace1150"
+  },
+  {
+   "lastmod": "2025-09-13T12:00:00.000Z",
+   "loc": "/instytucja/kita-kasprzyk-sp-z-o-o-fakeplace1151"
+  },
+  {
+   "lastmod": "2025-06-10T12:00:00.000Z",
+   "loc": "/instytucja/bieniek-ksiazek-and-kaczor-sp-z-o-o-fakeplace1152"
+  },
+  {
+   "lastmod": "2026-01-13T12:00:00.000Z",
+   "loc": "/instytucja/olszewski-zaremba-and-zielinski-sp-z-o-o-fakeplace1153"
+  },
+  {
+   "lastmod": "2026-01-22T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-izajasz-zurek-w-mszczonow-fakeplace1154"
+  },
+  {
+   "lastmod": "2026-06-26T12:00:00.000Z",
+   "loc": "/instytucja/sienkiewicz-s-c-sp-z-o-o-fakeplace1155"
+  },
+  {
+   "lastmod": "2025-07-30T12:00:00.000Z",
+   "loc": "/instytucja/buczek-skiba-and-czechowski-sp-z-o-o-fakeplace1156"
+  },
+  {
+   "lastmod": "2026-04-26T12:00:00.000Z",
+   "loc": "/instytucja/smolinski-sp-k-sp-z-o-o-fakeplace1157"
+  },
+  {
+   "lastmod": "2025-09-22T12:00:00.000Z",
+   "loc": "/instytucja/gorniak-sp-k-sp-z-o-o-fakeplace1158"
+  },
+  {
+   "lastmod": "2026-04-03T12:00:00.000Z",
+   "loc": "/instytucja/ksiazek-zak-and-cebula-sp-z-o-o-fakeplace1159"
+  },
+  {
+   "lastmod": "2026-01-22T12:00:00.000Z",
+   "loc": "/instytucja/fraczek-szczepanski-sp-z-o-o-fakeplace116"
+  },
+  {
+   "lastmod": "2025-10-09T12:00:00.000Z",
+   "loc": "/instytucja/rosa-s-a-sp-z-o-o-fakeplace1160"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/lukasik-malecki-sp-z-o-o-fakeplace1161"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/trojanowski-paszkowski-sp-z-o-o-fakeplace1162"
+  },
+  {
+   "lastmod": "2026-04-25T12:00:00.000Z",
+   "loc": "/instytucja/kubacki-bielski-and-drabik-sp-z-o-o-fakeplace1163"
+  },
+  {
+   "lastmod": "2026-07-22T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-opole-sp-z-o-o-fakeplace1164"
+  },
+  {
+   "lastmod": "2025-11-19T12:00:00.000Z",
+   "loc": "/instytucja/dziuba-ska-sp-z-o-o-fakeplace1165"
+  },
+  {
+   "lastmod": "2025-07-16T12:00:00.000Z",
+   "loc": "/instytucja/smolinski-motyka-and-wiacek-sp-z-o-o-fakeplace1166"
+  },
+  {
+   "lastmod": "2026-01-19T12:00:00.000Z",
+   "loc": "/instytucja/nawrocki-rosinski-sp-z-o-o-fakeplace1167"
+  },
+  {
+   "lastmod": "2025-11-11T12:00:00.000Z",
+   "loc": "/instytucja/koziol-mika-and-stawicki-sp-z-o-o-fakeplace1168"
+  },
+  {
+   "lastmod": "2025-12-23T12:00:00.000Z",
+   "loc": "/instytucja/maslowski-matusiak-and-piatek-sp-z-o-o-fakeplace1169"
+  },
+  {
+   "lastmod": "2026-08-15T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-parczew-sp-z-o-o-fakeplace117"
+  },
+  {
+   "lastmod": "2025-11-17T12:00:00.000Z",
+   "loc": "/instytucja/wierzbicki-sp-p-sp-z-o-o-fakeplace1170"
+  },
+  {
+   "lastmod": "2025-09-01T12:00:00.000Z",
+   "loc": "/instytucja/stanislawski-kucharczyk-and-zajac-sp-z-o-o-fakeplace1171"
+  },
+  {
+   "lastmod": "2025-12-22T12:00:00.000Z",
+   "loc": "/instytucja/rzepka-paszkowski-and-rosiak-sp-z-o-o-fakeplace1172"
+  },
+  {
+   "lastmod": "2026-05-12T12:00:00.000Z",
+   "loc": "/instytucja/tomczyk-sp-k-sp-z-o-o-fakeplace1173"
+  },
+  {
+   "lastmod": "2025-07-09T12:00:00.000Z",
+   "loc": "/instytucja/czyz-sp-k-sp-z-o-o-fakeplace1174"
+  },
+  {
+   "lastmod": "2026-08-07T12:00:00.000Z",
+   "loc": "/instytucja/jaworski-stasiak-and-mikulski-sp-z-o-o-fakeplace1175"
+  },
+  {
+   "lastmod": "2025-06-26T12:00:00.000Z",
+   "loc": "/instytucja/kujawa-janik-sp-z-o-o-fakeplace1176"
+  },
+  {
+   "lastmod": "2026-01-04T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-epic-w-dabrowa-tarnowska-fakeplace1177"
+  },
+  {
+   "lastmod": "2026-01-23T12:00:00.000Z",
+   "loc": "/instytucja/rak-pawlak-and-urbanczyk-sp-z-o-o-fakeplace1178"
+  },
+  {
+   "lastmod": "2026-04-17T12:00:00.000Z",
+   "loc": "/instytucja/wasowski-ska-sp-z-o-o-fakeplace1179"
+  },
+  {
+   "lastmod": "2025-09-07T12:00:00.000Z",
+   "loc": "/instytucja/kazmierczak-podgorski-sp-z-o-o-fakeplace118"
+  },
+  {
+   "lastmod": "2026-05-17T12:00:00.000Z",
+   "loc": "/instytucja/wilczynski-zareba-and-stolarczyk-sp-z-o-o-fakeplace1180"
+  },
+  {
+   "lastmod": "2025-08-19T12:00:00.000Z",
+   "loc": "/instytucja/kisiel-zagorski-sp-z-o-o-fakeplace1181"
+  },
+  {
+   "lastmod": "2026-06-01T12:00:00.000Z",
+   "loc": "/instytucja/dabrowski-s-c-sp-z-o-o-fakeplace1182"
+  },
+  {
+   "lastmod": "2026-08-22T12:00:00.000Z",
+   "loc": "/instytucja/jaros-sp-k-sp-z-o-o-fakeplace1183"
+  },
+  {
+   "lastmod": "2026-01-23T12:00:00.000Z",
+   "loc": "/instytucja/slusarczyk-ska-sp-z-o-o-fakeplace1184"
+  },
+  {
+   "lastmod": "2026-07-30T12:00:00.000Z",
+   "loc": "/instytucja/witczak-jezierski-and-szwarc-sp-z-o-o-fakeplace1185"
+  },
+  {
+   "lastmod": "2026-05-03T12:00:00.000Z",
+   "loc": "/instytucja/walczak-kulinski-and-zajaczkowski-sp-z-o-o-fakeplace1186"
+  },
+  {
+   "lastmod": "2026-10-11T12:00:00.000Z",
+   "loc": "/instytucja/drzewiecki-florek-sp-z-o-o-fakeplace1187"
+  },
+  {
+   "lastmod": "2026-05-02T12:00:00.000Z",
+   "loc": "/instytucja/dudziak-kmiec-sp-z-o-o-fakeplace1188"
+  },
+  {
+   "lastmod": "2026-02-24T12:00:00.000Z",
+   "loc": "/instytucja/cybulski-miskiewicz-sp-z-o-o-fakeplace1189"
+  },
+  {
+   "lastmod": "2025-08-29T12:00:00.000Z",
+   "loc": "/instytucja/tarnowski-jedrzejczyk-sp-z-o-o-fakeplace119"
+  },
+  {
+   "lastmod": "2026-08-30T12:00:00.000Z",
+   "loc": "/instytucja/przybyl-s-c-sp-z-o-o-fakeplace1190"
+  },
+  {
+   "lastmod": "2025-08-14T12:00:00.000Z",
+   "loc": "/instytucja/janiszewski-dobrowolski-sp-z-o-o-fakeplace1191"
+  },
+  {
+   "lastmod": "2025-12-23T12:00:00.000Z",
+   "loc": "/instytucja/staszewski-miklas-sp-z-o-o-fakeplace1192"
+  },
+  {
+   "lastmod": "2025-06-24T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-step-mother-w-ketrzyn-fakeplace1193"
+  },
+  {
+   "lastmod": "2025-12-22T12:00:00.000Z",
+   "loc": "/instytucja/czarnecki-nowakowski-and-pawlak-sp-z-o-o-fakeplace1194"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/janicki-urban-sp-z-o-o-fakeplace1195"
+  },
+  {
+   "lastmod": "2025-12-15T12:00:00.000Z",
+   "loc": "/instytucja/niedziela-jackowski-sp-z-o-o-fakeplace1196"
+  },
+  {
+   "lastmod": "2025-12-08T12:00:00.000Z",
+   "loc": "/instytucja/piorkowski-wojcik-and-osinski-sp-z-o-o-fakeplace1197"
+  },
+  {
+   "lastmod": "2025-11-19T12:00:00.000Z",
+   "loc": "/instytucja/laskowski-chojnowski-sp-z-o-o-fakeplace1198"
+  },
+  {
+   "lastmod": "2026-09-10T12:00:00.000Z",
+   "loc": "/instytucja/dec-miskiewicz-sp-z-o-o-fakeplace1199"
+  },
+  {
+   "lastmod": "2025-08-02T12:00:00.000Z",
+   "loc": "/instytucja/matusiak-jaworski-sp-z-o-o-fakeplace12"
+  },
+  {
+   "lastmod": "2026-06-03T12:00:00.000Z",
+   "loc": "/instytucja/wojtczak-ska-sp-z-o-o-fakeplace120"
+  },
+  {
+   "lastmod": "2026-03-07T12:00:00.000Z",
+   "loc": "/instytucja/kania-chrzanowski-sp-z-o-o-fakeplace1200"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/szczesna-s-a-sp-z-o-o-fakeplace1201"
+  },
+  {
+   "lastmod": "2026-05-16T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-acquaintance-w-golub-dobrzyn-fakeplace1202"
+  },
+  {
+   "lastmod": "2025-10-15T12:00:00.000Z",
+   "loc": "/instytucja/buczynski-s-a-sp-z-o-o-fakeplace1203"
+  },
+  {
+   "lastmod": "2026-03-28T12:00:00.000Z",
+   "loc": "/instytucja/sieradzki-kulinski-and-banach-sp-z-o-o-fakeplace1204"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/dabkowski-dudziak-sp-z-o-o-fakeplace1205"
+  },
+  {
+   "lastmod": "2025-07-18T12:00:00.000Z",
+   "loc": "/instytucja/kosinski-sp-p-sp-z-o-o-fakeplace1206"
+  },
+  {
+   "lastmod": "2025-08-07T12:00:00.000Z",
+   "loc": "/instytucja/gasior-s-a-sp-z-o-o-fakeplace1207"
+  },
+  {
+   "lastmod": "2025-11-23T12:00:00.000Z",
+   "loc": "/instytucja/szczesna-slowik-and-golebiewski-sp-z-o-o-fakeplace1208"
+  },
+  {
+   "lastmod": "2026-04-11T12:00:00.000Z",
+   "loc": "/instytucja/bielawski-karczewski-and-maliszewski-sp-z-o-o-fakeplace1209"
+  },
+  {
+   "lastmod": "2025-07-26T12:00:00.000Z",
+   "loc": "/instytucja/mikulski-ska-sp-z-o-o-fakeplace121"
+  },
+  {
+   "lastmod": "2026-03-27T12:00:00.000Z",
+   "loc": "/instytucja/krupa-chojnowski-and-radomski-sp-z-o-o-fakeplace1210"
+  },
+  {
+   "lastmod": "2025-07-17T12:00:00.000Z",
+   "loc": "/instytucja/dubiel-karas-and-niedziela-sp-z-o-o-fakeplace1211"
+  },
+  {
+   "lastmod": "2025-09-12T12:00:00.000Z",
+   "loc": "/instytucja/kotowski-z-o-o-sp-z-o-o-fakeplace1212"
+  },
+  {
+   "lastmod": "2026-09-21T12:00:00.000Z",
+   "loc": "/instytucja/lukasiewicz-mikulski-and-lesniak-sp-z-o-o-fakeplace1213"
+  },
+  {
+   "lastmod": "2026-02-11T12:00:00.000Z",
+   "loc": "/instytucja/wiacek-palacz-and-mrozek-sp-z-o-o-fakeplace1214"
+  },
+  {
+   "lastmod": "2026-10-08T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-trick-w-annopol-fakeplace1215"
+  },
+  {
+   "lastmod": "2026-04-19T12:00:00.000Z",
+   "loc": "/instytucja/zakrzewski-sp-j-sp-z-o-o-fakeplace1216"
+  },
+  {
+   "lastmod": "2025-08-01T12:00:00.000Z",
+   "loc": "/instytucja/zajac-rybak-and-piwowarczyk-sp-z-o-o-fakeplace1217"
+  },
+  {
+   "lastmod": "2026-02-07T12:00:00.000Z",
+   "loc": "/instytucja/kolakowski-sp-p-sp-z-o-o-fakeplace1218"
+  },
+  {
+   "lastmod": "2026-08-08T12:00:00.000Z",
+   "loc": "/instytucja/kita-lukasiewicz-and-podgorski-sp-z-o-o-fakeplace1219"
+  },
+  {
+   "lastmod": "2025-08-09T12:00:00.000Z",
+   "loc": "/instytucja/jurek-cholewa-sp-z-o-o-fakeplace122"
+  },
+  {
+   "lastmod": "2026-05-07T12:00:00.000Z",
+   "loc": "/instytucja/pluta-sp-p-sp-z-o-o-fakeplace1220"
+  },
+  {
+   "lastmod": "2026-08-02T12:00:00.000Z",
+   "loc": "/instytucja/stepien-lech-sp-z-o-o-fakeplace1221"
+  },
+  {
+   "lastmod": "2026-07-23T12:00:00.000Z",
+   "loc": "/instytucja/rogalski-krajewski-and-kopec-sp-z-o-o-fakeplace1222"
+  },
+  {
+   "lastmod": "2025-08-31T12:00:00.000Z",
+   "loc": "/instytucja/marszalek-mroczek-sp-z-o-o-fakeplace1223"
+  },
+  {
+   "lastmod": "2026-05-23T12:00:00.000Z",
+   "loc": "/instytucja/sieradzki-michalek-and-janiak-ipsum-rerum-impedit-incidunt-ea-accusantium-adipisci-quo-omnis-neque-numquam-facere-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace1224"
+  },
+  {
+   "lastmod": "2026-03-03T12:00:00.000Z",
+   "loc": "/instytucja/rutkowski-rogala-and-flis-sp-z-o-o-fakeplace1225"
+  },
+  {
+   "lastmod": "2026-02-17T12:00:00.000Z",
+   "loc": "/instytucja/krysiak-s-a-sp-z-o-o-fakeplace1226"
+  },
+  {
+   "lastmod": "2026-09-21T12:00:00.000Z",
+   "loc": "/instytucja/glab-golec-sp-z-o-o-fakeplace1227"
+  },
+  {
+   "lastmod": "2025-11-06T12:00:00.000Z",
+   "loc": "/instytucja/kostrzewa-s-c-sp-z-o-o-fakeplace1228"
+  },
+  {
+   "lastmod": "2025-12-30T12:00:00.000Z",
+   "loc": "/instytucja/twardowski-sp-p-sp-z-o-o-fakeplace1229"
+  },
+  {
+   "lastmod": "2026-01-31T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-wojkowice-fakeplace123"
+  },
+  {
+   "lastmod": "2026-09-24T12:00:00.000Z",
+   "loc": "/instytucja/kubik-kosinski-sp-z-o-o-fakeplace1230"
+  },
+  {
+   "lastmod": "2026-04-20T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-elwira-krzyzanowski-w-rzgow-fakeplace1231"
+  },
+  {
+   "lastmod": "2026-02-11T12:00:00.000Z",
+   "loc": "/instytucja/czyz-kawecki-sp-z-o-o-fakeplace1232"
+  },
+  {
+   "lastmod": "2026-01-04T12:00:00.000Z",
+   "loc": "/instytucja/kopczynski-grzeskowiak-and-adamiak-sp-z-o-o-fakeplace1233"
+  },
+  {
+   "lastmod": "2026-03-30T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-hexagon-w-wasosz-fakeplace1234"
+  },
+  {
+   "lastmod": "2026-10-15T12:00:00.000Z",
+   "loc": "/instytucja/jozwik-burzynski-sp-z-o-o-fakeplace1235"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/marzec-stefaniak-sp-z-o-o-fakeplace1236"
+  },
+  {
+   "lastmod": "2026-08-05T12:00:00.000Z",
+   "loc": "/instytucja/nowaczyk-flis-sp-z-o-o-fakeplace1237"
+  },
+  {
+   "lastmod": "2026-04-09T12:00:00.000Z",
+   "loc": "/instytucja/pajak-ska-sp-z-o-o-fakeplace1238"
+  },
+  {
+   "lastmod": "2025-07-30T12:00:00.000Z",
+   "loc": "/instytucja/drozdz-wolski-sp-z-o-o-fakeplace1239"
+  },
+  {
+   "lastmod": "2026-01-22T12:00:00.000Z",
+   "loc": "/instytucja/stec-wojtasik-sp-z-o-o-fakeplace124"
+  },
+  {
+   "lastmod": "2025-12-15T12:00:00.000Z",
+   "loc": "/instytucja/bozek-kalisz-sp-z-o-o-fakeplace1240"
+  },
+  {
+   "lastmod": "2026-05-26T12:00:00.000Z",
+   "loc": "/instytucja/niewiadomski-z-o-o-sp-z-o-o-fakeplace1241"
+  },
+  {
+   "lastmod": "2025-08-07T12:00:00.000Z",
+   "loc": "/instytucja/matuszak-drabik-sp-z-o-o-fakeplace1242"
+  },
+  {
+   "lastmod": "2026-08-22T12:00:00.000Z",
+   "loc": "/instytucja/glowacki-augustyniak-and-chudzik-sp-z-o-o-fakeplace1243"
+  },
+  {
+   "lastmod": "2025-06-16T12:00:00.000Z",
+   "loc": "/instytucja/makowski-malecki-sp-z-o-o-fakeplace1244"
+  },
+  {
+   "lastmod": "2026-09-14T12:00:00.000Z",
+   "loc": "/instytucja/tokarski-stachowicz-sp-z-o-o-fakeplace1245"
+  },
+  {
+   "lastmod": "2026-03-15T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-roksana-luczak-w-koprzywnica-fakeplace1246"
+  },
+  {
+   "lastmod": "2025-06-28T12:00:00.000Z",
+   "loc": "/instytucja/glab-kalinowski-sp-z-o-o-fakeplace1247"
+  },
+  {
+   "lastmod": "2026-03-14T12:00:00.000Z",
+   "loc": "/instytucja/noga-s-c-sp-z-o-o-fakeplace1248"
+  },
+  {
+   "lastmod": "2026-07-28T12:00:00.000Z",
+   "loc": "/instytucja/konopka-z-o-o-sp-z-o-o-fakeplace1249"
+  },
+  {
+   "lastmod": "2025-12-19T12:00:00.000Z",
+   "loc": "/instytucja/jablonski-rudzki-sp-z-o-o-fakeplace125"
+  },
+  {
+   "lastmod": "2025-10-17T12:00:00.000Z",
+   "loc": "/instytucja/stawicki-sp-k-sp-z-o-o-fakeplace1250"
+  },
+  {
+   "lastmod": "2026-03-27T12:00:00.000Z",
+   "loc": "/instytucja/nowakowski-stec-sp-z-o-o-fakeplace1251"
+  },
+  {
+   "lastmod": "2026-10-03T12:00:00.000Z",
+   "loc": "/instytucja/kmiecik-sp-k-sp-z-o-o-fakeplace1252"
+  },
+  {
+   "lastmod": "2025-06-09T12:00:00.000Z",
+   "loc": "/instytucja/krajewski-raczynski-sp-z-o-o-fakeplace1253"
+  },
+  {
+   "lastmod": "2026-03-01T12:00:00.000Z",
+   "loc": "/instytucja/kasperek-jozwiak-and-stolarski-sp-z-o-o-fakeplace1254"
+  },
+  {
+   "lastmod": "2026-02-21T12:00:00.000Z",
+   "loc": "/instytucja/tkaczyk-dominiak-sp-z-o-o-fakeplace1255"
+  },
+  {
+   "lastmod": "2026-01-27T12:00:00.000Z",
+   "loc": "/instytucja/wypych-s-a-sp-z-o-o-fakeplace1256"
+  },
+  {
+   "lastmod": "2025-12-29T12:00:00.000Z",
+   "loc": "/instytucja/banach-gorniak-and-sobieraj-sp-z-o-o-fakeplace1257"
+  },
+  {
+   "lastmod": "2026-08-18T12:00:00.000Z",
+   "loc": "/instytucja/mroczek-z-o-o-sp-z-o-o-fakeplace1258"
+  },
+  {
+   "lastmod": "2026-07-05T12:00:00.000Z",
+   "loc": "/instytucja/borek-jarzabek-and-krupa-sp-z-o-o-fakeplace1259"
+  },
+  {
+   "lastmod": "2026-08-01T12:00:00.000Z",
+   "loc": "/instytucja/wojtas-zyla-and-pilarski-sp-z-o-o-fakeplace126"
+  },
+  {
+   "lastmod": "2026-02-24T12:00:00.000Z",
+   "loc": "/instytucja/adamus-sp-p-sp-z-o-o-fakeplace1260"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/michalak-grzyb-and-cebula-sp-z-o-o-fakeplace1261"
+  },
+  {
+   "lastmod": "2026-06-30T12:00:00.000Z",
+   "loc": "/instytucja/dabkowski-sp-j-sp-z-o-o-fakeplace1262"
+  },
+  {
+   "lastmod": "2026-08-23T12:00:00.000Z",
+   "loc": "/instytucja/herman-sp-j-sp-z-o-o-fakeplace1263"
+  },
+  {
+   "lastmod": "2025-12-25T12:00:00.000Z",
+   "loc": "/instytucja/szatkowski-niedziela-and-wojtowicz-sp-z-o-o-fakeplace1264"
+  },
+  {
+   "lastmod": "2026-07-11T12:00:00.000Z",
+   "loc": "/instytucja/kita-bak-sp-z-o-o-fakeplace1265"
+  },
+  {
+   "lastmod": "2025-10-02T12:00:00.000Z",
+   "loc": "/instytucja/adamczak-szymczak-sp-z-o-o-fakeplace1266"
+  },
+  {
+   "lastmod": "2026-09-14T12:00:00.000Z",
+   "loc": "/instytucja/glab-sp-k-sp-z-o-o-fakeplace1267"
+  },
+  {
+   "lastmod": "2026-03-15T12:00:00.000Z",
+   "loc": "/instytucja/czerwinski-ska-sp-z-o-o-fakeplace1268"
+  },
+  {
+   "lastmod": "2026-05-15T12:00:00.000Z",
+   "loc": "/instytucja/kawa-z-o-o-sp-z-o-o-fakeplace1269"
+  },
+  {
+   "lastmod": "2025-10-30T12:00:00.000Z",
+   "loc": "/instytucja/kasperek-kruk-sp-z-o-o-fakeplace127"
+  },
+  {
+   "lastmod": "2026-10-15T12:00:00.000Z",
+   "loc": "/instytucja/chmura-kos-sp-z-o-o-fakeplace1270"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/jaskiewicz-zareba-sp-z-o-o-fakeplace1271"
+  },
+  {
+   "lastmod": "2026-01-27T12:00:00.000Z",
+   "loc": "/instytucja/janicki-szczesna-and-sieradzki-sp-z-o-o-fakeplace1272"
+  },
+  {
+   "lastmod": "2026-08-13T12:00:00.000Z",
+   "loc": "/instytucja/biernat-sp-p-sp-z-o-o-fakeplace1273"
+  },
+  {
+   "lastmod": "2025-07-26T12:00:00.000Z",
+   "loc": "/instytucja/skrzypek-z-o-o-sp-z-o-o-fakeplace1274"
+  },
+  {
+   "lastmod": "2026-06-06T12:00:00.000Z",
+   "loc": "/instytucja/bilski-z-o-o-sp-z-o-o-fakeplace1275"
+  },
+  {
+   "lastmod": "2026-07-03T12:00:00.000Z",
+   "loc": "/instytucja/florek-sroka-and-mikolajczyk-sp-z-o-o-fakeplace1276"
+  },
+  {
+   "lastmod": "2026-07-09T12:00:00.000Z",
+   "loc": "/instytucja/winiarski-tomala-and-wos-sp-z-o-o-fakeplace1277"
+  },
+  {
+   "lastmod": "2026-06-13T12:00:00.000Z",
+   "loc": "/instytucja/kaczorowski-kalinowski-sp-z-o-o-fakeplace1278"
+  },
+  {
+   "lastmod": "2025-06-06T12:00:00.000Z",
+   "loc": "/instytucja/biernat-slowik-sp-z-o-o-fakeplace1279"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/rozycki-partyka-sp-z-o-o-fakeplace128"
+  },
+  {
+   "lastmod": "2026-05-18T12:00:00.000Z",
+   "loc": "/instytucja/szczepaniak-koziol-sp-z-o-o-fakeplace1280"
+  },
+  {
+   "lastmod": "2025-07-08T12:00:00.000Z",
+   "loc": "/instytucja/pietrzyk-jagiello-sp-z-o-o-fakeplace1281"
+  },
+  {
+   "lastmod": "2026-04-07T12:00:00.000Z",
+   "loc": "/instytucja/wojtowicz-kruszewski-sp-z-o-o-fakeplace1282"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/buczynski-kuc-and-gorny-sp-z-o-o-fakeplace1283"
+  },
+  {
+   "lastmod": "2025-08-27T12:00:00.000Z",
+   "loc": "/instytucja/krukowski-antczak-and-godlewski-sp-z-o-o-fakeplace129"
+  },
+  {
+   "lastmod": "2026-04-06T12:00:00.000Z",
+   "loc": "/instytucja/witek-adamus-sp-z-o-o-fakeplace13"
+  },
+  {
+   "lastmod": "2026-05-26T12:00:00.000Z",
+   "loc": "/instytucja/kulinski-sp-k-autem-distinctio-reprehenderit-tempore-consectetur-placeat-provident-dolorem-adipisci-similique-repellendus-commodi-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace130"
+  },
+  {
+   "lastmod": "2025-11-28T12:00:00.000Z",
+   "loc": "/instytucja/wolinski-rudnicki-and-frackowiak-sp-z-o-o-fakeplace131"
+  },
+  {
+   "lastmod": "2026-06-17T12:00:00.000Z",
+   "loc": "/instytucja/sowinski-ska-sp-z-o-o-fakeplace132"
+  },
+  {
+   "lastmod": "2026-05-28T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-radom-sp-z-o-o-fakeplace133"
+  },
+  {
+   "lastmod": "2025-12-16T12:00:00.000Z",
+   "loc": "/instytucja/guzik-grzyb-accusamus-delectus-nostrum-quis-consequatur-dolorum-assumenda-fugit-consequuntur-quisquam-natus-aperiam-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace134"
+  },
+  {
+   "lastmod": "2025-08-20T12:00:00.000Z",
+   "loc": "/instytucja/bukowski-stanislawski-and-tarnowski-sp-z-o-o-fakeplace135"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/piotrowski-s-c-atque-esse-ducimus-illo-fuga-blanditiis-cumque-odio-sed-deserunt-dolores-at-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace136"
+  },
+  {
+   "lastmod": "2026-09-03T12:00:00.000Z",
+   "loc": "/instytucja/skowron-maslanka-sp-z-o-o-fakeplace137"
+  },
+  {
+   "lastmod": "2026-09-13T12:00:00.000Z",
+   "loc": "/instytucja/stanek-ska-sp-z-o-o-fakeplace138"
+  },
+  {
+   "lastmod": "2026-02-20T12:00:00.000Z",
+   "loc": "/instytucja/szafranski-zajaczkowski-sp-z-o-o-fakeplace139"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/matusiak-miller-sp-z-o-o-fakeplace14"
+  },
+  {
+   "lastmod": "2025-06-19T12:00:00.000Z",
+   "loc": "/instytucja/stasiak-chudzik-and-jurkiewicz-sp-z-o-o-fakeplace140"
+  },
+  {
+   "lastmod": "2026-07-04T12:00:00.000Z",
+   "loc": "/instytucja/kurek-rojek-and-sowa-sp-z-o-o-fakeplace141"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/fijalkowski-sp-k-sp-z-o-o-fakeplace142"
+  },
+  {
+   "lastmod": "2025-11-09T12:00:00.000Z",
+   "loc": "/instytucja/bielecki-zyla-sp-z-o-o-fakeplace143"
+  },
+  {
+   "lastmod": "2025-07-29T12:00:00.000Z",
+   "loc": "/instytucja/wojcicki-sp-p-sp-z-o-o-fakeplace144"
+  },
+  {
+   "lastmod": "2026-08-23T12:00:00.000Z",
+   "loc": "/instytucja/bielak-bartczak-sp-z-o-o-fakeplace145"
+  },
+  {
+   "lastmod": "2025-11-19T12:00:00.000Z",
+   "loc": "/instytucja/dobrowolski-bielski-and-marszalek-sp-z-o-o-fakeplace146"
+  },
+  {
+   "lastmod": "2025-10-09T12:00:00.000Z",
+   "loc": "/instytucja/domagala-stachowiak-sp-z-o-o-fakeplace147"
+  },
+  {
+   "lastmod": "2025-08-06T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-modest-zagorski-w-lubliniec-fakeplace148"
+  },
+  {
+   "lastmod": "2026-04-07T12:00:00.000Z",
+   "loc": "/instytucja/kolasa-cygan-sp-z-o-o-fakeplace149"
+  },
+  {
+   "lastmod": "2025-12-06T12:00:00.000Z",
+   "loc": "/instytucja/olczak-klimek-sp-z-o-o-fakeplace15"
+  },
+  {
+   "lastmod": "2026-02-05T12:00:00.000Z",
+   "loc": "/instytucja/wolski-sieradzki-and-dziedzic-sp-z-o-o-fakeplace150"
+  },
+  {
+   "lastmod": "2026-02-24T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-opatow-sp-z-o-o-fakeplace151"
+  },
+  {
+   "lastmod": "2026-09-09T12:00:00.000Z",
+   "loc": "/instytucja/glogowski-fratczak-and-smolinski-sp-z-o-o-fakeplace152"
+  },
+  {
+   "lastmod": "2025-12-23T12:00:00.000Z",
+   "loc": "/instytucja/budzinski-stachowiak-sp-z-o-o-fakeplace153"
+  },
+  {
+   "lastmod": "2025-07-14T12:00:00.000Z",
+   "loc": "/instytucja/janas-morawski-and-olszewski-sp-z-o-o-fakeplace154"
+  },
+  {
+   "lastmod": "2026-05-13T12:00:00.000Z",
+   "loc": "/instytucja/gora-frankowski-sp-z-o-o-fakeplace155"
+  },
+  {
+   "lastmod": "2026-05-28T12:00:00.000Z",
+   "loc": "/instytucja/bartosik-zietek-sp-z-o-o-fakeplace156"
+  },
+  {
+   "lastmod": "2026-09-21T12:00:00.000Z",
+   "loc": "/instytucja/szewczyk-wojtowicz-and-bednarek-sp-z-o-o-fakeplace157"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-ksenofont-janicki-w-mikolajki-fakeplace158"
+  },
+  {
+   "lastmod": "2025-06-26T12:00:00.000Z",
+   "loc": "/instytucja/wieczorek-sp-j-sp-z-o-o-fakeplace159"
+  },
+  {
+   "lastmod": "2026-03-13T12:00:00.000Z",
+   "loc": "/instytucja/kosinski-kostecki-and-wyszynski-sp-z-o-o-fakeplace16"
+  },
+  {
+   "lastmod": "2025-10-23T12:00:00.000Z",
+   "loc": "/instytucja/kwiecinski-kubicki-sp-z-o-o-fakeplace160"
+  },
+  {
+   "lastmod": "2025-07-05T12:00:00.000Z",
+   "loc": "/instytucja/czajkowski-baginski-and-nawrot-sp-z-o-o-fakeplace161"
+  },
+  {
+   "lastmod": "2025-10-22T12:00:00.000Z",
+   "loc": "/instytucja/bednarski-sp-j-sp-z-o-o-fakeplace162"
+  },
+  {
+   "lastmod": "2026-02-15T12:00:00.000Z",
+   "loc": "/instytucja/rosiak-cieslik-sp-z-o-o-fakeplace163"
+  },
+  {
+   "lastmod": "2026-07-25T12:00:00.000Z",
+   "loc": "/instytucja/krajewski-czechowski-sp-z-o-o-fakeplace164"
+  },
+  {
+   "lastmod": "2026-06-26T12:00:00.000Z",
+   "loc": "/instytucja/bielecki-stec-sp-z-o-o-fakeplace165"
+  },
+  {
+   "lastmod": "2026-10-11T12:00:00.000Z",
+   "loc": "/instytucja/szwarc-sp-j-sp-z-o-o-fakeplace166"
+  },
+  {
+   "lastmod": "2026-04-11T12:00:00.000Z",
+   "loc": "/instytucja/zieba-bujak-and-dobrzynski-sp-z-o-o-fakeplace167"
+  },
+  {
+   "lastmod": "2026-01-12T12:00:00.000Z",
+   "loc": "/instytucja/filipowicz-kita-sp-z-o-o-fakeplace168"
+  },
+  {
+   "lastmod": "2025-11-09T12:00:00.000Z",
+   "loc": "/instytucja/wlodarczyk-piorkowski-and-biedrzynski-sp-z-o-o-fakeplace169"
+  },
+  {
+   "lastmod": "2026-01-03T12:00:00.000Z",
+   "loc": "/instytucja/cieslak-pilarski-sp-z-o-o-fakeplace17"
+  },
+  {
+   "lastmod": "2026-10-16T12:00:00.000Z",
+   "loc": "/instytucja/niedziela-marek-sp-z-o-o-fakeplace170"
+  },
+  {
+   "lastmod": "2025-09-01T12:00:00.000Z",
+   "loc": "/instytucja/madej-kolodziej-sp-z-o-o-fakeplace171"
+  },
+  {
+   "lastmod": "2026-01-07T12:00:00.000Z",
+   "loc": "/instytucja/karczewski-budzynski-and-stasiak-sp-z-o-o-fakeplace172"
+  },
+  {
+   "lastmod": "2026-04-04T12:00:00.000Z",
+   "loc": "/instytucja/krukowski-ska-sp-z-o-o-fakeplace173"
+  },
+  {
+   "lastmod": "2025-10-14T12:00:00.000Z",
+   "loc": "/instytucja/kaszuba-bochenek-sp-z-o-o-fakeplace174"
+  },
+  {
+   "lastmod": "2026-03-29T12:00:00.000Z",
+   "loc": "/instytucja/kazmierczak-staniszewski-sp-z-o-o-fakeplace175"
+  },
+  {
+   "lastmod": "2025-10-03T12:00:00.000Z",
+   "loc": "/instytucja/kus-maslanka-sp-z-o-o-fakeplace176"
+  },
+  {
+   "lastmod": "2025-11-29T12:00:00.000Z",
+   "loc": "/instytucja/broda-s-c-sp-z-o-o-fakeplace177"
+  },
+  {
+   "lastmod": "2026-05-31T12:00:00.000Z",
+   "loc": "/instytucja/wlodarski-wasowski-and-misiak-sp-z-o-o-fakeplace178"
+  },
+  {
+   "lastmod": "2025-08-25T12:00:00.000Z",
+   "loc": "/instytucja/szwed-sp-p-sp-z-o-o-fakeplace179"
+  },
+  {
+   "lastmod": "2026-03-27T12:00:00.000Z",
+   "loc": "/instytucja/pietruszka-filipiak-and-bednarski-sp-z-o-o-fakeplace18"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/urban-ksiazek-sp-z-o-o-fakeplace180"
+  },
+  {
+   "lastmod": "2025-11-01T12:00:00.000Z",
+   "loc": "/instytucja/tarnowski-jurek-sp-z-o-o-fakeplace181"
+  },
+  {
+   "lastmod": "2026-07-21T12:00:00.000Z",
+   "loc": "/instytucja/stefaniak-s-c-sp-z-o-o-fakeplace182"
+  },
+  {
+   "lastmod": "2026-01-04T12:00:00.000Z",
+   "loc": "/instytucja/luczak-stepniak-sp-z-o-o-fakeplace183"
+  },
+  {
+   "lastmod": "2025-07-09T12:00:00.000Z",
+   "loc": "/instytucja/zietek-cygan-and-fraczek-sp-z-o-o-fakeplace184"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/paluch-zareba-and-jezierski-sp-z-o-o-fakeplace185"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/izdebski-s-c-sp-z-o-o-fakeplace186"
+  },
+  {
+   "lastmod": "2025-06-21T12:00:00.000Z",
+   "loc": "/instytucja/witczak-kaczmarek-sp-z-o-o-fakeplace187"
+  },
+  {
+   "lastmod": "2026-10-03T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-justyn-lukasik-w-szamotuly-fakeplace188"
+  },
+  {
+   "lastmod": "2025-08-09T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-alfred-palka-w-ostrow-mazowiecka-fakeplace189"
+  },
+  {
+   "lastmod": "2026-08-17T12:00:00.000Z",
+   "loc": "/instytucja/pajak-matusiak-sp-z-o-o-fakeplace19"
+  },
+  {
+   "lastmod": "2026-02-10T12:00:00.000Z",
+   "loc": "/instytucja/milewski-grzelak-sp-z-o-o-fakeplace190"
+  },
+  {
+   "lastmod": "2026-02-08T12:00:00.000Z",
+   "loc": "/instytucja/zaremba-czapla-sp-z-o-o-fakeplace191"
+  },
+  {
+   "lastmod": "2026-08-27T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-olszyna-fakeplace192"
+  },
+  {
+   "lastmod": "2025-09-09T12:00:00.000Z",
+   "loc": "/instytucja/piotrowski-z-o-o-sp-z-o-o-fakeplace193"
+  },
+  {
+   "lastmod": "2025-10-08T12:00:00.000Z",
+   "loc": "/instytucja/stolarski-ska-sp-z-o-o-fakeplace194"
+  },
+  {
+   "lastmod": "2026-04-12T12:00:00.000Z",
+   "loc": "/instytucja/bednarek-drozdowski-sp-z-o-o-fakeplace195"
+  },
+  {
+   "lastmod": "2026-09-15T12:00:00.000Z",
+   "loc": "/instytucja/drozd-rzepka-sp-z-o-o-fakeplace196"
+  },
+  {
+   "lastmod": "2026-04-19T12:00:00.000Z",
+   "loc": "/instytucja/wlodarski-sp-k-sp-z-o-o-fakeplace197"
+  },
+  {
+   "lastmod": "2026-07-16T12:00:00.000Z",
+   "loc": "/instytucja/modzelewski-sp-p-sp-z-o-o-fakeplace198"
+  },
+  {
+   "lastmod": "2025-06-24T12:00:00.000Z",
+   "loc": "/instytucja/przybyla-s-a-sp-z-o-o-fakeplace199"
+  },
+  {
+   "lastmod": "2026-04-08T12:00:00.000Z",
+   "loc": "/instytucja/czajkowski-ska-sp-z-o-o-fakeplace2"
+  },
+  {
+   "lastmod": "2025-06-04T12:00:00.000Z",
+   "loc": "/instytucja/lewandowski-modzelewski-sp-z-o-o-fakeplace20"
+  },
+  {
+   "lastmod": "2026-01-06T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-emil-baran-w-zawichost-fakeplace200"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/kolodziejski-sp-k-sp-z-o-o-fakeplace201"
+  },
+  {
+   "lastmod": "2026-07-19T12:00:00.000Z",
+   "loc": "/instytucja/zablocki-iwanski-and-skowron-sp-z-o-o-fakeplace202"
+  },
+  {
+   "lastmod": "2026-02-15T12:00:00.000Z",
+   "loc": "/instytucja/rzepka-radomski-and-tomys-sp-z-o-o-fakeplace203"
+  },
+  {
+   "lastmod": "2026-04-15T12:00:00.000Z",
+   "loc": "/instytucja/kolodziejski-s-c-sp-z-o-o-fakeplace204"
+  },
+  {
+   "lastmod": "2025-08-12T12:00:00.000Z",
+   "loc": "/instytucja/czechowski-s-c-sp-z-o-o-fakeplace205"
+  },
+  {
+   "lastmod": "2026-10-03T12:00:00.000Z",
+   "loc": "/instytucja/jablonski-nowicki-sp-z-o-o-fakeplace206"
+  },
+  {
+   "lastmod": "2026-04-26T12:00:00.000Z",
+   "loc": "/instytucja/krysiak-bialek-sp-z-o-o-fakeplace207"
+  },
+  {
+   "lastmod": "2025-06-28T12:00:00.000Z",
+   "loc": "/instytucja/piorkowski-surma-and-iwanski-sp-z-o-o-fakeplace208"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/frackowiak-sp-j-sp-z-o-o-fakeplace209"
+  },
+  {
+   "lastmod": "2025-08-04T12:00:00.000Z",
+   "loc": "/instytucja/stachowiak-banasik-sp-z-o-o-fakeplace21"
+  },
+  {
+   "lastmod": "2025-07-27T12:00:00.000Z",
+   "loc": "/instytucja/dobosz-maj-and-zajac-sp-z-o-o-fakeplace210"
+  },
+  {
+   "lastmod": "2026-07-29T12:00:00.000Z",
+   "loc": "/instytucja/wieczorek-s-a-sp-z-o-o-fakeplace211"
+  },
+  {
+   "lastmod": "2025-09-13T12:00:00.000Z",
+   "loc": "/instytucja/kuchta-matusiak-sp-z-o-o-fakeplace212"
+  },
+  {
+   "lastmod": "2026-06-08T12:00:00.000Z",
+   "loc": "/instytucja/grzyb-pieczek-sp-z-o-o-fakeplace213"
+  },
+  {
+   "lastmod": "2026-09-14T12:00:00.000Z",
+   "loc": "/instytucja/lisowski-skora-sp-z-o-o-fakeplace214"
+  },
+  {
+   "lastmod": "2025-07-18T12:00:00.000Z",
+   "loc": "/instytucja/wiacek-chmielewski-and-buczek-sp-z-o-o-fakeplace215"
+  },
+  {
+   "lastmod": "2025-10-28T12:00:00.000Z",
+   "loc": "/instytucja/krysiak-sp-p-sp-z-o-o-fakeplace216"
+  },
+  {
+   "lastmod": "2026-01-26T12:00:00.000Z",
+   "loc": "/instytucja/knapik-zych-sp-z-o-o-fakeplace217"
+  },
+  {
+   "lastmod": "2025-07-25T12:00:00.000Z",
+   "loc": "/instytucja/ptak-sp-j-sp-z-o-o-fakeplace218"
+  },
+  {
+   "lastmod": "2025-07-11T12:00:00.000Z",
+   "loc": "/instytucja/godlewski-ska-sp-z-o-o-fakeplace219"
+  },
+  {
+   "lastmod": "2025-10-04T12:00:00.000Z",
+   "loc": "/instytucja/krukowski-budzinski-and-antczak-sp-z-o-o-fakeplace22"
+  },
+  {
+   "lastmod": "2025-12-15T12:00:00.000Z",
+   "loc": "/instytucja/kubik-urbanek-and-kolakowski-sp-z-o-o-fakeplace220"
+  },
+  {
+   "lastmod": "2025-08-14T12:00:00.000Z",
+   "loc": "/instytucja/bednarczyk-koza-and-andrzejczak-sp-z-o-o-fakeplace221"
+  },
+  {
+   "lastmod": "2026-08-22T12:00:00.000Z",
+   "loc": "/instytucja/kowalski-tracz-and-tarnowski-sp-z-o-o-fakeplace222"
+  },
+  {
+   "lastmod": "2026-02-27T12:00:00.000Z",
+   "loc": "/instytucja/zukowski-nowak-and-guzik-sp-z-o-o-fakeplace223"
+  },
+  {
+   "lastmod": "2025-07-03T12:00:00.000Z",
+   "loc": "/instytucja/ciszewski-szymczak-and-kaluza-sp-z-o-o-fakeplace224"
+  },
+  {
+   "lastmod": "2026-08-10T12:00:00.000Z",
+   "loc": "/instytucja/pilarski-kula-sp-z-o-o-fakeplace225"
+  },
+  {
+   "lastmod": "2026-04-08T12:00:00.000Z",
+   "loc": "/instytucja/bartosik-dominiak-sp-z-o-o-fakeplace226"
+  },
+  {
+   "lastmod": "2026-08-26T12:00:00.000Z",
+   "loc": "/instytucja/krukowski-s-c-sp-z-o-o-fakeplace227"
+  },
+  {
+   "lastmod": "2025-11-28T12:00:00.000Z",
+   "loc": "/instytucja/dlugosz-kaczmarek-sp-z-o-o-fakeplace228"
+  },
+  {
+   "lastmod": "2026-09-27T12:00:00.000Z",
+   "loc": "/instytucja/zych-milczarek-and-malicki-sp-z-o-o-fakeplace229"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/modzelewski-mroz-and-jurkowski-sp-z-o-o-fakeplace23"
+  },
+  {
+   "lastmod": "2025-10-20T12:00:00.000Z",
+   "loc": "/instytucja/biernacki-s-a-sp-z-o-o-fakeplace230"
+  },
+  {
+   "lastmod": "2026-02-12T12:00:00.000Z",
+   "loc": "/instytucja/surma-s-c-sp-z-o-o-fakeplace231"
+  },
+  {
+   "lastmod": "2025-06-29T12:00:00.000Z",
+   "loc": "/instytucja/kasperek-wasiak-and-motyka-sp-z-o-o-fakeplace232"
+  },
+  {
+   "lastmod": "2026-01-09T12:00:00.000Z",
+   "loc": "/instytucja/szydlowski-glogowski-sp-z-o-o-fakeplace233"
+  },
+  {
+   "lastmod": "2025-09-28T12:00:00.000Z",
+   "loc": "/instytucja/michalowski-szymczak-and-grzywacz-sp-z-o-o-fakeplace234"
+  },
+  {
+   "lastmod": "2026-08-10T12:00:00.000Z",
+   "loc": "/instytucja/cebula-malecki-sp-z-o-o-fakeplace235"
+  },
+  {
+   "lastmod": "2026-01-15T12:00:00.000Z",
+   "loc": "/instytucja/jaskiewicz-dabkowski-and-pilarski-sp-z-o-o-fakeplace236"
+  },
+  {
+   "lastmod": "2025-11-22T12:00:00.000Z",
+   "loc": "/instytucja/rosa-janiszewski-and-rudnicki-sp-z-o-o-fakeplace237"
+  },
+  {
+   "lastmod": "2026-04-09T12:00:00.000Z",
+   "loc": "/instytucja/zaborowski-sp-k-sp-z-o-o-fakeplace238"
+  },
+  {
+   "lastmod": "2026-06-22T12:00:00.000Z",
+   "loc": "/instytucja/iwanowski-swierczynski-sp-z-o-o-fakeplace239"
+  },
+  {
+   "lastmod": "2025-07-15T12:00:00.000Z",
+   "loc": "/instytucja/szostak-gruszka-and-blaszczyk-sp-z-o-o-fakeplace24"
+  },
+  {
+   "lastmod": "2025-12-22T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-tusk-w-borne-sulinowo-fakeplace240"
+  },
+  {
+   "lastmod": "2026-06-07T12:00:00.000Z",
+   "loc": "/instytucja/gawronski-z-o-o-sp-z-o-o-fakeplace241"
+  },
+  {
+   "lastmod": "2026-02-22T12:00:00.000Z",
+   "loc": "/instytucja/lis-jezierski-sp-z-o-o-fakeplace242"
+  },
+  {
+   "lastmod": "2026-08-25T12:00:00.000Z",
+   "loc": "/instytucja/zygmunt-ska-sp-z-o-o-fakeplace243"
+  },
+  {
+   "lastmod": "2025-08-20T12:00:00.000Z",
+   "loc": "/instytucja/bielski-wieczorek-and-gil-sp-z-o-o-fakeplace244"
+  },
+  {
+   "lastmod": "2026-09-16T12:00:00.000Z",
+   "loc": "/instytucja/morawski-stelmach-and-czech-sp-z-o-o-fakeplace245"
+  },
+  {
+   "lastmod": "2025-10-18T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-jarocin-sp-z-o-o-fakeplace246"
+  },
+  {
+   "lastmod": "2026-05-02T12:00:00.000Z",
+   "loc": "/instytucja/majka-laskowski-and-wiacek-sp-z-o-o-fakeplace247"
+  },
+  {
+   "lastmod": "2025-11-17T12:00:00.000Z",
+   "loc": "/instytucja/piorkowski-s-c-sp-z-o-o-fakeplace248"
+  },
+  {
+   "lastmod": "2026-06-16T12:00:00.000Z",
+   "loc": "/instytucja/dudzik-drzewiecki-sp-z-o-o-fakeplace249"
+  },
+  {
+   "lastmod": "2025-10-23T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-shark-w-marki-fakeplace25"
+  },
+  {
+   "lastmod": "2025-09-21T12:00:00.000Z",
+   "loc": "/instytucja/szymanski-jakubiak-sp-z-o-o-fakeplace250"
+  },
+  {
+   "lastmod": "2025-09-27T12:00:00.000Z",
+   "loc": "/instytucja/skowronski-bednarek-sp-z-o-o-fakeplace251"
+  },
+  {
+   "lastmod": "2025-07-29T12:00:00.000Z",
+   "loc": "/instytucja/krajewski-szczesna-and-stolarski-sp-z-o-o-fakeplace252"
+  },
+  {
+   "lastmod": "2025-08-08T12:00:00.000Z",
+   "loc": "/instytucja/rogala-rogalski-sp-z-o-o-fakeplace253"
+  },
+  {
+   "lastmod": "2025-06-08T12:00:00.000Z",
+   "loc": "/instytucja/pakula-ska-sp-z-o-o-fakeplace254"
+  },
+  {
+   "lastmod": "2025-09-23T12:00:00.000Z",
+   "loc": "/instytucja/gorniak-konieczna-sp-z-o-o-fakeplace255"
+  },
+  {
+   "lastmod": "2026-04-11T12:00:00.000Z",
+   "loc": "/instytucja/murawski-wisniewski-sp-z-o-o-fakeplace256"
+  },
+  {
+   "lastmod": "2025-11-03T12:00:00.000Z",
+   "loc": "/instytucja/maciag-pilch-and-rozanski-sp-z-o-o-fakeplace257"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/soltys-kopczynski-sp-z-o-o-fakeplace258"
+  },
+  {
+   "lastmod": "2026-08-01T12:00:00.000Z",
+   "loc": "/instytucja/wos-matuszewski-sp-z-o-o-fakeplace259"
+  },
+  {
+   "lastmod": "2025-10-08T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-dariusz-glab-w-lipsko-fakeplace26"
+  },
+  {
+   "lastmod": "2025-09-13T12:00:00.000Z",
+   "loc": "/instytucja/koper-sp-j-sp-z-o-o-fakeplace260"
+  },
+  {
+   "lastmod": "2025-11-03T12:00:00.000Z",
+   "loc": "/instytucja/blaszczyk-s-a-sp-z-o-o-fakeplace261"
+  },
+  {
+   "lastmod": "2026-05-23T12:00:00.000Z",
+   "loc": "/instytucja/kopec-janusz-and-frackowiak-sp-z-o-o-fakeplace262"
+  },
+  {
+   "lastmod": "2026-06-29T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-drohiczyn-fakeplace263"
+  },
+  {
+   "lastmod": "2026-03-22T12:00:00.000Z",
+   "loc": "/instytucja/gawlik-sp-k-sp-z-o-o-fakeplace264"
+  },
+  {
+   "lastmod": "2025-10-14T12:00:00.000Z",
+   "loc": "/instytucja/golebiewski-stec-and-adamus-sp-z-o-o-fakeplace265"
+  },
+  {
+   "lastmod": "2026-03-07T12:00:00.000Z",
+   "loc": "/instytucja/kobus-kasperek-sp-z-o-o-fakeplace266"
+  },
+  {
+   "lastmod": "2026-06-08T12:00:00.000Z",
+   "loc": "/instytucja/musial-augustyn-sp-z-o-o-fakeplace267"
+  },
+  {
+   "lastmod": "2025-09-04T12:00:00.000Z",
+   "loc": "/instytucja/glab-sp-p-sp-z-o-o-fakeplace268"
+  },
+  {
+   "lastmod": "2025-08-07T12:00:00.000Z",
+   "loc": "/instytucja/turek-lisiecki-and-gawronski-sp-z-o-o-fakeplace269"
+  },
+  {
+   "lastmod": "2026-02-07T12:00:00.000Z",
+   "loc": "/instytucja/buczkowski-swiatek-and-pietrzak-sp-z-o-o-fakeplace27"
+  },
+  {
+   "lastmod": "2026-08-10T12:00:00.000Z",
+   "loc": "/instytucja/wegrzyn-stachowicz-and-filipek-sp-z-o-o-fakeplace270"
+  },
+  {
+   "lastmod": "2026-01-27T12:00:00.000Z",
+   "loc": "/instytucja/janik-duda-and-grzyb-sp-z-o-o-fakeplace271"
+  },
+  {
+   "lastmod": "2025-11-26T12:00:00.000Z",
+   "loc": "/instytucja/grzegorczyk-malinowski-and-tokarski-sp-z-o-o-fakeplace272"
+  },
+  {
+   "lastmod": "2025-09-21T12:00:00.000Z",
+   "loc": "/instytucja/tomczyk-wyszynski-sp-z-o-o-fakeplace273"
+  },
+  {
+   "lastmod": "2025-11-14T12:00:00.000Z",
+   "loc": "/instytucja/biedrzynski-skora-and-gasior-sp-z-o-o-fakeplace274"
+  },
+  {
+   "lastmod": "2026-01-10T12:00:00.000Z",
+   "loc": "/instytucja/kula-krawczyk-sp-z-o-o-fakeplace275"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/kucharski-pawlak-sp-z-o-o-fakeplace276"
+  },
+  {
+   "lastmod": "2025-06-02T12:00:00.000Z",
+   "loc": "/instytucja/graczyk-dabkowski-and-budzynski-sp-z-o-o-fakeplace277"
+  },
+  {
+   "lastmod": "2026-01-14T12:00:00.000Z",
+   "loc": "/instytucja/stepien-wasowski-and-zuk-sp-z-o-o-fakeplace278"
+  },
+  {
+   "lastmod": "2026-02-01T12:00:00.000Z",
+   "loc": "/instytucja/piasecki-kaczmarek-sp-z-o-o-fakeplace279"
+  },
+  {
+   "lastmod": "2025-06-22T12:00:00.000Z",
+   "loc": "/instytucja/szczesniak-sp-k-sp-z-o-o-fakeplace28"
+  },
+  {
+   "lastmod": "2026-09-15T12:00:00.000Z",
+   "loc": "/instytucja/panek-mierzejewski-and-kaczorowski-sp-z-o-o-fakeplace280"
+  },
+  {
+   "lastmod": "2025-07-07T12:00:00.000Z",
+   "loc": "/instytucja/cebula-pawlowski-sp-z-o-o-fakeplace281"
+  },
+  {
+   "lastmod": "2025-09-01T12:00:00.000Z",
+   "loc": "/instytucja/witkowski-kowalczyk-and-jackowski-sp-z-o-o-fakeplace282"
+  },
+  {
+   "lastmod": "2025-12-04T12:00:00.000Z",
+   "loc": "/instytucja/sobczak-slowik-and-wnuk-sp-z-o-o-fakeplace283"
+  },
+  {
+   "lastmod": "2025-07-23T12:00:00.000Z",
+   "loc": "/instytucja/gorniak-krukowski-and-chrzanowski-sp-z-o-o-fakeplace284"
+  },
+  {
+   "lastmod": "2026-04-22T12:00:00.000Z",
+   "loc": "/instytucja/janiszewski-grochowski-and-janus-sp-z-o-o-fakeplace285"
+  },
+  {
+   "lastmod": "2025-08-23T12:00:00.000Z",
+   "loc": "/instytucja/rudnicki-krakowiak-and-konieczny-sp-z-o-o-fakeplace286"
+  },
+  {
+   "lastmod": "2025-08-17T12:00:00.000Z",
+   "loc": "/instytucja/stepniak-maciejewski-sp-z-o-o-fakeplace287"
+  },
+  {
+   "lastmod": "2026-04-13T12:00:00.000Z",
+   "loc": "/instytucja/bujak-krol-and-aleksandrowicz-sp-z-o-o-fakeplace288"
+  },
+  {
+   "lastmod": "2026-05-23T12:00:00.000Z",
+   "loc": "/instytucja/maj-s-a-sp-z-o-o-fakeplace289"
+  },
+  {
+   "lastmod": "2026-06-02T12:00:00.000Z",
+   "loc": "/instytucja/lukaszewski-kaczorowski-sp-z-o-o-fakeplace29"
+  },
+  {
+   "lastmod": "2025-10-14T12:00:00.000Z",
+   "loc": "/instytucja/graczyk-rutkowski-and-kita-sp-z-o-o-fakeplace290"
+  },
+  {
+   "lastmod": "2025-10-14T12:00:00.000Z",
+   "loc": "/instytucja/kubacki-majcher-and-czaja-sp-z-o-o-fakeplace291"
+  },
+  {
+   "lastmod": "2026-03-26T12:00:00.000Z",
+   "loc": "/instytucja/marek-stolarczyk-and-koza-sp-z-o-o-fakeplace292"
+  },
+  {
+   "lastmod": "2025-08-15T12:00:00.000Z",
+   "loc": "/instytucja/juszczak-klos-and-bukowski-sp-z-o-o-fakeplace293"
+  },
+  {
+   "lastmod": "2025-09-18T12:00:00.000Z",
+   "loc": "/instytucja/zmuda-krawiec-sp-z-o-o-fakeplace294"
+  },
+  {
+   "lastmod": "2025-12-02T12:00:00.000Z",
+   "loc": "/instytucja/budzinski-borowski-and-piasecki-sp-z-o-o-fakeplace295"
+  },
+  {
+   "lastmod": "2026-10-08T12:00:00.000Z",
+   "loc": "/instytucja/modzelewski-urbanczyk-and-wojcicki-sp-z-o-o-fakeplace296"
+  },
+  {
+   "lastmod": "2026-05-27T12:00:00.000Z",
+   "loc": "/instytucja/tracz-raczynski-and-palka-sp-z-o-o-fakeplace297"
+  },
+  {
+   "lastmod": "2026-02-21T12:00:00.000Z",
+   "loc": "/instytucja/kaczmarek-rybak-and-chmielewski-sp-z-o-o-fakeplace298"
+  },
+  {
+   "lastmod": "2025-09-24T12:00:00.000Z",
+   "loc": "/instytucja/skowronek-pasternak-and-swierczynski-sp-z-o-o-fakeplace299"
+  },
+  {
+   "lastmod": "2026-10-11T12:00:00.000Z",
+   "loc": "/instytucja/janiak-ska-sp-z-o-o-fakeplace3"
+  },
+  {
+   "lastmod": "2025-06-25T12:00:00.000Z",
+   "loc": "/instytucja/grabowski-s-a-sp-z-o-o-fakeplace30"
+  },
+  {
+   "lastmod": "2026-05-25T12:00:00.000Z",
+   "loc": "/instytucja/szczesny-nawrocki-and-lukaszewski-sp-z-o-o-fakeplace300"
+  },
+  {
+   "lastmod": "2025-10-10T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-event-w-lipiany-fakeplace301"
+  },
+  {
+   "lastmod": "2026-03-27T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-kozienice-fakeplace302"
+  },
+  {
+   "lastmod": "2026-05-15T12:00:00.000Z",
+   "loc": "/instytucja/kalisz-s-c-sp-z-o-o-fakeplace303"
+  },
+  {
+   "lastmod": "2025-08-28T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-romeo-gorski-w-lesko-fakeplace304"
+  },
+  {
+   "lastmod": "2026-08-11T12:00:00.000Z",
+   "loc": "/instytucja/motyka-janowski-and-bielecki-sp-z-o-o-fakeplace305"
+  },
+  {
+   "lastmod": "2026-08-29T12:00:00.000Z",
+   "loc": "/instytucja/ciesla-kawa-and-szulc-sp-z-o-o-fakeplace306"
+  },
+  {
+   "lastmod": "2025-10-01T12:00:00.000Z",
+   "loc": "/instytucja/misztal-szczepanik-and-jedrzejewski-sp-z-o-o-fakeplace307"
+  },
+  {
+   "lastmod": "2026-07-15T12:00:00.000Z",
+   "loc": "/instytucja/majcher-wesolowski-and-marchewka-sp-z-o-o-fakeplace308"
+  },
+  {
+   "lastmod": "2026-02-17T12:00:00.000Z",
+   "loc": "/instytucja/lukaszewski-ska-sp-z-o-o-fakeplace309"
+  },
+  {
+   "lastmod": "2025-11-06T12:00:00.000Z",
+   "loc": "/instytucja/banas-sp-p-sp-z-o-o-fakeplace31"
+  },
+  {
+   "lastmod": "2026-03-17T12:00:00.000Z",
+   "loc": "/instytucja/kaczorowski-januszewski-and-grudzien-sp-z-o-o-fakeplace310"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/pietruszka-zdunek-sp-z-o-o-fakeplace311"
+  },
+  {
+   "lastmod": "2026-03-20T12:00:00.000Z",
+   "loc": "/instytucja/olejnik-zdunek-and-krajewski-sp-z-o-o-fakeplace312"
+  },
+  {
+   "lastmod": "2026-09-02T12:00:00.000Z",
+   "loc": "/instytucja/koziol-socha-sp-z-o-o-fakeplace313"
+  },
+  {
+   "lastmod": "2026-01-06T12:00:00.000Z",
+   "loc": "/instytucja/grzeskowiak-s-c-sp-z-o-o-fakeplace314"
+  },
+  {
+   "lastmod": "2026-05-31T12:00:00.000Z",
+   "loc": "/instytucja/antczak-szydlowski-sp-z-o-o-fakeplace315"
+  },
+  {
+   "lastmod": "2026-01-03T12:00:00.000Z",
+   "loc": "/instytucja/stanislawski-sp-p-sp-z-o-o-fakeplace316"
+  },
+  {
+   "lastmod": "2025-12-24T12:00:00.000Z",
+   "loc": "/instytucja/izdebski-z-o-o-sp-z-o-o-fakeplace317"
+  },
+  {
+   "lastmod": "2025-09-16T12:00:00.000Z",
+   "loc": "/instytucja/lisowski-raczynski-and-lipski-sp-z-o-o-fakeplace318"
+  },
+  {
+   "lastmod": "2026-08-10T12:00:00.000Z",
+   "loc": "/instytucja/czech-sp-k-sp-z-o-o-fakeplace319"
+  },
+  {
+   "lastmod": "2026-06-19T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-fledgling-w-ozarow-mazowiecki-fakeplace32"
+  },
+  {
+   "lastmod": "2026-06-29T12:00:00.000Z",
+   "loc": "/instytucja/karas-banach-and-wlodarski-sp-z-o-o-fakeplace320"
+  },
+  {
+   "lastmod": "2025-08-14T12:00:00.000Z",
+   "loc": "/instytucja/wiecek-wlodarski-and-lisiecki-sp-z-o-o-fakeplace321"
+  },
+  {
+   "lastmod": "2026-04-27T12:00:00.000Z",
+   "loc": "/instytucja/chmura-pawlowski-sp-z-o-o-fakeplace322"
+  },
+  {
+   "lastmod": "2026-02-03T12:00:00.000Z",
+   "loc": "/instytucja/kucharski-godlewski-sp-z-o-o-fakeplace323"
+  },
+  {
+   "lastmod": "2026-08-23T12:00:00.000Z",
+   "loc": "/instytucja/tomaszewski-urbanski-sp-z-o-o-fakeplace324"
+  },
+  {
+   "lastmod": "2025-09-11T12:00:00.000Z",
+   "loc": "/instytucja/matusiak-s-c-sp-z-o-o-fakeplace325"
+  },
+  {
+   "lastmod": "2026-10-04T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-sybilla-aleksandrowicz-w-rybnik-fakeplace326"
+  },
+  {
+   "lastmod": "2026-03-15T12:00:00.000Z",
+   "loc": "/instytucja/kus-przybyl-and-jaskiewicz-sp-z-o-o-fakeplace327"
+  },
+  {
+   "lastmod": "2026-08-28T12:00:00.000Z",
+   "loc": "/instytucja/iwanski-wronski-and-koziel-sp-z-o-o-fakeplace328"
+  },
+  {
+   "lastmod": "2025-12-22T12:00:00.000Z",
+   "loc": "/instytucja/adamczak-s-c-sp-z-o-o-fakeplace329"
+  },
+  {
+   "lastmod": "2025-11-21T12:00:00.000Z",
+   "loc": "/instytucja/jagiello-paluch-sp-z-o-o-fakeplace33"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/tomczyk-urbanek-and-prus-tempore-odio-placeat-a-recusandae-eveniet-laudantium-corporis-quam-harum-accusamus-neque-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace330"
+  },
+  {
+   "lastmod": "2026-05-14T12:00:00.000Z",
+   "loc": "/instytucja/flis-mackiewicz-sp-z-o-o-fakeplace331"
+  },
+  {
+   "lastmod": "2026-03-13T12:00:00.000Z",
+   "loc": "/instytucja/korzeniowski-nowak-sp-z-o-o-fakeplace332"
+  },
+  {
+   "lastmod": "2025-12-13T12:00:00.000Z",
+   "loc": "/instytucja/wasowski-kwasniewski-and-zak-sp-z-o-o-fakeplace333"
+  },
+  {
+   "lastmod": "2026-06-29T12:00:00.000Z",
+   "loc": "/instytucja/kawa-chudzik-and-kepa-sp-z-o-o-fakeplace334"
+  },
+  {
+   "lastmod": "2026-01-02T12:00:00.000Z",
+   "loc": "/instytucja/matuszewski-orlowski-sp-z-o-o-fakeplace335"
+  },
+  {
+   "lastmod": "2026-08-06T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-kowary-sp-z-o-o-fakeplace336"
+  },
+  {
+   "lastmod": "2026-08-12T12:00:00.000Z",
+   "loc": "/instytucja/maciejewski-koza-and-dabkowski-sp-z-o-o-fakeplace337"
+  },
+  {
+   "lastmod": "2025-07-09T12:00:00.000Z",
+   "loc": "/instytucja/przybyl-z-o-o-sp-z-o-o-fakeplace338"
+  },
+  {
+   "lastmod": "2026-10-16T12:00:00.000Z",
+   "loc": "/instytucja/raczynski-s-a-sp-z-o-o-fakeplace339"
+  },
+  {
+   "lastmod": "2025-09-03T12:00:00.000Z",
+   "loc": "/instytucja/rzepka-adamczak-and-gasiorowski-atque-illum-sapiente-molestias-laudantium-veritatis-corrupti-suscipit-omnis-laboriosam-adipisci-quasi-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace34"
+  },
+  {
+   "lastmod": "2025-08-26T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-nidzica-fakeplace340"
+  },
+  {
+   "lastmod": "2026-07-26T12:00:00.000Z",
+   "loc": "/instytucja/herman-sitek-sp-z-o-o-fakeplace341"
+  },
+  {
+   "lastmod": "2026-01-28T12:00:00.000Z",
+   "loc": "/instytucja/majewski-s-a-sp-z-o-o-fakeplace342"
+  },
+  {
+   "lastmod": "2025-09-01T12:00:00.000Z",
+   "loc": "/instytucja/michalek-matusiak-and-golebiewski-sp-z-o-o-fakeplace343"
+  },
+  {
+   "lastmod": "2026-07-19T12:00:00.000Z",
+   "loc": "/instytucja/maciag-ska-sp-z-o-o-fakeplace344"
+  },
+  {
+   "lastmod": "2026-06-04T12:00:00.000Z",
+   "loc": "/instytucja/skalski-sp-k-sp-z-o-o-fakeplace345"
+  },
+  {
+   "lastmod": "2026-02-20T12:00:00.000Z",
+   "loc": "/instytucja/jurkowski-s-a-sp-z-o-o-fakeplace346"
+  },
+  {
+   "lastmod": "2025-09-03T12:00:00.000Z",
+   "loc": "/instytucja/zych-golab-and-swierczynski-sp-z-o-o-fakeplace347"
+  },
+  {
+   "lastmod": "2025-06-09T12:00:00.000Z",
+   "loc": "/instytucja/raczynski-socha-and-madej-sp-z-o-o-fakeplace348"
+  },
+  {
+   "lastmod": "2026-03-14T12:00:00.000Z",
+   "loc": "/instytucja/czechowski-staniszewski-sp-z-o-o-fakeplace349"
+  },
+  {
+   "lastmod": "2026-04-07T12:00:00.000Z",
+   "loc": "/instytucja/koziol-jedrzejewski-sp-z-o-o-fakeplace35"
+  },
+  {
+   "lastmod": "2026-05-22T12:00:00.000Z",
+   "loc": "/instytucja/kielbasa-poplawski-and-stanislawski-sp-z-o-o-fakeplace350"
+  },
+  {
+   "lastmod": "2026-08-30T12:00:00.000Z",
+   "loc": "/instytucja/stepniak-jarosz-sp-z-o-o-fakeplace351"
+  },
+  {
+   "lastmod": "2026-01-16T12:00:00.000Z",
+   "loc": "/instytucja/brzozowski-drozdz-and-wojcicki-sp-z-o-o-fakeplace352"
+  },
+  {
+   "lastmod": "2026-03-31T12:00:00.000Z",
+   "loc": "/instytucja/biernat-sp-j-sp-z-o-o-fakeplace353"
+  },
+  {
+   "lastmod": "2026-06-21T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-warta-fakeplace354"
+  },
+  {
+   "lastmod": "2025-08-05T12:00:00.000Z",
+   "loc": "/instytucja/baranowski-chmiel-sp-z-o-o-fakeplace355"
+  },
+  {
+   "lastmod": "2026-05-30T12:00:00.000Z",
+   "loc": "/instytucja/zyla-szczesniak-and-adamek-sp-z-o-o-fakeplace356"
+  },
+  {
+   "lastmod": "2025-10-13T12:00:00.000Z",
+   "loc": "/instytucja/malec-sp-k-sp-z-o-o-fakeplace357"
+  },
+  {
+   "lastmod": "2025-07-03T12:00:00.000Z",
+   "loc": "/instytucja/michalik-rosinski-and-czerwinski-sp-z-o-o-fakeplace358"
+  },
+  {
+   "lastmod": "2026-08-14T12:00:00.000Z",
+   "loc": "/instytucja/wojtas-kaczynski-and-szafranski-sp-z-o-o-fakeplace359"
+  },
+  {
+   "lastmod": "2026-03-18T12:00:00.000Z",
+   "loc": "/instytucja/jankowiak-tarnowski-and-zielinski-sp-z-o-o-fakeplace36"
+  },
+  {
+   "lastmod": "2025-11-26T12:00:00.000Z",
+   "loc": "/instytucja/nowaczyk-baranski-and-skrzypek-sp-z-o-o-fakeplace360"
+  },
+  {
+   "lastmod": "2026-09-15T12:00:00.000Z",
+   "loc": "/instytucja/drozdowski-pieczek-sp-z-o-o-fakeplace361"
+  },
+  {
+   "lastmod": "2025-06-01T12:00:00.000Z",
+   "loc": "/instytucja/gruszka-sp-k-sp-z-o-o-fakeplace362"
+  },
+  {
+   "lastmod": "2026-07-09T12:00:00.000Z",
+   "loc": "/instytucja/sosnowski-glowacki-and-grzesiak-sp-z-o-o-fakeplace363"
+  },
+  {
+   "lastmod": "2025-06-18T12:00:00.000Z",
+   "loc": "/instytucja/kucharski-musial-sp-z-o-o-fakeplace364"
+  },
+  {
+   "lastmod": "2025-08-30T12:00:00.000Z",
+   "loc": "/instytucja/szczesny-sp-j-sp-z-o-o-fakeplace365"
+  },
+  {
+   "lastmod": "2025-07-21T12:00:00.000Z",
+   "loc": "/instytucja/dziuba-ska-sp-z-o-o-fakeplace366"
+  },
+  {
+   "lastmod": "2026-05-02T12:00:00.000Z",
+   "loc": "/instytucja/szczepanski-niemczyk-sp-z-o-o-fakeplace367"
+  },
+  {
+   "lastmod": "2026-09-04T12:00:00.000Z",
+   "loc": "/instytucja/koza-sp-p-sp-z-o-o-fakeplace368"
+  },
+  {
+   "lastmod": "2026-02-23T12:00:00.000Z",
+   "loc": "/instytucja/wiacek-olejniczak-and-wolak-sp-z-o-o-fakeplace369"
+  },
+  {
+   "lastmod": "2026-05-11T12:00:00.000Z",
+   "loc": "/instytucja/maciejewski-juszczak-and-stepien-sp-z-o-o-fakeplace37"
+  },
+  {
+   "lastmod": "2025-12-19T12:00:00.000Z",
+   "loc": "/instytucja/owczarek-s-c-sp-z-o-o-fakeplace370"
+  },
+  {
+   "lastmod": "2025-11-20T12:00:00.000Z",
+   "loc": "/instytucja/wieczorek-rucinski-and-grzyb-sp-z-o-o-fakeplace371"
+  },
+  {
+   "lastmod": "2025-07-19T12:00:00.000Z",
+   "loc": "/instytucja/wnuk-s-c-sp-z-o-o-fakeplace372"
+  },
+  {
+   "lastmod": "2026-07-21T12:00:00.000Z",
+   "loc": "/instytucja/herman-tomys-sp-z-o-o-fakeplace373"
+  },
+  {
+   "lastmod": "2025-10-14T12:00:00.000Z",
+   "loc": "/instytucja/dudek-s-c-sp-z-o-o-fakeplace374"
+  },
+  {
+   "lastmod": "2025-12-31T12:00:00.000Z",
+   "loc": "/instytucja/piorkowski-z-o-o-sp-z-o-o-fakeplace375"
+  },
+  {
+   "lastmod": "2025-07-29T12:00:00.000Z",
+   "loc": "/instytucja/szewczyk-kolodziejski-sp-z-o-o-fakeplace376"
+  },
+  {
+   "lastmod": "2026-08-29T12:00:00.000Z",
+   "loc": "/instytucja/lewandowski-z-o-o-sp-z-o-o-fakeplace377"
+  },
+  {
+   "lastmod": "2026-02-12T12:00:00.000Z",
+   "loc": "/instytucja/jozwiak-zalewski-sp-z-o-o-fakeplace378"
+  },
+  {
+   "lastmod": "2026-04-08T12:00:00.000Z",
+   "loc": "/instytucja/krawczyk-ska-sp-z-o-o-fakeplace379"
+  },
+  {
+   "lastmod": "2026-07-12T12:00:00.000Z",
+   "loc": "/instytucja/sobieraj-sp-p-sp-z-o-o-fakeplace38"
+  },
+  {
+   "lastmod": "2026-06-06T12:00:00.000Z",
+   "loc": "/instytucja/milczarek-wisniewski-and-wroblewski-sp-z-o-o-fakeplace380"
+  },
+  {
+   "lastmod": "2026-02-26T12:00:00.000Z",
+   "loc": "/instytucja/zareba-kos-and-niemiec-sp-z-o-o-fakeplace381"
+  },
+  {
+   "lastmod": "2026-09-19T12:00:00.000Z",
+   "loc": "/instytucja/tracz-czech-sp-z-o-o-fakeplace382"
+  },
+  {
+   "lastmod": "2026-07-27T12:00:00.000Z",
+   "loc": "/instytucja/janiak-zygmunt-and-mlynarczyk-sp-z-o-o-fakeplace383"
+  },
+  {
+   "lastmod": "2025-07-15T12:00:00.000Z",
+   "loc": "/instytucja/kujawski-sroka-and-szymanski-sp-z-o-o-fakeplace384"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/skrzypek-izdebski-and-polak-sp-z-o-o-fakeplace385"
+  },
+  {
+   "lastmod": "2026-01-14T12:00:00.000Z",
+   "loc": "/instytucja/markiewicz-z-o-o-sp-z-o-o-fakeplace386"
+  },
+  {
+   "lastmod": "2026-06-09T12:00:00.000Z",
+   "loc": "/instytucja/jarosz-s-a-sp-z-o-o-fakeplace387"
+  },
+  {
+   "lastmod": "2026-03-11T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-barcin-sp-z-o-o-fakeplace388"
+  },
+  {
+   "lastmod": "2025-11-23T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-rebeka-kulig-w-skorcz-fakeplace389"
+  },
+  {
+   "lastmod": "2026-01-02T12:00:00.000Z",
+   "loc": "/instytucja/karpinski-pietruszka-sp-z-o-o-fakeplace39"
+  },
+  {
+   "lastmod": "2025-06-30T12:00:00.000Z",
+   "loc": "/instytucja/kubacki-mrozek-and-baranowski-sp-z-o-o-fakeplace390"
+  },
+  {
+   "lastmod": "2026-07-08T12:00:00.000Z",
+   "loc": "/instytucja/wisniewski-trzeciak-and-kubica-sp-z-o-o-fakeplace391"
+  },
+  {
+   "lastmod": "2026-08-28T12:00:00.000Z",
+   "loc": "/instytucja/bialkowski-kubica-sp-z-o-o-fakeplace392"
+  },
+  {
+   "lastmod": "2025-07-11T12:00:00.000Z",
+   "loc": "/instytucja/zebrowski-sp-k-sp-z-o-o-fakeplace393"
+  },
+  {
+   "lastmod": "2025-09-20T12:00:00.000Z",
+   "loc": "/instytucja/michalak-sp-p-sp-z-o-o-fakeplace394"
+  },
+  {
+   "lastmod": "2025-08-12T12:00:00.000Z",
+   "loc": "/instytucja/skoczylas-kowal-sp-z-o-o-fakeplace395"
+  },
+  {
+   "lastmod": "2026-07-09T12:00:00.000Z",
+   "loc": "/instytucja/galazka-sikora-and-kobus-sp-z-o-o-fakeplace396"
+  },
+  {
+   "lastmod": "2026-04-02T12:00:00.000Z",
+   "loc": "/instytucja/zmuda-sp-p-sp-z-o-o-fakeplace397"
+  },
+  {
+   "lastmod": "2025-09-06T12:00:00.000Z",
+   "loc": "/instytucja/kucinski-adamek-and-chmielewski-sp-z-o-o-fakeplace398"
+  },
+  {
+   "lastmod": "2025-09-12T12:00:00.000Z",
+   "loc": "/instytucja/rozanski-kulinski-and-gora-sp-z-o-o-fakeplace399"
+  },
+  {
+   "lastmod": "2026-09-13T12:00:00.000Z",
+   "loc": "/instytucja/staszewski-ska-sp-z-o-o-fakeplace4"
+  },
+  {
+   "lastmod": "2025-12-28T12:00:00.000Z",
+   "loc": "/instytucja/wegrzyn-drozd-and-mrozek-sp-z-o-o-fakeplace40"
+  },
+  {
+   "lastmod": "2026-05-22T12:00:00.000Z",
+   "loc": "/instytucja/sliwinski-s-a-sp-z-o-o-fakeplace400"
+  },
+  {
+   "lastmod": "2026-09-20T12:00:00.000Z",
+   "loc": "/instytucja/adamus-ska-sp-z-o-o-fakeplace401"
+  },
+  {
+   "lastmod": "2026-03-10T12:00:00.000Z",
+   "loc": "/instytucja/nowakowski-sowa-and-fratczak-sp-z-o-o-fakeplace402"
+  },
+  {
+   "lastmod": "2025-09-30T12:00:00.000Z",
+   "loc": "/instytucja/piasecki-filipowicz-and-rojek-sp-z-o-o-fakeplace403"
+  },
+  {
+   "lastmod": "2026-06-15T12:00:00.000Z",
+   "loc": "/instytucja/gawlik-jaskiewicz-and-gawlik-sp-z-o-o-fakeplace404"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/debowski-kawecki-and-kazmierczak-sp-z-o-o-fakeplace405"
+  },
+  {
+   "lastmod": "2025-06-30T12:00:00.000Z",
+   "loc": "/instytucja/rogala-rak-sp-z-o-o-fakeplace406"
+  },
+  {
+   "lastmod": "2026-05-16T12:00:00.000Z",
+   "loc": "/instytucja/cygan-majchrzak-sp-z-o-o-fakeplace407"
+  },
+  {
+   "lastmod": "2026-03-27T12:00:00.000Z",
+   "loc": "/instytucja/wasik-kopczynski-sp-z-o-o-fakeplace408"
+  },
+  {
+   "lastmod": "2025-07-06T12:00:00.000Z",
+   "loc": "/instytucja/zwolinski-s-a-sp-z-o-o-fakeplace409"
+  },
+  {
+   "lastmod": "2025-07-14T12:00:00.000Z",
+   "loc": "/instytucja/mazurkiewicz-wojciechowski-and-dobrzynski-sp-z-o-o-fakeplace41"
+  },
+  {
+   "lastmod": "2026-09-03T12:00:00.000Z",
+   "loc": "/instytucja/kopczynski-niemczyk-and-bieniek-sp-z-o-o-fakeplace410"
+  },
+  {
+   "lastmod": "2026-01-08T12:00:00.000Z",
+   "loc": "/instytucja/malinowski-sp-p-sp-z-o-o-fakeplace411"
+  },
+  {
+   "lastmod": "2026-06-20T12:00:00.000Z",
+   "loc": "/instytucja/brzezinski-s-a-sp-z-o-o-fakeplace412"
+  },
+  {
+   "lastmod": "2025-09-12T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-grajewo-sp-z-o-o-fakeplace413"
+  },
+  {
+   "lastmod": "2026-07-20T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-raciborz-sp-z-o-o-fakeplace414"
+  },
+  {
+   "lastmod": "2025-09-13T12:00:00.000Z",
+   "loc": "/instytucja/lewicki-dziedzic-sp-z-o-o-fakeplace415"
+  },
+  {
+   "lastmod": "2025-06-21T12:00:00.000Z",
+   "loc": "/instytucja/misiak-walczak-sp-z-o-o-fakeplace416"
+  },
+  {
+   "lastmod": "2026-05-11T12:00:00.000Z",
+   "loc": "/instytucja/wrobel-mikulski-and-mlynarczyk-sp-z-o-o-fakeplace417"
+  },
+  {
+   "lastmod": "2025-06-23T12:00:00.000Z",
+   "loc": "/instytucja/piatek-z-o-o-sp-z-o-o-fakeplace418"
+  },
+  {
+   "lastmod": "2026-10-10T12:00:00.000Z",
+   "loc": "/instytucja/adamczyk-stec-sp-z-o-o-fakeplace419"
+  },
+  {
+   "lastmod": "2026-04-08T12:00:00.000Z",
+   "loc": "/instytucja/janas-urbanczyk-and-rusin-sp-z-o-o-fakeplace42"
+  },
+  {
+   "lastmod": "2025-12-03T12:00:00.000Z",
+   "loc": "/instytucja/kolodziej-czekaj-sp-z-o-o-fakeplace420"
+  },
+  {
+   "lastmod": "2025-12-15T12:00:00.000Z",
+   "loc": "/instytucja/bak-majka-sp-z-o-o-fakeplace421"
+  },
+  {
+   "lastmod": "2026-05-14T12:00:00.000Z",
+   "loc": "/instytucja/kosinski-kowalczyk-sp-z-o-o-fakeplace422"
+  },
+  {
+   "lastmod": "2026-06-30T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-dress-w-mirsk-fakeplace423"
+  },
+  {
+   "lastmod": "2026-07-06T12:00:00.000Z",
+   "loc": "/instytucja/urbanski-z-o-o-sp-z-o-o-fakeplace424"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/janus-mikolajczyk-and-witkowski-sp-z-o-o-fakeplace425"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-stefania-balcerzak-w-miroslawiec-fakeplace426"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/galazka-sp-k-sp-z-o-o-fakeplace427"
+  },
+  {
+   "lastmod": "2026-05-25T12:00:00.000Z",
+   "loc": "/instytucja/staszewski-sp-p-sp-z-o-o-fakeplace428"
+  },
+  {
+   "lastmod": "2026-07-11T12:00:00.000Z",
+   "loc": "/instytucja/lesniewski-z-o-o-sp-z-o-o-fakeplace429"
+  },
+  {
+   "lastmod": "2026-09-28T12:00:00.000Z",
+   "loc": "/instytucja/janicki-pawlicki-sp-z-o-o-fakeplace43"
+  },
+  {
+   "lastmod": "2026-01-17T12:00:00.000Z",
+   "loc": "/instytucja/bialas-s-c-sp-z-o-o-fakeplace430"
+  },
+  {
+   "lastmod": "2026-02-04T12:00:00.000Z",
+   "loc": "/instytucja/jablonski-nowakowski-and-flis-sp-z-o-o-fakeplace431"
+  },
+  {
+   "lastmod": "2025-10-26T12:00:00.000Z",
+   "loc": "/instytucja/tkaczyk-witczak-and-zalewski-sp-z-o-o-fakeplace432"
+  },
+  {
+   "lastmod": "2025-10-30T12:00:00.000Z",
+   "loc": "/instytucja/iwanski-mikulski-sp-z-o-o-fakeplace433"
+  },
+  {
+   "lastmod": "2025-11-18T12:00:00.000Z",
+   "loc": "/instytucja/zagorski-sp-j-sp-z-o-o-fakeplace434"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/szpital-powiatowy-w-miedzyzdroje-sp-z-o-o-fakeplace435"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/kulik-niewiadomski-sp-z-o-o-fakeplace436"
+  },
+  {
+   "lastmod": "2026-01-03T12:00:00.000Z",
+   "loc": "/instytucja/duszynski-sp-k-sp-z-o-o-fakeplace437"
+  },
+  {
+   "lastmod": "2025-07-30T12:00:00.000Z",
+   "loc": "/instytucja/trojanowski-jagodzinski-sp-z-o-o-fakeplace438"
+  },
+  {
+   "lastmod": "2026-07-05T12:00:00.000Z",
+   "loc": "/instytucja/krupa-wozniak-and-stec-sp-z-o-o-fakeplace439"
+  },
+  {
+   "lastmod": "2026-04-03T12:00:00.000Z",
+   "loc": "/instytucja/szczesna-niedzwiecki-and-mackowiak-sp-z-o-o-fakeplace44"
+  },
+  {
+   "lastmod": "2026-04-13T12:00:00.000Z",
+   "loc": "/instytucja/bialas-kolodziej-magni-mollitia-iste-quisquam-numquam-optio-harum-ad-corrupti-fugit-voluptate-accusamus-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace440"
+  },
+  {
+   "lastmod": "2026-06-14T12:00:00.000Z",
+   "loc": "/instytucja/jurkiewicz-z-o-o-sp-z-o-o-fakeplace441"
+  },
+  {
+   "lastmod": "2026-10-13T12:00:00.000Z",
+   "loc": "/instytucja/fraczek-kwiecien-sp-z-o-o-fakeplace442"
+  },
+  {
+   "lastmod": "2025-11-12T12:00:00.000Z",
+   "loc": "/instytucja/krawiec-debski-and-kozak-sp-z-o-o-fakeplace443"
+  },
+  {
+   "lastmod": "2026-01-19T12:00:00.000Z",
+   "loc": "/instytucja/golec-z-o-o-sp-z-o-o-fakeplace444"
+  },
+  {
+   "lastmod": "2026-07-28T12:00:00.000Z",
+   "loc": "/instytucja/morawski-kasprzak-and-leszczynski-sp-z-o-o-fakeplace445"
+  },
+  {
+   "lastmod": "2025-11-30T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-makeover-w-kaluszyn-fakeplace446"
+  },
+  {
+   "lastmod": "2026-06-06T12:00:00.000Z",
+   "loc": "/instytucja/tomala-golebiewski-and-skowronski-sp-z-o-o-fakeplace447"
+  },
+  {
+   "lastmod": "2025-09-05T12:00:00.000Z",
+   "loc": "/instytucja/szostak-lesiak-and-majka-sp-z-o-o-fakeplace448"
+  },
+  {
+   "lastmod": "2026-02-22T12:00:00.000Z",
+   "loc": "/instytucja/krawczyk-kubacki-sp-z-o-o-fakeplace449"
+  },
+  {
+   "lastmod": "2025-08-18T12:00:00.000Z",
+   "loc": "/instytucja/dudzinski-kot-and-malec-sp-z-o-o-fakeplace45"
+  },
+  {
+   "lastmod": "2026-05-10T12:00:00.000Z",
+   "loc": "/instytucja/wolny-cichocki-sp-z-o-o-fakeplace450"
+  },
+  {
+   "lastmod": "2026-05-19T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-raszkow-fakeplace451"
+  },
+  {
+   "lastmod": "2026-07-27T12:00:00.000Z",
+   "loc": "/instytucja/wieckowski-ska-sp-z-o-o-fakeplace452"
+  },
+  {
+   "lastmod": "2026-10-03T12:00:00.000Z",
+   "loc": "/instytucja/skora-sp-k-sp-z-o-o-fakeplace453"
+  },
+  {
+   "lastmod": "2026-08-01T12:00:00.000Z",
+   "loc": "/instytucja/szczepanski-jackowski-and-koziol-facere-corporis-occaecati-illo-dolores-officiis-omnis-tenetur-repellat-ipsam-magnam-nulla-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace454"
+  },
+  {
+   "lastmod": "2025-10-24T12:00:00.000Z",
+   "loc": "/instytucja/wisniewski-jozwiak-and-grabowski-sp-z-o-o-fakeplace455"
+  },
+  {
+   "lastmod": "2026-09-28T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-eugeniusz-sokolowski-w-kosow-lacki-fakeplace456"
+  },
+  {
+   "lastmod": "2025-07-11T12:00:00.000Z",
+   "loc": "/instytucja/niedzwiecki-przybyla-sp-z-o-o-fakeplace457"
+  },
+  {
+   "lastmod": "2026-05-13T12:00:00.000Z",
+   "loc": "/instytucja/sitek-rojek-and-laskowski-sp-z-o-o-fakeplace458"
+  },
+  {
+   "lastmod": "2026-01-01T12:00:00.000Z",
+   "loc": "/instytucja/bednarz-matuszak-sp-z-o-o-fakeplace459"
+  },
+  {
+   "lastmod": "2025-06-25T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-ostrow-mazowiecka-sp-z-o-o-fakeplace46"
+  },
+  {
+   "lastmod": "2025-06-12T12:00:00.000Z",
+   "loc": "/instytucja/kubacki-sp-p-sp-z-o-o-fakeplace460"
+  },
+  {
+   "lastmod": "2026-05-24T12:00:00.000Z",
+   "loc": "/instytucja/polak-sp-j-sp-z-o-o-fakeplace461"
+  },
+  {
+   "lastmod": "2025-12-30T12:00:00.000Z",
+   "loc": "/instytucja/kepa-z-o-o-sp-z-o-o-fakeplace462"
+  },
+  {
+   "lastmod": "2026-04-02T12:00:00.000Z",
+   "loc": "/instytucja/cholewa-fratczak-sp-z-o-o-fakeplace463"
+  },
+  {
+   "lastmod": "2026-10-07T12:00:00.000Z",
+   "loc": "/instytucja/karpinski-bednarz-sp-z-o-o-fakeplace464"
+  },
+  {
+   "lastmod": "2025-11-16T12:00:00.000Z",
+   "loc": "/instytucja/piatek-z-o-o-sp-z-o-o-fakeplace465"
+  },
+  {
+   "lastmod": "2026-10-17T12:00:00.000Z",
+   "loc": "/instytucja/stankiewicz-s-c-sp-z-o-o-fakeplace466"
+  },
+  {
+   "lastmod": "2026-05-07T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-sock-w-poznan-fakeplace467"
+  },
+  {
+   "lastmod": "2025-11-06T12:00:00.000Z",
+   "loc": "/instytucja/pluta-s-a-sp-z-o-o-fakeplace468"
+  },
+  {
+   "lastmod": "2026-09-13T12:00:00.000Z",
+   "loc": "/instytucja/soltysiak-adamus-and-gawlik-sp-z-o-o-fakeplace469"
+  },
+  {
+   "lastmod": "2026-03-25T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-plumber-w-czestochowa-fakeplace47"
+  },
+  {
+   "lastmod": "2025-08-27T12:00:00.000Z",
+   "loc": "/instytucja/adamek-gutowski-sp-z-o-o-fakeplace470"
+  },
+  {
+   "lastmod": "2026-03-22T12:00:00.000Z",
+   "loc": "/instytucja/tomczyk-z-o-o-sp-z-o-o-fakeplace471"
+  },
+  {
+   "lastmod": "2026-09-15T12:00:00.000Z",
+   "loc": "/instytucja/wojtkowiak-jozwiak-sp-z-o-o-fakeplace472"
+  },
+  {
+   "lastmod": "2026-03-13T12:00:00.000Z",
+   "loc": "/instytucja/wolinski-sp-k-sp-z-o-o-fakeplace473"
+  },
+  {
+   "lastmod": "2025-11-18T12:00:00.000Z",
+   "loc": "/instytucja/zawadzki-adamiak-sp-z-o-o-fakeplace474"
+  },
+  {
+   "lastmod": "2025-07-09T12:00:00.000Z",
+   "loc": "/instytucja/lukaszewski-wawrzyniak-and-ossowski-sp-z-o-o-fakeplace475"
+  },
+  {
+   "lastmod": "2025-10-06T12:00:00.000Z",
+   "loc": "/instytucja/jozwiak-skowronski-sp-z-o-o-fakeplace476"
+  },
+  {
+   "lastmod": "2026-08-10T12:00:00.000Z",
+   "loc": "/instytucja/kowalik-dudek-and-piasecki-sp-z-o-o-fakeplace477"
+  },
+  {
+   "lastmod": "2025-09-10T12:00:00.000Z",
+   "loc": "/instytucja/kaminski-kaczorowski-and-drabik-sp-z-o-o-fakeplace478"
+  },
+  {
+   "lastmod": "2025-08-13T12:00:00.000Z",
+   "loc": "/instytucja/milewski-sp-p-sp-z-o-o-fakeplace479"
+  },
+  {
+   "lastmod": "2025-12-29T12:00:00.000Z",
+   "loc": "/instytucja/chmielewski-z-o-o-sp-z-o-o-fakeplace48"
+  },
+  {
+   "lastmod": "2026-08-15T12:00:00.000Z",
+   "loc": "/instytucja/stawicki-skrzypek-and-flis-sp-z-o-o-fakeplace480"
+  },
+  {
+   "lastmod": "2025-07-31T12:00:00.000Z",
+   "loc": "/instytucja/lapinski-jackowski-and-kwiecien-sp-z-o-o-fakeplace481"
+  },
+  {
+   "lastmod": "2026-05-28T12:00:00.000Z",
+   "loc": "/instytucja/debski-baran-and-gorski-sp-z-o-o-fakeplace482"
+  },
+  {
+   "lastmod": "2026-03-25T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-lipsk-fakeplace483"
+  },
+  {
+   "lastmod": "2025-07-10T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-dusk-w-radlin-fakeplace484"
+  },
+  {
+   "lastmod": "2025-08-10T12:00:00.000Z",
+   "loc": "/instytucja/kula-jaros-sp-z-o-o-fakeplace485"
+  },
+  {
+   "lastmod": "2026-06-02T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-pakosc-fakeplace486"
+  },
+  {
+   "lastmod": "2025-09-22T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-mszczonow-fakeplace487"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/bak-s-a-sp-z-o-o-fakeplace488"
+  },
+  {
+   "lastmod": "2026-07-23T12:00:00.000Z",
+   "loc": "/instytucja/szczesniak-z-o-o-sp-z-o-o-fakeplace489"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/janicki-zmuda-and-szewczyk-sp-z-o-o-fakeplace49"
+  },
+  {
+   "lastmod": "2026-01-11T12:00:00.000Z",
+   "loc": "/instytucja/sieradzki-kowal-sp-z-o-o-fakeplace490"
+  },
+  {
+   "lastmod": "2026-05-02T12:00:00.000Z",
+   "loc": "/instytucja/kepa-lipka-and-kosowski-sp-z-o-o-fakeplace491"
+  },
+  {
+   "lastmod": "2026-04-12T12:00:00.000Z",
+   "loc": "/instytucja/jedrzejczyk-krupa-and-zwolinski-sp-z-o-o-fakeplace492"
+  },
+  {
+   "lastmod": "2025-11-21T12:00:00.000Z",
+   "loc": "/instytucja/kasperek-mackiewicz-sp-z-o-o-fakeplace493"
+  },
+  {
+   "lastmod": "2026-08-10T12:00:00.000Z",
+   "loc": "/instytucja/tomala-ska-sp-z-o-o-fakeplace494"
+  },
+  {
+   "lastmod": "2025-12-30T12:00:00.000Z",
+   "loc": "/instytucja/szewczyk-sp-j-sp-z-o-o-fakeplace495"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/modzelewski-kulinski-and-kulesza-sp-z-o-o-fakeplace496"
+  },
+  {
+   "lastmod": "2026-09-16T12:00:00.000Z",
+   "loc": "/instytucja/marszalek-zyla-and-golebiowski-sp-z-o-o-fakeplace497"
+  },
+  {
+   "lastmod": "2026-09-20T12:00:00.000Z",
+   "loc": "/instytucja/drozd-szostak-and-jablonski-sp-z-o-o-fakeplace498"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/wojtkowiak-ska-sp-z-o-o-fakeplace499"
+  },
+  {
+   "lastmod": "2025-11-04T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-polikarp-kurowski-w-suprasl-fakeplace5"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/bienkowski-kruk-sp-z-o-o-fakeplace50"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/kedziora-sp-j-sp-z-o-o-fakeplace500"
+  },
+  {
+   "lastmod": "2025-09-27T12:00:00.000Z",
+   "loc": "/instytucja/jaros-kawecki-and-jagiello-sp-z-o-o-fakeplace501"
+  },
+  {
+   "lastmod": "2026-08-26T12:00:00.000Z",
+   "loc": "/instytucja/karas-zmuda-sp-z-o-o-fakeplace502"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/kaczmarski-maliszewski-sp-z-o-o-fakeplace503"
+  },
+  {
+   "lastmod": "2025-06-29T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-przysucha-sp-z-o-o-fakeplace504"
+  },
+  {
+   "lastmod": "2026-05-12T12:00:00.000Z",
+   "loc": "/instytucja/grabowski-ska-sp-z-o-o-fakeplace505"
+  },
+  {
+   "lastmod": "2026-04-09T12:00:00.000Z",
+   "loc": "/instytucja/warchol-gorniak-and-kostrzewa-sp-z-o-o-fakeplace506"
+  },
+  {
+   "lastmod": "2025-09-25T12:00:00.000Z",
+   "loc": "/instytucja/chmura-s-c-sp-z-o-o-fakeplace507"
+  },
+  {
+   "lastmod": "2026-08-15T12:00:00.000Z",
+   "loc": "/instytucja/broda-kuc-and-janas-sp-z-o-o-fakeplace508"
+  },
+  {
+   "lastmod": "2026-05-05T12:00:00.000Z",
+   "loc": "/instytucja/wojtas-sp-p-sp-z-o-o-fakeplace509"
+  },
+  {
+   "lastmod": "2025-08-26T12:00:00.000Z",
+   "loc": "/instytucja/kita-krukowski-sp-z-o-o-fakeplace51"
+  },
+  {
+   "lastmod": "2026-07-06T12:00:00.000Z",
+   "loc": "/instytucja/siedlecki-bochenek-and-golebiewski-sp-z-o-o-fakeplace510"
+  },
+  {
+   "lastmod": "2025-11-04T12:00:00.000Z",
+   "loc": "/instytucja/wolinski-sp-j-sp-z-o-o-fakeplace511"
+  },
+  {
+   "lastmod": "2025-07-26T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-fold-w-suraz-fakeplace512"
+  },
+  {
+   "lastmod": "2026-10-08T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-paula-gorecki-w-sokolka-fakeplace513"
+  },
+  {
+   "lastmod": "2026-06-23T12:00:00.000Z",
+   "loc": "/instytucja/drozd-czyz-sp-z-o-o-fakeplace514"
+  },
+  {
+   "lastmod": "2026-06-18T12:00:00.000Z",
+   "loc": "/instytucja/michalik-s-a-sp-z-o-o-fakeplace515"
+  },
+  {
+   "lastmod": "2025-09-01T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-wieliczka-sp-z-o-o-fakeplace516"
+  },
+  {
+   "lastmod": "2026-05-19T12:00:00.000Z",
+   "loc": "/instytucja/winiarski-skibinski-and-baran-sp-z-o-o-fakeplace517"
+  },
+  {
+   "lastmod": "2026-02-07T12:00:00.000Z",
+   "loc": "/instytucja/smolinski-wojcik-and-rudnicki-sp-z-o-o-fakeplace518"
+  },
+  {
+   "lastmod": "2025-09-02T12:00:00.000Z",
+   "loc": "/instytucja/malecki-slusarczyk-sp-z-o-o-fakeplace519"
+  },
+  {
+   "lastmod": "2026-04-18T12:00:00.000Z",
+   "loc": "/instytucja/hajduk-staszewski-and-lesniewski-sp-z-o-o-fakeplace52"
+  },
+  {
+   "lastmod": "2026-02-14T12:00:00.000Z",
+   "loc": "/instytucja/biernat-szatkowski-sp-z-o-o-fakeplace520"
+  },
+  {
+   "lastmod": "2026-04-25T12:00:00.000Z",
+   "loc": "/instytucja/krzyzanowski-sp-k-sp-z-o-o-fakeplace521"
+  },
+  {
+   "lastmod": "2025-10-24T12:00:00.000Z",
+   "loc": "/instytucja/jaskiewicz-sp-p-sp-z-o-o-fakeplace522"
+  },
+  {
+   "lastmod": "2026-05-02T12:00:00.000Z",
+   "loc": "/instytucja/gruszka-marszalek-sp-z-o-o-fakeplace523"
+  },
+  {
+   "lastmod": "2026-05-24T12:00:00.000Z",
+   "loc": "/instytucja/fijalkowski-rosa-and-broda-sp-z-o-o-fakeplace524"
+  },
+  {
+   "lastmod": "2025-08-29T12:00:00.000Z",
+   "loc": "/instytucja/jozwik-z-o-o-sp-z-o-o-fakeplace525"
+  },
+  {
+   "lastmod": "2026-08-11T12:00:00.000Z",
+   "loc": "/instytucja/bednarczyk-s-c-sp-z-o-o-fakeplace526"
+  },
+  {
+   "lastmod": "2026-01-17T12:00:00.000Z",
+   "loc": "/instytucja/nowinski-urbanek-sp-z-o-o-fakeplace527"
+  },
+  {
+   "lastmod": "2026-05-28T12:00:00.000Z",
+   "loc": "/instytucja/pietruszka-biernacki-sp-z-o-o-fakeplace528"
+  },
+  {
+   "lastmod": "2025-12-01T12:00:00.000Z",
+   "loc": "/instytucja/slowinski-krupinski-sp-z-o-o-fakeplace529"
+  },
+  {
+   "lastmod": "2026-01-05T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-kazimierza-wielka-sp-z-o-o-fakeplace53"
+  },
+  {
+   "lastmod": "2025-06-19T12:00:00.000Z",
+   "loc": "/instytucja/maj-kaczorowski-sp-z-o-o-fakeplace530"
+  },
+  {
+   "lastmod": "2026-09-09T12:00:00.000Z",
+   "loc": "/instytucja/adamiec-wojciechowski-and-cichon-sp-z-o-o-fakeplace531"
+  },
+  {
+   "lastmod": "2025-09-06T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-kutno-fakeplace532"
+  },
+  {
+   "lastmod": "2025-12-11T12:00:00.000Z",
+   "loc": "/instytucja/michalczyk-gawel-sp-z-o-o-fakeplace533"
+  },
+  {
+   "lastmod": "2025-09-04T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-validity-w-ogrodzieniec-fakeplace534"
+  },
+  {
+   "lastmod": "2025-09-13T12:00:00.000Z",
+   "loc": "/instytucja/bartczak-s-c-sp-z-o-o-fakeplace535"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/filipek-ostrowski-sp-z-o-o-fakeplace536"
+  },
+  {
+   "lastmod": "2026-02-03T12:00:00.000Z",
+   "loc": "/instytucja/koziel-dabek-and-zurek-sp-z-o-o-fakeplace537"
+  },
+  {
+   "lastmod": "2025-09-19T12:00:00.000Z",
+   "loc": "/instytucja/debowski-bak-and-marczak-sp-z-o-o-fakeplace538"
+  },
+  {
+   "lastmod": "2026-09-19T12:00:00.000Z",
+   "loc": "/instytucja/filipiak-pieczek-sp-z-o-o-fakeplace539"
+  },
+  {
+   "lastmod": "2025-09-15T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-ozarow-mazowiecki-fakeplace54"
+  },
+  {
+   "lastmod": "2025-09-10T12:00:00.000Z",
+   "loc": "/instytucja/rosinski-bialek-exercitationem-adipisci-quae-eos-sunt-voluptates-odit-deleniti-provident-atque-architecto-ad-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace540"
+  },
+  {
+   "lastmod": "2025-07-30T12:00:00.000Z",
+   "loc": "/instytucja/krupa-sp-j-sp-z-o-o-fakeplace541"
+  },
+  {
+   "lastmod": "2025-09-08T12:00:00.000Z",
+   "loc": "/instytucja/borowski-tarnowski-sp-z-o-o-fakeplace542"
+  },
+  {
+   "lastmod": "2025-12-11T12:00:00.000Z",
+   "loc": "/instytucja/tomala-frankowski-and-kwiatkowski-sp-z-o-o-fakeplace543"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/jagielski-szczesny-and-wyszynski-sp-z-o-o-fakeplace544"
+  },
+  {
+   "lastmod": "2025-09-09T12:00:00.000Z",
+   "loc": "/instytucja/lewandowski-karpinski-and-izdebski-sp-z-o-o-fakeplace545"
+  },
+  {
+   "lastmod": "2026-06-18T12:00:00.000Z",
+   "loc": "/instytucja/tracz-ska-sp-z-o-o-fakeplace546"
+  },
+  {
+   "lastmod": "2025-10-04T12:00:00.000Z",
+   "loc": "/instytucja/mierzejewski-z-o-o-sp-z-o-o-fakeplace547"
+  },
+  {
+   "lastmod": "2026-10-11T12:00:00.000Z",
+   "loc": "/instytucja/maliszewski-szwarc-sp-z-o-o-fakeplace548"
+  },
+  {
+   "lastmod": "2025-11-06T12:00:00.000Z",
+   "loc": "/instytucja/lenart-prokop-and-kujawa-sp-z-o-o-fakeplace549"
+  },
+  {
+   "lastmod": "2026-05-15T12:00:00.000Z",
+   "loc": "/instytucja/golab-ska-sp-z-o-o-fakeplace55"
+  },
+  {
+   "lastmod": "2025-09-15T12:00:00.000Z",
+   "loc": "/instytucja/jozwiak-szostak-and-poplawski-sp-z-o-o-fakeplace550"
+  },
+  {
+   "lastmod": "2025-12-09T12:00:00.000Z",
+   "loc": "/instytucja/zurek-z-o-o-sp-z-o-o-fakeplace551"
+  },
+  {
+   "lastmod": "2025-07-16T12:00:00.000Z",
+   "loc": "/instytucja/olszewski-witkowski-sp-z-o-o-fakeplace552"
+  },
+  {
+   "lastmod": "2025-09-03T12:00:00.000Z",
+   "loc": "/instytucja/bochenek-sp-j-sp-z-o-o-fakeplace553"
+  },
+  {
+   "lastmod": "2025-08-05T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-patroller-w-zary-fakeplace554"
+  },
+  {
+   "lastmod": "2025-10-19T12:00:00.000Z",
+   "loc": "/instytucja/graczyk-urban-sp-z-o-o-fakeplace555"
+  },
+  {
+   "lastmod": "2026-09-21T12:00:00.000Z",
+   "loc": "/instytucja/tomaszewski-skalski-sp-z-o-o-fakeplace556"
+  },
+  {
+   "lastmod": "2025-09-07T12:00:00.000Z",
+   "loc": "/instytucja/augustyniak-s-a-sp-z-o-o-fakeplace557"
+  },
+  {
+   "lastmod": "2025-07-20T12:00:00.000Z",
+   "loc": "/instytucja/niedziela-ska-sp-z-o-o-fakeplace558"
+  },
+  {
+   "lastmod": "2025-08-29T12:00:00.000Z",
+   "loc": "/instytucja/matusiak-sp-p-sp-z-o-o-fakeplace559"
+  },
+  {
+   "lastmod": "2025-08-14T12:00:00.000Z",
+   "loc": "/instytucja/wyszynski-janowski-and-grzesik-sp-z-o-o-fakeplace56"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/pietras-cygan-and-staszewski-sp-z-o-o-fakeplace560"
+  },
+  {
+   "lastmod": "2026-08-21T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-celsius-w-miloslaw-fakeplace561"
+  },
+  {
+   "lastmod": "2026-03-24T12:00:00.000Z",
+   "loc": "/instytucja/stefaniak-kedziora-and-wierzbicki-sp-z-o-o-fakeplace562"
+  },
+  {
+   "lastmod": "2026-01-04T12:00:00.000Z",
+   "loc": "/instytucja/skrzypek-bochenek-sp-z-o-o-fakeplace563"
+  },
+  {
+   "lastmod": "2026-05-27T12:00:00.000Z",
+   "loc": "/instytucja/mazur-s-c-sp-z-o-o-fakeplace564"
+  },
+  {
+   "lastmod": "2026-03-26T12:00:00.000Z",
+   "loc": "/instytucja/grzywacz-wos-sp-z-o-o-fakeplace565"
+  },
+  {
+   "lastmod": "2025-11-23T12:00:00.000Z",
+   "loc": "/instytucja/prus-ska-sp-z-o-o-fakeplace566"
+  },
+  {
+   "lastmod": "2026-05-21T12:00:00.000Z",
+   "loc": "/instytucja/niemiec-maciejewski-and-zurek-sp-z-o-o-fakeplace567"
+  },
+  {
+   "lastmod": "2026-03-28T12:00:00.000Z",
+   "loc": "/instytucja/mierzejewski-rudzinski-and-prokop-sp-z-o-o-fakeplace568"
+  },
+  {
+   "lastmod": "2025-08-28T12:00:00.000Z",
+   "loc": "/instytucja/przybyl-kuchta-sp-z-o-o-fakeplace569"
+  },
+  {
+   "lastmod": "2026-07-17T12:00:00.000Z",
+   "loc": "/instytucja/lukasiewicz-sp-p-sp-z-o-o-fakeplace57"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/wlodarczyk-malec-sp-z-o-o-fakeplace570"
+  },
+  {
+   "lastmod": "2026-02-24T12:00:00.000Z",
+   "loc": "/instytucja/grzegorczyk-s-a-sp-z-o-o-fakeplace571"
+  },
+  {
+   "lastmod": "2025-09-27T12:00:00.000Z",
+   "loc": "/instytucja/cygan-mierzejewski-and-budzynski-sp-z-o-o-fakeplace572"
+  },
+  {
+   "lastmod": "2026-05-18T12:00:00.000Z",
+   "loc": "/instytucja/stanek-wojtas-and-urbanek-sp-z-o-o-fakeplace573"
+  },
+  {
+   "lastmod": "2025-09-07T12:00:00.000Z",
+   "loc": "/instytucja/grzyb-ska-sp-z-o-o-fakeplace574"
+  },
+  {
+   "lastmod": "2026-09-16T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-metabolite-w-sulmierzyce-fakeplace575"
+  },
+  {
+   "lastmod": "2026-09-01T12:00:00.000Z",
+   "loc": "/instytucja/grudzien-sikora-and-gasior-sp-z-o-o-fakeplace576"
+  },
+  {
+   "lastmod": "2025-11-15T12:00:00.000Z",
+   "loc": "/instytucja/czapla-januszewski-sp-z-o-o-fakeplace577"
+  },
+  {
+   "lastmod": "2025-07-10T12:00:00.000Z",
+   "loc": "/instytucja/lapinski-sp-j-sp-z-o-o-fakeplace578"
+  },
+  {
+   "lastmod": "2026-03-13T12:00:00.000Z",
+   "loc": "/instytucja/kwiecien-malec-and-krzyzanowski-sp-z-o-o-fakeplace579"
+  },
+  {
+   "lastmod": "2025-10-23T12:00:00.000Z",
+   "loc": "/instytucja/krol-sp-p-sp-z-o-o-fakeplace58"
+  },
+  {
+   "lastmod": "2026-05-26T12:00:00.000Z",
+   "loc": "/instytucja/markiewicz-jasinski-sp-z-o-o-fakeplace580"
+  },
+  {
+   "lastmod": "2026-10-07T12:00:00.000Z",
+   "loc": "/instytucja/bogusz-piatkowski-and-kwiecinski-sp-z-o-o-fakeplace581"
+  },
+  {
+   "lastmod": "2026-08-25T12:00:00.000Z",
+   "loc": "/instytucja/niedziela-czaja-sp-z-o-o-fakeplace582"
+  },
+  {
+   "lastmod": "2026-01-26T12:00:00.000Z",
+   "loc": "/instytucja/lach-s-c-sp-z-o-o-fakeplace583"
+  },
+  {
+   "lastmod": "2025-09-07T12:00:00.000Z",
+   "loc": "/instytucja/klimczak-z-o-o-sp-z-o-o-fakeplace584"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/wolny-s-a-sp-z-o-o-fakeplace585"
+  },
+  {
+   "lastmod": "2025-09-18T12:00:00.000Z",
+   "loc": "/instytucja/jagodzinski-bartkowiak-and-zielonka-sp-z-o-o-fakeplace586"
+  },
+  {
+   "lastmod": "2025-12-21T12:00:00.000Z",
+   "loc": "/instytucja/ciesielski-s-c-sp-z-o-o-fakeplace587"
+  },
+  {
+   "lastmod": "2025-12-26T12:00:00.000Z",
+   "loc": "/instytucja/wolak-skibinski-and-piechota-sp-z-o-o-fakeplace588"
+  },
+  {
+   "lastmod": "2025-09-25T12:00:00.000Z",
+   "loc": "/instytucja/zaborowski-drabik-sp-z-o-o-fakeplace589"
+  },
+  {
+   "lastmod": "2026-08-09T12:00:00.000Z",
+   "loc": "/instytucja/kopec-lesniak-sp-z-o-o-fakeplace59"
+  },
+  {
+   "lastmod": "2025-08-22T12:00:00.000Z",
+   "loc": "/instytucja/modzelewski-kolodziejski-sp-z-o-o-fakeplace590"
+  },
+  {
+   "lastmod": "2026-01-05T12:00:00.000Z",
+   "loc": "/instytucja/kostecki-gruszczynski-sp-z-o-o-fakeplace591"
+  },
+  {
+   "lastmod": "2026-05-06T12:00:00.000Z",
+   "loc": "/instytucja/stec-filipek-sp-z-o-o-fakeplace592"
+  },
+  {
+   "lastmod": "2026-01-12T12:00:00.000Z",
+   "loc": "/instytucja/kulik-baginski-sp-z-o-o-fakeplace593"
+  },
+  {
+   "lastmod": "2025-07-30T12:00:00.000Z",
+   "loc": "/instytucja/janusz-jasinski-sp-z-o-o-fakeplace594"
+  },
+  {
+   "lastmod": "2025-10-29T12:00:00.000Z",
+   "loc": "/instytucja/baranski-pawlik-and-rzepka-sp-z-o-o-fakeplace595"
+  },
+  {
+   "lastmod": "2026-03-02T12:00:00.000Z",
+   "loc": "/instytucja/miller-sp-j-sp-z-o-o-fakeplace596"
+  },
+  {
+   "lastmod": "2026-02-09T12:00:00.000Z",
+   "loc": "/instytucja/szostak-tomys-and-bakowski-sp-z-o-o-fakeplace597"
+  },
+  {
+   "lastmod": "2026-09-13T12:00:00.000Z",
+   "loc": "/instytucja/urbanczyk-brzozowski-sp-z-o-o-fakeplace598"
+  },
+  {
+   "lastmod": "2026-07-17T12:00:00.000Z",
+   "loc": "/instytucja/lipinski-borkowski-and-rutkowski-sp-z-o-o-fakeplace599"
+  },
+  {
+   "lastmod": "2026-10-02T12:00:00.000Z",
+   "loc": "/instytucja/zyla-szczesny-and-gawron-sp-z-o-o-fakeplace6"
+  },
+  {
+   "lastmod": "2026-09-06T12:00:00.000Z",
+   "loc": "/instytucja/kania-makowski-sp-z-o-o-fakeplace60"
+  },
+  {
+   "lastmod": "2025-08-24T12:00:00.000Z",
+   "loc": "/instytucja/janas-z-o-o-sp-z-o-o-fakeplace600"
+  },
+  {
+   "lastmod": "2025-10-25T12:00:00.000Z",
+   "loc": "/instytucja/adamski-chojnacki-and-winiarski-sp-z-o-o-fakeplace601"
+  },
+  {
+   "lastmod": "2026-08-13T12:00:00.000Z",
+   "loc": "/instytucja/skowron-chmiel-sp-z-o-o-fakeplace602"
+  },
+  {
+   "lastmod": "2025-09-18T12:00:00.000Z",
+   "loc": "/instytucja/gil-witek-and-kruszewski-sp-z-o-o-fakeplace603"
+  },
+  {
+   "lastmod": "2025-09-25T12:00:00.000Z",
+   "loc": "/instytucja/przybyla-sowinski-sp-z-o-o-fakeplace604"
+  },
+  {
+   "lastmod": "2025-10-07T12:00:00.000Z",
+   "loc": "/instytucja/budzinski-pieczek-sp-z-o-o-fakeplace605"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/buczek-ska-sp-z-o-o-fakeplace606"
+  },
+  {
+   "lastmod": "2026-02-01T12:00:00.000Z",
+   "loc": "/instytucja/jurkowski-z-o-o-sp-z-o-o-fakeplace607"
+  },
+  {
+   "lastmod": "2025-07-21T12:00:00.000Z",
+   "loc": "/instytucja/kobus-s-a-sp-z-o-o-fakeplace608"
+  },
+  {
+   "lastmod": "2026-06-15T12:00:00.000Z",
+   "loc": "/instytucja/broda-socha-sp-z-o-o-fakeplace609"
+  },
+  {
+   "lastmod": "2025-06-29T12:00:00.000Z",
+   "loc": "/instytucja/czechowski-polak-sp-z-o-o-fakeplace61"
+  },
+  {
+   "lastmod": "2026-08-12T12:00:00.000Z",
+   "loc": "/instytucja/murawski-sp-j-sp-z-o-o-fakeplace610"
+  },
+  {
+   "lastmod": "2026-04-26T12:00:00.000Z",
+   "loc": "/instytucja/baranski-bednarczyk-and-stanek-sp-z-o-o-fakeplace611"
+  },
+  {
+   "lastmod": "2025-06-22T12:00:00.000Z",
+   "loc": "/instytucja/orlowski-zakrzewski-and-chmielewski-sp-z-o-o-fakeplace612"
+  },
+  {
+   "lastmod": "2025-12-05T12:00:00.000Z",
+   "loc": "/instytucja/kucharski-kaczor-sp-z-o-o-fakeplace613"
+  },
+  {
+   "lastmod": "2026-07-19T12:00:00.000Z",
+   "loc": "/instytucja/konopka-sp-j-sp-z-o-o-fakeplace614"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/wierzbicki-tracz-sp-z-o-o-fakeplace615"
+  },
+  {
+   "lastmod": "2025-09-26T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-anastazja-bednarek-w-barlinek-fakeplace616"
+  },
+  {
+   "lastmod": "2026-10-15T12:00:00.000Z",
+   "loc": "/instytucja/markiewicz-wawrzyniak-sp-z-o-o-fakeplace617"
+  },
+  {
+   "lastmod": "2026-03-09T12:00:00.000Z",
+   "loc": "/instytucja/stachura-galazka-and-kozak-sp-z-o-o-fakeplace618"
+  },
+  {
+   "lastmod": "2025-12-07T12:00:00.000Z",
+   "loc": "/instytucja/kalisz-sp-p-sp-z-o-o-fakeplace619"
+  },
+  {
+   "lastmod": "2025-12-12T12:00:00.000Z",
+   "loc": "/instytucja/makowski-szelag-and-chrzanowski-sp-z-o-o-fakeplace62"
+  },
+  {
+   "lastmod": "2026-02-07T12:00:00.000Z",
+   "loc": "/instytucja/kolodziej-pietrzak-sp-z-o-o-fakeplace620"
+  },
+  {
+   "lastmod": "2026-02-04T12:00:00.000Z",
+   "loc": "/instytucja/matuszak-kapusta-and-dobosz-sp-z-o-o-fakeplace621"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/szczepanik-sp-k-sp-z-o-o-fakeplace622"
+  },
+  {
+   "lastmod": "2026-03-15T12:00:00.000Z",
+   "loc": "/instytucja/pakula-kowalczuk-sp-z-o-o-fakeplace623"
+  },
+  {
+   "lastmod": "2026-04-20T12:00:00.000Z",
+   "loc": "/instytucja/kwiecien-jakubowski-and-walkowiak-sp-z-o-o-fakeplace624"
+  },
+  {
+   "lastmod": "2026-03-19T12:00:00.000Z",
+   "loc": "/instytucja/stachurski-olczak-sp-z-o-o-fakeplace625"
+  },
+  {
+   "lastmod": "2025-08-18T12:00:00.000Z",
+   "loc": "/instytucja/stanek-sp-j-sp-z-o-o-fakeplace626"
+  },
+  {
+   "lastmod": "2025-07-30T12:00:00.000Z",
+   "loc": "/instytucja/flis-urbaniak-sp-z-o-o-fakeplace627"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/pietruszka-czechowski-sp-z-o-o-fakeplace628"
+  },
+  {
+   "lastmod": "2026-04-26T12:00:00.000Z",
+   "loc": "/instytucja/kolodziejczyk-jurkowski-and-wojcicki-sp-z-o-o-fakeplace629"
+  },
+  {
+   "lastmod": "2025-06-06T12:00:00.000Z",
+   "loc": "/instytucja/jagielski-jastrzebski-sp-z-o-o-fakeplace63"
+  },
+  {
+   "lastmod": "2026-09-22T12:00:00.000Z",
+   "loc": "/instytucja/zwolinski-podgorski-and-bober-sp-z-o-o-fakeplace630"
+  },
+  {
+   "lastmod": "2026-03-05T12:00:00.000Z",
+   "loc": "/instytucja/gajda-sp-k-sp-z-o-o-fakeplace631"
+  },
+  {
+   "lastmod": "2026-09-10T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-ustrzyki-dolne-sp-z-o-o-fakeplace632"
+  },
+  {
+   "lastmod": "2026-10-11T12:00:00.000Z",
+   "loc": "/instytucja/walkowiak-sosnowski-sp-z-o-o-fakeplace633"
+  },
+  {
+   "lastmod": "2025-07-09T12:00:00.000Z",
+   "loc": "/instytucja/rozanski-z-o-o-sp-z-o-o-fakeplace634"
+  },
+  {
+   "lastmod": "2026-01-11T12:00:00.000Z",
+   "loc": "/instytucja/mlynarczyk-knapik-and-kapusta-quaerat-incidunt-nisi-explicabo-praesentium-quidem-similique-maxime-voluptate-totam-placeat-vel-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace635"
+  },
+  {
+   "lastmod": "2026-02-26T12:00:00.000Z",
+   "loc": "/instytucja/kobus-kozak-and-skiba-sp-z-o-o-fakeplace636"
+  },
+  {
+   "lastmod": "2026-07-02T12:00:00.000Z",
+   "loc": "/instytucja/podgorski-krupa-sp-z-o-o-fakeplace637"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/centrum-medyczne-help-w-reszel-fakeplace638"
+  },
+  {
+   "lastmod": "2026-06-20T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-busko-zdroj-sp-z-o-o-fakeplace639"
+  },
+  {
+   "lastmod": "2025-09-14T12:00:00.000Z",
+   "loc": "/instytucja/majewski-gorniak-and-nawrot-sp-z-o-o-fakeplace64"
+  },
+  {
+   "lastmod": "2026-07-02T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-piotr-kowalczyk-w-jedwabne-fakeplace640"
+  },
+  {
+   "lastmod": "2026-07-21T12:00:00.000Z",
+   "loc": "/instytucja/madej-sp-k-sp-z-o-o-fakeplace641"
+  },
+  {
+   "lastmod": "2026-09-21T12:00:00.000Z",
+   "loc": "/instytucja/bielak-jaskiewicz-and-stachowicz-sp-z-o-o-fakeplace642"
+  },
+  {
+   "lastmod": "2026-02-20T12:00:00.000Z",
+   "loc": "/instytucja/kubacki-sp-j-sp-z-o-o-fakeplace643"
+  },
+  {
+   "lastmod": "2026-08-01T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-monika-glab-w-olsztyn-fakeplace644"
+  },
+  {
+   "lastmod": "2025-09-08T12:00:00.000Z",
+   "loc": "/instytucja/bielawski-maciag-sp-z-o-o-fakeplace645"
+  },
+  {
+   "lastmod": "2026-06-05T12:00:00.000Z",
+   "loc": "/instytucja/turek-s-c-sp-z-o-o-fakeplace646"
+  },
+  {
+   "lastmod": "2026-04-24T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-parsnip-w-choroszcz-fakeplace647"
+  },
+  {
+   "lastmod": "2026-09-11T12:00:00.000Z",
+   "loc": "/instytucja/mrozek-ska-sp-z-o-o-fakeplace648"
+  },
+  {
+   "lastmod": "2026-04-28T12:00:00.000Z",
+   "loc": "/instytucja/augustyn-guzik-sp-z-o-o-fakeplace649"
+  },
+  {
+   "lastmod": "2026-08-28T12:00:00.000Z",
+   "loc": "/instytucja/zukowski-kasprzyk-and-krupa-sp-z-o-o-fakeplace65"
+  },
+  {
+   "lastmod": "2025-10-10T12:00:00.000Z",
+   "loc": "/instytucja/kasperek-piorkowski-sp-z-o-o-fakeplace650"
+  },
+  {
+   "lastmod": "2026-09-09T12:00:00.000Z",
+   "loc": "/instytucja/nawrocki-miklas-and-kwiecinski-sp-z-o-o-fakeplace651"
+  },
+  {
+   "lastmod": "2025-06-20T12:00:00.000Z",
+   "loc": "/instytucja/golebiowski-wilk-sp-z-o-o-fakeplace652"
+  },
+  {
+   "lastmod": "2025-10-23T12:00:00.000Z",
+   "loc": "/instytucja/swiderski-sochacki-sp-z-o-o-fakeplace653"
+  },
+  {
+   "lastmod": "2026-06-01T12:00:00.000Z",
+   "loc": "/instytucja/wasowski-tarnowski-sp-z-o-o-fakeplace654"
+  },
+  {
+   "lastmod": "2026-06-19T12:00:00.000Z",
+   "loc": "/instytucja/dudek-mrozek-and-cichocki-sp-z-o-o-fakeplace655"
+  },
+  {
+   "lastmod": "2026-08-14T12:00:00.000Z",
+   "loc": "/instytucja/krysiak-michalski-and-jankowiak-sp-z-o-o-fakeplace656"
+  },
+  {
+   "lastmod": "2026-03-15T12:00:00.000Z",
+   "loc": "/instytucja/staszewski-s-c-sp-z-o-o-fakeplace657"
+  },
+  {
+   "lastmod": "2025-08-19T12:00:00.000Z",
+   "loc": "/instytucja/wasowski-z-o-o-sp-z-o-o-fakeplace658"
+  },
+  {
+   "lastmod": "2026-05-11T12:00:00.000Z",
+   "loc": "/instytucja/motyka-sp-k-asperiores-atque-molestiae-a-quia-ratione-placeat-eius-quod-tempora-accusantium-totam-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace659"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/kopczynski-sp-p-sp-z-o-o-fakeplace66"
+  },
+  {
+   "lastmod": "2026-04-23T12:00:00.000Z",
+   "loc": "/instytucja/partyka-olejnik-sp-z-o-o-fakeplace660"
+  },
+  {
+   "lastmod": "2026-08-22T12:00:00.000Z",
+   "loc": "/instytucja/slowik-matysiak-and-wilczek-sp-z-o-o-fakeplace661"
+  },
+  {
+   "lastmod": "2026-06-11T12:00:00.000Z",
+   "loc": "/instytucja/lech-pieczek-and-wyszynski-sp-z-o-o-fakeplace662"
+  },
+  {
+   "lastmod": "2025-07-01T12:00:00.000Z",
+   "loc": "/instytucja/wilczynski-pawlicki-sp-z-o-o-fakeplace663"
+  },
+  {
+   "lastmod": "2026-08-22T12:00:00.000Z",
+   "loc": "/instytucja/rogala-sp-j-sp-z-o-o-fakeplace664"
+  },
+  {
+   "lastmod": "2025-06-06T12:00:00.000Z",
+   "loc": "/instytucja/sobczyk-koza-and-bielak-sp-z-o-o-fakeplace665"
+  },
+  {
+   "lastmod": "2026-09-21T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-glucholazy-fakeplace666"
+  },
+  {
+   "lastmod": "2025-08-22T12:00:00.000Z",
+   "loc": "/instytucja/szczesna-wos-and-stelmach-sp-z-o-o-fakeplace667"
+  },
+  {
+   "lastmod": "2025-08-21T12:00:00.000Z",
+   "loc": "/instytucja/mierzejewski-z-o-o-sp-z-o-o-fakeplace668"
+  },
+  {
+   "lastmod": "2026-06-25T12:00:00.000Z",
+   "loc": "/instytucja/nowicki-jankowski-sp-z-o-o-fakeplace669"
+  },
+  {
+   "lastmod": "2026-03-17T12:00:00.000Z",
+   "loc": "/instytucja/tracz-sowinski-and-lewandowski-sp-z-o-o-fakeplace67"
+  },
+  {
+   "lastmod": "2025-12-10T12:00:00.000Z",
+   "loc": "/instytucja/kurek-sp-j-sp-z-o-o-fakeplace670"
+  },
+  {
+   "lastmod": "2026-09-26T12:00:00.000Z",
+   "loc": "/instytucja/michalczyk-komorowski-sp-z-o-o-fakeplace671"
+  },
+  {
+   "lastmod": "2025-07-12T12:00:00.000Z",
+   "loc": "/instytucja/michalak-nowacki-and-rusin-sp-z-o-o-fakeplace672"
+  },
+  {
+   "lastmod": "2026-08-28T12:00:00.000Z",
+   "loc": "/instytucja/biernat-przybyla-sp-z-o-o-fakeplace673"
+  },
+  {
+   "lastmod": "2026-09-28T12:00:00.000Z",
+   "loc": "/instytucja/biernacki-nowak-asperiores-nemo-illum-deleniti-explicabo-quod-expedita-rem-laudantium-veritatis-animi-eveniet-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace674"
+  },
+  {
+   "lastmod": "2026-02-19T12:00:00.000Z",
+   "loc": "/instytucja/piatek-sp-p-sp-z-o-o-fakeplace675"
+  },
+  {
+   "lastmod": "2025-10-04T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-dash-w-szczebrzeszyn-fakeplace676"
+  },
+  {
+   "lastmod": "2025-12-31T12:00:00.000Z",
+   "loc": "/instytucja/kwiatkowski-sp-p-sp-z-o-o-fakeplace677"
+  },
+  {
+   "lastmod": "2025-08-09T12:00:00.000Z",
+   "loc": "/instytucja/nowakowski-sp-p-sp-z-o-o-fakeplace678"
+  },
+  {
+   "lastmod": "2025-12-07T12:00:00.000Z",
+   "loc": "/instytucja/stachowicz-michalek-sp-z-o-o-fakeplace679"
+  },
+  {
+   "lastmod": "2025-10-04T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-krapkowice-sp-z-o-o-fakeplace68"
+  },
+  {
+   "lastmod": "2026-05-31T12:00:00.000Z",
+   "loc": "/instytucja/rozanski-nowak-and-cichocki-sp-z-o-o-fakeplace680"
+  },
+  {
+   "lastmod": "2025-08-16T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-turret-w-sokolow-podlaski-fakeplace681"
+  },
+  {
+   "lastmod": "2025-06-18T12:00:00.000Z",
+   "loc": "/instytucja/jaskiewicz-korzeniowski-sp-z-o-o-fakeplace682"
+  },
+  {
+   "lastmod": "2026-09-01T12:00:00.000Z",
+   "loc": "/instytucja/murawski-szczepanik-alias-optio-optio-quisquam-itaque-dicta-consectetur-saepe-eos-fuga-voluptatum-veritatis-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace683"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/krupa-s-a-sp-z-o-o-fakeplace684"
+  },
+  {
+   "lastmod": "2026-02-13T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-bedzin-sp-z-o-o-fakeplace685"
+  },
+  {
+   "lastmod": "2025-07-03T12:00:00.000Z",
+   "loc": "/instytucja/skibinski-kozlowski-and-piotrowski-sp-z-o-o-fakeplace686"
+  },
+  {
+   "lastmod": "2025-09-06T12:00:00.000Z",
+   "loc": "/instytucja/cieslik-jaros-sp-z-o-o-fakeplace687"
+  },
+  {
+   "lastmod": "2025-07-24T12:00:00.000Z",
+   "loc": "/instytucja/pawlowski-z-o-o-sp-z-o-o-fakeplace688"
+  },
+  {
+   "lastmod": "2026-02-21T12:00:00.000Z",
+   "loc": "/instytucja/stec-stepniak-and-kogut-sp-z-o-o-fakeplace689"
+  },
+  {
+   "lastmod": "2026-07-26T12:00:00.000Z",
+   "loc": "/instytucja/chudzik-jasinski-sp-z-o-o-fakeplace69"
+  },
+  {
+   "lastmod": "2026-10-16T12:00:00.000Z",
+   "loc": "/instytucja/ciesielski-rosinski-sp-z-o-o-fakeplace690"
+  },
+  {
+   "lastmod": "2026-01-29T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-suprasl-sp-z-o-o-fakeplace691"
+  },
+  {
+   "lastmod": "2026-09-29T12:00:00.000Z",
+   "loc": "/instytucja/kogut-rusin-and-kucinski-sp-z-o-o-fakeplace692"
+  },
+  {
+   "lastmod": "2026-09-13T12:00:00.000Z",
+   "loc": "/instytucja/glogowski-sp-k-sp-z-o-o-fakeplace693"
+  },
+  {
+   "lastmod": "2025-09-05T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-obrzycko-sp-z-o-o-fakeplace694"
+  },
+  {
+   "lastmod": "2025-09-14T12:00:00.000Z",
+   "loc": "/instytucja/janas-wilczek-and-kaczynski-sp-z-o-o-fakeplace695"
+  },
+  {
+   "lastmod": "2026-10-12T12:00:00.000Z",
+   "loc": "/instytucja/szwed-molenda-sp-z-o-o-fakeplace696"
+  },
+  {
+   "lastmod": "2025-12-17T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-drezdenko-sp-z-o-o-fakeplace697"
+  },
+  {
+   "lastmod": "2025-11-27T12:00:00.000Z",
+   "loc": "/instytucja/poplawski-sp-k-sp-z-o-o-fakeplace698"
+  },
+  {
+   "lastmod": "2026-02-17T12:00:00.000Z",
+   "loc": "/instytucja/modzelewski-ska-sp-z-o-o-fakeplace699"
+  },
+  {
+   "lastmod": "2026-04-23T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-opoczno-sp-z-o-o-fakeplace7"
+  },
+  {
+   "lastmod": "2026-09-20T12:00:00.000Z",
+   "loc": "/instytucja/gorecki-tomala-and-socha-sp-z-o-o-fakeplace70"
+  },
+  {
+   "lastmod": "2025-11-25T12:00:00.000Z",
+   "loc": "/instytucja/falkowski-urban-sp-z-o-o-fakeplace700"
+  },
+  {
+   "lastmod": "2026-02-09T12:00:00.000Z",
+   "loc": "/instytucja/adamowicz-sitek-sp-z-o-o-fakeplace701"
+  },
+  {
+   "lastmod": "2025-07-30T12:00:00.000Z",
+   "loc": "/instytucja/kowalczuk-malek-and-zuk-sp-z-o-o-fakeplace702"
+  },
+  {
+   "lastmod": "2025-12-27T12:00:00.000Z",
+   "loc": "/instytucja/trzeciak-michalczyk-sp-z-o-o-fakeplace703"
+  },
+  {
+   "lastmod": "2026-08-26T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-krzanowice-fakeplace704"
+  },
+  {
+   "lastmod": "2026-04-04T12:00:00.000Z",
+   "loc": "/instytucja/bozek-ska-sp-z-o-o-fakeplace705"
+  },
+  {
+   "lastmod": "2026-09-11T12:00:00.000Z",
+   "loc": "/instytucja/gora-z-o-o-sp-z-o-o-fakeplace706"
+  },
+  {
+   "lastmod": "2026-07-24T12:00:00.000Z",
+   "loc": "/instytucja/kowalczuk-pawlik-sp-z-o-o-fakeplace707"
+  },
+  {
+   "lastmod": "2026-03-11T12:00:00.000Z",
+   "loc": "/instytucja/wasilewski-jasinski-and-poplawski-sp-z-o-o-fakeplace708"
+  },
+  {
+   "lastmod": "2026-09-24T12:00:00.000Z",
+   "loc": "/instytucja/lasota-zaborowski-sp-z-o-o-fakeplace709"
+  },
+  {
+   "lastmod": "2025-08-23T12:00:00.000Z",
+   "loc": "/instytucja/jozwiak-sp-k-sp-z-o-o-fakeplace71"
+  },
+  {
+   "lastmod": "2025-09-15T12:00:00.000Z",
+   "loc": "/instytucja/milczarek-kucharczyk-sp-z-o-o-fakeplace710"
+  },
+  {
+   "lastmod": "2025-08-24T12:00:00.000Z",
+   "loc": "/instytucja/palka-tkaczyk-and-janik-sp-z-o-o-fakeplace711"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/pawlik-sp-k-sp-z-o-o-fakeplace712"
+  },
+  {
+   "lastmod": "2025-11-29T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-beret-w-stary-sacz-fakeplace713"
+  },
+  {
+   "lastmod": "2026-09-28T12:00:00.000Z",
+   "loc": "/instytucja/tomys-marchewka-sp-z-o-o-fakeplace714"
+  },
+  {
+   "lastmod": "2026-06-06T12:00:00.000Z",
+   "loc": "/instytucja/kulig-noga-and-malecki-sp-z-o-o-fakeplace715"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/rudzinski-wrona-sp-z-o-o-fakeplace716"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/godlewski-panek-and-strzelecki-sp-z-o-o-fakeplace717"
+  },
+  {
+   "lastmod": "2025-11-30T12:00:00.000Z",
+   "loc": "/instytucja/madej-sp-p-sp-z-o-o-fakeplace718"
+  },
+  {
+   "lastmod": "2026-10-03T12:00:00.000Z",
+   "loc": "/instytucja/fraczek-rzepka-sp-z-o-o-fakeplace719"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/bednarz-zagorski-sp-z-o-o-fakeplace72"
+  },
+  {
+   "lastmod": "2026-03-19T12:00:00.000Z",
+   "loc": "/instytucja/partyka-pawlikowski-sp-z-o-o-fakeplace720"
+  },
+  {
+   "lastmod": "2026-08-27T12:00:00.000Z",
+   "loc": "/instytucja/czajka-adamski-and-sliwinski-sp-z-o-o-fakeplace721"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/biernacki-krawczyk-and-gawel-sp-z-o-o-fakeplace722"
+  },
+  {
+   "lastmod": "2026-01-08T12:00:00.000Z",
+   "loc": "/instytucja/augustyn-ska-sp-z-o-o-fakeplace723"
+  },
+  {
+   "lastmod": "2026-01-03T12:00:00.000Z",
+   "loc": "/instytucja/winiarski-lisowski-and-piechota-sp-z-o-o-fakeplace724"
+  },
+  {
+   "lastmod": "2025-11-04T12:00:00.000Z",
+   "loc": "/instytucja/prus-ska-sp-z-o-o-fakeplace725"
+  },
+  {
+   "lastmod": "2026-09-04T12:00:00.000Z",
+   "loc": "/instytucja/kowalik-pytel-sp-z-o-o-fakeplace726"
+  },
+  {
+   "lastmod": "2025-07-07T12:00:00.000Z",
+   "loc": "/instytucja/gorecki-szydlowski-sp-z-o-o-fakeplace727"
+  },
+  {
+   "lastmod": "2025-12-17T12:00:00.000Z",
+   "loc": "/instytucja/fijalkowski-s-a-sp-z-o-o-fakeplace728"
+  },
+  {
+   "lastmod": "2025-11-07T12:00:00.000Z",
+   "loc": "/instytucja/duszynski-chmiel-sp-z-o-o-fakeplace729"
+  },
+  {
+   "lastmod": "2025-08-19T12:00:00.000Z",
+   "loc": "/instytucja/ostrowski-kapusta-sp-z-o-o-fakeplace73"
+  },
+  {
+   "lastmod": "2026-06-22T12:00:00.000Z",
+   "loc": "/instytucja/golebiewski-kucharczyk-and-urbaniak-sp-z-o-o-fakeplace730"
+  },
+  {
+   "lastmod": "2026-04-26T12:00:00.000Z",
+   "loc": "/instytucja/cichocki-pakula-and-kolodziejski-sp-z-o-o-fakeplace731"
+  },
+  {
+   "lastmod": "2026-05-10T12:00:00.000Z",
+   "loc": "/instytucja/bakowski-drozdz-sp-z-o-o-fakeplace732"
+  },
+  {
+   "lastmod": "2025-07-27T12:00:00.000Z",
+   "loc": "/instytucja/nowaczyk-kaczynski-sp-z-o-o-fakeplace733"
+  },
+  {
+   "lastmod": "2025-06-29T12:00:00.000Z",
+   "loc": "/instytucja/slowinski-bednarz-and-stolarski-sp-z-o-o-fakeplace734"
+  },
+  {
+   "lastmod": "2025-10-03T12:00:00.000Z",
+   "loc": "/instytucja/michalski-gawel-sp-z-o-o-fakeplace735"
+  },
+  {
+   "lastmod": "2025-07-22T12:00:00.000Z",
+   "loc": "/instytucja/wieckowski-lipski-and-jagiello-sp-z-o-o-fakeplace736"
+  },
+  {
+   "lastmod": "2025-11-22T12:00:00.000Z",
+   "loc": "/instytucja/maciejewski-z-o-o-sp-z-o-o-fakeplace737"
+  },
+  {
+   "lastmod": "2025-08-24T12:00:00.000Z",
+   "loc": "/instytucja/skowronek-ska-sp-z-o-o-fakeplace738"
+  },
+  {
+   "lastmod": "2025-07-16T12:00:00.000Z",
+   "loc": "/instytucja/krysiak-baran-sp-z-o-o-fakeplace739"
+  },
+  {
+   "lastmod": "2025-06-14T12:00:00.000Z",
+   "loc": "/instytucja/knapik-kedziora-and-cichon-sp-z-o-o-fakeplace74"
+  },
+  {
+   "lastmod": "2025-08-19T12:00:00.000Z",
+   "loc": "/instytucja/sroka-pilch-and-piotrowski-sp-z-o-o-fakeplace740"
+  },
+  {
+   "lastmod": "2025-10-03T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-tomb-w-zielonka-fakeplace741"
+  },
+  {
+   "lastmod": "2026-10-06T12:00:00.000Z",
+   "loc": "/instytucja/staniszewski-bielecki-sp-z-o-o-fakeplace742"
+  },
+  {
+   "lastmod": "2025-09-12T12:00:00.000Z",
+   "loc": "/instytucja/markiewicz-stasiak-sp-z-o-o-fakeplace743"
+  },
+  {
+   "lastmod": "2026-05-15T12:00:00.000Z",
+   "loc": "/instytucja/falkowski-golebiewski-and-skrzypek-sp-z-o-o-fakeplace744"
+  },
+  {
+   "lastmod": "2026-04-26T12:00:00.000Z",
+   "loc": "/instytucja/bozek-sp-k-sp-z-o-o-fakeplace745"
+  },
+  {
+   "lastmod": "2026-07-31T12:00:00.000Z",
+   "loc": "/instytucja/bialek-z-o-o-sp-z-o-o-fakeplace746"
+  },
+  {
+   "lastmod": "2025-09-19T12:00:00.000Z",
+   "loc": "/instytucja/konopka-kania-sp-z-o-o-fakeplace747"
+  },
+  {
+   "lastmod": "2025-08-10T12:00:00.000Z",
+   "loc": "/instytucja/napierala-s-a-sp-z-o-o-fakeplace748"
+  },
+  {
+   "lastmod": "2026-09-25T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-wieliczka-fakeplace749"
+  },
+  {
+   "lastmod": "2025-11-13T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-janikowo-sp-z-o-o-fakeplace75"
+  },
+  {
+   "lastmod": "2025-09-23T12:00:00.000Z",
+   "loc": "/instytucja/jedrzejczak-korzeniowski-sp-z-o-o-fakeplace750"
+  },
+  {
+   "lastmod": "2026-03-17T12:00:00.000Z",
+   "loc": "/instytucja/gasiorowski-sp-k-sp-z-o-o-fakeplace751"
+  },
+  {
+   "lastmod": "2026-06-02T12:00:00.000Z",
+   "loc": "/instytucja/robak-kmiec-and-jankowski-sp-z-o-o-fakeplace752"
+  },
+  {
+   "lastmod": "2026-08-16T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-pan-natanael-gajewski-w-biskupiec-fakeplace753"
+  },
+  {
+   "lastmod": "2026-01-30T12:00:00.000Z",
+   "loc": "/instytucja/orlowski-sp-j-sp-z-o-o-fakeplace754"
+  },
+  {
+   "lastmod": "2026-02-09T12:00:00.000Z",
+   "loc": "/instytucja/cybulski-buczek-and-budzinski-sp-z-o-o-fakeplace755"
+  },
+  {
+   "lastmod": "2026-06-10T12:00:00.000Z",
+   "loc": "/instytucja/przybysz-sikorski-sp-z-o-o-fakeplace756"
+  },
+  {
+   "lastmod": "2026-03-22T12:00:00.000Z",
+   "loc": "/instytucja/zaremba-adamowicz-and-wierzbicki-sp-z-o-o-fakeplace757"
+  },
+  {
+   "lastmod": "2025-12-22T12:00:00.000Z",
+   "loc": "/instytucja/wierzbicki-sp-k-sp-z-o-o-fakeplace758"
+  },
+  {
+   "lastmod": "2026-02-07T12:00:00.000Z",
+   "loc": "/instytucja/blaszczak-sp-p-sp-z-o-o-fakeplace759"
+  },
+  {
+   "lastmod": "2025-06-27T12:00:00.000Z",
+   "loc": "/instytucja/dziedzic-konieczny-and-zakrzewski-sp-z-o-o-fakeplace76"
+  },
+  {
+   "lastmod": "2025-08-15T12:00:00.000Z",
+   "loc": "/instytucja/karpinski-s-c-sp-z-o-o-fakeplace760"
+  },
+  {
+   "lastmod": "2025-09-18T12:00:00.000Z",
+   "loc": "/instytucja/wojtkowiak-sp-k-sp-z-o-o-fakeplace761"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/centrum-medyczne-allocation-w-wozniki-fakeplace762"
+  },
+  {
+   "lastmod": "2026-09-29T12:00:00.000Z",
+   "loc": "/instytucja/sienkiewicz-z-o-o-sp-z-o-o-fakeplace763"
+  },
+  {
+   "lastmod": "2025-11-27T12:00:00.000Z",
+   "loc": "/instytucja/jaskiewicz-z-o-o-sp-z-o-o-fakeplace764"
+  },
+  {
+   "lastmod": "2025-12-31T12:00:00.000Z",
+   "loc": "/instytucja/rozanski-pakula-sp-z-o-o-fakeplace765"
+  },
+  {
+   "lastmod": "2026-07-19T12:00:00.000Z",
+   "loc": "/instytucja/modzelewski-ska-sp-z-o-o-fakeplace766"
+  },
+  {
+   "lastmod": "2025-10-04T12:00:00.000Z",
+   "loc": "/instytucja/rak-partyka-sp-z-o-o-fakeplace767"
+  },
+  {
+   "lastmod": "2026-09-26T12:00:00.000Z",
+   "loc": "/instytucja/olczak-michalczyk-sp-z-o-o-fakeplace768"
+  },
+  {
+   "lastmod": "2026-08-22T12:00:00.000Z",
+   "loc": "/instytucja/adamek-s-c-sp-z-o-o-fakeplace769"
+  },
+  {
+   "lastmod": "2026-08-01T12:00:00.000Z",
+   "loc": "/instytucja/lipinski-misiak-and-kasperek-sp-z-o-o-fakeplace77"
+  },
+  {
+   "lastmod": "2026-07-30T12:00:00.000Z",
+   "loc": "/instytucja/gadomski-kazmierczak-and-kolakowski-sp-z-o-o-fakeplace770"
+  },
+  {
+   "lastmod": "2025-12-08T12:00:00.000Z",
+   "loc": "/instytucja/szostak-orlowski-and-kosinski-sp-z-o-o-fakeplace771"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/bak-rybicki-and-pilch-sp-z-o-o-fakeplace772"
+  },
+  {
+   "lastmod": "2026-03-31T12:00:00.000Z",
+   "loc": "/instytucja/ziolkowski-ska-sp-z-o-o-fakeplace773"
+  },
+  {
+   "lastmod": "2026-03-08T12:00:00.000Z",
+   "loc": "/instytucja/falkowski-kaczmarek-sp-z-o-o-fakeplace774"
+  },
+  {
+   "lastmod": "2025-10-03T12:00:00.000Z",
+   "loc": "/instytucja/kowalczuk-s-c-sp-z-o-o-fakeplace775"
+  },
+  {
+   "lastmod": "2026-08-02T12:00:00.000Z",
+   "loc": "/instytucja/szczepaniak-kubiak-and-burzynski-sp-z-o-o-fakeplace776"
+  },
+  {
+   "lastmod": "2025-10-23T12:00:00.000Z",
+   "loc": "/instytucja/nowak-kostrzewa-and-baranowski-sp-z-o-o-fakeplace777"
+  },
+  {
+   "lastmod": "2025-10-22T12:00:00.000Z",
+   "loc": "/instytucja/iwanowski-ska-tempore-quidem-minus-numquam-reprehenderit-animi-reprehenderit-quidem-culpa-vitae-porro-nam-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace778"
+  },
+  {
+   "lastmod": "2025-09-25T12:00:00.000Z",
+   "loc": "/instytucja/staszewski-z-o-o-sp-z-o-o-fakeplace779"
+  },
+  {
+   "lastmod": "2026-07-08T12:00:00.000Z",
+   "loc": "/instytucja/kula-s-c-sp-z-o-o-fakeplace78"
+  },
+  {
+   "lastmod": "2025-12-06T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-pupil-w-kalisz-pomorski-fakeplace780"
+  },
+  {
+   "lastmod": "2025-07-06T12:00:00.000Z",
+   "loc": "/instytucja/sliwinski-dudziak-sp-z-o-o-fakeplace781"
+  },
+  {
+   "lastmod": "2025-11-06T12:00:00.000Z",
+   "loc": "/instytucja/dudzik-wolski-and-matuszewski-sp-z-o-o-fakeplace782"
+  },
+  {
+   "lastmod": "2026-04-22T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-bialogard-sp-z-o-o-fakeplace783"
+  },
+  {
+   "lastmod": "2025-07-24T12:00:00.000Z",
+   "loc": "/instytucja/kaczmarski-sp-j-sp-z-o-o-fakeplace784"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/borek-sp-k-sp-z-o-o-fakeplace785"
+  },
+  {
+   "lastmod": "2025-08-19T12:00:00.000Z",
+   "loc": "/instytucja/ptak-ska-sp-z-o-o-fakeplace786"
+  },
+  {
+   "lastmod": "2025-10-08T12:00:00.000Z",
+   "loc": "/instytucja/bielski-lenart-sp-z-o-o-fakeplace787"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/szpital-powiatowy-w-recz-sp-z-o-o-fakeplace788"
+  },
+  {
+   "lastmod": "2026-09-30T12:00:00.000Z",
+   "loc": "/instytucja/rusin-majka-sp-z-o-o-fakeplace789"
+  },
+  {
+   "lastmod": "2025-08-06T12:00:00.000Z",
+   "loc": "/instytucja/krol-markiewicz-sp-z-o-o-fakeplace79"
+  },
+  {
+   "lastmod": "2026-06-30T12:00:00.000Z",
+   "loc": "/instytucja/zuk-stankiewicz-and-maslanka-sp-z-o-o-fakeplace790"
+  },
+  {
+   "lastmod": "2026-02-02T12:00:00.000Z",
+   "loc": "/instytucja/rzepka-witek-and-wroblewski-sp-z-o-o-fakeplace791"
+  },
+  {
+   "lastmod": "2025-10-24T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-niemcza-fakeplace792"
+  },
+  {
+   "lastmod": "2026-01-13T12:00:00.000Z",
+   "loc": "/instytucja/pietruszka-augustyniak-sp-z-o-o-fakeplace793"
+  },
+  {
+   "lastmod": "2026-09-13T12:00:00.000Z",
+   "loc": "/instytucja/cichocki-zajac-and-kedziora-sp-z-o-o-fakeplace794"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/szczerba-ska-sp-z-o-o-fakeplace795"
+  },
+  {
+   "lastmod": "2026-10-04T12:00:00.000Z",
+   "loc": "/instytucja/fraczek-sp-p-sp-z-o-o-fakeplace796"
+  },
+  {
+   "lastmod": "2025-10-29T12:00:00.000Z",
+   "loc": "/instytucja/misiak-rosa-and-miller-sp-z-o-o-fakeplace797"
+  },
+  {
+   "lastmod": "2026-08-02T12:00:00.000Z",
+   "loc": "/instytucja/janik-kmiecik-sp-z-o-o-fakeplace798"
+  },
+  {
+   "lastmod": "2025-12-06T12:00:00.000Z",
+   "loc": "/instytucja/walkowiak-sadowski-sp-z-o-o-fakeplace799"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/milczarek-bogusz-assumenda-rem-quo-consectetur-nostrum-voluptatem-sapiente-est-itaque-modi-iste-dolorum-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace8"
+  },
+  {
+   "lastmod": "2025-11-24T12:00:00.000Z",
+   "loc": "/instytucja/niemczyk-luczak-and-pawlowski-sp-z-o-o-fakeplace80"
+  },
+  {
+   "lastmod": "2026-02-13T12:00:00.000Z",
+   "loc": "/instytucja/wysocki-ska-sp-z-o-o-fakeplace800"
+  },
+  {
+   "lastmod": "2026-07-02T12:00:00.000Z",
+   "loc": "/instytucja/krajewski-szyszka-and-swierczynski-sp-z-o-o-fakeplace801"
+  },
+  {
+   "lastmod": "2025-06-11T12:00:00.000Z",
+   "loc": "/instytucja/suski-sp-j-sp-z-o-o-fakeplace802"
+  },
+  {
+   "lastmod": "2026-04-01T12:00:00.000Z",
+   "loc": "/instytucja/szulc-s-a-sp-z-o-o-fakeplace803"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/rutkowski-kujawski-sp-z-o-o-fakeplace804"
+  },
+  {
+   "lastmod": "2026-05-03T12:00:00.000Z",
+   "loc": "/instytucja/walkowiak-jackowski-sp-z-o-o-fakeplace805"
+  },
+  {
+   "lastmod": "2025-06-06T12:00:00.000Z",
+   "loc": "/instytucja/dlugosz-sp-j-sp-z-o-o-fakeplace806"
+  },
+  {
+   "lastmod": "2026-07-06T12:00:00.000Z",
+   "loc": "/instytucja/kasperek-klos-sp-z-o-o-fakeplace807"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/dziedzic-stankiewicz-and-jastrzebski-sp-z-o-o-fakeplace808"
+  },
+  {
+   "lastmod": "2026-06-08T12:00:00.000Z",
+   "loc": "/instytucja/strzelczyk-florek-and-markowski-sp-z-o-o-fakeplace809"
+  },
+  {
+   "lastmod": "2025-09-14T12:00:00.000Z",
+   "loc": "/instytucja/slowik-duszynski-sp-z-o-o-fakeplace81"
+  },
+  {
+   "lastmod": "2025-06-10T12:00:00.000Z",
+   "loc": "/instytucja/kosinski-lach-and-krol-sp-z-o-o-fakeplace810"
+  },
+  {
+   "lastmod": "2025-08-29T12:00:00.000Z",
+   "loc": "/instytucja/wegrzyn-sp-k-sp-z-o-o-fakeplace811"
+  },
+  {
+   "lastmod": "2025-12-17T12:00:00.000Z",
+   "loc": "/instytucja/pietras-sp-k-sp-z-o-o-fakeplace812"
+  },
+  {
+   "lastmod": "2025-06-05T12:00:00.000Z",
+   "loc": "/instytucja/matusiak-wawrzyniak-and-wasik-sp-z-o-o-fakeplace813"
+  },
+  {
+   "lastmod": "2025-08-19T12:00:00.000Z",
+   "loc": "/instytucja/pawelec-mazurek-and-filipowicz-sp-z-o-o-fakeplace814"
+  },
+  {
+   "lastmod": "2026-06-07T12:00:00.000Z",
+   "loc": "/instytucja/urbanek-rybicki-sp-z-o-o-fakeplace815"
+  },
+  {
+   "lastmod": "2026-07-06T12:00:00.000Z",
+   "loc": "/instytucja/motyka-ska-sp-z-o-o-fakeplace816"
+  },
+  {
+   "lastmod": "2025-10-14T12:00:00.000Z",
+   "loc": "/instytucja/zareba-kulig-and-romanowski-sp-z-o-o-fakeplace817"
+  },
+  {
+   "lastmod": "2026-06-16T12:00:00.000Z",
+   "loc": "/instytucja/bilski-slowinski-and-wojcik-sp-z-o-o-fakeplace818"
+  },
+  {
+   "lastmod": "2026-05-15T12:00:00.000Z",
+   "loc": "/instytucja/zurek-sp-p-sp-z-o-o-fakeplace819"
+  },
+  {
+   "lastmod": "2026-03-31T12:00:00.000Z",
+   "loc": "/instytucja/marszalek-rybak-sp-z-o-o-fakeplace82"
+  },
+  {
+   "lastmod": "2026-01-28T12:00:00.000Z",
+   "loc": "/instytucja/biernacki-kedziora-sp-z-o-o-fakeplace820"
+  },
+  {
+   "lastmod": "2025-07-31T12:00:00.000Z",
+   "loc": "/instytucja/bartnik-antczak-and-czyzewski-sp-z-o-o-fakeplace821"
+  },
+  {
+   "lastmod": "2026-06-04T12:00:00.000Z",
+   "loc": "/instytucja/krysiak-szafranski-and-sobczak-sp-z-o-o-fakeplace822"
+  },
+  {
+   "lastmod": "2026-06-23T12:00:00.000Z",
+   "loc": "/instytucja/urbanowicz-winiarski-and-rybarczyk-sp-z-o-o-fakeplace823"
+  },
+  {
+   "lastmod": "2026-06-28T12:00:00.000Z",
+   "loc": "/instytucja/rosiak-s-a-sp-z-o-o-fakeplace824"
+  },
+  {
+   "lastmod": "2025-10-27T12:00:00.000Z",
+   "loc": "/instytucja/wronski-ska-sp-z-o-o-fakeplace825"
+  },
+  {
+   "lastmod": "2026-05-27T12:00:00.000Z",
+   "loc": "/instytucja/bogucki-s-c-sp-z-o-o-fakeplace826"
+  },
+  {
+   "lastmod": "2026-03-23T12:00:00.000Z",
+   "loc": "/instytucja/osinski-bialas-sp-z-o-o-fakeplace827"
+  },
+  {
+   "lastmod": "2025-10-01T12:00:00.000Z",
+   "loc": "/instytucja/rakowski-szostak-and-lesniak-sp-z-o-o-fakeplace828"
+  },
+  {
+   "lastmod": "2025-11-04T12:00:00.000Z",
+   "loc": "/instytucja/jedrzejewski-sp-p-sp-z-o-o-fakeplace829"
+  },
+  {
+   "lastmod": "2026-03-06T12:00:00.000Z",
+   "loc": "/instytucja/frackowiak-niemiec-sp-z-o-o-fakeplace83"
+  },
+  {
+   "lastmod": "2025-07-14T12:00:00.000Z",
+   "loc": "/instytucja/chmielewski-sobieraj-sp-z-o-o-fakeplace830"
+  },
+  {
+   "lastmod": "2025-07-18T12:00:00.000Z",
+   "loc": "/instytucja/paczkowski-piatkowski-and-bednarz-sp-z-o-o-fakeplace831"
+  },
+  {
+   "lastmod": "2026-05-08T12:00:00.000Z",
+   "loc": "/instytucja/kwasniewski-bienkowski-sp-z-o-o-fakeplace832"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/knapik-golec-sp-z-o-o-fakeplace833"
+  },
+  {
+   "lastmod": "2025-12-13T12:00:00.000Z",
+   "loc": "/instytucja/dabrowski-s-a-sp-z-o-o-fakeplace834"
+  },
+  {
+   "lastmod": "2026-07-20T12:00:00.000Z",
+   "loc": "/instytucja/stepien-tomala-and-zarzycki-sp-z-o-o-fakeplace835"
+  },
+  {
+   "lastmod": "2025-11-27T12:00:00.000Z",
+   "loc": "/instytucja/cholewa-sp-j-sp-z-o-o-fakeplace836"
+  },
+  {
+   "lastmod": "2026-07-15T12:00:00.000Z",
+   "loc": "/instytucja/pilarski-grabowski-sp-z-o-o-fakeplace837"
+  },
+  {
+   "lastmod": "2026-09-09T12:00:00.000Z",
+   "loc": "/instytucja/kielbasa-s-c-quod-sint-doloribus-provident-ipsa-eaque-accusamus-quibusdam-nostrum-natus-dignissimos-reiciendis-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace838"
+  },
+  {
+   "lastmod": "2025-08-11T12:00:00.000Z",
+   "loc": "/instytucja/graczyk-sp-j-sp-z-o-o-fakeplace839"
+  },
+  {
+   "lastmod": "2025-06-20T12:00:00.000Z",
+   "loc": "/instytucja/wojcicki-z-o-o-sp-z-o-o-fakeplace84"
+  },
+  {
+   "lastmod": "2026-06-21T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-skwierzyna-sp-z-o-o-fakeplace840"
+  },
+  {
+   "lastmod": "2026-08-10T12:00:00.000Z",
+   "loc": "/instytucja/flak-kedziora-and-stolarski-sp-z-o-o-fakeplace841"
+  },
+  {
+   "lastmod": "2026-02-04T12:00:00.000Z",
+   "loc": "/instytucja/morawski-nowaczyk-and-zebrowski-sp-z-o-o-fakeplace842"
+  },
+  {
+   "lastmod": "2026-07-19T12:00:00.000Z",
+   "loc": "/instytucja/wierzbicki-czech-and-konopka-sp-z-o-o-fakeplace843"
+  },
+  {
+   "lastmod": "2025-07-09T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-tekla-szczerba-w-olsztynek-fakeplace844"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/grochowski-rosa-and-wilk-sp-z-o-o-fakeplace845"
+  },
+  {
+   "lastmod": "2026-06-02T12:00:00.000Z",
+   "loc": "/instytucja/tkaczyk-kmiec-sp-z-o-o-fakeplace846"
+  },
+  {
+   "lastmod": "2026-06-07T12:00:00.000Z",
+   "loc": "/instytucja/majewski-czyz-sp-z-o-o-fakeplace847"
+  },
+  {
+   "lastmod": "2026-08-01T12:00:00.000Z",
+   "loc": "/instytucja/rudzinski-florek-sp-z-o-o-fakeplace848"
+  },
+  {
+   "lastmod": "2026-10-13T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-ryglice-fakeplace849"
+  },
+  {
+   "lastmod": "2025-07-28T12:00:00.000Z",
+   "loc": "/instytucja/olczak-ska-sp-z-o-o-fakeplace85"
+  },
+  {
+   "lastmod": "2026-06-26T12:00:00.000Z",
+   "loc": "/instytucja/graczyk-kuc-and-rozycki-sp-z-o-o-fakeplace850"
+  },
+  {
+   "lastmod": "2026-06-07T12:00:00.000Z",
+   "loc": "/instytucja/szulc-lesniewski-and-lipka-sp-z-o-o-fakeplace851"
+  },
+  {
+   "lastmod": "2026-04-25T12:00:00.000Z",
+   "loc": "/instytucja/zdunek-koziel-sp-z-o-o-fakeplace852"
+  },
+  {
+   "lastmod": "2025-07-20T12:00:00.000Z",
+   "loc": "/instytucja/ziolkowski-stec-sp-z-o-o-fakeplace853"
+  },
+  {
+   "lastmod": "2026-08-29T12:00:00.000Z",
+   "loc": "/instytucja/kwiecien-kaminski-sp-z-o-o-fakeplace854"
+  },
+  {
+   "lastmod": "2026-03-15T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-vicinity-w-kornik-fakeplace855"
+  },
+  {
+   "lastmod": "2026-04-27T12:00:00.000Z",
+   "loc": "/instytucja/blaszczyk-ska-sp-z-o-o-fakeplace856"
+  },
+  {
+   "lastmod": "2025-11-06T12:00:00.000Z",
+   "loc": "/instytucja/pilarski-witkowski-and-dabek-sp-z-o-o-fakeplace857"
+  },
+  {
+   "lastmod": "2026-07-08T12:00:00.000Z",
+   "loc": "/instytucja/ksiazek-stachurski-and-rak-sp-z-o-o-fakeplace858"
+  },
+  {
+   "lastmod": "2026-01-19T12:00:00.000Z",
+   "loc": "/instytucja/chmura-piasecki-sp-z-o-o-fakeplace859"
+  },
+  {
+   "lastmod": "2026-04-07T12:00:00.000Z",
+   "loc": "/instytucja/bielecki-bialek-and-herman-sp-z-o-o-fakeplace86"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/lukasik-krol-sp-z-o-o-fakeplace860"
+  },
+  {
+   "lastmod": "2025-10-28T12:00:00.000Z",
+   "loc": "/instytucja/herman-s-a-sp-z-o-o-fakeplace861"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/matysiak-mackowiak-sp-z-o-o-fakeplace862"
+  },
+  {
+   "lastmod": "2026-07-26T12:00:00.000Z",
+   "loc": "/instytucja/sliwinski-biernacki-sp-z-o-o-fakeplace863"
+  },
+  {
+   "lastmod": "2025-06-13T12:00:00.000Z",
+   "loc": "/instytucja/flis-ska-sp-z-o-o-fakeplace864"
+  },
+  {
+   "lastmod": "2026-06-20T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-wiecbork-fakeplace865"
+  },
+  {
+   "lastmod": "2026-02-19T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-milanowek-sp-z-o-o-fakeplace866"
+  },
+  {
+   "lastmod": "2026-08-11T12:00:00.000Z",
+   "loc": "/instytucja/zyla-sp-p-sp-z-o-o-fakeplace867"
+  },
+  {
+   "lastmod": "2025-06-19T12:00:00.000Z",
+   "loc": "/instytucja/baran-wozniak-and-grabowski-sp-z-o-o-fakeplace868"
+  },
+  {
+   "lastmod": "2026-06-07T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-knickers-w-wyszkow-fakeplace869"
+  },
+  {
+   "lastmod": "2025-10-30T12:00:00.000Z",
+   "loc": "/instytucja/niemczyk-pakula-sp-z-o-o-fakeplace87"
+  },
+  {
+   "lastmod": "2026-02-14T12:00:00.000Z",
+   "loc": "/instytucja/krakowiak-ska-sp-z-o-o-fakeplace870"
+  },
+  {
+   "lastmod": "2025-07-23T12:00:00.000Z",
+   "loc": "/instytucja/adamczak-czaja-and-piechota-sp-z-o-o-fakeplace871"
+  },
+  {
+   "lastmod": "2026-01-25T12:00:00.000Z",
+   "loc": "/instytucja/kot-ska-sp-z-o-o-fakeplace872"
+  },
+  {
+   "lastmod": "2026-09-25T12:00:00.000Z",
+   "loc": "/instytucja/adamski-ska-sp-z-o-o-fakeplace873"
+  },
+  {
+   "lastmod": "2026-06-15T12:00:00.000Z",
+   "loc": "/instytucja/mielczarek-z-o-o-sp-z-o-o-fakeplace874"
+  },
+  {
+   "lastmod": "2025-06-03T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-krystyna-czyz-w-kostrzyn-nad-odra-fakeplace875"
+  },
+  {
+   "lastmod": "2025-08-03T12:00:00.000Z",
+   "loc": "/instytucja/witek-florek-sp-z-o-o-fakeplace876"
+  },
+  {
+   "lastmod": "2025-07-27T12:00:00.000Z",
+   "loc": "/instytucja/tokarski-golebiewski-sp-z-o-o-fakeplace877"
+  },
+  {
+   "lastmod": "2025-06-16T12:00:00.000Z",
+   "loc": "/instytucja/nowaczyk-wrona-and-kasperek-sp-z-o-o-fakeplace878"
+  },
+  {
+   "lastmod": "2026-01-26T12:00:00.000Z",
+   "loc": "/instytucja/filipek-drozdowski-and-lukaszewski-sp-z-o-o-fakeplace879"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-wisla-fakeplace88"
+  },
+  {
+   "lastmod": "2026-06-02T12:00:00.000Z",
+   "loc": "/instytucja/bielawski-z-o-o-sp-z-o-o-fakeplace880"
+  },
+  {
+   "lastmod": "2025-10-04T12:00:00.000Z",
+   "loc": "/instytucja/cichon-izdebski-sp-z-o-o-fakeplace881"
+  },
+  {
+   "lastmod": "2026-08-20T12:00:00.000Z",
+   "loc": "/instytucja/serafin-kulinski-and-marczak-sp-z-o-o-fakeplace882"
+  },
+  {
+   "lastmod": "2025-06-12T12:00:00.000Z",
+   "loc": "/instytucja/rosa-jagiello-and-falkowski-sp-z-o-o-fakeplace883"
+  },
+  {
+   "lastmod": "2025-08-09T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-stargard-fakeplace884"
+  },
+  {
+   "lastmod": "2026-03-30T12:00:00.000Z",
+   "loc": "/instytucja/maj-sadowski-sp-z-o-o-fakeplace885"
+  },
+  {
+   "lastmod": "2026-04-25T12:00:00.000Z",
+   "loc": "/instytucja/zukowski-z-o-o-sp-z-o-o-fakeplace886"
+  },
+  {
+   "lastmod": "2025-06-18T12:00:00.000Z",
+   "loc": "/instytucja/czajkowski-debowski-sp-z-o-o-fakeplace887"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/wozniak-sp-k-sp-z-o-o-fakeplace888"
+  },
+  {
+   "lastmod": "2025-11-24T12:00:00.000Z",
+   "loc": "/instytucja/zurawski-zakrzewski-sp-z-o-o-fakeplace889"
+  },
+  {
+   "lastmod": "2025-11-09T12:00:00.000Z",
+   "loc": "/instytucja/walkowiak-osinski-and-gawel-sp-z-o-o-fakeplace89"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/winiarski-maslanka-and-kosinski-sp-z-o-o-fakeplace890"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/broda-tomczyk-sp-z-o-o-fakeplace891"
+  },
+  {
+   "lastmod": "2025-07-12T12:00:00.000Z",
+   "loc": "/instytucja/palka-polak-sp-z-o-o-fakeplace892"
+  },
+  {
+   "lastmod": "2025-07-05T12:00:00.000Z",
+   "loc": "/instytucja/rozanski-sp-p-sp-z-o-o-fakeplace893"
+  },
+  {
+   "lastmod": "2026-09-28T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-kostrzyn-nad-odra-fakeplace894"
+  },
+  {
+   "lastmod": "2026-06-24T12:00:00.000Z",
+   "loc": "/instytucja/nowakowski-stachura-sp-z-o-o-fakeplace895"
+  },
+  {
+   "lastmod": "2026-01-13T12:00:00.000Z",
+   "loc": "/instytucja/miller-s-a-sp-z-o-o-fakeplace896"
+  },
+  {
+   "lastmod": "2025-11-23T12:00:00.000Z",
+   "loc": "/instytucja/kurek-komorowski-sp-z-o-o-fakeplace897"
+  },
+  {
+   "lastmod": "2025-10-21T12:00:00.000Z",
+   "loc": "/instytucja/dudzinski-ksiazek-sp-z-o-o-fakeplace898"
+  },
+  {
+   "lastmod": "2026-09-01T12:00:00.000Z",
+   "loc": "/instytucja/bakowski-sp-j-sp-z-o-o-fakeplace899"
+  },
+  {
+   "lastmod": "2026-08-23T12:00:00.000Z",
+   "loc": "/instytucja/zak-buczek-sp-z-o-o-fakeplace9"
+  },
+  {
+   "lastmod": "2026-01-15T12:00:00.000Z",
+   "loc": "/instytucja/swiderski-ska-sp-z-o-o-fakeplace90"
+  },
+  {
+   "lastmod": "2025-08-06T12:00:00.000Z",
+   "loc": "/instytucja/kaczmarek-bialas-sp-z-o-o-fakeplace900"
+  },
+  {
+   "lastmod": "2026-01-20T12:00:00.000Z",
+   "loc": "/instytucja/sliwa-kozlowski-and-wolak-sp-z-o-o-fakeplace901"
+  },
+  {
+   "lastmod": "2026-05-24T12:00:00.000Z",
+   "loc": "/instytucja/zyla-prokop-sp-z-o-o-fakeplace902"
+  },
+  {
+   "lastmod": "2025-09-26T12:00:00.000Z",
+   "loc": "/instytucja/michalski-kasprzak-and-malec-sp-z-o-o-fakeplace903"
+  },
+  {
+   "lastmod": "2025-12-06T12:00:00.000Z",
+   "loc": "/instytucja/niedzielski-kucinski-and-plonka-sp-z-o-o-fakeplace904"
+  },
+  {
+   "lastmod": "2025-07-11T12:00:00.000Z",
+   "loc": "/instytucja/leszczynski-kulik-sp-z-o-o-fakeplace905"
+  },
+  {
+   "lastmod": "2025-08-28T12:00:00.000Z",
+   "loc": "/instytucja/wieckowski-sp-p-sp-z-o-o-fakeplace906"
+  },
+  {
+   "lastmod": "2026-04-18T12:00:00.000Z",
+   "loc": "/instytucja/maslanka-klimek-sp-z-o-o-fakeplace907"
+  },
+  {
+   "lastmod": "2025-09-08T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-slubice-fakeplace908"
+  },
+  {
+   "lastmod": "2026-03-13T12:00:00.000Z",
+   "loc": "/instytucja/muszynski-kolakowski-sp-z-o-o-fakeplace909"
+  },
+  {
+   "lastmod": "2026-06-12T12:00:00.000Z",
+   "loc": "/instytucja/szelag-skoczylas-and-knapik-sp-z-o-o-fakeplace91"
+  },
+  {
+   "lastmod": "2026-09-10T12:00:00.000Z",
+   "loc": "/instytucja/gwozdz-sp-k-sp-z-o-o-fakeplace910"
+  },
+  {
+   "lastmod": "2026-04-17T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-sticker-w-lewin-brzeski-fakeplace911"
+  },
+  {
+   "lastmod": "2025-09-18T12:00:00.000Z",
+   "loc": "/instytucja/maj-szwarc-and-bogucki-sp-z-o-o-fakeplace912"
+  },
+  {
+   "lastmod": "2025-07-27T12:00:00.000Z",
+   "loc": "/instytucja/krzyzanowski-brzezinski-and-cygan-sp-z-o-o-fakeplace913"
+  },
+  {
+   "lastmod": "2026-02-24T12:00:00.000Z",
+   "loc": "/instytucja/rak-sobolewski-and-kedziora-sp-z-o-o-fakeplace914"
+  },
+  {
+   "lastmod": "2026-01-11T12:00:00.000Z",
+   "loc": "/instytucja/raczynski-zych-and-duda-sp-z-o-o-fakeplace915"
+  },
+  {
+   "lastmod": "2025-06-14T12:00:00.000Z",
+   "loc": "/instytucja/konieczny-smolinski-sp-z-o-o-fakeplace916"
+  },
+  {
+   "lastmod": "2026-02-23T12:00:00.000Z",
+   "loc": "/instytucja/jakubowski-motyka-and-wilk-sp-z-o-o-fakeplace917"
+  },
+  {
+   "lastmod": "2026-09-25T12:00:00.000Z",
+   "loc": "/instytucja/lesniak-sokolowski-and-nowak-sp-z-o-o-fakeplace918"
+  },
+  {
+   "lastmod": "2026-05-31T12:00:00.000Z",
+   "loc": "/instytucja/wasowski-piatkowski-sp-z-o-o-fakeplace919"
+  },
+  {
+   "lastmod": "2025-09-26T12:00:00.000Z",
+   "loc": "/instytucja/sliwinski-lukasiewicz-and-kubica-sp-z-o-o-fakeplace92"
+  },
+  {
+   "lastmod": "2025-11-12T12:00:00.000Z",
+   "loc": "/instytucja/wieczorek-sosnowski-and-bialas-sp-z-o-o-fakeplace920"
+  },
+  {
+   "lastmod": "2026-07-21T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-reasoning-w-kamien-krajenski-fakeplace921"
+  },
+  {
+   "lastmod": "2026-03-12T12:00:00.000Z",
+   "loc": "/instytucja/dabrowski-lis-and-sobczyk-sp-z-o-o-fakeplace922"
+  },
+  {
+   "lastmod": "2025-08-10T12:00:00.000Z",
+   "loc": "/instytucja/sitek-wolny-sp-z-o-o-fakeplace923"
+  },
+  {
+   "lastmod": "2026-09-28T12:00:00.000Z",
+   "loc": "/instytucja/rojek-szymczyk-sp-z-o-o-fakeplace924"
+  },
+  {
+   "lastmod": "2026-06-20T12:00:00.000Z",
+   "loc": "/instytucja/zajaczkowski-guzik-sp-z-o-o-fakeplace925"
+  },
+  {
+   "lastmod": "2026-09-15T12:00:00.000Z",
+   "loc": "/instytucja/dudzinski-marczak-and-nowacki-sp-z-o-o-fakeplace926"
+  },
+  {
+   "lastmod": "2026-09-10T12:00:00.000Z",
+   "loc": "/instytucja/ossowski-sp-p-sp-z-o-o-fakeplace927"
+  },
+  {
+   "lastmod": "2025-10-06T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-flat-w-checiny-fakeplace928"
+  },
+  {
+   "lastmod": "2026-02-14T12:00:00.000Z",
+   "loc": "/instytucja/szpital-powiatowy-w-wegorzyno-sp-z-o-o-fakeplace929"
+  },
+  {
+   "lastmod": "2026-04-10T12:00:00.000Z",
+   "loc": "/instytucja/lach-ska-sp-z-o-o-fakeplace93"
+  },
+  {
+   "lastmod": "2025-11-23T12:00:00.000Z",
+   "loc": "/instytucja/witkowski-s-c-sp-z-o-o-fakeplace930"
+  },
+  {
+   "lastmod": "2026-08-11T12:00:00.000Z",
+   "loc": "/instytucja/stachura-s-a-sp-z-o-o-fakeplace931"
+  },
+  {
+   "lastmod": "2026-07-17T12:00:00.000Z",
+   "loc": "/instytucja/jedrzejczyk-ska-sp-z-o-o-fakeplace932"
+  },
+  {
+   "lastmod": "2026-01-10T12:00:00.000Z",
+   "loc": "/instytucja/modzelewski-wolski-sp-z-o-o-fakeplace933"
+  },
+  {
+   "lastmod": "2026-02-26T12:00:00.000Z",
+   "loc": "/instytucja/stachura-majewski-and-budzinski-sp-z-o-o-fakeplace934"
+  },
+  {
+   "lastmod": "2026-05-17T12:00:00.000Z",
+   "loc": "/instytucja/zagorski-bielski-and-ostrowski-sp-z-o-o-fakeplace935"
+  },
+  {
+   "lastmod": "2025-10-31T12:00:00.000Z",
+   "loc": "/instytucja/brzozowski-zalewski-and-nowacki-sp-z-o-o-fakeplace936"
+  },
+  {
+   "lastmod": "2026-06-05T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-feather-w-kolbuszowa-fakeplace937"
+  },
+  {
+   "lastmod": "2025-11-09T12:00:00.000Z",
+   "loc": "/instytucja/hajduk-ska-sp-z-o-o-fakeplace938"
+  },
+  {
+   "lastmod": "2025-09-08T12:00:00.000Z",
+   "loc": "/instytucja/slawinski-bialek-and-czechowski-sp-z-o-o-fakeplace939"
+  },
+  {
+   "lastmod": "2026-08-03T12:00:00.000Z",
+   "loc": "/instytucja/puchalski-komorowski-and-madej-sp-z-o-o-fakeplace94"
+  },
+  {
+   "lastmod": "2025-12-17T12:00:00.000Z",
+   "loc": "/instytucja/bednarek-s-a-sp-z-o-o-fakeplace940"
+  },
+  {
+   "lastmod": "2026-08-22T12:00:00.000Z",
+   "loc": "/instytucja/turek-piatek-and-grochowski-sp-z-o-o-fakeplace941"
+  },
+  {
+   "lastmod": "2025-11-23T12:00:00.000Z",
+   "loc": "/instytucja/piasecki-borkowski-sp-z-o-o-fakeplace942"
+  },
+  {
+   "lastmod": "2025-10-04T12:00:00.000Z",
+   "loc": "/instytucja/wasik-s-c-sp-z-o-o-fakeplace943"
+  },
+  {
+   "lastmod": "2025-12-08T12:00:00.000Z",
+   "loc": "/instytucja/zajac-szymanski-and-wroblewski-sp-z-o-o-fakeplace944"
+  },
+  {
+   "lastmod": "2025-09-26T12:00:00.000Z",
+   "loc": "/instytucja/karas-grzesiak-sp-z-o-o-fakeplace945"
+  },
+  {
+   "lastmod": "2025-11-05T12:00:00.000Z",
+   "loc": "/instytucja/kaleta-mazurkiewicz-sp-z-o-o-fakeplace946"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/janiak-adamek-sp-z-o-o-fakeplace947"
+  },
+  {
+   "lastmod": "2026-08-05T12:00:00.000Z",
+   "loc": "/instytucja/nowak-ska-sp-z-o-o-fakeplace948"
+  },
+  {
+   "lastmod": "2026-03-12T12:00:00.000Z",
+   "loc": "/instytucja/wojewodzki-szpital-specjalistyczny-im-eugeniusz-bober-w-zelow-fakeplace949"
+  },
+  {
+   "lastmod": "2026-08-18T12:00:00.000Z",
+   "loc": "/instytucja/borek-sp-k-sp-z-o-o-fakeplace95"
+  },
+  {
+   "lastmod": "2026-03-02T12:00:00.000Z",
+   "loc": "/instytucja/slusarczyk-zak-sp-z-o-o-fakeplace950"
+  },
+  {
+   "lastmod": "2026-04-05T12:00:00.000Z",
+   "loc": "/instytucja/tomaszewski-milczarek-and-kmiec-sp-z-o-o-fakeplace951"
+  },
+  {
+   "lastmod": "2026-06-16T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-trzebinia-fakeplace952"
+  },
+  {
+   "lastmod": "2026-08-09T12:00:00.000Z",
+   "loc": "/instytucja/ossowski-zajac-sp-z-o-o-fakeplace953"
+  },
+  {
+   "lastmod": "2025-11-07T12:00:00.000Z",
+   "loc": "/instytucja/kolodziejczyk-sp-k-sp-z-o-o-fakeplace954"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-kalisz-fakeplace955"
+  },
+  {
+   "lastmod": "2025-06-28T12:00:00.000Z",
+   "loc": "/instytucja/bochenek-glab-and-czerwinski-sp-z-o-o-fakeplace956"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/lewandowski-karpinski-sp-z-o-o-fakeplace957"
+  },
+  {
+   "lastmod": "2026-06-18T12:00:00.000Z",
+   "loc": "/instytucja/kubiak-sp-k-sp-z-o-o-fakeplace958"
+  },
+  {
+   "lastmod": "2025-08-11T12:00:00.000Z",
+   "loc": "/instytucja/kolodziejski-zietek-sp-z-o-o-fakeplace959"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/czarnecki-klos-sp-z-o-o-fakeplace96"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/krupa-pilch-and-augustyn-sp-z-o-o-fakeplace960"
+  },
+  {
+   "lastmod": "2025-08-11T12:00:00.000Z",
+   "loc": "/instytucja/bialas-sokol-sp-z-o-o-fakeplace961"
+  },
+  {
+   "lastmod": "2026-08-17T12:00:00.000Z",
+   "loc": "/instytucja/rosa-niedziela-and-stachowiak-sp-z-o-o-fakeplace962"
+  },
+  {
+   "lastmod": "2026-09-01T12:00:00.000Z",
+   "loc": "/instytucja/matysiak-prokop-and-kozlowski-sp-z-o-o-fakeplace963"
+  },
+  {
+   "lastmod": "2025-08-04T12:00:00.000Z",
+   "loc": "/instytucja/kobus-sp-k-sp-z-o-o-fakeplace964"
+  },
+  {
+   "lastmod": "2025-12-28T12:00:00.000Z",
+   "loc": "/instytucja/baran-zajac-and-przybylski-sp-z-o-o-fakeplace965"
+  },
+  {
+   "lastmod": "2025-11-14T12:00:00.000Z",
+   "loc": "/instytucja/bochenek-sp-j-quidem-natus-deserunt-voluptas-neque-nam-placeat-odit-odio-non-magni-tempore-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace966"
+  },
+  {
+   "lastmod": "2026-01-04T12:00:00.000Z",
+   "loc": "/instytucja/janowski-s-c-sp-z-o-o-fakeplace967"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/szewczyk-zagorski-and-puchalski-sp-z-o-o-fakeplace968"
+  },
+  {
+   "lastmod": "2026-07-05T12:00:00.000Z",
+   "loc": "/instytucja/matusiak-gasiorowski-sp-z-o-o-fakeplace969"
+  },
+  {
+   "lastmod": "2026-02-07T12:00:00.000Z",
+   "loc": "/instytucja/rudzinski-bednarek-sp-z-o-o-fakeplace97"
+  },
+  {
+   "lastmod": "2026-02-09T12:00:00.000Z",
+   "loc": "/instytucja/urbaniak-swiderski-sp-z-o-o-fakeplace970"
+  },
+  {
+   "lastmod": "2025-09-09T12:00:00.000Z",
+   "loc": "/instytucja/sobczak-z-o-o-sp-z-o-o-fakeplace971"
+  },
+  {
+   "lastmod": "2026-08-16T12:00:00.000Z",
+   "loc": "/instytucja/wojtasik-kopec-and-skoczylas-sp-z-o-o-fakeplace972"
+  },
+  {
+   "lastmod": "2025-08-11T12:00:00.000Z",
+   "loc": "/instytucja/romanowski-biernat-sp-z-o-o-fakeplace973"
+  },
+  {
+   "lastmod": "2025-11-10T12:00:00.000Z",
+   "loc": "/instytucja/stachowiak-przybysz-and-wierzbicki-ut-deleniti-eos-eveniet-deserunt-molestiae-facere-voluptate-quas-alias-nemo-odit-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace974"
+  },
+  {
+   "lastmod": "2026-06-12T12:00:00.000Z",
+   "loc": "/instytucja/muszynski-z-o-o-sp-z-o-o-fakeplace975"
+  },
+  {
+   "lastmod": "2026-03-14T12:00:00.000Z",
+   "loc": "/instytucja/zurawski-z-o-o-sp-z-o-o-fakeplace976"
+  },
+  {
+   "lastmod": "2026-03-02T12:00:00.000Z",
+   "loc": "/instytucja/przybyla-krolikowski-and-burzynski-sp-z-o-o-fakeplace977"
+  },
+  {
+   "lastmod": "2026-09-17T12:00:00.000Z",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-barlinek-fakeplace978"
+  },
+  {
+   "lastmod": "2026-08-20T12:00:00.000Z",
+   "loc": "/instytucja/gora-s-c-sp-z-o-o-fakeplace979"
+  },
+  {
+   "lastmod": "2026-04-27T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-gradient-w-barcin-fakeplace98"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/rojek-antczak-and-ptak-sp-z-o-o-fakeplace980"
+  },
+  {
+   "lastmod": "2025-07-27T12:00:00.000Z",
+   "loc": "/instytucja/paczkowski-sp-p-sp-z-o-o-fakeplace981"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/szpital-powiatowy-w-szepietowo-sp-z-o-o-fakeplace982"
+  },
+  {
+   "lastmod": "2026-06-20T12:00:00.000Z",
+   "loc": "/instytucja/drabik-z-o-o-sp-z-o-o-fakeplace983"
+  },
+  {
+   "lastmod": "2026-07-19T12:00:00.000Z",
+   "loc": "/instytucja/chojnacki-glab-sp-z-o-o-fakeplace984"
+  },
+  {
+   "lastmod": "2026-07-20T12:00:00.000Z",
+   "loc": "/instytucja/bartczak-szczesniak-sp-z-o-o-fakeplace985"
+  },
+  {
+   "lastmod": "2025-11-09T12:00:00.000Z",
+   "loc": "/instytucja/centrum-medyczne-guacamole-w-opoczno-fakeplace986"
+  },
+  {
+   "lastmod": "2026-08-28T12:00:00.000Z",
+   "loc": "/instytucja/kowalski-sp-p-sp-z-o-o-fakeplace987"
+  },
+  {
+   "lastmod": "2026-07-10T12:00:00.000Z",
+   "loc": "/instytucja/swierczynski-z-o-o-sp-z-o-o-fakeplace988"
+  },
+  {
+   "lastmod": "2025-11-17T12:00:00.000Z",
+   "loc": "/instytucja/slawinski-kepa-and-niedzwiecki-sp-z-o-o-fakeplace989"
+  },
+  {
+   "lastmod": "2025-07-17T12:00:00.000Z",
+   "loc": "/instytucja/kolakowski-motyka-and-kuc-sp-z-o-o-fakeplace99"
+  },
+  {
+   "lastmod": "2025-11-25T12:00:00.000Z",
+   "loc": "/instytucja/kubicki-z-o-o-sp-z-o-o-fakeplace990"
+  },
+  {
+   "lastmod": "2026-05-09T12:00:00.000Z",
+   "loc": "/instytucja/wojtczak-s-a-sp-z-o-o-fakeplace991"
+  },
+  {
+   "lastmod": "2026-05-02T12:00:00.000Z",
+   "loc": "/instytucja/matysiak-pawlak-and-drozd-sp-z-o-o-fakeplace992"
+  },
+  {
+   "lastmod": "2025-06-12T12:00:00.000Z",
+   "loc": "/instytucja/siedlecki-kucharczyk-and-dlugosz-sp-z-o-o-fakeplace993"
+  },
+  {
+   "lastmod": "2025-06-19T12:00:00.000Z",
+   "loc": "/instytucja/jagiello-przybysz-and-matysiak-sp-z-o-o-fakeplace994"
+  },
+  {
+   "lastmod": "2026-06-25T12:00:00.000Z",
+   "loc": "/instytucja/zaborowski-sp-p-sp-z-o-o-fakeplace995"
+  },
+  {
+   "lastmod": "2026-09-07T12:00:00.000Z",
+   "loc": "/instytucja/dudziak-sp-k-magnam-itaque-quaerat-corporis-molestiae-molestias-placeat-ratione-at-eligendi-nam-veritatis-spolka-z-ograniczona-odpowiedzialnoscia-fakeplace996"
+  },
+  {
+   "lastmod": "<now>",
+   "loc": "/instytucja/samodzielny-publiczny-zaklad-opieki-zdrowotnej-w-siemiatycze-fakeplace997"
+  },
+  {
+   "lastmod": "2025-09-17T12:00:00.000Z",
+   "loc": "/instytucja/cichon-blaszczyk-sp-z-o-o-fakeplace998"
+  },
+  {
+   "lastmod": "2025-12-11T12:00:00.000Z",
+   "loc": "/instytucja/wlodarczyk-dudzinski-and-czapla-sp-z-o-o-fakeplace999"
+  }
+ ]
+}

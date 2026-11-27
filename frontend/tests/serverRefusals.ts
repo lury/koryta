@@ -75,7 +75,7 @@ export async function noAnswer(): Promise<unknown> {
 }
 
 /** The server's words as it turns a reader down
- * (server/utils/declarations.ts and server/api/declarations/). */
+ * (server/db/declarationReading.ts and server/api/declarations/). */
 export const REFUSED = {
   /** 429: the day's answers, or asks, without a vote are used up, for a
    * reader without an account (`votelessRefusal`). */

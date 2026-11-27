@@ -1,0 +1,13 @@
+{
+ "step": 235,
+ "name": "article notes",
+ "request": {
+  "method": "GET",
+  "path": "/api/articles/fakearticle0/notes",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "notes": []
+ }
+}

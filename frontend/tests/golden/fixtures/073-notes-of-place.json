@@ -1,0 +1,13 @@
+{
+ "step": 73,
+ "name": "notes of place",
+ "request": {
+  "method": "GET",
+  "path": "/api/notes?nodeId=fakeplace1006",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "notes": []
+ }
+}

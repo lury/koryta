@@ -1,0 +1,21 @@
+{
+ "step": 286,
+ "name": "edge references",
+ "request": {
+  "method": "POST",
+  "path": "/api/edges/edge_fakeperson1077_fakeplace1006_employed_SDuvEXhwx3/references",
+  "as": "admin",
+  "body": {
+   "add": [
+    "fakearticle0"
+   ]
+  }
+ },
+ "status": 200,
+ "body": {
+  "id": "edge_fakeperson1077_fakeplace1006_employed_SDuvEXhwx3",
+  "references": [
+   "fakearticle0"
+  ]
+ }
+}

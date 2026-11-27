@@ -1,0 +1,21 @@
+{
+ "step": 301,
+ "name": "feedback anonymous",
+ "request": {
+  "method": "POST",
+  "path": "/api/feedback/create",
+  "as": "anon",
+  "body": {
+   "contact": "ktos@example.test",
+   "context": {
+    "route": "/eksploruj"
+   },
+   "kind": "idea",
+   "message": "Bez konta."
+  }
+ },
+ "status": 200,
+ "body": {
+  "id": "<id>"
+ }
+}

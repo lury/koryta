@@ -1,0 +1,18 @@
+{
+ "step": 178,
+ "name": "progress partia",
+ "request": {
+  "method": "GET",
+  "path": "/api/stats/progress?party=PO",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "approved": 52,
+  "reviewed": 17,
+  "toCheck": 290,
+  "total": 359,
+  "withNotes": 7,
+  "withVotes": 12
+ }
+}

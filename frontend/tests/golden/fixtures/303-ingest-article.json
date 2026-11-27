@@ -1,0 +1,28 @@
+{
+ "step": 303,
+ "name": "ingest article",
+ "request": {
+  "method": "POST",
+  "path": "/api/ingest/article",
+  "as": "admin",
+  "body": {
+   "mentions": [
+    "fakeperson1066",
+    "fakeperson1077"
+   ],
+   "name": "Artykuł wzorcowy",
+   "publishedDate": "2025-05-05",
+   "url": "https://example.test/artykul-wzorcowy"
+  }
+ },
+ "status": 200,
+ "body": {
+  "created": true,
+  "mentions": [
+   "fakeperson1066",
+   "fakeperson1077"
+  ],
+  "nodeId": "<id>",
+  "status": "ok"
+ }
+}

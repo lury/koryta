@@ -1,0 +1,11 @@
+{
+ "step": 216,
+ "name": "comments list",
+ "request": {
+  "method": "GET",
+  "path": "/api/comments/list?nodeId=fakeperson1066",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": []
+}

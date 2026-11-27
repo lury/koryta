@@ -1,0 +1,215 @@
+{
+ "step": 315,
+ "name": "declarations overview after",
+ "request": {
+  "method": "GET",
+  "path": "/api/declarations/overview",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "at": "<now>",
+  "candidacies": {
+   "byStatus": {
+    "found": 0,
+    "not_found": 0,
+    "pending": 0,
+    "unconfirmed": 0
+   },
+   "notFound": [],
+   "people": 0,
+   "total": 0
+  },
+  "dailyLimit": 200,
+  "extracts": {
+   "byStatus": {
+    "agreed": 0,
+    "disputed": 0,
+    "failed": 0,
+    "open": 0,
+    "unreadable": 0,
+    "withdrawn": 0
+   },
+   "failed": [],
+   "total": 0
+  },
+  "lists": {
+   "different": [],
+   "disputed": [],
+   "held": [],
+   "recent": [],
+   "setAside": []
+  },
+  "pages": {
+   "confirmed": 0,
+   "different": 0,
+   "noDate": 0,
+   "same": 0
+  },
+  "publications": {
+   "held": 0,
+   "heldBy": [],
+   "published": 0,
+   "queued": 0,
+   "setAside": 0,
+   "today": 0
+  },
+  "readers": {
+   "answers": 0,
+   "days": [
+    {
+     "answers": 0,
+     "day": "2026-10-28",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-10-29",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-10-30",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-10-31",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-01",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-02",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-03",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-04",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-05",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-06",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-07",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-08",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-09",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-10",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-11",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-12",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-13",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-14",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-15",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-16",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-17",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-18",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-19",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-20",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-21",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-22",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-23",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-24",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-25",
+     "settled": 0
+    },
+    {
+     "answers": 0,
+     "day": "2026-11-26",
+     "settled": 0
+    }
+   ],
+   "readers": 0
+  },
+  "runs": []
+ }
+}

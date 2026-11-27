@@ -5,7 +5,7 @@ import { daysAgo } from "../clock";
 
 /** A new title proposed for a seeded article, for article-propose.spec.ts.
  *
- * Answered from fixtures rather than filed: the emulator keeps what a spec
+ * Answered from fixtures rather than filed: the database keeps what a spec
  * writes, and a proposal is the newest revision a signed in reader is shown,
  * so a real one would change this article for every later run. The three
  * answers are typed from the endpoints, so a change to what they send breaks

@@ -1,0 +1,39 @@
+{
+ "step": 311,
+ "name": "declarations next user",
+ "request": {
+  "method": "GET",
+  "path": "/api/declarations/next?count=5",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "mine": {
+   "found": 0,
+   "today": 0,
+   "total": 0
+  },
+  "open": 1,
+  "settledCrops": 0,
+  "task": {
+   "declarationYear": 2023,
+   "documentUrl": "https://bip.example.test/download/golden-2023",
+   "host": "bip.example.test",
+   "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-p0",
+   "imageSize": {
+    "date": {
+     "height": 1,
+     "width": 1
+    },
+    "name": null
+   },
+   "images": {
+    "date": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
+    "name": null
+   },
+   "office": "Rada gminy",
+   "unit": "Strzelin (gmina miejsko-wiejska)"
+  },
+  "upcoming": []
+ }
+}

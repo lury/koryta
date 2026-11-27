@@ -1,0 +1,21 @@
+{
+ "step": 146,
+ "name": "declarations next",
+ "request": {
+  "method": "GET",
+  "path": "/api/declarations/next?count=3",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "mine": {
+   "found": 0,
+   "today": 0,
+   "total": 0
+  },
+  "open": 0,
+  "settledCrops": 0,
+  "task": null,
+  "upcoming": []
+ }
+}

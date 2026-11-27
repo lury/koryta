@@ -1,0 +1,20 @@
+{
+ "step": 281,
+ "name": "publish new page",
+ "request": {
+  "method": "POST",
+  "path": "/api/nodes/publish",
+  "as": "admin",
+  "body": {
+   "node_id": "<id>",
+   "published": true
+  }
+ },
+ "status": 200,
+ "body": {
+  "approvedRevisionId": null,
+  "hiddenEdges": [],
+  "id": "<id>",
+  "published": true
+ }
+}

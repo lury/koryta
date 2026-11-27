@@ -1,49 +1,52 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { getFirestore } from "firebase/firestore";
+import { describe, it, expect, vi } from "vitest";
+import { registerEndpoint } from "@nuxt/test-utils/runtime";
+import { readBody } from "h3";
 import { useAuthState } from "../../app/composables/auth";
 
-/** The database id every Firestore handle in this app must name.
- *
- * `useFirestore()` from vuefire does not: it is `getFirestore(app)`, which is
- * the `(default)` database. This project stores everything in `koryta-pl`,
- * deploys its rules only there, and connects only that one to the emulator - so
- * a handle that omits the id reads and writes a database nothing else touches.
- * The notification opt-out is the case that made this matter: the server checks
- * `users/{uid}` in `koryta-pl` before sending mail, so a preference saved to
- * `(default)` is a switch that silently does nothing.
- */
-const DATABASE = "koryta-pl";
+/** The reader's settings (`users/{uid}`) go through /api/me, which the
+ * server reads before it sends mail; the browser holds no Firestore handle
+ * that could save them to the wrong database (decision on 2026-11-26). */
 
-vi.mock("firebase/firestore", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("firebase/firestore")>();
-  return {
-    ...actual,
-    getFirestore: vi.fn(() => ({ type: "firestore" })),
-    collection: vi.fn(() => ({ type: "collection" })),
-    doc: vi.fn(() => ({ type: "doc" })),
-  };
-});
+const patched = vi.hoisted(() => [] as unknown[]);
 
 vi.mock("vuefire", async (importOriginal) => {
   const actual = await importOriginal<typeof import("vuefire")>();
   return {
     ...actual,
-    useFirebaseApp: vi.fn(() => ({ name: "[DEFAULT]" })),
     useFirebaseAuth: vi.fn(() => ({ currentUser: null })),
-    useCurrentUser: vi.fn(() => ref(null)),
+    useCurrentUser: vi.fn(() =>
+      ref({ uid: "me", getIdToken: async () => "token" }),
+    ),
     useIsCurrentUserLoaded: vi.fn(() => ref(true)),
-    useDocument: vi.fn(() => ({ data: ref(undefined) })),
   };
 });
+vi.mock("~/utils/tokenRefresh", () => ({
+  idTokenResultIfReachable: async () => ({ claims: {} }),
+  idTokenWhenOnline: async () => "token",
+  ignoreNetworkFailure: () => {},
+}));
 
-beforeEach(() => {
-  vi.clearAllMocks();
+registerEndpoint("/api/me", {
+  method: "PATCH",
+  handler: async (event) => {
+    const body = await readBody(event);
+    patched.push(body);
+    return { config: { id: "me", ...body } };
+  },
+});
+registerEndpoint("/api/me", {
+  method: "GET",
+  handler: () => ({ config: null }),
 });
 
 describe("user config storage", () => {
-  it("reads the user document from the database the server writes mail from", () => {
-    useAuthState();
+  it("saves a preference through PATCH /api/me and keeps the answer", async () => {
+    const { userConfig } = useAuthState();
+    await userConfig.save({ notifications: { revisionApproved: false } });
 
-    expect(getFirestore).toHaveBeenCalledWith(expect.anything(), DATABASE);
+    expect(patched).toEqual([{ notifications: { revisionApproved: false } }]);
+    expect(userConfig.data.value).toMatchObject({
+      notifications: { revisionApproved: false },
+    });
   });
 });

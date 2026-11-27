@@ -1,16 +1,8 @@
 import { test, expect } from "@playwright/test";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
 import { logIn, USERS } from "./helpers/auth";
+import { putDoc, readDoc } from "./helpers/db";
 
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
 process.env.GCLOUD_PROJECT = "demo-koryta-pl";
-
-const app =
-  getApps().length === 0
-    ? initializeApp({ projectId: "demo-koryta-pl" })
-    : getApp();
-const db = getFirestore(app, "koryta-pl");
 
 /** A stamp per run, so specs that run in parallel never read each other's
  * fixtures and a rerun never collides with the last one. */
@@ -25,7 +17,7 @@ const ids = {
   unapproved: `pub-unapproved-${stamp}`,
   // No hyphens: an entity url is `<slug>-<id>`, and the id is read back as
   // everything after the last dash. This one is opened as a page, not just
-  // read out of Firestore, so it has to survive that round trip.
+  // read back from the database, so it has to survive that round trip.
   selfPublish: `pubselfpub${stamp}`,
 };
 
@@ -39,7 +31,6 @@ const ids = {
  *   cascadeA ──(cascade)──  cascadeB   seeded live, to be taken down with a page
  */
 async function seed() {
-  const batch = db.batch();
   const node = (name: string, published: boolean) => ({
     name,
     type: "person" as const,
@@ -48,43 +39,28 @@ async function seed() {
     stats: { isApproved: published },
   });
 
-  batch.set(
-    db.collection("nodes").doc(ids.draft),
-    node(`Draft ${stamp}`, false),
-  );
-  batch.set(db.collection("nodes").doc(ids.live), node(`Live ${stamp}`, true));
-  batch.set(
-    db.collection("nodes").doc(ids.other),
-    node(`Other ${stamp}`, true),
-  );
-  batch.set(
-    db.collection("nodes").doc(ids.hidden),
-    node(`Hidden ${stamp}`, false),
-  );
-  batch.set(
-    db.collection("nodes").doc(ids.cascadeA),
-    node(`CascadeA ${stamp}`, true),
-  );
-  batch.set(
-    db.collection("nodes").doc(ids.cascadeB),
-    node(`CascadeB ${stamp}`, true),
-  );
+  await putDoc("nodes", ids.draft, node(`Draft ${stamp}`, false));
+  await putDoc("nodes", ids.live, node(`Live ${stamp}`, true));
+  await putDoc("nodes", ids.other, node(`Other ${stamp}`, true));
+  await putDoc("nodes", ids.hidden, node(`Hidden ${stamp}`, false));
+  await putDoc("nodes", ids.cascadeA, node(`CascadeA ${stamp}`, true));
+  await putDoc("nodes", ids.cascadeB, node(`CascadeB ${stamp}`, true));
 
-  batch.set(db.collection("edges").doc(`edge-ready-${stamp}`), {
+  await putDoc("edges", `edge-ready-${stamp}`, {
     source: ids.draft,
     target: ids.live,
     type: "connection",
     name: `gotowe-${stamp}`,
     published: false,
   });
-  batch.set(db.collection("edges").doc(`edge-blocked-${stamp}`), {
+  await putDoc("edges", `edge-blocked-${stamp}`, {
     source: ids.draft,
     target: ids.hidden,
     type: "connection",
     name: `zablokowane-${stamp}`,
     published: false,
   });
-  batch.set(db.collection("edges").doc(`edge-queued-${stamp}`), {
+  await putDoc("edges", `edge-queued-${stamp}`, {
     source: ids.live,
     target: ids.other,
     type: "connection",
@@ -93,13 +69,13 @@ async function seed() {
   });
   // The state most pages are actually in: revisions, none of them approved,
   // so the node points at no version at all.
-  batch.set(db.collection("nodes").doc(ids.unapproved), {
+  await putDoc("nodes", ids.unapproved, {
     name: `Unapproved ${stamp}`,
     type: "person",
     published: false,
     stats: { isApproved: false },
   });
-  batch.set(db.collection("revisions").doc(`rev-old-${stamp}`), {
+  await putDoc("revisions", `rev-old-${stamp}`, {
     node_id: ids.unapproved,
     collection: "nodes",
     data: { name: `Unapproved ${stamp}`, type: "person", education: "stara" },
@@ -107,7 +83,7 @@ async function seed() {
     update_user: "pipeline",
     update_automatic: true,
   });
-  batch.set(db.collection("revisions").doc(`rev-new-${stamp}`), {
+  await putDoc("revisions", `rev-new-${stamp}`, {
     node_id: ids.unapproved,
     collection: "nodes",
     data: { name: `Unapproved ${stamp}`, type: "person", education: "nowa" },
@@ -116,13 +92,13 @@ async function seed() {
     update_automatic: true,
   });
 
-  batch.set(db.collection("nodes").doc(ids.selfPublish), {
+  await putDoc("nodes", ids.selfPublish, {
     name: `Selfpublish ${stamp}`,
     type: "person",
     published: false,
     stats: { isApproved: false, nodeGroupSize: 1 },
   });
-  batch.set(db.collection("revisions").doc(`rev-self-${stamp}`), {
+  await putDoc("revisions", `rev-self-${stamp}`, {
     node_id: ids.selfPublish,
     collection: "nodes",
     data: { name: `Selfpublish ${stamp}`, type: "person" },
@@ -131,15 +107,13 @@ async function seed() {
     update_automatic: true,
   });
 
-  batch.set(db.collection("edges").doc(`edge-cascade-${stamp}`), {
+  await putDoc("edges", `edge-cascade-${stamp}`, {
     source: ids.cascadeA,
     target: ids.cascadeB,
     type: "connection",
     name: `kaskada-${stamp}`,
     published: true,
   });
-
-  await batch.commit();
 }
 
 test.describe("Publishing relations", () => {
@@ -181,21 +155,18 @@ test.describe("Publishing relations", () => {
       .poll(
         async () => {
           const [node, edge] = await Promise.all([
-            db.collection("nodes").doc(ids.draft).get(),
-            db.collection("edges").doc(`edge-ready-${stamp}`).get(),
+            readDoc("nodes", ids.draft),
+            readDoc("edges", `edge-ready-${stamp}`),
           ]);
-          return [node.data()?.published, edge.data()?.published];
+          return [node?.published, edge?.published];
         },
         { timeout: 30_000 },
       )
       .toEqual([true, true]);
 
     // The blocked one is untouched: its other end is still a draft.
-    const blockedDoc = await db
-      .collection("edges")
-      .doc(`edge-blocked-${stamp}`)
-      .get();
-    expect(blockedDoc.data()?.published).not.toBe(true);
+    const blockedDoc = await readDoc("edges", `edge-blocked-${stamp}`);
+    expect(blockedDoc?.published).not.toBe(true);
   });
 
   test("the admin queue lists relations whose pages are both live, and publishes them", async ({
@@ -217,10 +188,7 @@ test.describe("Publishing relations", () => {
 
     await expect
       .poll(
-        async () =>
-          (
-            await db.collection("edges").doc(`edge-queued-${stamp}`).get()
-          ).data()?.published,
+        async () => (await readDoc("edges", `edge-queued-${stamp}`))?.published,
         { timeout: 30_000 },
       )
       .toBe(true);
@@ -255,14 +223,12 @@ test.describe("Publishing relations", () => {
     await expect
       .poll(
         async () => {
-          const node = await db.collection("nodes").doc(ids.unapproved).get();
-          const revision = node.data()?.revision_id as
-            { id?: string } | string | undefined;
-          return [
-            node.data()?.published,
-            typeof revision === "string" ? revision : revision?.id,
-            node.data()?.education,
-          ];
+          const node = await readDoc("nodes", ids.unapproved);
+          // Stored as the document path `revisions/<id>`.
+          const revision = String(node?.revision_id ?? "")
+            .split("/")
+            .pop();
+          return [node?.published, revision, node?.education];
         },
         { timeout: 30_000 },
       )
@@ -293,13 +259,12 @@ test.describe("Publishing relations", () => {
     await expect
       .poll(
         async () => {
-          const node = await db.collection("nodes").doc(ids.selfPublish).get();
-          const revision = node.data()?.revision_id as
-            { id?: string } | string | undefined;
-          return [
-            node.data()?.published,
-            typeof revision === "string" ? revision : revision?.id,
-          ];
+          const node = await readDoc("nodes", ids.selfPublish);
+          // Stored as the document path `revisions/<id>`.
+          const revision = String(node?.revision_id ?? "")
+            .split("/")
+            .pop();
+          return [node?.published, revision];
         },
         { timeout: 30_000 },
       )
@@ -321,10 +286,10 @@ test.describe("Publishing relations", () => {
       .poll(
         async () => {
           const [node, edge] = await Promise.all([
-            db.collection("nodes").doc(ids.cascadeA).get(),
-            db.collection("edges").doc(`edge-cascade-${stamp}`).get(),
+            readDoc("nodes", ids.cascadeA),
+            readDoc("edges", `edge-cascade-${stamp}`),
           ]);
-          return [node.data()?.published, edge.data()?.published];
+          return [node?.published, edge?.published];
         },
         { timeout: 30_000 },
       )
@@ -332,7 +297,7 @@ test.describe("Publishing relations", () => {
 
     // The page at the other end is not touched - it is still a perfectly good
     // page, it just has one fewer relation on it.
-    const other = await db.collection("nodes").doc(ids.cascadeB).get();
-    expect(other.data()?.published).toBe(true);
+    const other = await readDoc("nodes", ids.cascadeB);
+    expect(other?.published).toBe(true);
   });
 });

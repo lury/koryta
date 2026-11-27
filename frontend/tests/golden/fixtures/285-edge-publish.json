@@ -1,0 +1,23 @@
+{
+ "step": 285,
+ "name": "edge publish",
+ "request": {
+  "method": "POST",
+  "path": "/api/edges/publish",
+  "as": "admin",
+  "body": {
+   "edge_ids": [
+    "edge_fakeperson1077_fakeplace1006_employed_SDuvEXhwx3"
+   ],
+   "published": true
+  }
+ },
+ "status": 200,
+ "body": {
+  "approved": [],
+  "edge_ids": [
+   "edge_fakeperson1077_fakeplace1006_employed_SDuvEXhwx3"
+  ],
+  "published": true
+ }
+}

@@ -33,7 +33,7 @@ function mountLayout(isAdmin = false, { isDatascience = false } = {}) {
     user: ref({ uid: "test-admin" }),
     isAdmin: ref(isAdmin),
     isDatascience: ref(isDatascience),
-    userConfig: { data: ref({}) },
+    userConfig: { data: ref({}), pending: ref(false) },
     logout: vi.fn(),
   } as MockAuthState);
 

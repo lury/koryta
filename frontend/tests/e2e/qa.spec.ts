@@ -36,7 +36,7 @@ test.describe("QA changelog", () => {
     const feedback = `nie działa ${Date.now()}`;
     await card.getByLabel("Uwagi", { exact: false }).fill(feedback);
     // Exact: the line is a button too, and it names the verdict already given
-    // - "Coś nie działa", after an earlier run against the same emulator.
+    // - "Coś nie działa", after an earlier run against the same database.
     await card
       .getByRole("button", { name: "Coś nie działa", exact: true })
       .click();
@@ -80,7 +80,7 @@ test.describe("QA changelog", () => {
 
     await logIn(page, undefined, "/qa");
 
-    // "Wszystkie", because a previous run against the same emulator may have
+    // "Wszystkie", because a previous run against the same database may have
     // moved this entry out of "Do sprawdzenia" for this account. Waiting for
     // the verdicts first: until they land the filter buttons are markup with
     // no listeners, and the click is dropped.

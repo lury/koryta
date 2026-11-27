@@ -1,0 +1,23 @@
+{
+ "step": 160,
+ "name": "revision one",
+ "request": {
+  "method": "GET",
+  "path": "/api/revisions/rev_fakeperson1066",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "collection": "nodes",
+  "data": {
+   "name": "Berta Dąbkowski",
+   "parties": [],
+   "published": true,
+   "type": "person"
+  },
+  "node_id": "fakeperson1066",
+  "update_automatic": false,
+  "update_time": "2026-08-10T12:00:00Z",
+  "update_user": "admin@koryta.pl"
+ }
+}

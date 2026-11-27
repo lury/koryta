@@ -1,0 +1,13 @@
+{
+ "step": 143,
+ "name": "notes of person",
+ "request": {
+  "method": "GET",
+  "path": "/api/notes?nodeId=fakeperson1066",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "notes": []
+ }
+}

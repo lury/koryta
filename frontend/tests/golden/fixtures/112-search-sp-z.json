@@ -1,0 +1,42 @@
+{
+ "step": 112,
+ "name": "search sp z",
+ "request": {
+  "method": "GET",
+  "path": "/api/search?q=sp+z&limit=5",
+  "as": "user"
+ },
+ "status": 200,
+ "body": [
+  {
+   "id": "fakeplace3",
+   "name": "JANIAK SKA SP. Z O.O.",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace989",
+   "name": "SŁAWIŃSKI, KĘPA AND NIEDŹWIECKI SP. Z O.O.",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace517",
+   "name": "WINIARSKI, SKIBIŃSKI AND BARAN SP. Z O.O.",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace523",
+   "name": "GRUSZKA-MARSZAŁEK SP. Z O.O.",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace414",
+   "name": "Szpital Powiatowy w Racibórz Sp. z o.o.",
+   "published": true,
+   "type": "place"
+  }
+ ]
+}

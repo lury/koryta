@@ -1,0 +1,17 @@
+{
+ "step": 248,
+ "name": "revisions queue",
+ "request": {
+  "method": "GET",
+  "path": "/api/revisions/queue?status=pending&limit=50",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "flagOnly": true,
+  "pinned": null,
+  "revisions": [],
+  "total": 0,
+  "truncated": false
+ }
+}

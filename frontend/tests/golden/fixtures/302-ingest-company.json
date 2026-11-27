@@ -1,0 +1,21 @@
+{
+ "step": 302,
+ "name": "ingest company",
+ "request": {
+  "method": "POST",
+  "path": "/api/ingest/company",
+  "as": "admin",
+  "body": {
+   "krs": "0000999001",
+   "name": "WZORCOWA SPÓŁKA Z O.O.",
+   "teryt": "1465011"
+  }
+ },
+ "status": 200,
+ "body": {
+  "code": 200,
+  "company": "created",
+  "id": "<id>",
+  "region": "unknown"
+ }
+}

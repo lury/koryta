@@ -1,10 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
 import { logIn, USERS } from "./helpers/auth";
-
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
-process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
+import { at, deleteDocs, putDoc, putDocs } from "./helpers/db";
 
 /**
  * The side-by-side comparison on /admin/rewizje/[id] when a node has more
@@ -24,34 +20,23 @@ const MANUAL = 2;
 const TOTAL = AUTOMATIC + MANUAL;
 const APPROVED = `${NODE}-rev-0`;
 
-const db = () =>
-  getFirestore(
-    getApps().length === 0
-      ? initializeApp({ projectId: "demo-koryta-pl" })
-      : getApp(),
-    "koryta-pl",
-  );
-
 const revisionIds = Array.from({ length: TOTAL }, (_, i) => `${NODE}-rev-${i}`);
 
 test.beforeAll(async () => {
-  await db()
-    .collection("nodes")
-    .doc(NODE)
-    .set({
-      name: NODE,
-      type: "person",
-      content: "Wersja zatwierdzona.",
-      published: true,
-      revision_id: db().collection("revisions").doc(APPROVED),
-    });
+  await putDoc("nodes", NODE, {
+    name: NODE,
+    type: "person",
+    content: "Wersja zatwierdzona.",
+    published: true,
+    revision_id: `revisions/${APPROVED}`,
+  });
 
-  await Promise.all(
-    revisionIds.map((id, index) =>
-      db()
-        .collection("revisions")
-        .doc(id)
-        .set({
+  await putDocs(
+    "revisions",
+    Object.fromEntries(
+      revisionIds.map((id, index) => [
+        id,
+        {
           node_id: NODE,
           collection: "nodes",
           data: {
@@ -65,17 +50,16 @@ test.beforeAll(async () => {
           // these tables wide in production.
           update_automatic: index >= MANUAL,
           update_user: "test_user",
-          update_time: Timestamp.fromMillis(RUN - index * 60_000),
-        }),
+          update_time: at(RUN - index * 60_000),
+        },
+      ]),
     ),
   );
 });
 
 test.afterAll(async () => {
-  await Promise.all(
-    revisionIds.map((id) => db().collection("revisions").doc(id).delete()),
-  );
-  await db().collection("nodes").doc(NODE).delete();
+  await deleteDocs("revisions", revisionIds);
+  await deleteDocs("nodes", [NODE]);
 });
 
 test.describe("Comparing many revisions of one node", () => {

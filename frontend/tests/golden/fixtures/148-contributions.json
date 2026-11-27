@@ -1,0 +1,15 @@
+{
+ "step": 148,
+ "name": "contributions",
+ "request": {
+  "method": "GET",
+  "path": "/api/stats/contributions",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "notes": 0,
+  "revisions": 0,
+  "votes": 0
+ }
+}

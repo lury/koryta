@@ -1,9 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
-
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
-process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
+import { at, deleteDocs, putDocs } from "./helpers/db";
 
 /** That /zrodla's pager reaches the whole list, not the slice it was handed.
  *
@@ -15,7 +11,7 @@ process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
  * the fixed one behave identically.
  *
  * The seeded articles are dated 1971 so they sort below everything the
- * emulator seed and the other /zrodla specs put on the first page. The bug is
+ * local seed and the other /zrodla specs put on the first page. The bug is
  * about the far end of the list, and staying off page one keeps this spec from
  * moving the rows those specs measure.
  */
@@ -31,33 +27,27 @@ const title = (i: number) =>
 // Index 0 is the oldest, so it lands on the last page whatever else exists.
 const OLDEST = title(0);
 
-const db = () =>
-  getFirestore(
-    getApps().length === 0
-      ? initializeApp({ projectId: "demo-koryta-pl" })
-      : getApp(),
-    "koryta-pl",
-  );
-
 test.beforeAll(async () => {
-  const batch = db().batch();
-  ids.forEach((id, i) => {
-    batch.set(db().collection("nodes").doc(id), {
-      name: title(i),
-      type: "article",
-      sourceURL: `http://example-paging.test/${i}`,
-      published: true,
-      stats: { nodeGroupSize: 1, isApproved: true },
-      publishedDate: new Date(Date.UTC(1971, 0, 1 + i)),
-    });
-  });
-  await batch.commit();
+  await putDocs(
+    "nodes",
+    Object.fromEntries(
+      ids.map((id, i) => [
+        id,
+        {
+          name: title(i),
+          type: "article",
+          sourceURL: `http://example-paging.test/${i}`,
+          published: true,
+          stats: { nodeGroupSize: 1, isApproved: true },
+          publishedDate: at(Date.UTC(1971, 0, 1 + i)),
+        },
+      ]),
+    ),
+  );
 });
 
 test.afterAll(async () => {
-  const batch = db().batch();
-  ids.forEach((id) => batch.delete(db().collection("nodes").doc(id)));
-  await batch.commit();
+  await deleteDocs("nodes", ids);
 });
 
 test("the oldest article is reachable from the pager", async ({ page }) => {

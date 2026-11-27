@@ -1,0 +1,50 @@
+{
+ "step": 70,
+ "name": "article relations",
+ "request": {
+  "method": "GET",
+  "path": "/api/articles/fakearticle0/relations",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "mentions": [
+   {
+    "edgeId": "fakementions0_1",
+    "name": "Bertram Kubiak",
+    "nodeId": "fakeperson1576",
+    "nodeType": "person",
+    "published": true
+   },
+   {
+    "edgeId": "fakementions0_3",
+    "name": "Cyrus Lisowski",
+    "nodeId": "fakeperson2376",
+    "nodeType": "person",
+    "published": true
+   },
+   {
+    "edgeId": "fakementions0_4",
+    "name": "Gabriela Adamiak",
+    "nodeId": "fakeperson570",
+    "nodeType": "person",
+    "published": true
+   },
+   {
+    "edgeId": "fakementions0_0",
+    "name": "Lilla Przybyła",
+    "nodeId": "fakeperson2606",
+    "nodeType": "person",
+    "published": true
+   },
+   {
+    "edgeId": "fakementions0_2",
+    "name": "Oliwia Chmiel",
+    "nodeId": "fakeperson2333",
+    "nodeType": "person",
+    "published": true
+   }
+  ],
+  "topics": []
+ }
+}

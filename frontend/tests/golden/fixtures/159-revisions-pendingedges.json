@@ -1,0 +1,17 @@
+{
+ "step": 159,
+ "name": "revisions pendingEdges",
+ "request": {
+  "method": "GET",
+  "path": "/api/revisions/pendingEdges",
+  "as": "user"
+ },
+ "status": 403,
+ "body": {
+  "error": true,
+  "message": "Brak uprawnień administratora.",
+  "statusCode": 403,
+  "statusMessage": "Forbidden",
+  "url": "http://127.0.0.1:23200/api/revisions/pendingEdges"
+ }
+}

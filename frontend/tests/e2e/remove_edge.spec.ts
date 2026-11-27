@@ -1,16 +1,8 @@
 import { test, expect } from "@playwright/test";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
 import { logIn, USERS } from "./helpers/auth";
+import { deleteDocs, putDoc } from "./helpers/db";
 
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
 process.env.GCLOUD_PROJECT = "demo-koryta-pl";
-
-const app =
-  getApps().length === 0
-    ? initializeApp({ projectId: "demo-koryta-pl" })
-    : getApp();
-const db = getFirestore(app, "koryta-pl");
 
 /** A stamp per run, so a rerun never collides with the last one and the suite's
  * `fullyParallel` workers never read each other's fixtures. */
@@ -59,8 +51,6 @@ const QUEUE_SCORE = 900;
  * removed.
  */
 async function seed() {
-  const batch = db.batch();
-
   /** The employer stats /api/stats/computeNodes would work out. The explore
    * table finds people by them - `?place=` filters on `targetNodeIds` - so a
    * fixture person without them has a working profile page and no row in the
@@ -84,24 +74,23 @@ async function seed() {
     stats: { isApproved: true, nodeGroupSize: 1, ...stats },
   });
 
-  batch.set(
-    db.collection("nodes").doc(ids.worker),
+  await putDoc(
+    "nodes",
+    ids.worker,
     page(`Usuwany Pracownik ${stamp}`, "person", {
       edges: { all: employment, approved: employment },
     }),
   );
-  batch.set(
-    db.collection("nodes").doc(ids.friend),
+  await putDoc(
+    "nodes",
+    ids.friend,
     page(`Znajomy Pracownika ${stamp}`, "person", {
       edges: { all: employment, approved: employment },
     }),
   );
-  batch.set(
-    db.collection("nodes").doc(ids.company),
-    page(`Spolka Usuwana ${stamp}`, "place"),
-  );
+  await putDoc("nodes", ids.company, page(`Spolka Usuwana ${stamp}`, "place"));
 
-  batch.set(db.collection("edges").doc(edges.job), {
+  await putDoc("edges", edges.job, {
     source: ids.worker,
     target: ids.company,
     type: "employed",
@@ -110,14 +99,14 @@ async function seed() {
     end_date: "2024-04-12",
     published: true,
   });
-  batch.set(db.collection("edges").doc(edges.friendship), {
+  await putDoc("edges", edges.friendship, {
     source: ids.worker,
     target: ids.friend,
     type: "connection",
     name: `znajomosc-${stamp}`,
     published: true,
   });
-  batch.set(db.collection("edges").doc(edges.colleague), {
+  await putDoc("edges", edges.colleague, {
     source: ids.friend,
     target: ids.company,
     type: "employed",
@@ -127,13 +116,13 @@ async function seed() {
 
   // A fourth page, for the review queue rather than for a profile: a draft
   // nobody has voted on, carrying a score high enough that `?minVotes` can
-  // single it out. The queue sorts on `latestEmploymentStart`, and Firestore's
-  // orderBy drops a document that does not carry the field at all.
+  // single it out. The queue sorts on `latestEmploymentStart`, the field the
+  // review queue's order reads.
   const queuedEmployment = {
     ...employment,
     latestEmploymentStart: "2030-01-01",
   };
-  batch.set(db.collection("nodes").doc(ids.queued), {
+  await putDoc("nodes", ids.queued, {
     name: `Kolejkowy Pracownik ${stamp}`,
     type: "person",
     revision_id: `rev-${stamp}`,
@@ -146,7 +135,7 @@ async function seed() {
       edges: { all: queuedEmployment, approved: queuedEmployment },
     },
   });
-  batch.set(db.collection("edges").doc(edges.queuedJob), {
+  await putDoc("edges", edges.queuedJob, {
     source: ids.queued,
     target: ids.company,
     type: "employed",
@@ -154,8 +143,6 @@ async function seed() {
     start_date: "2030-01-01",
     published: true,
   });
-
-  await batch.commit();
 }
 
 test.describe("Removing a relation", () => {
@@ -184,14 +171,12 @@ test.describe("Removing a relation", () => {
    * no-op rather than an error.
    */
   test.afterAll(async () => {
-    const batch = db.batch();
     for (const id of Object.values(ids)) {
-      batch.delete(db.collection("nodes").doc(id));
+      await deleteDocs("nodes", [id]);
     }
     for (const id of Object.values(edges)) {
-      batch.delete(db.collection("edges").doc(id));
+      await deleteDocs("edges", [id]);
     }
-    await batch.commit();
   });
 
   test("an admin removes one and it stays gone at both ends", async ({

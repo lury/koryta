@@ -40,7 +40,7 @@ test("a mention added by hand reaches the article and topic graphs", async ({
 }) => {
   test.setTimeout(180_000);
 
-  // Unique, so parallel workers and repeat runs against a warm emulator do not
+  // Unique, so parallel workers and repeat runs against a warm database do not
   // collide on the topic name.
   const topicName = `Sprawa placeholder ${Date.now()}`;
 

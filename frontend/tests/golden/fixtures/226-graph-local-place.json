@@ -1,0 +1,451 @@
+{
+ "step": 226,
+ "name": "graph local place",
+ "request": {
+  "method": "GET",
+  "path": "/api/graph/local/fakeplace1006",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "edges": [
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1069_3",
+    "label": "Członek Zarządu",
+    "name": "Członek Zarządu",
+    "references": [],
+    "source": "fakeperson1069",
+    "start_date": "2021-05-04",
+    "target": "fakeplace1006",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2007-01-01",
+    "id": "fakejob157_7",
+    "label": "Zastępca Dyrektora",
+    "name": "Zastępca Dyrektora",
+    "references": [],
+    "source": "fakeperson157",
+    "start_date": "2003-04-08",
+    "target": "fakeplace1006",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2013-03-11",
+    "id": "fakejob1710_1",
+    "label": "Przewodniczący Rady Nadzorczej",
+    "name": "Przewodniczący Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1710",
+    "start_date": "2012-07-29",
+    "target": "fakeplace1006",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob390_0",
+    "label": "Dyrektor",
+    "name": "Dyrektor",
+    "references": [],
+    "source": "fakeperson390",
+    "start_date": "2018-06-07",
+    "target": "fakeplace1006",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2009-08-22",
+    "id": "fakejob733_0",
+    "label": "Zastępca Dyrektora",
+    "name": "Zastępca Dyrektora",
+    "references": [],
+    "source": "fakeperson733",
+    "start_date": "2001-12-03",
+    "target": "fakeplace1006",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "id": "fakeown1006",
+    "label": "właściciel",
+    "references": [],
+    "source": "fakeplace523",
+    "target": "fakeplace1006",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "owns",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "id": "fakeseat1006",
+    "label": "siedziba",
+    "references": [],
+    "source": "teryt1405013",
+    "target": "fakeplace1006",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "dead_end"
+    },
+    "type": "seat",
+    "visibility": true
+   }
+  ],
+  "nodeGroups": [
+   {
+    "connected": [
+     "fakeplace1006",
+     "fakeperson1069",
+     "fakeperson157",
+     "fakeperson1710",
+     "fakeperson390",
+     "fakeperson733",
+     "fakeplace523",
+     "teryt1405013"
+    ],
+    "id": "fakeplace1006",
+    "name": "Centrum Medyczne „colonialism” w Orzesze",
+    "stats": {
+     "people": 5
+    }
+   },
+   {
+    "connected": [
+     "fakeplace523",
+     "fakeplace1006",
+     "fakeperson1069",
+     "fakeperson157",
+     "fakeperson1710",
+     "fakeperson390",
+     "fakeperson733",
+     "fakeplace523",
+     "teryt1405013"
+    ],
+    "id": "fakeplace523",
+    "name": "GRUSZKA-MARSZAŁEK SP. Z O.O.",
+    "stats": {
+     "people": 5
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1069",
+     "fakeplace1006",
+     "fakeperson1069",
+     "fakeperson157",
+     "fakeperson1710",
+     "fakeperson390",
+     "fakeperson733",
+     "fakeplace523",
+     "teryt1405013"
+    ],
+    "id": "fakeperson1069",
+    "name": "Brygida Karpiński",
+    "stats": {
+     "people": 5
+    }
+   },
+   {
+    "connected": [
+     "fakeperson157",
+     "fakeplace1006",
+     "fakeperson1069",
+     "fakeperson157",
+     "fakeperson1710",
+     "fakeperson390",
+     "fakeperson733",
+     "fakeplace523",
+     "teryt1405013"
+    ],
+    "id": "fakeperson157",
+    "name": "Andrzej Sobolewski",
+    "stats": {
+     "people": 5
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1710",
+     "fakeplace1006",
+     "fakeperson1069",
+     "fakeperson157",
+     "fakeperson1710",
+     "fakeperson390",
+     "fakeperson733",
+     "fakeplace523",
+     "teryt1405013"
+    ],
+    "id": "fakeperson1710",
+    "name": "Waleria Polak",
+    "stats": {
+     "people": 5
+    }
+   },
+   {
+    "connected": [
+     "fakeperson390",
+     "fakeplace1006",
+     "fakeperson1069",
+     "fakeperson157",
+     "fakeperson1710",
+     "fakeperson390",
+     "fakeperson733",
+     "fakeplace523",
+     "teryt1405013"
+    ],
+    "id": "fakeperson390",
+    "name": "Miron Smoliński",
+    "stats": {
+     "people": 5
+    }
+   },
+   {
+    "connected": [
+     "fakeperson733",
+     "fakeplace1006",
+     "fakeperson1069",
+     "fakeperson157",
+     "fakeperson1710",
+     "fakeperson390",
+     "fakeperson733",
+     "fakeplace523",
+     "teryt1405013"
+    ],
+    "id": "fakeperson733",
+    "name": "Korneliusz Rakowski",
+    "stats": {
+     "people": 5
+    }
+   },
+   {
+    "connected": [
+     "teryt1405013",
+     "fakeplace1006"
+    ],
+    "id": "teryt1405013",
+    "name": "Pyzdry",
+    "stats": {
+     "people": 0
+    }
+   }
+  ],
+  "nodes": {
+   "fakeperson1069": {
+    "birthDate": "1980-11-23",
+    "color": "#898781",
+    "depth": 1,
+    "entityType": "person",
+    "id": "fakeperson1069",
+    "name": "Brygida Karpiński",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1069",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1069",
+     "latest_time": "2026-10-09T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 5
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson157": {
+    "color": "#fca241",
+    "depth": 1,
+    "entityType": "person",
+    "id": "fakeperson157",
+    "name": "Andrzej Sobolewski",
+    "parties": [
+     "PO"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson157",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson157",
+     "latest_time": "2026-04-11T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 5
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson1710": {
+    "color": "#898781",
+    "depth": 1,
+    "entityType": "person",
+    "id": "fakeperson1710",
+    "name": "Waleria Polak",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson1710",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1710",
+     "latest_time": "2025-12-25T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 5
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson390": {
+    "birthDate": "1971-08-31",
+    "color": "#073b76",
+    "depth": 1,
+    "entityType": "person",
+    "id": "fakeperson390",
+    "name": "Miron Smoliński",
+    "parties": [
+     "PiS",
+     "PO"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson390",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson390",
+     "latest_time": "2026-09-18T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 5
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson733": {
+    "color": "#898781",
+    "depth": 1,
+    "entityType": "person",
+    "id": "fakeperson733",
+    "name": "Korneliusz Rakowski",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson733",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson733",
+     "latest_time": "2025-12-01T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 5
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeplace1006": {
+    "categories": [
+     "szpitale"
+    ],
+    "color": "#6b7a83",
+    "depth": 0,
+    "entityType": "place",
+    "id": "fakeplace1006",
+    "isPublic": true,
+    "krsNumber": "0000100372",
+    "name": "Centrum Medyczne „colonialism” w Orzesze",
+    "published": true,
+    "revision_id": "rev_fakeplace1006",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace1006",
+     "latest_time": "2026-03-24T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 5
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace523": {
+    "categories": [
+     "koleje"
+    ],
+    "color": "#6b7a83",
+    "depth": 1,
+    "entityType": "place",
+    "id": "fakeplace523",
+    "isPublic": false,
+    "krsNumber": "0000249467",
+    "name": "GRUSZKA-MARSZAŁEK SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace523",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace523",
+     "latest_time": "2026-05-02T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 5
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "teryt1405013": {
+    "color": "#3f7d58",
+    "depth": 1,
+    "entityType": "region",
+    "id": "teryt1405013",
+    "name": "Pyzdry",
+    "published": true,
+    "revision_id": "rev_teryt1405013",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_teryt1405013",
+     "latest_time": "2025-08-19T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 0
+    },
+    "teryt": "1405013",
+    "type": "document",
+    "visibility": true
+   }
+  },
+  "omitted": 0
+ }
+}

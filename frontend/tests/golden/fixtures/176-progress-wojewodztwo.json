@@ -1,0 +1,18 @@
+{
+ "step": 176,
+ "name": "progress województwo",
+ "request": {
+  "method": "GET",
+  "path": "/api/stats/progress?teryt=14",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "approved": 139,
+  "reviewed": 37,
+  "toCheck": 678,
+  "total": 854,
+  "withNotes": 10,
+  "withVotes": 29
+ }
+}

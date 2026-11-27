@@ -3,67 +3,48 @@ import {
   answerNewsletterQuestion,
   waitForLoginFormHydrated,
 } from "./helpers/login";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
-
-// Ensure emulator is used for admin SDK
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
-process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
+import { putDoc } from "./helpers/db";
 
 test.describe("Admin Revisions View", () => {
   test("admin can view revisions detail and row count matches total", async ({
     page,
   }) => {
-    const app =
-      getApps().length === 0
-        ? initializeApp({ projectId: "demo-koryta-pl" })
-        : getApp();
-    const db = getFirestore(app, "koryta-pl");
     const testNodeId = "000000-test-node-" + Date.now();
 
     // Seed a test node
-    await db
-      .collection("nodes")
-      .doc(testNodeId)
-      .set({
-        name: "000 Test Node with Revisions",
-        type: "person",
-        revisions: {
-          total: 2,
-          latest_time: {
-            _seconds: Math.floor(Date.now() / 1000),
-            _nanoseconds: 0,
-          },
-          has_unapproved: true,
-        },
-      });
-    // Seed 2 revisions
-    await db
-      .collection("revisions")
-      .doc(`rev1-${testNodeId}`)
-      .set({
-        node_id: testNodeId,
-        nodeId: testNodeId,
-        update_time: {
-          _seconds: Math.floor(Date.now() / 1000) - 100,
-          _nanoseconds: 0,
-        },
-        update_automatic: false,
-        update_user: "test_user",
-      });
-    await db
-      .collection("revisions")
-      .doc(`rev2-${testNodeId}`)
-      .set({
-        node_id: testNodeId,
-        nodeId: testNodeId,
-        update_time: {
+    await putDoc("nodes", testNodeId, {
+      name: "000 Test Node with Revisions",
+      type: "person",
+      revisions: {
+        total: 2,
+        latest_time: {
           _seconds: Math.floor(Date.now() / 1000),
           _nanoseconds: 0,
         },
-        update_automatic: false,
-        update_user: "test_user",
-      });
+        has_unapproved: true,
+      },
+    });
+    // Seed 2 revisions
+    await putDoc("revisions", `rev1-${testNodeId}`, {
+      node_id: testNodeId,
+      nodeId: testNodeId,
+      update_time: {
+        _seconds: Math.floor(Date.now() / 1000) - 100,
+        _nanoseconds: 0,
+      },
+      update_automatic: false,
+      update_user: "test_user",
+    });
+    await putDoc("revisions", `rev2-${testNodeId}`, {
+      node_id: testNodeId,
+      nodeId: testNodeId,
+      update_time: {
+        _seconds: Math.floor(Date.now() / 1000),
+        _nanoseconds: 0,
+      },
+      update_automatic: false,
+      update_user: "test_user",
+    });
 
     // 1. Go to login page
     await page.goto("/login");
@@ -103,8 +84,9 @@ test.describe("Admin Revisions View", () => {
 
     // The entry list is the one section a reader who is not an admin gets, and
     // the seeded node is found by its id rather than by being the first row.
-    // It is on the first page anyway: its `latest_time` is a map, which
-    // Firestore sorts above every timestamp under the default newest-first.
+    // It is on the first page anyway: its `latest_time` is a map, which the
+    // list's type order (Firestore's, kept by docstore_rank) sorts above every
+    // instant under the default newest-first.
     const row = page.locator(`#wpisy [data-node-id="${testNodeId}"]`);
     await expect(row).toBeVisible({ timeout: 30_000 });
     await expect(page.locator("#kolejka")).toHaveCount(0);

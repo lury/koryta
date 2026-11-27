@@ -1,0 +1,25 @@
+{
+ "step": 299,
+ "name": "comment create",
+ "request": {
+  "method": "POST",
+  "path": "/api/comments/create",
+  "as": "user",
+  "body": {
+   "content": "Wzorcowy komentarz.",
+   "nodeId": "fakeperson109"
+  }
+ },
+ "status": 200,
+ "body": {
+  "authorId": "test-user",
+  "authorName": "test-user",
+  "content": "Wzorcowy komentarz.",
+  "createdAt": "<now>",
+  "edgeId": null,
+  "id": "<id>",
+  "isLead": false,
+  "nodeId": "fakeperson109",
+  "parentId": null
+ }
+}

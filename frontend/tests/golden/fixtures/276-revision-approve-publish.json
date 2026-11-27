@@ -1,0 +1,20 @@
+{
+ "step": 276,
+ "name": "revision approve publish",
+ "request": {
+  "method": "POST",
+  "path": "/api/revisions/approve",
+  "as": "admin",
+  "body": {
+   "publish": true,
+   "revision_id": "proposal_fakeperson1066_test-user_dYpPbcalmb"
+  }
+ },
+ "status": 200,
+ "body": {
+  "collection": "nodes",
+  "id": "fakeperson1066",
+  "published": true,
+  "revision_id": "proposal_fakeperson1066_test-user_dYpPbcalmb"
+ }
+}

@@ -1,0 +1,18 @@
+{
+ "step": 177,
+ "name": "progress sektor",
+ "request": {
+  "method": "GET",
+  "path": "/api/stats/progress?category=szpitale",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "approved": 292,
+  "reviewed": 59,
+  "toCheck": 1384,
+  "total": 1735,
+  "withNotes": 16,
+  "withVotes": 49
+ }
+}

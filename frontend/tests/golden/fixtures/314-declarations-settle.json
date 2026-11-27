@@ -1,0 +1,21 @@
+{
+ "step": 314,
+ "name": "declarations settle",
+ "request": {
+  "method": "POST",
+  "path": "/api/declarations/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-p0/settle",
+  "as": "admin",
+  "body": {
+   "value": "1979-07-15",
+   "verdict": "date"
+  }
+ },
+ "status": 409,
+ "body": {
+  "error": true,
+  "message": "Ten wycinek czeka jeszcze na czytelników.",
+  "statusCode": 409,
+  "statusMessage": "Server Error",
+  "url": "http://127.0.0.1:23200/api/declarations/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-p0/settle"
+ }
+}

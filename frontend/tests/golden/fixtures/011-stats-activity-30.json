@@ -1,0 +1,854 @@
+{
+ "step": 11,
+ "name": "stats activity 30",
+ "request": {
+  "method": "GET",
+  "path": "/api/stats/activity?days=30",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "automatic": 0,
+  "contributorCount": 32,
+  "daily": [
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 0,
+     "vote": 0
+    },
+    "date": "2026-10-28",
+    "total": 0
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 0,
+     "vote": 0
+    },
+    "date": "2026-10-29",
+    "total": 0
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 1,
+     "vote": 0
+    },
+    "date": "2026-10-30",
+    "total": 1
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 1,
+     "vote": 0
+    },
+    "date": "2026-10-31",
+    "total": 1
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 1,
+     "vote": 0
+    },
+    "date": "2026-11-01",
+    "total": 1
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 0,
+     "vote": 0
+    },
+    "date": "2026-11-02",
+    "total": 0
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 1,
+     "vote": 0
+    },
+    "date": "2026-11-03",
+    "total": 1
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 0,
+     "vote": 0
+    },
+    "date": "2026-11-04",
+    "total": 0
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 1,
+     "vote": 0
+    },
+    "date": "2026-11-05",
+    "total": 1
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 1,
+     "publication": 0,
+     "reading": 0,
+     "revision": 1,
+     "vote": 0
+    },
+    "date": "2026-11-06",
+    "total": 2
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 2,
+     "vote": 0
+    },
+    "date": "2026-11-07",
+    "total": 2
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 0,
+     "vote": 0
+    },
+    "date": "2026-11-08",
+    "total": 0
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 1,
+     "publication": 0,
+     "reading": 0,
+     "revision": 1,
+     "vote": 0
+    },
+    "date": "2026-11-09",
+    "total": 2
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 0,
+     "vote": 0
+    },
+    "date": "2026-11-10",
+    "total": 0
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 1,
+     "vote": 0
+    },
+    "date": "2026-11-11",
+    "total": 1
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 0,
+     "vote": 0
+    },
+    "date": "2026-11-12",
+    "total": 0
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 1,
+     "vote": 0
+    },
+    "date": "2026-11-13",
+    "total": 1
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 3,
+     "vote": 0
+    },
+    "date": "2026-11-14",
+    "total": 3
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 2,
+     "vote": 0
+    },
+    "date": "2026-11-15",
+    "total": 2
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 1,
+     "vote": 0
+    },
+    "date": "2026-11-16",
+    "total": 1
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 3,
+     "vote": 0
+    },
+    "date": "2026-11-17",
+    "total": 3
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 1,
+     "vote": 0
+    },
+    "date": "2026-11-18",
+    "total": 1
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 0,
+     "vote": 0
+    },
+    "date": "2026-11-19",
+    "total": 0
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 0,
+     "vote": 0
+    },
+    "date": "2026-11-20",
+    "total": 0
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 0,
+     "vote": 0
+    },
+    "date": "2026-11-21",
+    "total": 0
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 0,
+     "vote": 0
+    },
+    "date": "2026-11-22",
+    "total": 0
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 0,
+     "vote": 0
+    },
+    "date": "2026-11-23",
+    "total": 0
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 0,
+     "vote": 0
+    },
+    "date": "2026-11-24",
+    "total": 0
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 0,
+     "vote": 0
+    },
+    "date": "2026-11-25",
+    "total": 0
+   },
+   {
+    "automatic": 0,
+    "counts": {
+     "noteSource": 0,
+     "publication": 0,
+     "reading": 0,
+     "revision": 0,
+     "vote": 173
+    },
+    "date": "2026-11-26",
+    "total": 173
+   }
+  ],
+  "identified": false,
+  "rankings": {
+   "changes": {
+    "count": 32,
+    "rows": [
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 21,
+       "vote": 0
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-1",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #1",
+      "named": false,
+      "photoURL": null,
+      "total": 21,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 11
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-2",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #2",
+      "named": false,
+      "photoURL": null,
+      "total": 11,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 10
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-3",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #3",
+      "named": false,
+      "photoURL": null,
+      "total": 10,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 9
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-4",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #4",
+      "named": false,
+      "photoURL": null,
+      "total": 9,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 9
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-5",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #5",
+      "named": false,
+      "photoURL": null,
+      "total": 9,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 9
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-6",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #6",
+      "named": false,
+      "photoURL": null,
+      "total": 9,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 2,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 6
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-7",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #7",
+      "named": false,
+      "photoURL": null,
+      "total": 8,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 8
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-8",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #8",
+      "named": false,
+      "photoURL": null,
+      "total": 8,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 8
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-9",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #9",
+      "named": false,
+      "photoURL": null,
+      "total": 8,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 8
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-10",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #10",
+      "named": false,
+      "photoURL": null,
+      "total": 8,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 8
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-11",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #11",
+      "named": false,
+      "photoURL": null,
+      "total": 8,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 7
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-12",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #12",
+      "named": false,
+      "photoURL": null,
+      "total": 7,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 6
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-13",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #13",
+      "named": false,
+      "photoURL": null,
+      "total": 6,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 6
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-14",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #14",
+      "named": false,
+      "photoURL": null,
+      "total": 6,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 6
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-15",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #15",
+      "named": false,
+      "photoURL": null,
+      "total": 6,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 6
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-16",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #16",
+      "named": false,
+      "photoURL": null,
+      "total": 6,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 6
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-17",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #17",
+      "named": false,
+      "photoURL": null,
+      "total": 6,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 6
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-18",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #18",
+      "named": false,
+      "photoURL": null,
+      "total": 6,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 5
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-19",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #19",
+      "named": false,
+      "photoURL": null,
+      "total": 5,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 5
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-20",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #20",
+      "named": false,
+      "photoURL": null,
+      "total": 5,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 4
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-21",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #21",
+      "named": false,
+      "photoURL": null,
+      "total": 4,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 4
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-22",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #22",
+      "named": false,
+      "photoURL": null,
+      "total": 4,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 4
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-23",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #23",
+      "named": false,
+      "photoURL": null,
+      "total": 4,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 4
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-24",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #24",
+      "named": false,
+      "photoURL": null,
+      "total": 4,
+      "uid": null
+     },
+     {
+      "counts": {
+       "noteSource": 0,
+       "publication": 0,
+       "reading": 0,
+       "revision": 0,
+       "vote": 3
+      },
+      "email": null,
+      "isSelf": false,
+      "key": "rank-25",
+      "lastActiveAt": "<now>",
+      "name": "Uczestnik #25",
+      "named": false,
+      "photoURL": null,
+      "total": 3,
+      "uid": null
+     }
+    ],
+    "self": null
+   },
+   "readings": {
+    "count": 0,
+    "rows": [],
+    "self": null
+   }
+  },
+  "total": 196,
+  "totals": {
+   "noteSource": 2,
+   "publication": 0,
+   "reading": 0,
+   "revision": 21,
+   "vote": 173
+  },
+  "truncated": [],
+  "window": {
+   "days": 30,
+   "since": "2026-10-28",
+   "until": "2026-11-26"
+  }
+ }
+}

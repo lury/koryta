@@ -7,7 +7,7 @@ const COMPANY_URL = "/instytucja/orlen-2";
 const UNTOUCHED_COMPANY_URL = "/instytucja/wojewodzki-zaklad-testowy-sukspolka";
 
 /** Every proposal the card lists, however many there are. Counted rather than
- * asserted at one: the emulator keeps what an earlier attempt wrote, so a
+ * asserted at one: the database keeps what an earlier attempt wrote, so a
  * retry would otherwise be measuring the previous run. */
 const proposalRows = (page: Page) =>
   page.locator('[data-testid^="node-proposal-preview-"]');

@@ -1,0 +1,132 @@
+{
+ "step": 40,
+ "name": "search szpital",
+ "request": {
+  "method": "GET",
+  "path": "/api/search?q=szpital+wojew%C3%B3dzki",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": [
+  {
+   "id": "fakeplace616",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Anastazja Bednarek w Barlinek",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace189",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Alfred Pałka w Ostrów Mazowiecka",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace1092",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Igor Niemiec w Kowary",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace304",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Romeo Górski w Lesko",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace753",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Pan Natanael Gajewski w Biskupiec",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace1129",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Luiza Lisiecki w Sokołów Podlaski",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace1130",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Laurencja Jakubowski w Gościno",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace640",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Piotr Kowalczyk w Jedwabne",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace26",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Dariusz Głąb w Lipsko",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace5",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Polikarp Kurowski w Supraśl",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace1027",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Irena Szymański w Sokołów Małopolski",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace389",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Rebeka Kulig w Skórcz",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace1114",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Chloe Prus w Choroszcz",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace200",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Emil Baran w Zawichost",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace188",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Justyn Łukasik w Szamotuły",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace875",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Krystyna Czyż w Kostrzyn nad Odrą",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace1121",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Włodzimierz Tomala w Zgierz",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace456",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Eugeniusz Sokołowski w Kosów Lacki",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace426",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Stefania Balcerzak w Mirosławiec",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace148",
+   "name": "Wojewódzki Szpital Specjalistyczny im. Modest Zagórski w Lubliniec",
+   "published": true,
+   "type": "place"
+  }
+ ]
+}

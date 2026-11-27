@@ -1,0 +1,20 @@
+{
+ "step": 300,
+ "name": "feedback create",
+ "request": {
+  "method": "POST",
+  "path": "/api/feedback/create",
+  "as": "user",
+  "body": {
+   "context": {
+    "route": "/"
+   },
+   "kind": "bug",
+   "message": "Wzorcowe zgłoszenie."
+  }
+ },
+ "status": 200,
+ "body": {
+  "id": "<id>"
+ }
+}

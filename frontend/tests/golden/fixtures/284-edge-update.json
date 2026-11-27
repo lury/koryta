@@ -1,0 +1,22 @@
+{
+ "step": 284,
+ "name": "edge update",
+ "request": {
+  "method": "POST",
+  "path": "/api/edges/update",
+  "as": "admin",
+  "body": {
+   "edge_id": "edge_fakeperson1077_fakeplace1006_employed_SDuvEXhwx3",
+   "name": "Prezes Zarządu",
+   "start_date": "2022-02-01"
+  }
+ },
+ "status": 200,
+ "body": {
+  "applied": true,
+  "duplicate": false,
+  "edge_id": "edge_fakeperson1077_fakeplace1006_employed_SDuvEXhwx3",
+  "revision_id": "<id>",
+  "unchanged": false
+ }
+}

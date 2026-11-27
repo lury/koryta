@@ -1,0 +1,326 @@
+{
+ "step": 114,
+ "name": "edges recentEmployments",
+ "request": {
+  "method": "GET",
+  "path": "/api/edges/recentEmployments?limit=20",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "employments": [
+   {
+    "companyId": "fakeplace24",
+    "companyIsPublic": false,
+    "companyName": "SZOSTAK, GRUSZKA AND BŁASZCZYK SP. Z O.O.",
+    "end_date": "2026-11-11",
+    "id": "fakejob1476_1",
+    "parties": [
+     "Polska2050"
+    ],
+    "personId": "fakeperson1476",
+    "personName": "Hanna Konieczna",
+    "role": "Dyrektor",
+    "start_date": "2026-10-28"
+   },
+   {
+    "companyCategories": [
+     "szpitale"
+    ],
+    "companyId": "fakeplace1234",
+    "companyIsPublic": true,
+    "companyName": "Centrum Medyczne „hexagon” w Wąsosz",
+    "end_date": "2026-11-15",
+    "id": "fakejob1693_0",
+    "parties": [
+     "Inne",
+     "Konfederacja"
+    ],
+    "personId": "fakeperson1693",
+    "personName": "Walentyn Kosowski",
+    "role": "Członek Zarządu",
+    "start_date": "2026-10-27"
+   },
+   {
+    "companyId": "fakeplace256",
+    "companyIsPublic": true,
+    "companyName": "MURAWSKI-WIŚNIEWSKI SP. Z O.O.",
+    "end_date": "2026-10-20",
+    "id": "fakejob819_1",
+    "parties": [
+     "Polska2050"
+    ],
+    "personId": "fakeperson819",
+    "personName": "Eliasz Wrona",
+    "role": "Członek Zarządu",
+    "start_date": "2026-10-15"
+   },
+   {
+    "companyId": "fakeplace214",
+    "companyIsPublic": true,
+    "companyName": "LISOWSKI-SKÓRA SP. Z O.O.",
+    "end_date": "2026-11-04",
+    "id": "fakejob2004_8",
+    "parties": [
+     "Inne",
+     "PiS"
+    ],
+    "personId": "fakeperson2004",
+    "personName": "Gabriel Czerwiński",
+    "role": "Prokurent",
+    "start_date": "2026-10-07"
+   },
+   {
+    "companyId": "fakeplace827",
+    "companyIsPublic": false,
+    "companyName": "OSIŃSKI-BIAŁAS SP. Z O.O.",
+    "end_date": null,
+    "id": "fakejob2670_1",
+    "parties": [],
+    "personId": "fakeperson2670",
+    "personName": "Zoe Górski",
+    "role": "Zastępca Dyrektora",
+    "start_date": "2026-10-03"
+   },
+   {
+    "companyCategories": [
+     "energetyka"
+    ],
+    "companyId": "fakeplace548",
+    "companyIsPublic": false,
+    "companyName": "MALISZEWSKI-SZWARC SP. Z O.O.",
+    "end_date": null,
+    "id": "fakejob1079_4",
+    "parties": [
+     "Lewica"
+    ],
+    "personId": "fakeperson1079",
+    "personName": "Maryna Grześkowiak",
+    "role": "Dyrektor",
+    "start_date": "2026-10-03"
+   },
+   {
+    "companyCategories": [
+     "koleje"
+    ],
+    "companyId": "fakeplace202",
+    "companyIsPublic": false,
+    "companyName": "ZABŁOCKI, IWAŃSKI AND SKOWRON SP. Z O.O.",
+    "end_date": "2026-11-06",
+    "id": "fakejob1515_8",
+    "parties": [
+     "PiS",
+     "PO"
+    ],
+    "personId": "fakeperson1515",
+    "personName": "Artur Zalewski",
+    "role": "Prokurent",
+    "start_date": "2026-10-02"
+   },
+   {
+    "companyId": "fakeplace1002",
+    "companyIsPublic": false,
+    "companyName": "SZCZEPANIK, STEFANIAK AND ZAGÓRSKI SP. Z O.O.",
+    "end_date": null,
+    "id": "fakejob341_2",
+    "parties": [
+     "PO"
+    ],
+    "personId": "fakeperson341",
+    "personName": "Arseniusz Radomski",
+    "role": "Członek Zarządu",
+    "start_date": "2026-09-20"
+   },
+   {
+    "companyCategories": [
+     "szpitale"
+    ],
+    "companyId": "fakeplace200",
+    "companyIsPublic": true,
+    "companyName": "Wojewódzki Szpital Specjalistyczny im. Emil Baran w Zawichost",
+    "end_date": "2026-10-31",
+    "id": "fakejob113_2",
+    "parties": [],
+    "personId": "fakeperson113",
+    "personName": "Teodor Rybak",
+    "role": "Zastępca Dyrektora",
+    "start_date": "2026-09-19"
+   },
+   {
+    "companyCategories": [
+     "szpitale"
+    ],
+    "companyId": "fakeplace1092",
+    "companyIsPublic": true,
+    "companyName": "Wojewódzki Szpital Specjalistyczny im. Igor Niemiec w Kowary",
+    "end_date": "2026-11-03",
+    "id": "fakejob387_9",
+    "parties": [
+     "Inne"
+    ],
+    "personId": "fakeperson387",
+    "personName": "Brygida Witek",
+    "role": "Prokurent",
+    "start_date": "2026-09-06"
+   },
+   {
+    "companyCategories": [
+     "szpitale"
+    ],
+    "companyId": "fakeplace783",
+    "companyIsPublic": true,
+    "companyName": "Szpital Powiatowy w Białogard Sp. z o.o.",
+    "end_date": "2026-09-26",
+    "id": "fakejob2053_3",
+    "parties": [
+     "PiS"
+    ],
+    "personId": "fakeperson2053",
+    "personName": "Maria Nawrocki",
+    "role": "Członek Zarządu",
+    "start_date": "2026-09-04"
+   },
+   {
+    "companyId": "fakeplace861",
+    "companyIsPublic": false,
+    "companyName": "HERMAN S.A. SP. Z O.O.",
+    "end_date": "2026-10-18",
+    "id": "fakejob726_2",
+    "parties": [
+     "Polska2050",
+     "PiS"
+    ],
+    "personId": "fakeperson726",
+    "personName": "Rajmund Szczepański",
+    "role": "Zastępca Dyrektora",
+    "start_date": "2026-09-01"
+   },
+   {
+    "companyId": "fakeplace989",
+    "companyIsPublic": true,
+    "companyName": "SŁAWIŃSKI, KĘPA AND NIEDŹWIECKI SP. Z O.O.",
+    "end_date": "2026-11-12",
+    "id": "fakejob166_6",
+    "parties": [
+     "Lewica",
+     "PO"
+    ],
+    "personId": "fakeperson166",
+    "personName": "Olaf Górka",
+    "role": "Dyrektor",
+    "start_date": "2026-08-30"
+   },
+   {
+    "companyCategories": [
+     "szpitale"
+    ],
+    "companyId": "fakeplace694",
+    "companyIsPublic": true,
+    "companyName": "Szpital Powiatowy w Obrzycko Sp. z o.o.",
+    "end_date": null,
+    "id": "fakejob1601_0",
+    "parties": [
+     "PiS",
+     "PO"
+    ],
+    "personId": "fakeperson1601",
+    "personName": "Franciszek Szczepański",
+    "role": "Prokurent",
+    "start_date": "2026-08-20"
+   },
+   {
+    "companyId": "fakeplace400",
+    "companyIsPublic": false,
+    "companyName": "ŚLIWIŃSKI S.A. SP. Z O.O.",
+    "end_date": null,
+    "id": "fakejob1771_1",
+    "parties": [],
+    "personId": "fakeperson1771",
+    "personName": "Tomasz Biedrzyński",
+    "role": "Członek Rady Nadzorczej",
+    "start_date": "2026-08-18"
+   },
+   {
+    "companyCategories": [
+     "obronnosc"
+    ],
+    "companyId": "fakeplace579",
+    "companyIsPublic": true,
+    "companyName": "KWIECIEŃ, MALEC AND KRZYŻANOWSKI SP. Z O.O.",
+    "end_date": null,
+    "id": "fakejob1824_2",
+    "parties": [
+     "PO",
+     "Inne"
+    ],
+    "personId": "fakeperson1824",
+    "personName": "Rufina Mazurek",
+    "role": "Dyrektor",
+    "start_date": "2026-08-12"
+   },
+   {
+    "companyCategories": [
+     "szpitale"
+    ],
+    "companyId": "fakeplace68",
+    "companyIsPublic": true,
+    "companyName": "Szpital Powiatowy w Krapkowice Sp. z o.o.",
+    "end_date": null,
+    "id": "fakejob2602_2",
+    "parties": [
+     "Inne"
+    ],
+    "personId": "fakeperson2602",
+    "personName": "Pelagia Bielski",
+    "role": "Zastępca Dyrektora",
+    "start_date": "2026-08-06"
+   },
+   {
+    "companyId": "fakeplace605",
+    "companyIsPublic": true,
+    "companyName": "BUDZIŃSKI-PIECZEK SP. Z O.O.",
+    "end_date": "2026-09-07",
+    "id": "fakejob1576_5",
+    "parties": [
+     "Lewica",
+     "PiS"
+    ],
+    "personId": "fakeperson1576",
+    "personName": "Bertram Kubiak",
+    "role": "Prokurent",
+    "start_date": "2026-08-05"
+   },
+   {
+    "companyCategories": [
+     "szpitale"
+    ],
+    "companyId": "fakeplace88",
+    "companyIsPublic": true,
+    "companyName": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Wisła",
+    "end_date": null,
+    "id": "fakejob362_4",
+    "parties": [],
+    "personId": "fakeperson362",
+    "personName": "Reginald Sowiński",
+    "role": "Dyrektor",
+    "start_date": "2026-08-01"
+   },
+   {
+    "companyCategories": [
+     "szpitale"
+    ],
+    "companyId": "fakeplace200",
+    "companyIsPublic": true,
+    "companyName": "Wojewódzki Szpital Specjalistyczny im. Emil Baran w Zawichost",
+    "end_date": null,
+    "id": "fakejob1263_0",
+    "parties": [],
+    "personId": "fakeperson1263",
+    "personName": "Franciszka Szymański",
+    "role": "Prezes Zarządu",
+    "start_date": "2026-08-01"
+   }
+  ],
+  "nextCursor": "2026-08-01|fakejob1263_0"
+ }
+}

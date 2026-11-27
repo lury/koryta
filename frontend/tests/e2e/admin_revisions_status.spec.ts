@@ -1,31 +1,20 @@
 import { test, expect, type Page } from "@playwright/test";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
 import { logIn, USERS } from "./helpers/auth";
-
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
-process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
+import { at, deleteDocs, putDoc } from "./helpers/db";
 
 /** The "Stan" filter over the entry list on /admin/rewizje (`#wpisy`), which is
  * how the entries are worked through: everything the list is for is in the
  * rows tagged "czeka".
  *
- * `latest_time` is a real Timestamp here rather than the `{_seconds}` map
- * admin_revisions.spec.ts writes. Firestore sorts a map above a timestamp, so
- * the map-valued node that spec seeds keeps the first row it reads while these
- * two sit below it - the two specs share a table and a default sort.
+ * `latest_time` is an instant as the tables store one (an ISO string) rather
+ * than the `{_seconds}` map admin_revisions.spec.ts writes. The list sorts in
+ * Firestore's type order, a map above a string, so the map-valued node that
+ * spec seeds keeps the first row it reads while these two sit below it - the
+ * two specs share a table and a default sort.
  */
 const RUN = Date.now();
 const WAITING = `000-oczekuje-${RUN}`;
 const SETTLED = `000-zatwierdzony-${RUN}`;
-
-const db = () =>
-  getFirestore(
-    getApps().length === 0
-      ? initializeApp({ projectId: "demo-koryta-pl" })
-      : getApp(),
-    "koryta-pl",
-  );
 
 const node = (name: string, hasUnapproved: boolean) => ({
   name,
@@ -33,19 +22,18 @@ const node = (name: string, hasUnapproved: boolean) => ({
   published: true,
   revisions: {
     total: 1,
-    latest_time: Timestamp.now(),
+    latest_time: at(),
     has_unapproved: hasUnapproved,
   },
 });
 
 test.beforeAll(async () => {
-  await db().collection("nodes").doc(WAITING).set(node(WAITING, true));
-  await db().collection("nodes").doc(SETTLED).set(node(SETTLED, false));
+  await putDoc("nodes", WAITING, node(WAITING, true));
+  await putDoc("nodes", SETTLED, node(SETTLED, false));
 });
 
 test.afterAll(async () => {
-  await db().collection("nodes").doc(WAITING).delete();
-  await db().collection("nodes").doc(SETTLED).delete();
+  await deleteDocs("nodes", [WAITING, SETTLED]);
 });
 
 /** Pick a value from the entry list's "Stan" select. By its data attribute:

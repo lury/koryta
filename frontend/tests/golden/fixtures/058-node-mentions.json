@@ -1,0 +1,13 @@
+{
+ "step": 58,
+ "name": "node mentions",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes/fakeperson1066/mentions",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "mentions": []
+ }
+}

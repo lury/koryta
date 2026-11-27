@@ -26,28 +26,22 @@ const { mockGetUser, scan, headers } = vi.hoisted(() => {
   };
 });
 
-vi.mock("firebase-admin/firestore", () => ({
-  getFirestore: vi.fn(() => ({})),
-}));
 vi.mock("../../../../server/utils/auth", () => ({ getUser: mockGetUser }));
 vi.mock("firebase-functions/logger", () => ({ logger: { error: vi.fn() } }));
 
-vi.mock("../../../../server/utils/myProposals", async (importOriginal) => ({
-  ...(await importOriginal<
-    typeof import("../../../../server/utils/myProposals")
-  >()),
-  scanMyProposals: vi.fn(async (_db: unknown, uid: string) => {
+vi.mock("../../../../server/db/revisionQueue", () => ({
+  scanMyProposalsPg: vi.fn(async (uid: string) => {
     scan.uids.push(uid);
     return { proposals: scan.proposals, truncated: scan.truncated.proposals };
   }),
 }));
 
 vi.mock("../../../../server/utils/myVotes", () => ({
-  scanMyVotes: vi.fn(async (_db: unknown, uid: string) => {
+  scanMyVotes: vi.fn(async (uid: string) => {
     scan.uids.push(uid);
     return { votes: scan.votes, truncated: scan.truncated.votes };
   }),
-  nameVotes: vi.fn(async (_db: unknown, votes: ScannedVote[]) => {
+  nameVotes: vi.fn(async (votes: ScannedVote[]) => {
     scan.named.push(votes.map((vote) => vote.nodeId));
     return votes.map((vote) => ({
       ...vote,

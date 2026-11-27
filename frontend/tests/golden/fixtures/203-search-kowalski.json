@@ -1,0 +1,56 @@
+{
+ "step": 203,
+ "name": "search kowalski",
+ "request": {
+  "method": "GET",
+  "path": "/api/search?q=kowalski",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": [
+  {
+   "id": "fakeplace1087",
+   "name": "KOWALSKI SP. J. SP. Z O.O.",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeperson1301",
+   "line": {
+    "parties": [
+     "PiS"
+    ],
+    "what": "JUSZCZAK, KŁOS AND BUKOWSKI SP. Z O.O.",
+    "when": "do 2014",
+    "where": "Racibórz"
+   },
+   "name": "Justyna Kowalski",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeplace222",
+   "name": "KOWALSKI, TRACZ AND TARNOWSKI SP. Z O.O.",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeplace987",
+   "name": "KOWALSKI SP. P. SP. Z O.O.",
+   "published": true,
+   "type": "place"
+  },
+  {
+   "id": "fakeperson654",
+   "name": "Ariadna Kowalski",
+   "published": false,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson1959",
+   "name": "Lilianna Zalewski-Kowalski",
+   "published": false,
+   "type": "person"
+  }
+ ]
+}

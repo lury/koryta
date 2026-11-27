@@ -1,0 +1,16 @@
+{
+ "step": 263,
+ "name": "edges unpublished",
+ "request": {
+  "method": "GET",
+  "path": "/api/edges/unpublished?limit=20",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "edges": [],
+  "nextCursor": "fakejob1479_9",
+  "scanned": 3000,
+  "truncated": true
+ }
+}

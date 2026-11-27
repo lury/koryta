@@ -1,0 +1,13 @@
+{
+ "step": 179,
+ "name": "declarations people",
+ "request": {
+  "method": "GET",
+  "path": "/api/declarations/people",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "people": null
+ }
+}

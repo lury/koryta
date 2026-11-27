@@ -1,0 +1,13 @@
+{
+ "step": 138,
+ "name": "edges byReference",
+ "request": {
+  "method": "GET",
+  "path": "/api/edges/byReference?articleId=fakearticle0",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "edges": []
+ }
+}

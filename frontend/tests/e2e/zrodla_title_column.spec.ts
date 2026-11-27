@@ -1,9 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
-
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
-process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
+import { deleteDocs, putDoc } from "./helpers/db";
 
 /** What /zrodla's title column owes a long headline, asserted as geometry
  * rather than as pixels.
@@ -21,33 +17,21 @@ process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
 const LONG_TITLE = `Bardzo dluga nazwa artykulu ktora nie miesci sie w kolumnie i musi zostac przycieta wielokropkiem zamiast zawijac sie do drugiej linii ${Date.now()}`;
 const ID = `zrodla-long-title-${Date.now()}`;
 
-const db = () =>
-  getFirestore(
-    getApps().length === 0
-      ? initializeApp({ projectId: "demo-koryta-pl" })
-      : getApp(),
-    "koryta-pl",
-  );
-
 test.beforeAll(async () => {
-  // Same shape as scripts/nodes.json's articles: without publishedDate the row
-  // never appears, because /zrodla orders on it and Firestore drops documents
-  // that lack the field.
-  await db()
-    .collection("nodes")
-    .doc(ID)
-    .set({
-      name: LONG_TITLE,
-      type: "article",
-      sourceURL: "http://example-long-title.test",
-      published: true,
-      stats: { nodeGroupSize: 1, isApproved: true },
-      publishedDate: new Date("2026-02-01T09:00:00.000Z"),
-    });
+  // Same shape as scripts/nodes.json's articles, publishedDate included:
+  // /zrodla orders on it.
+  await putDoc("nodes", ID, {
+    name: LONG_TITLE,
+    type: "article",
+    sourceURL: "http://example-long-title.test",
+    published: true,
+    stats: { nodeGroupSize: 1, isApproved: true },
+    publishedDate: "2026-02-01T09:00:00.000Z",
+  });
 });
 
 test.afterAll(async () => {
-  await db().collection("nodes").doc(ID).delete();
+  await deleteDocs("nodes", [ID]);
 });
 
 test("a long source title is clipped to its column, not wrapped", async ({

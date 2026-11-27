@@ -1,0 +1,8369 @@
+{
+ "step": 7,
+ "name": "stats regions",
+ "request": {
+  "method": "GET",
+  "path": "/api/stats/regions",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": [
+  {
+   "id": "teryt02",
+   "name": "woj. małopolskie",
+   "people": 5,
+   "teryt": "02"
+  },
+  {
+   "id": "teryt0201",
+   "name": "powiat Zakopane",
+   "parties": {},
+   "people": 0,
+   "teryt": "0201"
+  },
+  {
+   "id": "teryt0201013",
+   "name": "Pilzno",
+   "people": 0,
+   "teryt": "0201013"
+  },
+  {
+   "id": "teryt0201021",
+   "name": "Drobin",
+   "people": 5,
+   "teryt": "0201021"
+  },
+  {
+   "id": "teryt0201031",
+   "name": "Tuchów",
+   "people": 3,
+   "teryt": "0201031"
+  },
+  {
+   "id": "teryt0202",
+   "name": "powiat Piława Górna",
+   "parties": {},
+   "people": 0,
+   "teryt": "0202"
+  },
+  {
+   "id": "teryt0202013",
+   "name": "Biała",
+   "people": 3,
+   "teryt": "0202013"
+  },
+  {
+   "id": "teryt0202023",
+   "name": "Świdwin",
+   "people": 6,
+   "teryt": "0202023"
+  },
+  {
+   "id": "teryt0202031",
+   "name": "Głogów",
+   "people": 0,
+   "teryt": "0202031"
+  },
+  {
+   "id": "teryt0203",
+   "name": "powiat Głogówek",
+   "parties": {},
+   "people": 0,
+   "teryt": "0203"
+  },
+  {
+   "id": "teryt0203011",
+   "name": "Nowy Dwór Mazowiecki",
+   "people": 1,
+   "teryt": "0203011"
+  },
+  {
+   "id": "teryt0203022",
+   "name": "Kępno",
+   "people": 0,
+   "teryt": "0203022"
+  },
+  {
+   "id": "teryt0203032",
+   "name": "Debrzno",
+   "people": 5,
+   "teryt": "0203032"
+  },
+  {
+   "id": "teryt0204",
+   "name": "powiat Kętrzyn",
+   "parties": {},
+   "people": 0,
+   "teryt": "0204"
+  },
+  {
+   "id": "teryt0204012",
+   "name": "Międzyrzec Podlaski",
+   "people": 4,
+   "teryt": "0204012"
+  },
+  {
+   "id": "teryt0204023",
+   "name": "Gołdap",
+   "people": 0,
+   "teryt": "0204023"
+  },
+  {
+   "id": "teryt0204032",
+   "name": "Piekary Śląskie",
+   "people": 0,
+   "teryt": "0204032"
+  },
+  {
+   "id": "teryt0205",
+   "name": "powiat Bochnia",
+   "parties": {},
+   "people": 0,
+   "teryt": "0205"
+  },
+  {
+   "id": "teryt0205012",
+   "name": "Ełk",
+   "people": 1,
+   "teryt": "0205012"
+  },
+  {
+   "id": "teryt0205021",
+   "name": "Zagórz",
+   "people": 3,
+   "teryt": "0205021"
+  },
+  {
+   "id": "teryt0205033",
+   "name": "Szczekociny",
+   "people": 3,
+   "teryt": "0205033"
+  },
+  {
+   "id": "teryt0206",
+   "name": "powiat Kłodzko",
+   "parties": {},
+   "people": 0,
+   "teryt": "0206"
+  },
+  {
+   "id": "teryt0206011",
+   "name": "Rejowiec Fabryczny",
+   "people": 4,
+   "teryt": "0206011"
+  },
+  {
+   "id": "teryt0206022",
+   "name": "Czempiń",
+   "people": 5,
+   "teryt": "0206022"
+  },
+  {
+   "id": "teryt0206032",
+   "name": "Bierutów",
+   "people": 6,
+   "teryt": "0206032"
+  },
+  {
+   "id": "teryt0207",
+   "name": "powiat Wieruszów",
+   "parties": {},
+   "people": 0,
+   "teryt": "0207"
+  },
+  {
+   "id": "teryt0207011",
+   "name": "Radków",
+   "people": 0,
+   "teryt": "0207011"
+  },
+  {
+   "id": "teryt0207021",
+   "name": "Nowogrodziec",
+   "people": 0,
+   "teryt": "0207021"
+  },
+  {
+   "id": "teryt0207032",
+   "name": "Głowno",
+   "people": 3,
+   "teryt": "0207032"
+  },
+  {
+   "id": "teryt0208",
+   "name": "powiat Zelów",
+   "parties": {},
+   "people": 0,
+   "teryt": "0208"
+  },
+  {
+   "id": "teryt0208013",
+   "name": "Wysoka",
+   "people": 3,
+   "teryt": "0208013"
+  },
+  {
+   "id": "teryt0208023",
+   "name": "Pilica",
+   "people": 4,
+   "teryt": "0208023"
+  },
+  {
+   "id": "teryt0208033",
+   "name": "Chełmża",
+   "people": 0,
+   "teryt": "0208033"
+  },
+  {
+   "id": "teryt0209",
+   "name": "powiat Golina",
+   "parties": {
+    "Inne": 1,
+    "PO": 1,
+    "PiS": 1
+   },
+   "people": 6,
+   "teryt": "0209"
+  },
+  {
+   "id": "teryt0209011",
+   "name": "Korfantów",
+   "people": 4,
+   "teryt": "0209011"
+  },
+  {
+   "id": "teryt0209022",
+   "name": "Kałuszyn",
+   "people": 0,
+   "teryt": "0209022"
+  },
+  {
+   "id": "teryt0209033",
+   "name": "Krynica Morska",
+   "people": 0,
+   "teryt": "0209033"
+  },
+  {
+   "id": "teryt0210",
+   "name": "powiat Karpacz",
+   "parties": {},
+   "people": 0,
+   "teryt": "0210"
+  },
+  {
+   "id": "teryt0210012",
+   "name": "Dębica",
+   "people": 0,
+   "teryt": "0210012"
+  },
+  {
+   "id": "teryt0210023",
+   "name": "Bukowno",
+   "people": 5,
+   "teryt": "0210023"
+  },
+  {
+   "id": "teryt0210033",
+   "name": "Stronie Śląskie",
+   "people": 9,
+   "teryt": "0210033"
+  },
+  {
+   "id": "teryt0211",
+   "name": "powiat Gołdap",
+   "parties": {},
+   "people": 0,
+   "teryt": "0211"
+  },
+  {
+   "id": "teryt0211011",
+   "name": "Szepietowo",
+   "people": 2,
+   "teryt": "0211011"
+  },
+  {
+   "id": "teryt0211023",
+   "name": "Skała",
+   "people": 2,
+   "teryt": "0211023"
+  },
+  {
+   "id": "teryt0211033",
+   "name": "Bukowno",
+   "people": 0,
+   "teryt": "0211033"
+  },
+  {
+   "id": "teryt0212",
+   "name": "powiat Krynica-Zdrój",
+   "parties": {
+    "PSL": 1
+   },
+   "people": 1,
+   "teryt": "0212"
+  },
+  {
+   "id": "teryt0212011",
+   "name": "Trzebnica",
+   "people": 3,
+   "teryt": "0212011"
+  },
+  {
+   "id": "teryt0212022",
+   "name": "Kostrzyn nad Odrą",
+   "people": 3,
+   "teryt": "0212022"
+  },
+  {
+   "id": "teryt0212031",
+   "name": "Kolbuszowa",
+   "people": 0,
+   "teryt": "0212031"
+  },
+  {
+   "id": "teryt0213",
+   "name": "powiat Korfantów",
+   "parties": {
+    "PiS": 1
+   },
+   "people": 1,
+   "teryt": "0213"
+  },
+  {
+   "id": "teryt0213013",
+   "name": "Prusice",
+   "people": 0,
+   "teryt": "0213013"
+  },
+  {
+   "id": "teryt0213023",
+   "name": "Mława",
+   "people": 3,
+   "teryt": "0213023"
+  },
+  {
+   "id": "teryt0213031",
+   "name": "Sędziszów Małopolski",
+   "people": 3,
+   "teryt": "0213031"
+  },
+  {
+   "id": "teryt0214",
+   "name": "powiat Starachowice",
+   "parties": {},
+   "people": 1,
+   "teryt": "0214"
+  },
+  {
+   "id": "teryt0214012",
+   "name": "Stoczek Łukowski",
+   "people": 0,
+   "teryt": "0214012"
+  },
+  {
+   "id": "teryt0214022",
+   "name": "Nowogród Bobrzański",
+   "people": 0,
+   "teryt": "0214022"
+  },
+  {
+   "id": "teryt0214032",
+   "name": "Białogard",
+   "people": 2,
+   "teryt": "0214032"
+  },
+  {
+   "id": "teryt0215",
+   "name": "powiat Ciechocinek",
+   "parties": {
+    "Konfederacja": 1
+   },
+   "people": 1,
+   "teryt": "0215"
+  },
+  {
+   "id": "teryt0215011",
+   "name": "Prudnik",
+   "people": 5,
+   "teryt": "0215011"
+  },
+  {
+   "id": "teryt0215021",
+   "name": "Nowa Ruda",
+   "people": 3,
+   "teryt": "0215021"
+  },
+  {
+   "id": "teryt0215033",
+   "name": "Jastarnia",
+   "people": 3,
+   "teryt": "0215033"
+  },
+  {
+   "id": "teryt0216",
+   "name": "powiat Lwówek Śląski",
+   "parties": {
+    "PiS": 1
+   },
+   "people": 1,
+   "teryt": "0216"
+  },
+  {
+   "id": "teryt0216013",
+   "name": "Hel",
+   "people": 3,
+   "teryt": "0216013"
+  },
+  {
+   "id": "teryt0216021",
+   "name": "Kępice",
+   "people": 2,
+   "teryt": "0216021"
+  },
+  {
+   "id": "teryt0216031",
+   "name": "Wołczyn",
+   "people": 1,
+   "teryt": "0216031"
+  },
+  {
+   "id": "teryt0217",
+   "name": "powiat Szczekociny",
+   "parties": {},
+   "people": 0,
+   "teryt": "0217"
+  },
+  {
+   "id": "teryt0217012",
+   "name": "Twardogóra",
+   "people": 1,
+   "teryt": "0217012"
+  },
+  {
+   "id": "teryt0217023",
+   "name": "Głuchołazy",
+   "people": 1,
+   "teryt": "0217023"
+  },
+  {
+   "id": "teryt0217033",
+   "name": "Olecko",
+   "people": 10,
+   "teryt": "0217033"
+  },
+  {
+   "id": "teryt0218",
+   "name": "powiat Szczecinek",
+   "parties": {},
+   "people": 0,
+   "teryt": "0218"
+  },
+  {
+   "id": "teryt0218013",
+   "name": "Koniecpol",
+   "people": 0,
+   "teryt": "0218013"
+  },
+  {
+   "id": "teryt0218021",
+   "name": "Halinów",
+   "people": 0,
+   "teryt": "0218021"
+  },
+  {
+   "id": "teryt0218032",
+   "name": "Szprotawa",
+   "people": 0,
+   "teryt": "0218032"
+  },
+  {
+   "id": "teryt0219",
+   "name": "powiat Trzebiatów",
+   "parties": {},
+   "people": 0,
+   "teryt": "0219"
+  },
+  {
+   "id": "teryt0219011",
+   "name": "Nowa Sól",
+   "people": 1,
+   "teryt": "0219011"
+  },
+  {
+   "id": "teryt0219022",
+   "name": "Gryfice",
+   "people": 0,
+   "teryt": "0219022"
+  },
+  {
+   "id": "teryt0219031",
+   "name": "Kowary",
+   "people": 2,
+   "teryt": "0219031"
+  },
+  {
+   "id": "teryt0220",
+   "name": "powiat Wyszogród",
+   "parties": {},
+   "people": 0,
+   "teryt": "0220"
+  },
+  {
+   "id": "teryt0220011",
+   "name": "Nowogard",
+   "people": 3,
+   "teryt": "0220011"
+  },
+  {
+   "id": "teryt0220023",
+   "name": "Krzywiń",
+   "people": 0,
+   "teryt": "0220023"
+  },
+  {
+   "id": "teryt0220033",
+   "name": "Ząbki",
+   "people": 6,
+   "teryt": "0220033"
+  },
+  {
+   "id": "teryt04",
+   "name": "woj. łódzkie",
+   "people": 7,
+   "teryt": "04"
+  },
+  {
+   "id": "teryt0401",
+   "name": "powiat Narol",
+   "parties": {},
+   "people": 0,
+   "teryt": "0401"
+  },
+  {
+   "id": "teryt0401011",
+   "name": "Kazimierza Wielka",
+   "people": 0,
+   "teryt": "0401011"
+  },
+  {
+   "id": "teryt0401021",
+   "name": "Płock",
+   "people": 0,
+   "teryt": "0401021"
+  },
+  {
+   "id": "teryt0401032",
+   "name": "Boguszów-Gorce",
+   "people": 19,
+   "teryt": "0401032"
+  },
+  {
+   "id": "teryt0402",
+   "name": "powiat Kargowa",
+   "parties": {
+    "PiS": 1
+   },
+   "people": 1,
+   "teryt": "0402"
+  },
+  {
+   "id": "teryt0402013",
+   "name": "Jabłonowo Pomorskie",
+   "people": 3,
+   "teryt": "0402013"
+  },
+  {
+   "id": "teryt0402021",
+   "name": "Myszków",
+   "people": 2,
+   "teryt": "0402021"
+  },
+  {
+   "id": "teryt0402033",
+   "name": "Janowiec Wielkopolski",
+   "people": 9,
+   "teryt": "0402033"
+  },
+  {
+   "id": "teryt0403",
+   "name": "powiat Radzionków",
+   "parties": {
+    "Inne": 1
+   },
+   "people": 1,
+   "teryt": "0403"
+  },
+  {
+   "id": "teryt0403013",
+   "name": "Iwonicz-Zdrój",
+   "people": 0,
+   "teryt": "0403013"
+  },
+  {
+   "id": "teryt0403023",
+   "name": "Kunów",
+   "people": 0,
+   "teryt": "0403023"
+  },
+  {
+   "id": "teryt0403032",
+   "name": "Proszowice",
+   "people": 7,
+   "teryt": "0403032"
+  },
+  {
+   "id": "teryt0404",
+   "name": "powiat Odolanów",
+   "parties": {},
+   "people": 0,
+   "teryt": "0404"
+  },
+  {
+   "id": "teryt0404011",
+   "name": "Świebodzin",
+   "people": 6,
+   "teryt": "0404011"
+  },
+  {
+   "id": "teryt0404021",
+   "name": "Głubczyce",
+   "people": 6,
+   "teryt": "0404021"
+  },
+  {
+   "id": "teryt0404031",
+   "name": "Piechowice",
+   "people": 2,
+   "teryt": "0404031"
+  },
+  {
+   "id": "teryt0405",
+   "name": "powiat Rakoniewice",
+   "parties": {
+    "PO": 1,
+    "PSL": 1
+   },
+   "people": 2,
+   "teryt": "0405"
+  },
+  {
+   "id": "teryt0405011",
+   "name": "Nowe",
+   "people": 2,
+   "teryt": "0405011"
+  },
+  {
+   "id": "teryt0405021",
+   "name": "Przemków",
+   "people": 4,
+   "teryt": "0405021"
+  },
+  {
+   "id": "teryt0405031",
+   "name": "Ruciane-Nida",
+   "people": 0,
+   "teryt": "0405031"
+  },
+  {
+   "id": "teryt0406",
+   "name": "powiat Lidzbark Warmiński",
+   "parties": {
+    "Inne": 1,
+    "PO": 1
+   },
+   "people": 4,
+   "teryt": "0406"
+  },
+  {
+   "id": "teryt0406013",
+   "name": "Dąbrowa Górnicza",
+   "people": 3,
+   "teryt": "0406013"
+  },
+  {
+   "id": "teryt0406022",
+   "name": "Czaplinek",
+   "people": 0,
+   "teryt": "0406022"
+  },
+  {
+   "id": "teryt0406033",
+   "name": "Tyszowce",
+   "people": 0,
+   "teryt": "0406033"
+  },
+  {
+   "id": "teryt0407",
+   "name": "powiat Jedwabne",
+   "parties": {
+    "Konfederacja": 1
+   },
+   "people": 1,
+   "teryt": "0407"
+  },
+  {
+   "id": "teryt0407012",
+   "name": "Szlichtyngowa",
+   "people": 0,
+   "teryt": "0407012"
+  },
+  {
+   "id": "teryt0407022",
+   "name": "Nowy Tomyśl",
+   "people": 1,
+   "teryt": "0407022"
+  },
+  {
+   "id": "teryt0407031",
+   "name": "Chociwel",
+   "people": 5,
+   "teryt": "0407031"
+  },
+  {
+   "id": "teryt0408",
+   "name": "powiat Wąsosz",
+   "parties": {},
+   "people": 0,
+   "teryt": "0408"
+  },
+  {
+   "id": "teryt0408013",
+   "name": "Proszowice",
+   "people": 5,
+   "teryt": "0408013"
+  },
+  {
+   "id": "teryt0408022",
+   "name": "Kraśnik",
+   "people": 2,
+   "teryt": "0408022"
+  },
+  {
+   "id": "teryt0408033",
+   "name": "Wąsosz",
+   "people": 0,
+   "teryt": "0408033"
+  },
+  {
+   "id": "teryt0409",
+   "name": "powiat Wałbrzych",
+   "parties": {},
+   "people": 0,
+   "teryt": "0409"
+  },
+  {
+   "id": "teryt0409013",
+   "name": "Przecław",
+   "people": 1,
+   "teryt": "0409013"
+  },
+  {
+   "id": "teryt0409021",
+   "name": "Dynów",
+   "people": 2,
+   "teryt": "0409021"
+  },
+  {
+   "id": "teryt0409033",
+   "name": "Pisz",
+   "people": 6,
+   "teryt": "0409033"
+  },
+  {
+   "id": "teryt0410",
+   "name": "powiat Baranów Sandomierski",
+   "parties": {},
+   "people": 0,
+   "teryt": "0410"
+  },
+  {
+   "id": "teryt0410011",
+   "name": "Radlin",
+   "people": 0,
+   "teryt": "0410011"
+  },
+  {
+   "id": "teryt0410021",
+   "name": "Duszniki-Zdrój",
+   "people": 6,
+   "teryt": "0410021"
+  },
+  {
+   "id": "teryt0410032",
+   "name": "Ruda Śląska",
+   "people": 3,
+   "teryt": "0410032"
+  },
+  {
+   "id": "teryt0411",
+   "name": "powiat Puck",
+   "parties": {},
+   "people": 0,
+   "teryt": "0411"
+  },
+  {
+   "id": "teryt0411011",
+   "name": "Sędziszów",
+   "people": 2,
+   "teryt": "0411011"
+  },
+  {
+   "id": "teryt0411021",
+   "name": "Korfantów",
+   "people": 4,
+   "teryt": "0411021"
+  },
+  {
+   "id": "teryt0411033",
+   "name": "Pszczyna",
+   "people": 0,
+   "teryt": "0411033"
+  },
+  {
+   "id": "teryt0412",
+   "name": "powiat Tłuszcz",
+   "parties": {
+    "PO": 1,
+    "PiS": 1
+   },
+   "people": 4,
+   "teryt": "0412"
+  },
+  {
+   "id": "teryt0412012",
+   "name": "Ostrzeszów",
+   "people": 0,
+   "teryt": "0412012"
+  },
+  {
+   "id": "teryt0412021",
+   "name": "Kunów",
+   "people": 0,
+   "teryt": "0412021"
+  },
+  {
+   "id": "teryt0412031",
+   "name": "Jarocin",
+   "people": 0,
+   "teryt": "0412031"
+  },
+  {
+   "id": "teryt0413",
+   "name": "powiat Zielona Góra",
+   "parties": {},
+   "people": 0,
+   "teryt": "0413"
+  },
+  {
+   "id": "teryt0413012",
+   "name": "Wasilków",
+   "people": 8,
+   "teryt": "0413012"
+  },
+  {
+   "id": "teryt0413022",
+   "name": "Susz",
+   "people": 4,
+   "teryt": "0413022"
+  },
+  {
+   "id": "teryt0413032",
+   "name": "Ożarów Mazowiecki",
+   "people": 1,
+   "teryt": "0413032"
+  },
+  {
+   "id": "teryt0414",
+   "name": "powiat Myślibórz",
+   "parties": {},
+   "people": 0,
+   "teryt": "0414"
+  },
+  {
+   "id": "teryt0414011",
+   "name": "Sieniawa",
+   "people": 7,
+   "teryt": "0414011"
+  },
+  {
+   "id": "teryt0414021",
+   "name": "Białobrzegi",
+   "people": 1,
+   "teryt": "0414021"
+  },
+  {
+   "id": "teryt0414032",
+   "name": "Gdynia",
+   "people": 5,
+   "teryt": "0414032"
+  },
+  {
+   "id": "teryt0415",
+   "name": "powiat Wysokie Mazowieckie",
+   "parties": {
+    "Inne": 1,
+    "Konfederacja": 1
+   },
+   "people": 2,
+   "teryt": "0415"
+  },
+  {
+   "id": "teryt0415013",
+   "name": "Witnica",
+   "people": 4,
+   "teryt": "0415013"
+  },
+  {
+   "id": "teryt0415022",
+   "name": "Barwice",
+   "people": 3,
+   "teryt": "0415022"
+  },
+  {
+   "id": "teryt0415033",
+   "name": "Łochów",
+   "people": 1,
+   "teryt": "0415033"
+  },
+  {
+   "id": "teryt0416",
+   "name": "powiat Zduny",
+   "parties": {},
+   "people": 0,
+   "teryt": "0416"
+  },
+  {
+   "id": "teryt0416013",
+   "name": "Tomaszów Mazowiecki",
+   "people": 4,
+   "teryt": "0416013"
+  },
+  {
+   "id": "teryt0416021",
+   "name": "Libiąż",
+   "people": 0,
+   "teryt": "0416021"
+  },
+  {
+   "id": "teryt0416033",
+   "name": "Kołobrzeg",
+   "people": 4,
+   "teryt": "0416033"
+  },
+  {
+   "id": "teryt0417",
+   "name": "powiat Elbląg",
+   "parties": {},
+   "people": 0,
+   "teryt": "0417"
+  },
+  {
+   "id": "teryt0417012",
+   "name": "Września",
+   "people": 7,
+   "teryt": "0417012"
+  },
+  {
+   "id": "teryt0417023",
+   "name": "Oświęcim",
+   "people": 4,
+   "teryt": "0417023"
+  },
+  {
+   "id": "teryt0417031",
+   "name": "Poddębice",
+   "people": 2,
+   "teryt": "0417031"
+  },
+  {
+   "id": "teryt0418",
+   "name": "powiat Żelechów",
+   "parties": {
+    "PO": 1
+   },
+   "people": 1,
+   "teryt": "0418"
+  },
+  {
+   "id": "teryt0418011",
+   "name": "Nowe Warpno",
+   "people": 4,
+   "teryt": "0418011"
+  },
+  {
+   "id": "teryt0418023",
+   "name": "Sława",
+   "people": 1,
+   "teryt": "0418023"
+  },
+  {
+   "id": "teryt0418033",
+   "name": "Ryn",
+   "people": 6,
+   "teryt": "0418033"
+  },
+  {
+   "id": "teryt0419",
+   "name": "powiat Krynki",
+   "parties": {},
+   "people": 0,
+   "teryt": "0419"
+  },
+  {
+   "id": "teryt0419011",
+   "name": "Szczucin",
+   "people": 0,
+   "teryt": "0419011"
+  },
+  {
+   "id": "teryt0419023",
+   "name": "Tuczno",
+   "people": 0,
+   "teryt": "0419023"
+  },
+  {
+   "id": "teryt0419033",
+   "name": "Nowe",
+   "people": 0,
+   "teryt": "0419033"
+  },
+  {
+   "id": "teryt0420",
+   "name": "powiat Niemcza",
+   "parties": {
+    "Inne": 3
+   },
+   "people": 6,
+   "teryt": "0420"
+  },
+  {
+   "id": "teryt0420013",
+   "name": "Pszczyna",
+   "people": 4,
+   "teryt": "0420013"
+  },
+  {
+   "id": "teryt0420023",
+   "name": "Susz",
+   "people": 0,
+   "teryt": "0420023"
+  },
+  {
+   "id": "teryt0420033",
+   "name": "Koziegłowy",
+   "people": 2,
+   "teryt": "0420033"
+  },
+  {
+   "id": "teryt06",
+   "name": "woj. mazowieckie",
+   "people": 5,
+   "teryt": "06"
+  },
+  {
+   "id": "teryt0601",
+   "name": "powiat Chodecz",
+   "parties": {},
+   "people": 0,
+   "teryt": "0601"
+  },
+  {
+   "id": "teryt0601012",
+   "name": "Bieżuń",
+   "people": 1,
+   "teryt": "0601012"
+  },
+  {
+   "id": "teryt0601022",
+   "name": "Oleśnica",
+   "people": 0,
+   "teryt": "0601022"
+  },
+  {
+   "id": "teryt0601031",
+   "name": "Piechowice",
+   "people": 2,
+   "teryt": "0601031"
+  },
+  {
+   "id": "teryt0602",
+   "name": "powiat Bielawa",
+   "parties": {
+    "PiS": 1
+   },
+   "people": 1,
+   "teryt": "0602"
+  },
+  {
+   "id": "teryt0602011",
+   "name": "Ścinawa",
+   "people": 0,
+   "teryt": "0602011"
+  },
+  {
+   "id": "teryt0602022",
+   "name": "Częstochowa",
+   "people": 3,
+   "teryt": "0602022"
+  },
+  {
+   "id": "teryt0602032",
+   "name": "Stęszew",
+   "people": 0,
+   "teryt": "0602032"
+  },
+  {
+   "id": "teryt0603",
+   "name": "powiat Grodków",
+   "parties": {},
+   "people": 2,
+   "teryt": "0603"
+  },
+  {
+   "id": "teryt0603012",
+   "name": "Chełm",
+   "people": 2,
+   "teryt": "0603012"
+  },
+  {
+   "id": "teryt0603021",
+   "name": "Nysa",
+   "people": 0,
+   "teryt": "0603021"
+  },
+  {
+   "id": "teryt0603032",
+   "name": "Prusice",
+   "people": 5,
+   "teryt": "0603032"
+  },
+  {
+   "id": "teryt0604",
+   "name": "powiat Sierpc",
+   "parties": {},
+   "people": 0,
+   "teryt": "0604"
+  },
+  {
+   "id": "teryt0604013",
+   "name": "Nowe Miasto nad Pilicą",
+   "people": 4,
+   "teryt": "0604013"
+  },
+  {
+   "id": "teryt0604021",
+   "name": "Susz",
+   "people": 2,
+   "teryt": "0604021"
+  },
+  {
+   "id": "teryt0604031",
+   "name": "Małogoszcz",
+   "people": 3,
+   "teryt": "0604031"
+  },
+  {
+   "id": "teryt0605",
+   "name": "powiat Bydgoszcz",
+   "parties": {},
+   "people": 0,
+   "teryt": "0605"
+  },
+  {
+   "id": "teryt0605011",
+   "name": "Ząbkowice Śląskie",
+   "people": 0,
+   "teryt": "0605011"
+  },
+  {
+   "id": "teryt0605023",
+   "name": "Rychwał",
+   "people": 0,
+   "teryt": "0605023"
+  },
+  {
+   "id": "teryt0605032",
+   "name": "Garwolin",
+   "people": 6,
+   "teryt": "0605032"
+  },
+  {
+   "id": "teryt0606",
+   "name": "powiat Drobin",
+   "parties": {
+    "Inne": 2,
+    "Konfederacja": 1,
+    "PO": 1,
+    "PSL": 1,
+    "PiS": 1
+   },
+   "people": 6,
+   "teryt": "0606"
+  },
+  {
+   "id": "teryt0606011",
+   "name": "Opalenica",
+   "people": 4,
+   "teryt": "0606011"
+  },
+  {
+   "id": "teryt0606023",
+   "name": "Raciąż",
+   "people": 4,
+   "teryt": "0606023"
+  },
+  {
+   "id": "teryt0606031",
+   "name": "Zamość",
+   "people": 4,
+   "teryt": "0606031"
+  },
+  {
+   "id": "teryt0607",
+   "name": "powiat Skoki",
+   "parties": {},
+   "people": 0,
+   "teryt": "0607"
+  },
+  {
+   "id": "teryt0607012",
+   "name": "Płoty",
+   "people": 2,
+   "teryt": "0607012"
+  },
+  {
+   "id": "teryt0607022",
+   "name": "Jasło",
+   "people": 0,
+   "teryt": "0607022"
+  },
+  {
+   "id": "teryt0607032",
+   "name": "Sosnowiec",
+   "people": 4,
+   "teryt": "0607032"
+  },
+  {
+   "id": "teryt0608",
+   "name": "powiat Bartoszyce",
+   "parties": {},
+   "people": 0,
+   "teryt": "0608"
+  },
+  {
+   "id": "teryt0608011",
+   "name": "Bobowa",
+   "people": 1,
+   "teryt": "0608011"
+  },
+  {
+   "id": "teryt0608021",
+   "name": "Toszek",
+   "people": 0,
+   "teryt": "0608021"
+  },
+  {
+   "id": "teryt0608033",
+   "name": "Mogielnica",
+   "people": 5,
+   "teryt": "0608033"
+  },
+  {
+   "id": "teryt0609",
+   "name": "powiat Chojnice",
+   "parties": {},
+   "people": 0,
+   "teryt": "0609"
+  },
+  {
+   "id": "teryt0609012",
+   "name": "Młynary",
+   "people": 0,
+   "teryt": "0609012"
+  },
+  {
+   "id": "teryt0609021",
+   "name": "Łuków",
+   "people": 4,
+   "teryt": "0609021"
+  },
+  {
+   "id": "teryt0609032",
+   "name": "Poddębice",
+   "people": 0,
+   "teryt": "0609032"
+  },
+  {
+   "id": "teryt0610",
+   "name": "powiat Pruchnik",
+   "parties": {
+    "Inne": 1
+   },
+   "people": 1,
+   "teryt": "0610"
+  },
+  {
+   "id": "teryt0610011",
+   "name": "Legnica",
+   "people": 1,
+   "teryt": "0610011"
+  },
+  {
+   "id": "teryt0610022",
+   "name": "Niemodlin",
+   "people": 1,
+   "teryt": "0610022"
+  },
+  {
+   "id": "teryt0610033",
+   "name": "Pyzdry",
+   "people": 1,
+   "teryt": "0610033"
+  },
+  {
+   "id": "teryt0611",
+   "name": "powiat Działdowo",
+   "parties": {
+    "PO": 1
+   },
+   "people": 2,
+   "teryt": "0611"
+  },
+  {
+   "id": "teryt0611011",
+   "name": "Przedbórz",
+   "people": 0,
+   "teryt": "0611011"
+  },
+  {
+   "id": "teryt0611021",
+   "name": "Pelplin",
+   "people": 0,
+   "teryt": "0611021"
+  },
+  {
+   "id": "teryt0611033",
+   "name": "Ożarów",
+   "people": 3,
+   "teryt": "0611033"
+  },
+  {
+   "id": "teryt0612",
+   "name": "powiat Limanowa",
+   "parties": {},
+   "people": 0,
+   "teryt": "0612"
+  },
+  {
+   "id": "teryt0612012",
+   "name": "Międzyzdroje",
+   "people": 1,
+   "teryt": "0612012"
+  },
+  {
+   "id": "teryt0612022",
+   "name": "Wysokie Mazowieckie",
+   "people": 5,
+   "teryt": "0612022"
+  },
+  {
+   "id": "teryt0612032",
+   "name": "Zawiercie",
+   "people": 3,
+   "teryt": "0612032"
+  },
+  {
+   "id": "teryt0613",
+   "name": "powiat Wielichowo",
+   "parties": {},
+   "people": 0,
+   "teryt": "0613"
+  },
+  {
+   "id": "teryt0613011",
+   "name": "Brześć Kujawski",
+   "people": 7,
+   "teryt": "0613011"
+  },
+  {
+   "id": "teryt0613021",
+   "name": "Bełżyce",
+   "people": 1,
+   "teryt": "0613021"
+  },
+  {
+   "id": "teryt0613031",
+   "name": "Reda",
+   "people": 3,
+   "teryt": "0613031"
+  },
+  {
+   "id": "teryt0614",
+   "name": "powiat Brzostek",
+   "parties": {
+    "PSL": 1
+   },
+   "people": 1,
+   "teryt": "0614"
+  },
+  {
+   "id": "teryt0614011",
+   "name": "Tarnowskie Góry",
+   "people": 0,
+   "teryt": "0614011"
+  },
+  {
+   "id": "teryt0614021",
+   "name": "Szczytno",
+   "people": 3,
+   "teryt": "0614021"
+  },
+  {
+   "id": "teryt0614031",
+   "name": "Czchów",
+   "people": 3,
+   "teryt": "0614031"
+  },
+  {
+   "id": "teryt0615",
+   "name": "powiat Rydułtowy",
+   "parties": {},
+   "people": 0,
+   "teryt": "0615"
+  },
+  {
+   "id": "teryt0615012",
+   "name": "Tyszowce",
+   "people": 0,
+   "teryt": "0615012"
+  },
+  {
+   "id": "teryt0615023",
+   "name": "Szczawnica",
+   "people": 0,
+   "teryt": "0615023"
+  },
+  {
+   "id": "teryt0615031",
+   "name": "Gdynia",
+   "people": 1,
+   "teryt": "0615031"
+  },
+  {
+   "id": "teryt0616",
+   "name": "powiat Sokołów Małopolski",
+   "parties": {},
+   "people": 0,
+   "teryt": "0616"
+  },
+  {
+   "id": "teryt0616013",
+   "name": "Żerków",
+   "people": 7,
+   "teryt": "0616013"
+  },
+  {
+   "id": "teryt0616022",
+   "name": "Lądek-Zdrój",
+   "people": 4,
+   "teryt": "0616022"
+  },
+  {
+   "id": "teryt0616033",
+   "name": "Koźmin Wielkopolski",
+   "people": 5,
+   "teryt": "0616033"
+  },
+  {
+   "id": "teryt0617",
+   "name": "powiat Wołomin",
+   "parties": {},
+   "people": 0,
+   "teryt": "0617"
+  },
+  {
+   "id": "teryt0617013",
+   "name": "Łomianki",
+   "people": 4,
+   "teryt": "0617013"
+  },
+  {
+   "id": "teryt0617023",
+   "name": "Solec Kujawski",
+   "people": 1,
+   "teryt": "0617023"
+  },
+  {
+   "id": "teryt0617031",
+   "name": "Węgrów",
+   "people": 5,
+   "teryt": "0617031"
+  },
+  {
+   "id": "teryt0618",
+   "name": "powiat Nieszawa",
+   "parties": {},
+   "people": 0,
+   "teryt": "0618"
+  },
+  {
+   "id": "teryt0618013",
+   "name": "Konin",
+   "people": 0,
+   "teryt": "0618013"
+  },
+  {
+   "id": "teryt0618023",
+   "name": "Lipiany",
+   "people": 8,
+   "teryt": "0618023"
+  },
+  {
+   "id": "teryt0618031",
+   "name": "Wielichowo",
+   "people": 4,
+   "teryt": "0618031"
+  },
+  {
+   "id": "teryt0619",
+   "name": "powiat Chmielnik",
+   "parties": {},
+   "people": 0,
+   "teryt": "0619"
+  },
+  {
+   "id": "teryt0619011",
+   "name": "Zakliczyn",
+   "people": 6,
+   "teryt": "0619011"
+  },
+  {
+   "id": "teryt0619023",
+   "name": "Ozimek",
+   "people": 1,
+   "teryt": "0619023"
+  },
+  {
+   "id": "teryt0619032",
+   "name": "Miejska Górka",
+   "people": 2,
+   "teryt": "0619032"
+  },
+  {
+   "id": "teryt0620",
+   "name": "powiat Kęty",
+   "parties": {},
+   "people": 0,
+   "teryt": "0620"
+  },
+  {
+   "id": "teryt0620011",
+   "name": "Radzymin",
+   "people": 6,
+   "teryt": "0620011"
+  },
+  {
+   "id": "teryt0620023",
+   "name": "Sułkowice",
+   "people": 0,
+   "teryt": "0620023"
+  },
+  {
+   "id": "teryt0620033",
+   "name": "Chmielnik",
+   "people": 6,
+   "teryt": "0620033"
+  },
+  {
+   "id": "teryt08",
+   "name": "woj. opolskie",
+   "people": 9,
+   "teryt": "08"
+  },
+  {
+   "id": "teryt0801",
+   "name": "powiat Braniewo",
+   "parties": {},
+   "people": 0,
+   "teryt": "0801"
+  },
+  {
+   "id": "teryt0801012",
+   "name": "Marki",
+   "people": 0,
+   "teryt": "0801012"
+  },
+  {
+   "id": "teryt0801023",
+   "name": "Krobia",
+   "people": 0,
+   "teryt": "0801023"
+  },
+  {
+   "id": "teryt0801031",
+   "name": "Dębno",
+   "people": 3,
+   "teryt": "0801031"
+  },
+  {
+   "id": "teryt0802",
+   "name": "powiat Starachowice",
+   "parties": {
+    "Inne": 1,
+    "Konfederacja": 1,
+    "PO": 2,
+    "PiS": 1
+   },
+   "people": 8,
+   "teryt": "0802"
+  },
+  {
+   "id": "teryt0802012",
+   "name": "Chorzele",
+   "people": 4,
+   "teryt": "0802012"
+  },
+  {
+   "id": "teryt0802021",
+   "name": "Rymanów",
+   "people": 6,
+   "teryt": "0802021"
+  },
+  {
+   "id": "teryt0802031",
+   "name": "Szydłowiec",
+   "people": 0,
+   "teryt": "0802031"
+  },
+  {
+   "id": "teryt0803",
+   "name": "powiat Rzeszów",
+   "parties": {},
+   "people": 0,
+   "teryt": "0803"
+  },
+  {
+   "id": "teryt0803011",
+   "name": "Cedynia",
+   "people": 3,
+   "teryt": "0803011"
+  },
+  {
+   "id": "teryt0803023",
+   "name": "Legnica",
+   "people": 0,
+   "teryt": "0803023"
+  },
+  {
+   "id": "teryt0803032",
+   "name": "Szczytna",
+   "people": 1,
+   "teryt": "0803032"
+  },
+  {
+   "id": "teryt0804",
+   "name": "powiat Zagórów",
+   "parties": {},
+   "people": 0,
+   "teryt": "0804"
+  },
+  {
+   "id": "teryt0804013",
+   "name": "Sokółka",
+   "people": 6,
+   "teryt": "0804013"
+  },
+  {
+   "id": "teryt0804022",
+   "name": "Bytów",
+   "people": 4,
+   "teryt": "0804022"
+  },
+  {
+   "id": "teryt0804033",
+   "name": "Osieczna",
+   "people": 2,
+   "teryt": "0804033"
+  },
+  {
+   "id": "teryt0805",
+   "name": "powiat Łęknica",
+   "parties": {},
+   "people": 0,
+   "teryt": "0805"
+  },
+  {
+   "id": "teryt0805013",
+   "name": "Ciężkowice",
+   "people": 5,
+   "teryt": "0805013"
+  },
+  {
+   "id": "teryt0805022",
+   "name": "Barczewo",
+   "people": 5,
+   "teryt": "0805022"
+  },
+  {
+   "id": "teryt0805032",
+   "name": "Borne Sulinowo",
+   "people": 4,
+   "teryt": "0805032"
+  },
+  {
+   "id": "teryt0806",
+   "name": "powiat Czchów",
+   "parties": {},
+   "people": 0,
+   "teryt": "0806"
+  },
+  {
+   "id": "teryt0806011",
+   "name": "Pszczyna",
+   "people": 2,
+   "teryt": "0806011"
+  },
+  {
+   "id": "teryt0806023",
+   "name": "Pasłęk",
+   "people": 2,
+   "teryt": "0806023"
+  },
+  {
+   "id": "teryt0806033",
+   "name": "Legnica",
+   "people": 5,
+   "teryt": "0806033"
+  },
+  {
+   "id": "teryt0807",
+   "name": "powiat Kazimierza Wielka",
+   "parties": {},
+   "people": 0,
+   "teryt": "0807"
+  },
+  {
+   "id": "teryt0807013",
+   "name": "Gryfino",
+   "people": 1,
+   "teryt": "0807013"
+  },
+  {
+   "id": "teryt0807023",
+   "name": "Bardo",
+   "people": 5,
+   "teryt": "0807023"
+  },
+  {
+   "id": "teryt0807033",
+   "name": "Błonie",
+   "people": 3,
+   "teryt": "0807033"
+  },
+  {
+   "id": "teryt0808",
+   "name": "powiat Warta",
+   "parties": {},
+   "people": 0,
+   "teryt": "0808"
+  },
+  {
+   "id": "teryt0808012",
+   "name": "Żnin",
+   "people": 3,
+   "teryt": "0808012"
+  },
+  {
+   "id": "teryt0808021",
+   "name": "Opole Lubelskie",
+   "people": 6,
+   "teryt": "0808021"
+  },
+  {
+   "id": "teryt0808033",
+   "name": "Nowogród Bobrzański",
+   "people": 8,
+   "teryt": "0808033"
+  },
+  {
+   "id": "teryt0809",
+   "name": "powiat Prabuty",
+   "parties": {},
+   "people": 0,
+   "teryt": "0809"
+  },
+  {
+   "id": "teryt0809013",
+   "name": "Międzychód",
+   "people": 2,
+   "teryt": "0809013"
+  },
+  {
+   "id": "teryt0809022",
+   "name": "Pasym",
+   "people": 4,
+   "teryt": "0809022"
+  },
+  {
+   "id": "teryt0809033",
+   "name": "Bobowa",
+   "people": 6,
+   "teryt": "0809033"
+  },
+  {
+   "id": "teryt0810",
+   "name": "powiat Karpacz",
+   "parties": {
+    "Inne": 1,
+    "PiS": 2
+   },
+   "people": 6,
+   "teryt": "0810"
+  },
+  {
+   "id": "teryt0810013",
+   "name": "Warszawa",
+   "people": 2,
+   "teryt": "0810013"
+  },
+  {
+   "id": "teryt0810022",
+   "name": "Polanów",
+   "people": 1,
+   "teryt": "0810022"
+  },
+  {
+   "id": "teryt0810031",
+   "name": "Głuszyca",
+   "people": 0,
+   "teryt": "0810031"
+  },
+  {
+   "id": "teryt0811",
+   "name": "powiat Milicz",
+   "parties": {},
+   "people": 0,
+   "teryt": "0811"
+  },
+  {
+   "id": "teryt0811012",
+   "name": "Pasłęk",
+   "people": 0,
+   "teryt": "0811012"
+  },
+  {
+   "id": "teryt0811021",
+   "name": "Zielonka",
+   "people": 2,
+   "teryt": "0811021"
+  },
+  {
+   "id": "teryt0811033",
+   "name": "Rydzyna",
+   "people": 6,
+   "teryt": "0811033"
+  },
+  {
+   "id": "teryt0812",
+   "name": "powiat Odolanów",
+   "parties": {},
+   "people": 0,
+   "teryt": "0812"
+  },
+  {
+   "id": "teryt0812011",
+   "name": "Szczytno",
+   "people": 5,
+   "teryt": "0812011"
+  },
+  {
+   "id": "teryt0812023",
+   "name": "Działdowo",
+   "people": 4,
+   "teryt": "0812023"
+  },
+  {
+   "id": "teryt0812033",
+   "name": "Ścinawa",
+   "people": 7,
+   "teryt": "0812033"
+  },
+  {
+   "id": "teryt0813",
+   "name": "powiat Zakliczyn",
+   "parties": {},
+   "people": 0,
+   "teryt": "0813"
+  },
+  {
+   "id": "teryt0813013",
+   "name": "Pniewy",
+   "people": 0,
+   "teryt": "0813013"
+  },
+  {
+   "id": "teryt0813022",
+   "name": "Woźniki",
+   "people": 2,
+   "teryt": "0813022"
+  },
+  {
+   "id": "teryt0813033",
+   "name": "Bobolice",
+   "people": 0,
+   "teryt": "0813033"
+  },
+  {
+   "id": "teryt0814",
+   "name": "powiat Białogard",
+   "parties": {},
+   "people": 0,
+   "teryt": "0814"
+  },
+  {
+   "id": "teryt0814012",
+   "name": "Szczuczyn",
+   "people": 0,
+   "teryt": "0814012"
+  },
+  {
+   "id": "teryt0814023",
+   "name": "Dobrzyń nad Wisłą",
+   "people": 0,
+   "teryt": "0814023"
+  },
+  {
+   "id": "teryt0814032",
+   "name": "Leżajsk",
+   "people": 1,
+   "teryt": "0814032"
+  },
+  {
+   "id": "teryt0815",
+   "name": "powiat Zelów",
+   "parties": {
+    "PO": 1,
+    "PSL": 1,
+    "PiS": 1
+   },
+   "people": 3,
+   "teryt": "0815"
+  },
+  {
+   "id": "teryt0815013",
+   "name": "Świerzawa",
+   "people": 4,
+   "teryt": "0815013"
+  },
+  {
+   "id": "teryt0815022",
+   "name": "Łasin",
+   "people": 2,
+   "teryt": "0815022"
+  },
+  {
+   "id": "teryt0815031",
+   "name": "Borne Sulinowo",
+   "people": 1,
+   "teryt": "0815031"
+  },
+  {
+   "id": "teryt0816",
+   "name": "powiat Tuchola",
+   "parties": {},
+   "people": 0,
+   "teryt": "0816"
+  },
+  {
+   "id": "teryt0816013",
+   "name": "Żywiec",
+   "people": 1,
+   "teryt": "0816013"
+  },
+  {
+   "id": "teryt0816023",
+   "name": "Orzesze",
+   "people": 0,
+   "teryt": "0816023"
+  },
+  {
+   "id": "teryt0816033",
+   "name": "Wyśmierzyce",
+   "people": 8,
+   "teryt": "0816033"
+  },
+  {
+   "id": "teryt0817",
+   "name": "powiat Tłuszcz",
+   "parties": {},
+   "people": 0,
+   "teryt": "0817"
+  },
+  {
+   "id": "teryt0817011",
+   "name": "Mieroszów",
+   "people": 2,
+   "teryt": "0817011"
+  },
+  {
+   "id": "teryt0817021",
+   "name": "Zambrów",
+   "people": 6,
+   "teryt": "0817021"
+  },
+  {
+   "id": "teryt0817032",
+   "name": "Hel",
+   "people": 2,
+   "teryt": "0817032"
+  },
+  {
+   "id": "teryt0818",
+   "name": "powiat Radzionków",
+   "parties": {},
+   "people": 0,
+   "teryt": "0818"
+  },
+  {
+   "id": "teryt0818012",
+   "name": "Krynica-Zdrój",
+   "people": 0,
+   "teryt": "0818012"
+  },
+  {
+   "id": "teryt0818021",
+   "name": "Radzionków",
+   "people": 0,
+   "teryt": "0818021"
+  },
+  {
+   "id": "teryt0818032",
+   "name": "Stronie Śląskie",
+   "people": 4,
+   "teryt": "0818032"
+  },
+  {
+   "id": "teryt0819",
+   "name": "powiat Nowogrodziec",
+   "parties": {},
+   "people": 0,
+   "teryt": "0819"
+  },
+  {
+   "id": "teryt0819013",
+   "name": "Opole",
+   "people": 2,
+   "teryt": "0819013"
+  },
+  {
+   "id": "teryt0819022",
+   "name": "Tyszowce",
+   "people": 0,
+   "teryt": "0819022"
+  },
+  {
+   "id": "teryt0819032",
+   "name": "Darłowo",
+   "people": 7,
+   "teryt": "0819032"
+  },
+  {
+   "id": "teryt0820",
+   "name": "powiat Biecz",
+   "parties": {},
+   "people": 0,
+   "teryt": "0820"
+  },
+  {
+   "id": "teryt0820013",
+   "name": "Police",
+   "people": 5,
+   "teryt": "0820013"
+  },
+  {
+   "id": "teryt0820023",
+   "name": "Górzno",
+   "people": 6,
+   "teryt": "0820023"
+  },
+  {
+   "id": "teryt0820031",
+   "name": "Bartoszyce",
+   "people": 9,
+   "teryt": "0820031"
+  },
+  {
+   "id": "teryt10",
+   "name": "woj. małopolskie",
+   "people": 6,
+   "teryt": "10"
+  },
+  {
+   "id": "teryt1001",
+   "name": "powiat Piastów",
+   "parties": {},
+   "people": 0,
+   "teryt": "1001"
+  },
+  {
+   "id": "teryt1001012",
+   "name": "Malbork",
+   "people": 1,
+   "teryt": "1001012"
+  },
+  {
+   "id": "teryt1001023",
+   "name": "Krasnystaw",
+   "people": 0,
+   "teryt": "1001023"
+  },
+  {
+   "id": "teryt1001032",
+   "name": "Suchań",
+   "people": 6,
+   "teryt": "1001032"
+  },
+  {
+   "id": "teryt1002",
+   "name": "powiat Lubawa",
+   "parties": {},
+   "people": 0,
+   "teryt": "1002"
+  },
+  {
+   "id": "teryt1002012",
+   "name": "Trzebnica",
+   "people": 1,
+   "teryt": "1002012"
+  },
+  {
+   "id": "teryt1002023",
+   "name": "Dobre Miasto",
+   "people": 1,
+   "teryt": "1002023"
+  },
+  {
+   "id": "teryt1002033",
+   "name": "Myślenice",
+   "people": 0,
+   "teryt": "1002033"
+  },
+  {
+   "id": "teryt1003",
+   "name": "powiat Jedwabne",
+   "parties": {},
+   "people": 0,
+   "teryt": "1003"
+  },
+  {
+   "id": "teryt1003012",
+   "name": "Złotów",
+   "people": 2,
+   "teryt": "1003012"
+  },
+  {
+   "id": "teryt1003022",
+   "name": "Kosów Lacki",
+   "people": 0,
+   "teryt": "1003022"
+  },
+  {
+   "id": "teryt1003032",
+   "name": "Jabłonowo Pomorskie",
+   "people": 6,
+   "teryt": "1003032"
+  },
+  {
+   "id": "teryt1004",
+   "name": "powiat Busko-Zdrój",
+   "parties": {},
+   "people": 0,
+   "teryt": "1004"
+  },
+  {
+   "id": "teryt1004011",
+   "name": "Człopa",
+   "people": 5,
+   "teryt": "1004011"
+  },
+  {
+   "id": "teryt1004021",
+   "name": "Dąbrowa Tarnowska",
+   "people": 5,
+   "teryt": "1004021"
+  },
+  {
+   "id": "teryt1004032",
+   "name": "Głogów",
+   "people": 4,
+   "teryt": "1004032"
+  },
+  {
+   "id": "teryt1005",
+   "name": "powiat Krapkowice",
+   "parties": {},
+   "people": 0,
+   "teryt": "1005"
+  },
+  {
+   "id": "teryt1005013",
+   "name": "Mogielnica",
+   "people": 0,
+   "teryt": "1005013"
+  },
+  {
+   "id": "teryt1005023",
+   "name": "Frombork",
+   "people": 5,
+   "teryt": "1005023"
+  },
+  {
+   "id": "teryt1005031",
+   "name": "Błaszki",
+   "people": 3,
+   "teryt": "1005031"
+  },
+  {
+   "id": "teryt1006",
+   "name": "powiat Elbląg",
+   "parties": {},
+   "people": 0,
+   "teryt": "1006"
+  },
+  {
+   "id": "teryt1006011",
+   "name": "Gdynia",
+   "people": 4,
+   "teryt": "1006011"
+  },
+  {
+   "id": "teryt1006021",
+   "name": "Czeladź",
+   "people": 0,
+   "teryt": "1006021"
+  },
+  {
+   "id": "teryt1006032",
+   "name": "Gostyń",
+   "people": 0,
+   "teryt": "1006032"
+  },
+  {
+   "id": "teryt1007",
+   "name": "powiat Krzyż Wielkopolski",
+   "parties": {
+    "PO": 1,
+    "PiS": 1
+   },
+   "people": 2,
+   "teryt": "1007"
+  },
+  {
+   "id": "teryt1007012",
+   "name": "Ruciane-Nida",
+   "people": 2,
+   "teryt": "1007012"
+  },
+  {
+   "id": "teryt1007021",
+   "name": "Szadek",
+   "people": 3,
+   "teryt": "1007021"
+  },
+  {
+   "id": "teryt1007032",
+   "name": "Bytom Odrzański",
+   "people": 2,
+   "teryt": "1007032"
+  },
+  {
+   "id": "teryt1008",
+   "name": "powiat Tychy",
+   "parties": {},
+   "people": 0,
+   "teryt": "1008"
+  },
+  {
+   "id": "teryt1008013",
+   "name": "Brok",
+   "people": 3,
+   "teryt": "1008013"
+  },
+  {
+   "id": "teryt1008021",
+   "name": "Szczecin",
+   "people": 6,
+   "teryt": "1008021"
+  },
+  {
+   "id": "teryt1008033",
+   "name": "Głowno",
+   "people": 12,
+   "teryt": "1008033"
+  },
+  {
+   "id": "teryt1009",
+   "name": "powiat Góra",
+   "parties": {},
+   "people": 0,
+   "teryt": "1009"
+  },
+  {
+   "id": "teryt1009012",
+   "name": "Mszana Dolna",
+   "people": 0,
+   "teryt": "1009012"
+  },
+  {
+   "id": "teryt1009022",
+   "name": "Kutno",
+   "people": 0,
+   "teryt": "1009022"
+  },
+  {
+   "id": "teryt1009032",
+   "name": "Słupsk",
+   "people": 1,
+   "teryt": "1009032"
+  },
+  {
+   "id": "teryt1010",
+   "name": "powiat Biłgoraj",
+   "parties": {},
+   "people": 0,
+   "teryt": "1010"
+  },
+  {
+   "id": "teryt1010011",
+   "name": "Sędziszów Małopolski",
+   "people": 0,
+   "teryt": "1010011"
+  },
+  {
+   "id": "teryt1010023",
+   "name": "Nowe",
+   "people": 3,
+   "teryt": "1010023"
+  },
+  {
+   "id": "teryt1010032",
+   "name": "Ciechocinek",
+   "people": 4,
+   "teryt": "1010032"
+  },
+  {
+   "id": "teryt1011",
+   "name": "powiat Miechów",
+   "parties": {},
+   "people": 0,
+   "teryt": "1011"
+  },
+  {
+   "id": "teryt1011012",
+   "name": "Janowiec Wielkopolski",
+   "people": 8,
+   "teryt": "1011012"
+  },
+  {
+   "id": "teryt1011021",
+   "name": "Leszno",
+   "people": 2,
+   "teryt": "1011021"
+  },
+  {
+   "id": "teryt1011031",
+   "name": "Konstantynów Łódzki",
+   "people": 4,
+   "teryt": "1011031"
+  },
+  {
+   "id": "teryt1012",
+   "name": "powiat Górowo Iławeckie",
+   "parties": {},
+   "people": 0,
+   "teryt": "1012"
+  },
+  {
+   "id": "teryt1012011",
+   "name": "Czechowice-Dziedzice",
+   "people": 0,
+   "teryt": "1012011"
+  },
+  {
+   "id": "teryt1012023",
+   "name": "Pieniężno",
+   "people": 0,
+   "teryt": "1012023"
+  },
+  {
+   "id": "teryt1012033",
+   "name": "Sulejówek",
+   "people": 0,
+   "teryt": "1012033"
+  },
+  {
+   "id": "teryt1013",
+   "name": "powiat Nasielsk",
+   "parties": {},
+   "people": 0,
+   "teryt": "1013"
+  },
+  {
+   "id": "teryt1013011",
+   "name": "Ogrodzieniec",
+   "people": 0,
+   "teryt": "1013011"
+  },
+  {
+   "id": "teryt1013022",
+   "name": "Słubice",
+   "people": 1,
+   "teryt": "1013022"
+  },
+  {
+   "id": "teryt1013032",
+   "name": "Częstochowa",
+   "people": 7,
+   "teryt": "1013032"
+  },
+  {
+   "id": "teryt1014",
+   "name": "powiat Kazimierz Dolny",
+   "parties": {},
+   "people": 0,
+   "teryt": "1014"
+  },
+  {
+   "id": "teryt1014012",
+   "name": "Przemyśl",
+   "people": 4,
+   "teryt": "1014012"
+  },
+  {
+   "id": "teryt1014022",
+   "name": "Kruszwica",
+   "people": 7,
+   "teryt": "1014022"
+  },
+  {
+   "id": "teryt1014033",
+   "name": "Piotrków Trybunalski",
+   "people": 6,
+   "teryt": "1014033"
+  },
+  {
+   "id": "teryt1015",
+   "name": "powiat Ińsko",
+   "parties": {},
+   "people": 0,
+   "teryt": "1015"
+  },
+  {
+   "id": "teryt1015011",
+   "name": "Drawno",
+   "people": 4,
+   "teryt": "1015011"
+  },
+  {
+   "id": "teryt1015021",
+   "name": "Duszniki-Zdrój",
+   "people": 0,
+   "teryt": "1015021"
+  },
+  {
+   "id": "teryt1015031",
+   "name": "Kazimierza Wielka",
+   "people": 5,
+   "teryt": "1015031"
+  },
+  {
+   "id": "teryt1016",
+   "name": "powiat Garwolin",
+   "parties": {},
+   "people": 1,
+   "teryt": "1016"
+  },
+  {
+   "id": "teryt1016013",
+   "name": "Bystrzyca Kłodzka",
+   "people": 6,
+   "teryt": "1016013"
+  },
+  {
+   "id": "teryt1016022",
+   "name": "Lwówek Śląski",
+   "people": 3,
+   "teryt": "1016022"
+  },
+  {
+   "id": "teryt1016033",
+   "name": "Cybinka",
+   "people": 0,
+   "teryt": "1016033"
+  },
+  {
+   "id": "teryt1017",
+   "name": "powiat Lubawka",
+   "parties": {
+    "Inne": 1,
+    "PSL": 1,
+    "PiS": 2
+   },
+   "people": 8,
+   "teryt": "1017"
+  },
+  {
+   "id": "teryt1017013",
+   "name": "Tuchów",
+   "people": 0,
+   "teryt": "1017013"
+  },
+  {
+   "id": "teryt1017023",
+   "name": "Jedwabne",
+   "people": 0,
+   "teryt": "1017023"
+  },
+  {
+   "id": "teryt1017031",
+   "name": "Radomyśl Wielki",
+   "people": 1,
+   "teryt": "1017031"
+  },
+  {
+   "id": "teryt1018",
+   "name": "powiat Wołczyn",
+   "parties": {
+    "PO": 1
+   },
+   "people": 1,
+   "teryt": "1018"
+  },
+  {
+   "id": "teryt1018012",
+   "name": "Otmuchów",
+   "people": 6,
+   "teryt": "1018012"
+  },
+  {
+   "id": "teryt1018021",
+   "name": "Stęszew",
+   "people": 0,
+   "teryt": "1018021"
+  },
+  {
+   "id": "teryt1018031",
+   "name": "Koprzywnica",
+   "people": 0,
+   "teryt": "1018031"
+  },
+  {
+   "id": "teryt1019",
+   "name": "powiat Łobez",
+   "parties": {},
+   "people": 0,
+   "teryt": "1019"
+  },
+  {
+   "id": "teryt1019012",
+   "name": "Janowiec Wielkopolski",
+   "people": 0,
+   "teryt": "1019012"
+  },
+  {
+   "id": "teryt1019021",
+   "name": "Płońsk",
+   "people": 5,
+   "teryt": "1019021"
+  },
+  {
+   "id": "teryt1019031",
+   "name": "Pakość",
+   "people": 3,
+   "teryt": "1019031"
+  },
+  {
+   "id": "teryt1020",
+   "name": "powiat Drawsko Pomorskie",
+   "parties": {
+    "Inne": 1
+   },
+   "people": 2,
+   "teryt": "1020"
+  },
+  {
+   "id": "teryt1020012",
+   "name": "Oborniki",
+   "people": 6,
+   "teryt": "1020012"
+  },
+  {
+   "id": "teryt1020021",
+   "name": "Kowalewo Pomorskie",
+   "people": 0,
+   "teryt": "1020021"
+  },
+  {
+   "id": "teryt1020031",
+   "name": "Brwinów",
+   "people": 0,
+   "teryt": "1020031"
+  },
+  {
+   "id": "teryt12",
+   "name": "woj. zachodniopomorskie",
+   "people": 4,
+   "teryt": "12"
+  },
+  {
+   "id": "teryt1201",
+   "name": "powiat Końskie",
+   "parties": {
+    "Inne": 2,
+    "Konfederacja": 1,
+    "PiS": 1
+   },
+   "people": 6,
+   "teryt": "1201"
+  },
+  {
+   "id": "teryt1201013",
+   "name": "Jaworzyna Śląska",
+   "people": 2,
+   "teryt": "1201013"
+  },
+  {
+   "id": "teryt1201023",
+   "name": "Stalowa Wola",
+   "people": 4,
+   "teryt": "1201023"
+  },
+  {
+   "id": "teryt1201032",
+   "name": "Mława",
+   "people": 0,
+   "teryt": "1201032"
+  },
+  {
+   "id": "teryt1202",
+   "name": "powiat Łańcut",
+   "parties": {
+    "Inne": 2
+   },
+   "people": 2,
+   "teryt": "1202"
+  },
+  {
+   "id": "teryt1202012",
+   "name": "Wołczyn",
+   "people": 0,
+   "teryt": "1202012"
+  },
+  {
+   "id": "teryt1202023",
+   "name": "Zbąszyń",
+   "people": 0,
+   "teryt": "1202023"
+  },
+  {
+   "id": "teryt1202031",
+   "name": "Skaryszew",
+   "people": 9,
+   "teryt": "1202031"
+  },
+  {
+   "id": "teryt1203",
+   "name": "powiat Wyrzysk",
+   "parties": {
+    "Inne": 2,
+    "Konfederacja": 1,
+    "PO": 1
+   },
+   "people": 7,
+   "teryt": "1203"
+  },
+  {
+   "id": "teryt1203011",
+   "name": "Brzesko",
+   "people": 0,
+   "teryt": "1203011"
+  },
+  {
+   "id": "teryt1203023",
+   "name": "Ozorków",
+   "people": 9,
+   "teryt": "1203023"
+  },
+  {
+   "id": "teryt1203033",
+   "name": "Debrzno",
+   "people": 1,
+   "teryt": "1203033"
+  },
+  {
+   "id": "teryt1204",
+   "name": "powiat Susz",
+   "parties": {},
+   "people": 0,
+   "teryt": "1204"
+  },
+  {
+   "id": "teryt1204011",
+   "name": "Działoszyce",
+   "people": 4,
+   "teryt": "1204011"
+  },
+  {
+   "id": "teryt1204021",
+   "name": "Szepietowo",
+   "people": 3,
+   "teryt": "1204021"
+  },
+  {
+   "id": "teryt1204032",
+   "name": "Nowogród Bobrzański",
+   "people": 6,
+   "teryt": "1204032"
+  },
+  {
+   "id": "teryt1205",
+   "name": "powiat Krynki",
+   "parties": {},
+   "people": 0,
+   "teryt": "1205"
+  },
+  {
+   "id": "teryt1205013",
+   "name": "Lipsko",
+   "people": 1,
+   "teryt": "1205013"
+  },
+  {
+   "id": "teryt1205023",
+   "name": "Małogoszcz",
+   "people": 9,
+   "teryt": "1205023"
+  },
+  {
+   "id": "teryt1205032",
+   "name": "Milanówek",
+   "people": 0,
+   "teryt": "1205032"
+  },
+  {
+   "id": "teryt1206",
+   "name": "powiat Kłobuck",
+   "parties": {
+    "Inne": 1
+   },
+   "people": 1,
+   "teryt": "1206"
+  },
+  {
+   "id": "teryt1206013",
+   "name": "Niemodlin",
+   "people": 2,
+   "teryt": "1206013"
+  },
+  {
+   "id": "teryt1206021",
+   "name": "Węgorzewo",
+   "people": 1,
+   "teryt": "1206021"
+  },
+  {
+   "id": "teryt1206032",
+   "name": "Olkusz",
+   "people": 0,
+   "teryt": "1206032"
+  },
+  {
+   "id": "teryt1207",
+   "name": "powiat Wieliczka",
+   "parties": {
+    "PiS": 1
+   },
+   "people": 1,
+   "teryt": "1207"
+  },
+  {
+   "id": "teryt1207012",
+   "name": "Czarne",
+   "people": 5,
+   "teryt": "1207012"
+  },
+  {
+   "id": "teryt1207023",
+   "name": "Poręba",
+   "people": 4,
+   "teryt": "1207023"
+  },
+  {
+   "id": "teryt1207032",
+   "name": "Debrzno",
+   "people": 1,
+   "teryt": "1207032"
+  },
+  {
+   "id": "teryt1208",
+   "name": "powiat Suraż",
+   "parties": {},
+   "people": 0,
+   "teryt": "1208"
+  },
+  {
+   "id": "teryt1208012",
+   "name": "Oborniki Śląskie",
+   "people": 3,
+   "teryt": "1208012"
+  },
+  {
+   "id": "teryt1208023",
+   "name": "Sulejówek",
+   "people": 2,
+   "teryt": "1208023"
+  },
+  {
+   "id": "teryt1208031",
+   "name": "Kolno",
+   "people": 2,
+   "teryt": "1208031"
+  },
+  {
+   "id": "teryt1209",
+   "name": "powiat Jastarnia",
+   "parties": {},
+   "people": 0,
+   "teryt": "1209"
+  },
+  {
+   "id": "teryt1209013",
+   "name": "Bieruń",
+   "people": 0,
+   "teryt": "1209013"
+  },
+  {
+   "id": "teryt1209022",
+   "name": "Stargard",
+   "people": 0,
+   "teryt": "1209022"
+  },
+  {
+   "id": "teryt1209033",
+   "name": "Kożuchów",
+   "people": 0,
+   "teryt": "1209033"
+  },
+  {
+   "id": "teryt1210",
+   "name": "powiat Szydłowiec",
+   "parties": {},
+   "people": 0,
+   "teryt": "1210"
+  },
+  {
+   "id": "teryt1210011",
+   "name": "Tarnów",
+   "people": 0,
+   "teryt": "1210011"
+  },
+  {
+   "id": "teryt1210021",
+   "name": "Lubawa",
+   "people": 6,
+   "teryt": "1210021"
+  },
+  {
+   "id": "teryt1210033",
+   "name": "Dobrzany",
+   "people": 6,
+   "teryt": "1210033"
+  },
+  {
+   "id": "teryt1211",
+   "name": "powiat Hel",
+   "parties": {},
+   "people": 0,
+   "teryt": "1211"
+  },
+  {
+   "id": "teryt1211013",
+   "name": "Siemianowice Śląskie",
+   "people": 1,
+   "teryt": "1211013"
+  },
+  {
+   "id": "teryt1211022",
+   "name": "Rumia",
+   "people": 1,
+   "teryt": "1211022"
+  },
+  {
+   "id": "teryt1211032",
+   "name": "Jawor",
+   "people": 3,
+   "teryt": "1211032"
+  },
+  {
+   "id": "teryt1212",
+   "name": "powiat Krapkowice",
+   "parties": {},
+   "people": 0,
+   "teryt": "1212"
+  },
+  {
+   "id": "teryt1212011",
+   "name": "Wieruszów",
+   "people": 3,
+   "teryt": "1212011"
+  },
+  {
+   "id": "teryt1212022",
+   "name": "Lublin",
+   "people": 9,
+   "teryt": "1212022"
+  },
+  {
+   "id": "teryt1212032",
+   "name": "Zagórów",
+   "people": 1,
+   "teryt": "1212032"
+  },
+  {
+   "id": "teryt1213",
+   "name": "powiat Drawno",
+   "parties": {},
+   "people": 0,
+   "teryt": "1213"
+  },
+  {
+   "id": "teryt1213012",
+   "name": "Nisko",
+   "people": 1,
+   "teryt": "1213012"
+  },
+  {
+   "id": "teryt1213022",
+   "name": "Bełżyce",
+   "people": 0,
+   "teryt": "1213022"
+  },
+  {
+   "id": "teryt1213033",
+   "name": "Wołów",
+   "people": 0,
+   "teryt": "1213033"
+  },
+  {
+   "id": "teryt1214",
+   "name": "powiat Ostrów Mazowiecka",
+   "parties": {
+    "Inne": 1
+   },
+   "people": 3,
+   "teryt": "1214"
+  },
+  {
+   "id": "teryt1214013",
+   "name": "Wojcieszów",
+   "people": 1,
+   "teryt": "1214013"
+  },
+  {
+   "id": "teryt1214023",
+   "name": "Drawno",
+   "people": 0,
+   "teryt": "1214023"
+  },
+  {
+   "id": "teryt1214032",
+   "name": "Pisz",
+   "people": 10,
+   "teryt": "1214032"
+  },
+  {
+   "id": "teryt1215",
+   "name": "powiat Łęknica",
+   "parties": {},
+   "people": 0,
+   "teryt": "1215"
+  },
+  {
+   "id": "teryt1215013",
+   "name": "Wrocław",
+   "people": 4,
+   "teryt": "1215013"
+  },
+  {
+   "id": "teryt1215023",
+   "name": "Mieroszów",
+   "people": 1,
+   "teryt": "1215023"
+  },
+  {
+   "id": "teryt1215031",
+   "name": "Żagań",
+   "people": 1,
+   "teryt": "1215031"
+  },
+  {
+   "id": "teryt1216",
+   "name": "powiat Świętochłowice",
+   "parties": {},
+   "people": 1,
+   "teryt": "1216"
+  },
+  {
+   "id": "teryt1216011",
+   "name": "Wodzisław Śląski",
+   "people": 3,
+   "teryt": "1216011"
+  },
+  {
+   "id": "teryt1216023",
+   "name": "Nowogard",
+   "people": 7,
+   "teryt": "1216023"
+  },
+  {
+   "id": "teryt1216032",
+   "name": "Lubień Kujawski",
+   "people": 10,
+   "teryt": "1216032"
+  },
+  {
+   "id": "teryt1217",
+   "name": "powiat Bolków",
+   "parties": {},
+   "people": 0,
+   "teryt": "1217"
+  },
+  {
+   "id": "teryt1217012",
+   "name": "Szczawnica",
+   "people": 2,
+   "teryt": "1217012"
+  },
+  {
+   "id": "teryt1217021",
+   "name": "Kościerzyna",
+   "people": 0,
+   "teryt": "1217021"
+  },
+  {
+   "id": "teryt1217032",
+   "name": "Ogrodzieniec",
+   "people": 5,
+   "teryt": "1217032"
+  },
+  {
+   "id": "teryt1218",
+   "name": "powiat Włoszczowa",
+   "parties": {},
+   "people": 0,
+   "teryt": "1218"
+  },
+  {
+   "id": "teryt1218012",
+   "name": "Krasnobród",
+   "people": 3,
+   "teryt": "1218012"
+  },
+  {
+   "id": "teryt1218023",
+   "name": "Mieszkowice",
+   "people": 4,
+   "teryt": "1218023"
+  },
+  {
+   "id": "teryt1218031",
+   "name": "Mieszkowice",
+   "people": 0,
+   "teryt": "1218031"
+  },
+  {
+   "id": "teryt1219",
+   "name": "powiat Dębica",
+   "parties": {},
+   "people": 0,
+   "teryt": "1219"
+  },
+  {
+   "id": "teryt1219011",
+   "name": "Nasielsk",
+   "people": 0,
+   "teryt": "1219011"
+  },
+  {
+   "id": "teryt1219022",
+   "name": "Witnica",
+   "people": 2,
+   "teryt": "1219022"
+  },
+  {
+   "id": "teryt1219032",
+   "name": "Pakość",
+   "people": 6,
+   "teryt": "1219032"
+  },
+  {
+   "id": "teryt1220",
+   "name": "powiat Prochowice",
+   "parties": {},
+   "people": 0,
+   "teryt": "1220"
+  },
+  {
+   "id": "teryt1220011",
+   "name": "Radlin",
+   "people": 3,
+   "teryt": "1220011"
+  },
+  {
+   "id": "teryt1220021",
+   "name": "Zawiercie",
+   "people": 0,
+   "teryt": "1220021"
+  },
+  {
+   "id": "teryt1220031",
+   "name": "Łasin",
+   "people": 0,
+   "teryt": "1220031"
+  },
+  {
+   "id": "teryt14",
+   "name": "woj. kujawsko-pomorskie",
+   "people": 6,
+   "teryt": "14"
+  },
+  {
+   "id": "teryt1401",
+   "name": "powiat Żychlin",
+   "parties": {},
+   "people": 0,
+   "teryt": "1401"
+  },
+  {
+   "id": "teryt1401012",
+   "name": "Pieszyce",
+   "people": 0,
+   "teryt": "1401012"
+  },
+  {
+   "id": "teryt1401021",
+   "name": "Sochaczew",
+   "people": 6,
+   "teryt": "1401021"
+  },
+  {
+   "id": "teryt1401031",
+   "name": "Wejherowo",
+   "people": 4,
+   "teryt": "1401031"
+  },
+  {
+   "id": "teryt1402",
+   "name": "powiat Gostynin",
+   "parties": {},
+   "people": 1,
+   "teryt": "1402"
+  },
+  {
+   "id": "teryt1402011",
+   "name": "Biłgoraj",
+   "people": 0,
+   "teryt": "1402011"
+  },
+  {
+   "id": "teryt1402022",
+   "name": "Ostrów Lubelski",
+   "people": 6,
+   "teryt": "1402022"
+  },
+  {
+   "id": "teryt1402031",
+   "name": "Strzegom",
+   "people": 0,
+   "teryt": "1402031"
+  },
+  {
+   "id": "teryt1403",
+   "name": "powiat Międzybórz",
+   "parties": {},
+   "people": 0,
+   "teryt": "1403"
+  },
+  {
+   "id": "teryt1403012",
+   "name": "Margonin",
+   "people": 3,
+   "teryt": "1403012"
+  },
+  {
+   "id": "teryt1403022",
+   "name": "Ostrołęka",
+   "people": 5,
+   "teryt": "1403022"
+  },
+  {
+   "id": "teryt1403031",
+   "name": "Głogów",
+   "people": 5,
+   "teryt": "1403031"
+  },
+  {
+   "id": "teryt1404",
+   "name": "powiat Trzebinia",
+   "parties": {},
+   "people": 0,
+   "teryt": "1404"
+  },
+  {
+   "id": "teryt1404013",
+   "name": "Legionowo",
+   "people": 7,
+   "teryt": "1404013"
+  },
+  {
+   "id": "teryt1404021",
+   "name": "Przedecz",
+   "people": 0,
+   "teryt": "1404021"
+  },
+  {
+   "id": "teryt1404032",
+   "name": "Białogard",
+   "people": 3,
+   "teryt": "1404032"
+  },
+  {
+   "id": "teryt1405",
+   "name": "powiat Drobin",
+   "parties": {},
+   "people": 0,
+   "teryt": "1405"
+  },
+  {
+   "id": "teryt1405013",
+   "name": "Pyzdry",
+   "people": 11,
+   "teryt": "1405013"
+  },
+  {
+   "id": "teryt1405021",
+   "name": "Gryfice",
+   "people": 0,
+   "teryt": "1405021"
+  },
+  {
+   "id": "teryt1405031",
+   "name": "Radzionków",
+   "people": 7,
+   "teryt": "1405031"
+  },
+  {
+   "id": "teryt1406",
+   "name": "powiat Będzin",
+   "parties": {},
+   "people": 0,
+   "teryt": "1406"
+  },
+  {
+   "id": "teryt1406011",
+   "name": "Szadek",
+   "people": 3,
+   "teryt": "1406011"
+  },
+  {
+   "id": "teryt1406021",
+   "name": "Puławy",
+   "people": 2,
+   "teryt": "1406021"
+  },
+  {
+   "id": "teryt1406031",
+   "name": "Choroszcz",
+   "people": 2,
+   "teryt": "1406031"
+  },
+  {
+   "id": "teryt1407",
+   "name": "powiat Janów Lubelski",
+   "parties": {},
+   "people": 0,
+   "teryt": "1407"
+  },
+  {
+   "id": "teryt1407013",
+   "name": "Toszek",
+   "people": 0,
+   "teryt": "1407013"
+  },
+  {
+   "id": "teryt1407023",
+   "name": "Lubawa",
+   "people": 4,
+   "teryt": "1407023"
+  },
+  {
+   "id": "teryt1407033",
+   "name": "Gostynin",
+   "people": 0,
+   "teryt": "1407033"
+  },
+  {
+   "id": "teryt1408",
+   "name": "powiat Kęty",
+   "parties": {},
+   "people": 0,
+   "teryt": "1408"
+  },
+  {
+   "id": "teryt1408013",
+   "name": "Bardo",
+   "people": 0,
+   "teryt": "1408013"
+  },
+  {
+   "id": "teryt1408021",
+   "name": "Gozdnica",
+   "people": 5,
+   "teryt": "1408021"
+  },
+  {
+   "id": "teryt1408031",
+   "name": "Głogów",
+   "people": 0,
+   "teryt": "1408031"
+  },
+  {
+   "id": "teryt1409",
+   "name": "powiat Pasłęk",
+   "parties": {},
+   "people": 0,
+   "teryt": "1409"
+  },
+  {
+   "id": "teryt1409012",
+   "name": "Wasilków",
+   "people": 10,
+   "teryt": "1409012"
+  },
+  {
+   "id": "teryt1409023",
+   "name": "Kożuchów",
+   "people": 3,
+   "teryt": "1409023"
+  },
+  {
+   "id": "teryt1409031",
+   "name": "Lewin Brzeski",
+   "people": 0,
+   "teryt": "1409031"
+  },
+  {
+   "id": "teryt1410",
+   "name": "powiat Piastów",
+   "parties": {},
+   "people": 0,
+   "teryt": "1410"
+  },
+  {
+   "id": "teryt1410011",
+   "name": "Połczyn-Zdrój",
+   "people": 6,
+   "teryt": "1410011"
+  },
+  {
+   "id": "teryt1410022",
+   "name": "Opole",
+   "people": 0,
+   "teryt": "1410022"
+  },
+  {
+   "id": "teryt1410032",
+   "name": "Kielce",
+   "people": 0,
+   "teryt": "1410032"
+  },
+  {
+   "id": "teryt1411",
+   "name": "powiat Zagórz",
+   "parties": {},
+   "people": 0,
+   "teryt": "1411"
+  },
+  {
+   "id": "teryt1411013",
+   "name": "Debrzno",
+   "people": 2,
+   "teryt": "1411013"
+  },
+  {
+   "id": "teryt1411023",
+   "name": "Muszyna",
+   "people": 0,
+   "teryt": "1411023"
+  },
+  {
+   "id": "teryt1411033",
+   "name": "Szadek",
+   "people": 3,
+   "teryt": "1411033"
+  },
+  {
+   "id": "teryt1412",
+   "name": "powiat Łobez",
+   "parties": {},
+   "people": 0,
+   "teryt": "1412"
+  },
+  {
+   "id": "teryt1412011",
+   "name": "Kalisz Pomorski",
+   "people": 0,
+   "teryt": "1412011"
+  },
+  {
+   "id": "teryt1412022",
+   "name": "Proszowice",
+   "people": 5,
+   "teryt": "1412022"
+  },
+  {
+   "id": "teryt1412031",
+   "name": "Debrzno",
+   "people": 0,
+   "teryt": "1412031"
+  },
+  {
+   "id": "teryt1413",
+   "name": "powiat Świebodzin",
+   "parties": {},
+   "people": 0,
+   "teryt": "1413"
+  },
+  {
+   "id": "teryt1413013",
+   "name": "Nowy Sącz",
+   "people": 3,
+   "teryt": "1413013"
+  },
+  {
+   "id": "teryt1413021",
+   "name": "Kamienna Góra",
+   "people": 2,
+   "teryt": "1413021"
+  },
+  {
+   "id": "teryt1413031",
+   "name": "Witnica",
+   "people": 0,
+   "teryt": "1413031"
+  },
+  {
+   "id": "teryt1414",
+   "name": "powiat Czarnków",
+   "parties": {},
+   "people": 0,
+   "teryt": "1414"
+  },
+  {
+   "id": "teryt1414012",
+   "name": "Kamień Pomorski",
+   "people": 0,
+   "teryt": "1414012"
+  },
+  {
+   "id": "teryt1414022",
+   "name": "Puck",
+   "people": 2,
+   "teryt": "1414022"
+  },
+  {
+   "id": "teryt1414033",
+   "name": "Gościno",
+   "people": 0,
+   "teryt": "1414033"
+  },
+  {
+   "id": "teryt1415",
+   "name": "powiat Barcin",
+   "parties": {},
+   "people": 0,
+   "teryt": "1415"
+  },
+  {
+   "id": "teryt1415011",
+   "name": "Węgorzewo",
+   "people": 2,
+   "teryt": "1415011"
+  },
+  {
+   "id": "teryt1415023",
+   "name": "Pilica",
+   "people": 1,
+   "teryt": "1415023"
+  },
+  {
+   "id": "teryt1415032",
+   "name": "Radłów",
+   "people": 7,
+   "teryt": "1415032"
+  },
+  {
+   "id": "teryt1416",
+   "name": "powiat Gąbin",
+   "parties": {},
+   "people": 0,
+   "teryt": "1416"
+  },
+  {
+   "id": "teryt1416013",
+   "name": "Łaziska Górne",
+   "people": 0,
+   "teryt": "1416013"
+  },
+  {
+   "id": "teryt1416022",
+   "name": "Nowogard",
+   "people": 0,
+   "teryt": "1416022"
+  },
+  {
+   "id": "teryt1416031",
+   "name": "Dzierzgoń",
+   "people": 0,
+   "teryt": "1416031"
+  },
+  {
+   "id": "teryt1417",
+   "name": "powiat Skoki",
+   "parties": {},
+   "people": 0,
+   "teryt": "1417"
+  },
+  {
+   "id": "teryt1417011",
+   "name": "Pionki",
+   "people": 1,
+   "teryt": "1417011"
+  },
+  {
+   "id": "teryt1417021",
+   "name": "Lipiany",
+   "people": 5,
+   "teryt": "1417021"
+  },
+  {
+   "id": "teryt1417031",
+   "name": "Kruszwica",
+   "people": 4,
+   "teryt": "1417031"
+  },
+  {
+   "id": "teryt1418",
+   "name": "powiat Siedlce",
+   "parties": {},
+   "people": 1,
+   "teryt": "1418"
+  },
+  {
+   "id": "teryt1418011",
+   "name": "Ostrów Wielkopolski",
+   "people": 9,
+   "teryt": "1418011"
+  },
+  {
+   "id": "teryt1418022",
+   "name": "Radlin",
+   "people": 2,
+   "teryt": "1418022"
+  },
+  {
+   "id": "teryt1418033",
+   "name": "Skarżysko-Kamienna",
+   "people": 8,
+   "teryt": "1418033"
+  },
+  {
+   "id": "teryt1419",
+   "name": "powiat Grajewo",
+   "parties": {},
+   "people": 0,
+   "teryt": "1419"
+  },
+  {
+   "id": "teryt1419011",
+   "name": "Jędrzejów",
+   "people": 2,
+   "teryt": "1419011"
+  },
+  {
+   "id": "teryt1419022",
+   "name": "Boguszów-Gorce",
+   "people": 3,
+   "teryt": "1419022"
+  },
+  {
+   "id": "teryt1419032",
+   "name": "Pilawa",
+   "people": 2,
+   "teryt": "1419032"
+  },
+  {
+   "id": "teryt1420",
+   "name": "powiat Kościerzyna",
+   "parties": {},
+   "people": 0,
+   "teryt": "1420"
+  },
+  {
+   "id": "teryt1420013",
+   "name": "Ciechanów",
+   "people": 0,
+   "teryt": "1420013"
+  },
+  {
+   "id": "teryt1420021",
+   "name": "Skalbmierz",
+   "people": 0,
+   "teryt": "1420021"
+  },
+  {
+   "id": "teryt1420032",
+   "name": "Ropczyce",
+   "people": 0,
+   "teryt": "1420032"
+  },
+  {
+   "id": "teryt16",
+   "name": "woj. mazowieckie",
+   "people": 7,
+   "teryt": "16"
+  },
+  {
+   "id": "teryt1601",
+   "name": "powiat Jasień",
+   "parties": {},
+   "people": 0,
+   "teryt": "1601"
+  },
+  {
+   "id": "teryt1601013",
+   "name": "Szadek",
+   "people": 4,
+   "teryt": "1601013"
+  },
+  {
+   "id": "teryt1601023",
+   "name": "Kamienna Góra",
+   "people": 5,
+   "teryt": "1601023"
+  },
+  {
+   "id": "teryt1601032",
+   "name": "Krzepice",
+   "people": 1,
+   "teryt": "1601032"
+  },
+  {
+   "id": "teryt1602",
+   "name": "powiat Chmielnik",
+   "parties": {
+    "PiS": 2
+   },
+   "people": 4,
+   "teryt": "1602"
+  },
+  {
+   "id": "teryt1602013",
+   "name": "Dąbrowa Białostocka",
+   "people": 2,
+   "teryt": "1602013"
+  },
+  {
+   "id": "teryt1602023",
+   "name": "Michałowo",
+   "people": 5,
+   "teryt": "1602023"
+  },
+  {
+   "id": "teryt1602031",
+   "name": "Oleszyce",
+   "people": 8,
+   "teryt": "1602031"
+  },
+  {
+   "id": "teryt1603",
+   "name": "powiat Tychowo",
+   "parties": {},
+   "people": 0,
+   "teryt": "1603"
+  },
+  {
+   "id": "teryt1603013",
+   "name": "Szczecin",
+   "people": 4,
+   "teryt": "1603013"
+  },
+  {
+   "id": "teryt1603022",
+   "name": "Rudnik nad Sanem",
+   "people": 4,
+   "teryt": "1603022"
+  },
+  {
+   "id": "teryt1603033",
+   "name": "Jastrowie",
+   "people": 5,
+   "teryt": "1603033"
+  },
+  {
+   "id": "teryt1604",
+   "name": "powiat Myszków",
+   "parties": {},
+   "people": 1,
+   "teryt": "1604"
+  },
+  {
+   "id": "teryt1604011",
+   "name": "Żarów",
+   "people": 2,
+   "teryt": "1604011"
+  },
+  {
+   "id": "teryt1604023",
+   "name": "Bisztynek",
+   "people": 1,
+   "teryt": "1604023"
+  },
+  {
+   "id": "teryt1604033",
+   "name": "Wolbórz",
+   "people": 2,
+   "teryt": "1604033"
+  },
+  {
+   "id": "teryt1605",
+   "name": "powiat Gliwice",
+   "parties": {},
+   "people": 0,
+   "teryt": "1605"
+  },
+  {
+   "id": "teryt1605012",
+   "name": "Wleń",
+   "people": 0,
+   "teryt": "1605012"
+  },
+  {
+   "id": "teryt1605021",
+   "name": "Rydułtowy",
+   "people": 1,
+   "teryt": "1605021"
+  },
+  {
+   "id": "teryt1605031",
+   "name": "Wojnicz",
+   "people": 0,
+   "teryt": "1605031"
+  },
+  {
+   "id": "teryt1606",
+   "name": "powiat Zgierz",
+   "parties": {},
+   "people": 0,
+   "teryt": "1606"
+  },
+  {
+   "id": "teryt1606013",
+   "name": "Mogielnica",
+   "people": 0,
+   "teryt": "1606013"
+  },
+  {
+   "id": "teryt1606023",
+   "name": "Tarnowskie Góry",
+   "people": 2,
+   "teryt": "1606023"
+  },
+  {
+   "id": "teryt1606031",
+   "name": "Środa Wielkopolska",
+   "people": 6,
+   "teryt": "1606031"
+  },
+  {
+   "id": "teryt1607",
+   "name": "powiat Biłgoraj",
+   "parties": {},
+   "people": 0,
+   "teryt": "1607"
+  },
+  {
+   "id": "teryt1607012",
+   "name": "Hrubieszów",
+   "people": 0,
+   "teryt": "1607012"
+  },
+  {
+   "id": "teryt1607021",
+   "name": "Bychawa",
+   "people": 1,
+   "teryt": "1607021"
+  },
+  {
+   "id": "teryt1607033",
+   "name": "Kozienice",
+   "people": 1,
+   "teryt": "1607033"
+  },
+  {
+   "id": "teryt1608",
+   "name": "powiat Sieraków",
+   "parties": {
+    "Konfederacja": 1
+   },
+   "people": 1,
+   "teryt": "1608"
+  },
+  {
+   "id": "teryt1608011",
+   "name": "Kołaczyce",
+   "people": 0,
+   "teryt": "1608011"
+  },
+  {
+   "id": "teryt1608022",
+   "name": "Sulmierzyce",
+   "people": 4,
+   "teryt": "1608022"
+  },
+  {
+   "id": "teryt1608031",
+   "name": "Poniec",
+   "people": 0,
+   "teryt": "1608031"
+  },
+  {
+   "id": "teryt1609",
+   "name": "powiat Wadowice",
+   "parties": {},
+   "people": 0,
+   "teryt": "1609"
+  },
+  {
+   "id": "teryt1609012",
+   "name": "Iłża",
+   "people": 0,
+   "teryt": "1609012"
+  },
+  {
+   "id": "teryt1609021",
+   "name": "Tuszyn",
+   "people": 8,
+   "teryt": "1609021"
+  },
+  {
+   "id": "teryt1609031",
+   "name": "Tyczyn",
+   "people": 0,
+   "teryt": "1609031"
+  },
+  {
+   "id": "teryt1610",
+   "name": "powiat Nowy Tomyśl",
+   "parties": {
+    "Inne": 1,
+    "Konfederacja": 3,
+    "PiS": 1
+   },
+   "people": 7,
+   "teryt": "1610"
+  },
+  {
+   "id": "teryt1610013",
+   "name": "Syców",
+   "people": 2,
+   "teryt": "1610013"
+  },
+  {
+   "id": "teryt1610023",
+   "name": "Krobia",
+   "people": 0,
+   "teryt": "1610023"
+  },
+  {
+   "id": "teryt1610033",
+   "name": "Lubliniec",
+   "people": 13,
+   "teryt": "1610033"
+  },
+  {
+   "id": "teryt1611",
+   "name": "powiat Moryń",
+   "parties": {
+    "Konfederacja": 2,
+    "PSL": 1,
+    "PiS": 2
+   },
+   "people": 7,
+   "teryt": "1611"
+  },
+  {
+   "id": "teryt1611012",
+   "name": "Tychy",
+   "people": 1,
+   "teryt": "1611012"
+  },
+  {
+   "id": "teryt1611023",
+   "name": "Stąporków",
+   "people": 4,
+   "teryt": "1611023"
+  },
+  {
+   "id": "teryt1611032",
+   "name": "Łeba",
+   "people": 10,
+   "teryt": "1611032"
+  },
+  {
+   "id": "teryt1612",
+   "name": "powiat Skoki",
+   "parties": {},
+   "people": 0,
+   "teryt": "1612"
+  },
+  {
+   "id": "teryt1612011",
+   "name": "Ciężkowice",
+   "people": 6,
+   "teryt": "1612011"
+  },
+  {
+   "id": "teryt1612022",
+   "name": "Kcynia",
+   "people": 10,
+   "teryt": "1612022"
+  },
+  {
+   "id": "teryt1612031",
+   "name": "Iłża",
+   "people": 3,
+   "teryt": "1612031"
+  },
+  {
+   "id": "teryt1613",
+   "name": "powiat Błażowa",
+   "parties": {
+    "Inne": 1
+   },
+   "people": 1,
+   "teryt": "1613"
+  },
+  {
+   "id": "teryt1613011",
+   "name": "Żarów",
+   "people": 5,
+   "teryt": "1613011"
+  },
+  {
+   "id": "teryt1613022",
+   "name": "Libiąż",
+   "people": 0,
+   "teryt": "1613022"
+  },
+  {
+   "id": "teryt1613033",
+   "name": "Grodzisk Wielkopolski",
+   "people": 0,
+   "teryt": "1613033"
+  },
+  {
+   "id": "teryt1614",
+   "name": "powiat Zakliczyn",
+   "parties": {},
+   "people": 0,
+   "teryt": "1614"
+  },
+  {
+   "id": "teryt1614013",
+   "name": "Chęciny",
+   "people": 0,
+   "teryt": "1614013"
+  },
+  {
+   "id": "teryt1614022",
+   "name": "Ujście",
+   "people": 3,
+   "teryt": "1614022"
+  },
+  {
+   "id": "teryt1614033",
+   "name": "Miłosław",
+   "people": 7,
+   "teryt": "1614033"
+  },
+  {
+   "id": "teryt1615",
+   "name": "powiat Pniewy",
+   "parties": {},
+   "people": 0,
+   "teryt": "1615"
+  },
+  {
+   "id": "teryt1615011",
+   "name": "Żerków",
+   "people": 1,
+   "teryt": "1615011"
+  },
+  {
+   "id": "teryt1615021",
+   "name": "Wyszogród",
+   "people": 7,
+   "teryt": "1615021"
+  },
+  {
+   "id": "teryt1615032",
+   "name": "Piwniczna-Zdrój",
+   "people": 2,
+   "teryt": "1615032"
+  },
+  {
+   "id": "teryt1616",
+   "name": "powiat Nowe Brzesko",
+   "parties": {
+    "PO": 1,
+    "PSL": 1,
+    "PiS": 1
+   },
+   "people": 4,
+   "teryt": "1616"
+  },
+  {
+   "id": "teryt1616011",
+   "name": "Gdańsk",
+   "people": 0,
+   "teryt": "1616011"
+  },
+  {
+   "id": "teryt1616021",
+   "name": "Głubczyce",
+   "people": 0,
+   "teryt": "1616021"
+  },
+  {
+   "id": "teryt1616033",
+   "name": "Krobia",
+   "people": 0,
+   "teryt": "1616033"
+  },
+  {
+   "id": "teryt1617",
+   "name": "powiat Braniewo",
+   "parties": {},
+   "people": 0,
+   "teryt": "1617"
+  },
+  {
+   "id": "teryt1617013",
+   "name": "Ustroń",
+   "people": 4,
+   "teryt": "1617013"
+  },
+  {
+   "id": "teryt1617023",
+   "name": "Żukowo",
+   "people": 2,
+   "teryt": "1617023"
+  },
+  {
+   "id": "teryt1617031",
+   "name": "Lubartów",
+   "people": 5,
+   "teryt": "1617031"
+  },
+  {
+   "id": "teryt1618",
+   "name": "powiat Sosnowiec",
+   "parties": {},
+   "people": 0,
+   "teryt": "1618"
+  },
+  {
+   "id": "teryt1618013",
+   "name": "Drawsko Pomorskie",
+   "people": 6,
+   "teryt": "1618013"
+  },
+  {
+   "id": "teryt1618023",
+   "name": "Gryfów Śląski",
+   "people": 3,
+   "teryt": "1618023"
+  },
+  {
+   "id": "teryt1618031",
+   "name": "Ogrodzieniec",
+   "people": 3,
+   "teryt": "1618031"
+  },
+  {
+   "id": "teryt1619",
+   "name": "powiat Pieniężno",
+   "parties": {
+    "Konfederacja": 2,
+    "PO": 1,
+    "PiS": 1
+   },
+   "people": 7,
+   "teryt": "1619"
+  },
+  {
+   "id": "teryt1619012",
+   "name": "Chmielnik",
+   "people": 0,
+   "teryt": "1619012"
+  },
+  {
+   "id": "teryt1619023",
+   "name": "Jutrosin",
+   "people": 0,
+   "teryt": "1619023"
+  },
+  {
+   "id": "teryt1619031",
+   "name": "Warka",
+   "people": 0,
+   "teryt": "1619031"
+  },
+  {
+   "id": "teryt1620",
+   "name": "powiat Zamość",
+   "parties": {
+    "Inne": 2
+   },
+   "people": 3,
+   "teryt": "1620"
+  },
+  {
+   "id": "teryt1620013",
+   "name": "Szczucin",
+   "people": 1,
+   "teryt": "1620013"
+  },
+  {
+   "id": "teryt1620022",
+   "name": "Opoczno",
+   "people": 1,
+   "teryt": "1620022"
+  },
+  {
+   "id": "teryt1620031",
+   "name": "Lwówek",
+   "people": 10,
+   "teryt": "1620031"
+  },
+  {
+   "id": "teryt18",
+   "name": "woj. małopolskie",
+   "people": 9,
+   "teryt": "18"
+  },
+  {
+   "id": "teryt1801",
+   "name": "powiat Jelenia Góra",
+   "parties": {},
+   "people": 0,
+   "teryt": "1801"
+  },
+  {
+   "id": "teryt1801013",
+   "name": "Namysłów",
+   "people": 1,
+   "teryt": "1801013"
+  },
+  {
+   "id": "teryt1801021",
+   "name": "Grudziądz",
+   "people": 4,
+   "teryt": "1801021"
+  },
+  {
+   "id": "teryt1801033",
+   "name": "Busko-Zdrój",
+   "people": 1,
+   "teryt": "1801033"
+  },
+  {
+   "id": "teryt1802",
+   "name": "powiat Tomaszów Lubelski",
+   "parties": {},
+   "people": 0,
+   "teryt": "1802"
+  },
+  {
+   "id": "teryt1802012",
+   "name": "Mosina",
+   "people": 6,
+   "teryt": "1802012"
+  },
+  {
+   "id": "teryt1802022",
+   "name": "Śmigiel",
+   "people": 3,
+   "teryt": "1802022"
+  },
+  {
+   "id": "teryt1802032",
+   "name": "Raszków",
+   "people": 2,
+   "teryt": "1802032"
+  },
+  {
+   "id": "teryt1803",
+   "name": "powiat Ostrów Mazowiecka",
+   "parties": {
+    "Inne": 2
+   },
+   "people": 4,
+   "teryt": "1803"
+  },
+  {
+   "id": "teryt1803011",
+   "name": "Ujście",
+   "people": 0,
+   "teryt": "1803011"
+  },
+  {
+   "id": "teryt1803023",
+   "name": "Pyzdry",
+   "people": 2,
+   "teryt": "1803023"
+  },
+  {
+   "id": "teryt1803033",
+   "name": "Tuczno",
+   "people": 4,
+   "teryt": "1803033"
+  },
+  {
+   "id": "teryt1804",
+   "name": "powiat Sandomierz",
+   "parties": {},
+   "people": 0,
+   "teryt": "1804"
+  },
+  {
+   "id": "teryt1804013",
+   "name": "Rydułtowy",
+   "people": 6,
+   "teryt": "1804013"
+  },
+  {
+   "id": "teryt1804023",
+   "name": "Polanica-Zdrój",
+   "people": 0,
+   "teryt": "1804023"
+  },
+  {
+   "id": "teryt1804033",
+   "name": "Drzewica",
+   "people": 3,
+   "teryt": "1804033"
+  },
+  {
+   "id": "teryt1805",
+   "name": "powiat Uniejów",
+   "parties": {},
+   "people": 0,
+   "teryt": "1805"
+  },
+  {
+   "id": "teryt1805013",
+   "name": "Biecz",
+   "people": 7,
+   "teryt": "1805013"
+  },
+  {
+   "id": "teryt1805023",
+   "name": "Człopa",
+   "people": 0,
+   "teryt": "1805023"
+  },
+  {
+   "id": "teryt1805032",
+   "name": "Sławno",
+   "people": 1,
+   "teryt": "1805032"
+  },
+  {
+   "id": "teryt1806",
+   "name": "powiat Duszniki-Zdrój",
+   "parties": {
+    "Inne": 1
+   },
+   "people": 2,
+   "teryt": "1806"
+  },
+  {
+   "id": "teryt1806013",
+   "name": "Świdnik",
+   "people": 7,
+   "teryt": "1806013"
+  },
+  {
+   "id": "teryt1806022",
+   "name": "Augustów",
+   "people": 0,
+   "teryt": "1806022"
+  },
+  {
+   "id": "teryt1806031",
+   "name": "Podkowa Leśna",
+   "people": 3,
+   "teryt": "1806031"
+  },
+  {
+   "id": "teryt1807",
+   "name": "powiat Złoty Stok",
+   "parties": {
+    "Konfederacja": 4,
+    "PiS": 1
+   },
+   "people": 7,
+   "teryt": "1807"
+  },
+  {
+   "id": "teryt1807012",
+   "name": "Jelenia Góra",
+   "people": 0,
+   "teryt": "1807012"
+  },
+  {
+   "id": "teryt1807022",
+   "name": "Olesno",
+   "people": 3,
+   "teryt": "1807022"
+  },
+  {
+   "id": "teryt1807033",
+   "name": "Ciechanów",
+   "people": 2,
+   "teryt": "1807033"
+  },
+  {
+   "id": "teryt1808",
+   "name": "powiat Starachowice",
+   "parties": {},
+   "people": 0,
+   "teryt": "1808"
+  },
+  {
+   "id": "teryt1808012",
+   "name": "Ząbkowice Śląskie",
+   "people": 0,
+   "teryt": "1808012"
+  },
+  {
+   "id": "teryt1808022",
+   "name": "Proszowice",
+   "people": 0,
+   "teryt": "1808022"
+  },
+  {
+   "id": "teryt1808033",
+   "name": "Chorzów",
+   "people": 3,
+   "teryt": "1808033"
+  },
+  {
+   "id": "teryt1809",
+   "name": "powiat Wschowa",
+   "parties": {},
+   "people": 0,
+   "teryt": "1809"
+  },
+  {
+   "id": "teryt1809013",
+   "name": "Brzeszcze",
+   "people": 1,
+   "teryt": "1809013"
+  },
+  {
+   "id": "teryt1809021",
+   "name": "Sandomierz",
+   "people": 1,
+   "teryt": "1809021"
+  },
+  {
+   "id": "teryt1809031",
+   "name": "Parczew",
+   "people": 3,
+   "teryt": "1809031"
+  },
+  {
+   "id": "teryt1810",
+   "name": "powiat Krapkowice",
+   "parties": {},
+   "people": 0,
+   "teryt": "1810"
+  },
+  {
+   "id": "teryt1810012",
+   "name": "Bobowa",
+   "people": 1,
+   "teryt": "1810012"
+  },
+  {
+   "id": "teryt1810023",
+   "name": "Zielona Góra",
+   "people": 1,
+   "teryt": "1810023"
+  },
+  {
+   "id": "teryt1810033",
+   "name": "Sochaczew",
+   "people": 3,
+   "teryt": "1810033"
+  },
+  {
+   "id": "teryt1811",
+   "name": "powiat Człuchów",
+   "parties": {},
+   "people": 0,
+   "teryt": "1811"
+  },
+  {
+   "id": "teryt1811013",
+   "name": "Białobrzegi",
+   "people": 1,
+   "teryt": "1811013"
+  },
+  {
+   "id": "teryt1811021",
+   "name": "Koprzywnica",
+   "people": 3,
+   "teryt": "1811021"
+  },
+  {
+   "id": "teryt1811032",
+   "name": "Stęszew",
+   "people": 2,
+   "teryt": "1811032"
+  },
+  {
+   "id": "teryt1812",
+   "name": "powiat Rejowiec Fabryczny",
+   "parties": {},
+   "people": 0,
+   "teryt": "1812"
+  },
+  {
+   "id": "teryt1812012",
+   "name": "Kamień Krajeński",
+   "people": 0,
+   "teryt": "1812012"
+  },
+  {
+   "id": "teryt1812023",
+   "name": "Łobżenica",
+   "people": 0,
+   "teryt": "1812023"
+  },
+  {
+   "id": "teryt1812032",
+   "name": "Działoszyce",
+   "people": 1,
+   "teryt": "1812032"
+  },
+  {
+   "id": "teryt1813",
+   "name": "powiat Susz",
+   "parties": {
+    "Inne": 1
+   },
+   "people": 1,
+   "teryt": "1813"
+  },
+  {
+   "id": "teryt1813013",
+   "name": "Grybów",
+   "people": 3,
+   "teryt": "1813013"
+  },
+  {
+   "id": "teryt1813021",
+   "name": "Rawicz",
+   "people": 3,
+   "teryt": "1813021"
+  },
+  {
+   "id": "teryt1813032",
+   "name": "Kamień Krajeński",
+   "people": 1,
+   "teryt": "1813032"
+  },
+  {
+   "id": "teryt1814",
+   "name": "powiat Zakopane",
+   "parties": {},
+   "people": 0,
+   "teryt": "1814"
+  },
+  {
+   "id": "teryt1814011",
+   "name": "Łowicz",
+   "people": 1,
+   "teryt": "1814011"
+  },
+  {
+   "id": "teryt1814023",
+   "name": "Łazy",
+   "people": 3,
+   "teryt": "1814023"
+  },
+  {
+   "id": "teryt1814032",
+   "name": "Lubawka",
+   "people": 1,
+   "teryt": "1814032"
+  },
+  {
+   "id": "teryt1815",
+   "name": "powiat Kamień Pomorski",
+   "parties": {
+    "PO": 1
+   },
+   "people": 3,
+   "teryt": "1815"
+  },
+  {
+   "id": "teryt1815013",
+   "name": "Lwówek",
+   "people": 4,
+   "teryt": "1815013"
+  },
+  {
+   "id": "teryt1815023",
+   "name": "Hrubieszów",
+   "people": 8,
+   "teryt": "1815023"
+  },
+  {
+   "id": "teryt1815031",
+   "name": "Bielsk Podlaski",
+   "people": 11,
+   "teryt": "1815031"
+  },
+  {
+   "id": "teryt1816",
+   "name": "powiat Puck",
+   "parties": {
+    "Konfederacja": 3
+   },
+   "people": 4,
+   "teryt": "1816"
+  },
+  {
+   "id": "teryt1816012",
+   "name": "Tuchola",
+   "people": 3,
+   "teryt": "1816012"
+  },
+  {
+   "id": "teryt1816022",
+   "name": "Zdzieszowice",
+   "people": 3,
+   "teryt": "1816022"
+  },
+  {
+   "id": "teryt1816031",
+   "name": "Tuliszków",
+   "people": 3,
+   "teryt": "1816031"
+  },
+  {
+   "id": "teryt1817",
+   "name": "powiat Strzelce Krajeńskie",
+   "parties": {
+    "Konfederacja": 1
+   },
+   "people": 1,
+   "teryt": "1817"
+  },
+  {
+   "id": "teryt1817013",
+   "name": "Tarnowskie Góry",
+   "people": 0,
+   "teryt": "1817013"
+  },
+  {
+   "id": "teryt1817023",
+   "name": "Poniec",
+   "people": 2,
+   "teryt": "1817023"
+  },
+  {
+   "id": "teryt1817031",
+   "name": "Bielsko-Biała",
+   "people": 3,
+   "teryt": "1817031"
+  },
+  {
+   "id": "teryt1818",
+   "name": "powiat Wodzisław Śląski",
+   "parties": {
+    "Inne": 3,
+    "Konfederacja": 2,
+    "PO": 1,
+    "PSL": 1,
+    "PiS": 1
+   },
+   "people": 9,
+   "teryt": "1818"
+  },
+  {
+   "id": "teryt1818012",
+   "name": "Suwałki",
+   "people": 1,
+   "teryt": "1818012"
+  },
+  {
+   "id": "teryt1818022",
+   "name": "Czarnków",
+   "people": 7,
+   "teryt": "1818022"
+  },
+  {
+   "id": "teryt1818031",
+   "name": "Reszel",
+   "people": 5,
+   "teryt": "1818031"
+  },
+  {
+   "id": "teryt1819",
+   "name": "powiat Łomża",
+   "parties": {},
+   "people": 0,
+   "teryt": "1819"
+  },
+  {
+   "id": "teryt1819011",
+   "name": "Myślenice",
+   "people": 0,
+   "teryt": "1819011"
+  },
+  {
+   "id": "teryt1819021",
+   "name": "Parczew",
+   "people": 3,
+   "teryt": "1819021"
+  },
+  {
+   "id": "teryt1819031",
+   "name": "Swarzędz",
+   "people": 0,
+   "teryt": "1819031"
+  },
+  {
+   "id": "teryt1820",
+   "name": "powiat Kolbuszowa",
+   "parties": {},
+   "people": 0,
+   "teryt": "1820"
+  },
+  {
+   "id": "teryt1820012",
+   "name": "Barczewo",
+   "people": 6,
+   "teryt": "1820012"
+  },
+  {
+   "id": "teryt1820021",
+   "name": "Lipsko",
+   "people": 11,
+   "teryt": "1820021"
+  },
+  {
+   "id": "teryt1820032",
+   "name": "Piła",
+   "people": 13,
+   "teryt": "1820032"
+  },
+  {
+   "id": "teryt20",
+   "name": "woj. łódzkie",
+   "people": 8,
+   "teryt": "20"
+  },
+  {
+   "id": "teryt2001",
+   "name": "powiat Rybnik",
+   "parties": {},
+   "people": 0,
+   "teryt": "2001"
+  },
+  {
+   "id": "teryt2001013",
+   "name": "Strzelno",
+   "people": 3,
+   "teryt": "2001013"
+  },
+  {
+   "id": "teryt2001021",
+   "name": "Mosina",
+   "people": 0,
+   "teryt": "2001021"
+  },
+  {
+   "id": "teryt2001031",
+   "name": "Janowiec Wielkopolski",
+   "people": 2,
+   "teryt": "2001031"
+  },
+  {
+   "id": "teryt2002",
+   "name": "powiat Żarki",
+   "parties": {},
+   "people": 0,
+   "teryt": "2002"
+  },
+  {
+   "id": "teryt2002011",
+   "name": "Nasielsk",
+   "people": 14,
+   "teryt": "2002011"
+  },
+  {
+   "id": "teryt2002022",
+   "name": "Ryn",
+   "people": 0,
+   "teryt": "2002022"
+  },
+  {
+   "id": "teryt2002032",
+   "name": "Baranów Sandomierski",
+   "people": 7,
+   "teryt": "2002032"
+  },
+  {
+   "id": "teryt2003",
+   "name": "powiat Koronowo",
+   "parties": {},
+   "people": 1,
+   "teryt": "2003"
+  },
+  {
+   "id": "teryt2003012",
+   "name": "Chełmno",
+   "people": 0,
+   "teryt": "2003012"
+  },
+  {
+   "id": "teryt2003022",
+   "name": "Bieruń",
+   "people": 5,
+   "teryt": "2003022"
+  },
+  {
+   "id": "teryt2003031",
+   "name": "Lubawa",
+   "people": 2,
+   "teryt": "2003031"
+  },
+  {
+   "id": "teryt2004",
+   "name": "powiat Daleszyce",
+   "parties": {},
+   "people": 0,
+   "teryt": "2004"
+  },
+  {
+   "id": "teryt2004012",
+   "name": "Różan",
+   "people": 2,
+   "teryt": "2004012"
+  },
+  {
+   "id": "teryt2004023",
+   "name": "Goniądz",
+   "people": 4,
+   "teryt": "2004023"
+  },
+  {
+   "id": "teryt2004031",
+   "name": "Chrzanów",
+   "people": 2,
+   "teryt": "2004031"
+  },
+  {
+   "id": "teryt2005",
+   "name": "powiat Prudnik",
+   "parties": {},
+   "people": 0,
+   "teryt": "2005"
+  },
+  {
+   "id": "teryt2005013",
+   "name": "Bielsk Podlaski",
+   "people": 0,
+   "teryt": "2005013"
+  },
+  {
+   "id": "teryt2005023",
+   "name": "Bojanowo",
+   "people": 5,
+   "teryt": "2005023"
+  },
+  {
+   "id": "teryt2005032",
+   "name": "Sanok",
+   "people": 1,
+   "teryt": "2005032"
+  },
+  {
+   "id": "teryt2006",
+   "name": "powiat Twardogóra",
+   "parties": {},
+   "people": 0,
+   "teryt": "2006"
+  },
+  {
+   "id": "teryt2006013",
+   "name": "Szamotuły",
+   "people": 0,
+   "teryt": "2006013"
+  },
+  {
+   "id": "teryt2006022",
+   "name": "Szepietowo",
+   "people": 2,
+   "teryt": "2006022"
+  },
+  {
+   "id": "teryt2006031",
+   "name": "Wąchock",
+   "people": 1,
+   "teryt": "2006031"
+  },
+  {
+   "id": "teryt2007",
+   "name": "powiat Oława",
+   "parties": {
+    "Inne": 1,
+    "Konfederacja": 1,
+    "PO": 1,
+    "PSL": 2
+   },
+   "people": 7,
+   "teryt": "2007"
+  },
+  {
+   "id": "teryt2007013",
+   "name": "Mieszkowice",
+   "people": 1,
+   "teryt": "2007013"
+  },
+  {
+   "id": "teryt2007022",
+   "name": "Nowy Sącz",
+   "people": 0,
+   "teryt": "2007022"
+  },
+  {
+   "id": "teryt2007033",
+   "name": "Bytom",
+   "people": 0,
+   "teryt": "2007033"
+  },
+  {
+   "id": "teryt2008",
+   "name": "powiat Brodnica",
+   "parties": {},
+   "people": 0,
+   "teryt": "2008"
+  },
+  {
+   "id": "teryt2008011",
+   "name": "Dukla",
+   "people": 2,
+   "teryt": "2008011"
+  },
+  {
+   "id": "teryt2008023",
+   "name": "Grójec",
+   "people": 7,
+   "teryt": "2008023"
+  },
+  {
+   "id": "teryt2008033",
+   "name": "Kowary",
+   "people": 0,
+   "teryt": "2008033"
+  },
+  {
+   "id": "teryt2009",
+   "name": "powiat Głogów",
+   "parties": {},
+   "people": 0,
+   "teryt": "2009"
+  },
+  {
+   "id": "teryt2009013",
+   "name": "Pyzdry",
+   "people": 0,
+   "teryt": "2009013"
+  },
+  {
+   "id": "teryt2009022",
+   "name": "Orzesze",
+   "people": 0,
+   "teryt": "2009022"
+  },
+  {
+   "id": "teryt2009033",
+   "name": "Halinów",
+   "people": 1,
+   "teryt": "2009033"
+  },
+  {
+   "id": "teryt2010",
+   "name": "powiat Żuromin",
+   "parties": {},
+   "people": 0,
+   "teryt": "2010"
+  },
+  {
+   "id": "teryt2010013",
+   "name": "Pszów",
+   "people": 7,
+   "teryt": "2010013"
+  },
+  {
+   "id": "teryt2010021",
+   "name": "Rawicz",
+   "people": 2,
+   "teryt": "2010021"
+  },
+  {
+   "id": "teryt2010031",
+   "name": "Bielawa",
+   "people": 12,
+   "teryt": "2010031"
+  },
+  {
+   "id": "teryt2011",
+   "name": "powiat Jedwabne",
+   "parties": {
+    "PO": 3,
+    "PiS": 1
+   },
+   "people": 4,
+   "teryt": "2011"
+  },
+  {
+   "id": "teryt2011012",
+   "name": "Tuliszków",
+   "people": 4,
+   "teryt": "2011012"
+  },
+  {
+   "id": "teryt2011023",
+   "name": "Sławków",
+   "people": 8,
+   "teryt": "2011023"
+  },
+  {
+   "id": "teryt2011032",
+   "name": "Krapkowice",
+   "people": 8,
+   "teryt": "2011032"
+  },
+  {
+   "id": "teryt2012",
+   "name": "powiat Kwidzyn",
+   "parties": {
+    "Konfederacja": 2,
+    "PSL": 1
+   },
+   "people": 3,
+   "teryt": "2012"
+  },
+  {
+   "id": "teryt2012013",
+   "name": "Blachownia",
+   "people": 1,
+   "teryt": "2012013"
+  },
+  {
+   "id": "teryt2012023",
+   "name": "Paczków",
+   "people": 0,
+   "teryt": "2012023"
+  },
+  {
+   "id": "teryt2012032",
+   "name": "Sierpc",
+   "people": 3,
+   "teryt": "2012032"
+  },
+  {
+   "id": "teryt2013",
+   "name": "powiat Murowana Goślina",
+   "parties": {
+    "Inne": 2,
+    "Konfederacja": 1,
+    "PO": 1
+   },
+   "people": 5,
+   "teryt": "2013"
+  },
+  {
+   "id": "teryt2013013",
+   "name": "Węgorzyno",
+   "people": 0,
+   "teryt": "2013013"
+  },
+  {
+   "id": "teryt2013022",
+   "name": "Kańczuga",
+   "people": 0,
+   "teryt": "2013022"
+  },
+  {
+   "id": "teryt2013032",
+   "name": "Wisła",
+   "people": 0,
+   "teryt": "2013032"
+  },
+  {
+   "id": "teryt2014",
+   "name": "powiat Góra Kalwaria",
+   "parties": {},
+   "people": 0,
+   "teryt": "2014"
+  },
+  {
+   "id": "teryt2014012",
+   "name": "Prochowice",
+   "people": 0,
+   "teryt": "2014012"
+  },
+  {
+   "id": "teryt2014023",
+   "name": "Ćmielów",
+   "people": 7,
+   "teryt": "2014023"
+  },
+  {
+   "id": "teryt2014033",
+   "name": "Wieruszów",
+   "people": 6,
+   "teryt": "2014033"
+  },
+  {
+   "id": "teryt2015",
+   "name": "powiat Glinojeck",
+   "parties": {},
+   "people": 1,
+   "teryt": "2015"
+  },
+  {
+   "id": "teryt2015011",
+   "name": "Zgorzelec",
+   "people": 0,
+   "teryt": "2015011"
+  },
+  {
+   "id": "teryt2015021",
+   "name": "Torzym",
+   "people": 2,
+   "teryt": "2015021"
+  },
+  {
+   "id": "teryt2015032",
+   "name": "Jasień",
+   "people": 6,
+   "teryt": "2015032"
+  },
+  {
+   "id": "teryt2016",
+   "name": "powiat Tuszyn",
+   "parties": {},
+   "people": 0,
+   "teryt": "2016"
+  },
+  {
+   "id": "teryt2016012",
+   "name": "Nowe Miasto Lubawskie",
+   "people": 12,
+   "teryt": "2016012"
+  },
+  {
+   "id": "teryt2016022",
+   "name": "Pieniężno",
+   "people": 7,
+   "teryt": "2016022"
+  },
+  {
+   "id": "teryt2016031",
+   "name": "Lipsk",
+   "people": 8,
+   "teryt": "2016031"
+  },
+  {
+   "id": "teryt2017",
+   "name": "powiat Zelów",
+   "parties": {},
+   "people": 0,
+   "teryt": "2017"
+  },
+  {
+   "id": "teryt2017011",
+   "name": "Pyskowice",
+   "people": 0,
+   "teryt": "2017011"
+  },
+  {
+   "id": "teryt2017021",
+   "name": "Strumień",
+   "people": 2,
+   "teryt": "2017021"
+  },
+  {
+   "id": "teryt2017031",
+   "name": "Zelów",
+   "people": 4,
+   "teryt": "2017031"
+  },
+  {
+   "id": "teryt2018",
+   "name": "powiat Międzychód",
+   "parties": {},
+   "people": 0,
+   "teryt": "2018"
+  },
+  {
+   "id": "teryt2018011",
+   "name": "Buk",
+   "people": 0,
+   "teryt": "2018011"
+  },
+  {
+   "id": "teryt2018021",
+   "name": "Nowogard",
+   "people": 0,
+   "teryt": "2018021"
+  },
+  {
+   "id": "teryt2018032",
+   "name": "Środa Wielkopolska",
+   "people": 2,
+   "teryt": "2018032"
+  },
+  {
+   "id": "teryt2019",
+   "name": "powiat Łosice",
+   "parties": {},
+   "people": 0,
+   "teryt": "2019"
+  },
+  {
+   "id": "teryt2019011",
+   "name": "Pogorzela",
+   "people": 6,
+   "teryt": "2019011"
+  },
+  {
+   "id": "teryt2019023",
+   "name": "Dzierżoniów",
+   "people": 0,
+   "teryt": "2019023"
+  },
+  {
+   "id": "teryt2019031",
+   "name": "Biłgoraj",
+   "people": 0,
+   "teryt": "2019031"
+  },
+  {
+   "id": "teryt2020",
+   "name": "powiat Skoczów",
+   "parties": {},
+   "people": 0,
+   "teryt": "2020"
+  },
+  {
+   "id": "teryt2020012",
+   "name": "Mogilno",
+   "people": 1,
+   "teryt": "2020012"
+  },
+  {
+   "id": "teryt2020023",
+   "name": "Szczebrzeszyn",
+   "people": 0,
+   "teryt": "2020023"
+  },
+  {
+   "id": "teryt2020032",
+   "name": "Tuliszków",
+   "people": 0,
+   "teryt": "2020032"
+  },
+  {
+   "id": "teryt22",
+   "name": "woj. lubuskie",
+   "people": 1,
+   "teryt": "22"
+  },
+  {
+   "id": "teryt2201",
+   "name": "powiat Cybinka",
+   "parties": {
+    "Inne": 1,
+    "Konfederacja": 1,
+    "PiS": 2
+   },
+   "people": 9,
+   "teryt": "2201"
+  },
+  {
+   "id": "teryt2201011",
+   "name": "Borne Sulinowo",
+   "people": 8,
+   "teryt": "2201011"
+  },
+  {
+   "id": "teryt2201022",
+   "name": "Września",
+   "people": 8,
+   "teryt": "2201022"
+  },
+  {
+   "id": "teryt2201031",
+   "name": "Czempiń",
+   "people": 2,
+   "teryt": "2201031"
+  },
+  {
+   "id": "teryt2202",
+   "name": "powiat Mieszkowice",
+   "parties": {},
+   "people": 0,
+   "teryt": "2202"
+  },
+  {
+   "id": "teryt2202013",
+   "name": "Koło",
+   "people": 4,
+   "teryt": "2202013"
+  },
+  {
+   "id": "teryt2202022",
+   "name": "Błaszki",
+   "people": 3,
+   "teryt": "2202022"
+  },
+  {
+   "id": "teryt2202031",
+   "name": "Żarki",
+   "people": 2,
+   "teryt": "2202031"
+  },
+  {
+   "id": "teryt2203",
+   "name": "powiat Zbąszyń",
+   "parties": {},
+   "people": 0,
+   "teryt": "2203"
+  },
+  {
+   "id": "teryt2203011",
+   "name": "Zakroczym",
+   "people": 4,
+   "teryt": "2203011"
+  },
+  {
+   "id": "teryt2203022",
+   "name": "Tuliszków",
+   "people": 0,
+   "teryt": "2203022"
+  },
+  {
+   "id": "teryt2203032",
+   "name": "Nowe Miasto nad Pilicą",
+   "people": 1,
+   "teryt": "2203032"
+  },
+  {
+   "id": "teryt2204",
+   "name": "powiat Mysłowice",
+   "parties": {},
+   "people": 0,
+   "teryt": "2204"
+  },
+  {
+   "id": "teryt2204013",
+   "name": "Debrzno",
+   "people": 2,
+   "teryt": "2204013"
+  },
+  {
+   "id": "teryt2204021",
+   "name": "Kobylin",
+   "people": 2,
+   "teryt": "2204021"
+  },
+  {
+   "id": "teryt2204033",
+   "name": "Gorlice",
+   "people": 1,
+   "teryt": "2204033"
+  },
+  {
+   "id": "teryt2205",
+   "name": "powiat Radzyń Chełmiński",
+   "parties": {},
+   "people": 0,
+   "teryt": "2205"
+  },
+  {
+   "id": "teryt2205013",
+   "name": "Chodecz",
+   "people": 2,
+   "teryt": "2205013"
+  },
+  {
+   "id": "teryt2205023",
+   "name": "Miasteczko Śląskie",
+   "people": 0,
+   "teryt": "2205023"
+  },
+  {
+   "id": "teryt2205033",
+   "name": "Gdynia",
+   "people": 5,
+   "teryt": "2205033"
+  },
+  {
+   "id": "teryt2206",
+   "name": "powiat Rudnik nad Sanem",
+   "parties": {},
+   "people": 0,
+   "teryt": "2206"
+  },
+  {
+   "id": "teryt2206013",
+   "name": "Wyśmierzyce",
+   "people": 3,
+   "teryt": "2206013"
+  },
+  {
+   "id": "teryt2206023",
+   "name": "Narol",
+   "people": 3,
+   "teryt": "2206023"
+  },
+  {
+   "id": "teryt2206032",
+   "name": "Turek",
+   "people": 11,
+   "teryt": "2206032"
+  },
+  {
+   "id": "teryt2207",
+   "name": "powiat Oświęcim",
+   "parties": {},
+   "people": 1,
+   "teryt": "2207"
+  },
+  {
+   "id": "teryt2207011",
+   "name": "Wołomin",
+   "people": 1,
+   "teryt": "2207011"
+  },
+  {
+   "id": "teryt2207023",
+   "name": "Rajgród",
+   "people": 3,
+   "teryt": "2207023"
+  },
+  {
+   "id": "teryt2207031",
+   "name": "Pyzdry",
+   "people": 1,
+   "teryt": "2207031"
+  },
+  {
+   "id": "teryt2208",
+   "name": "powiat Lubaczów",
+   "parties": {
+    "PO": 1
+   },
+   "people": 1,
+   "teryt": "2208"
+  },
+  {
+   "id": "teryt2208012",
+   "name": "Ciechanów",
+   "people": 1,
+   "teryt": "2208012"
+  },
+  {
+   "id": "teryt2208022",
+   "name": "Żywiec",
+   "people": 0,
+   "teryt": "2208022"
+  },
+  {
+   "id": "teryt2208031",
+   "name": "Złoczew",
+   "people": 0,
+   "teryt": "2208031"
+  },
+  {
+   "id": "teryt2209",
+   "name": "powiat Lubraniec",
+   "parties": {},
+   "people": 0,
+   "teryt": "2209"
+  },
+  {
+   "id": "teryt2209013",
+   "name": "Sucha Beskidzka",
+   "people": 6,
+   "teryt": "2209013"
+  },
+  {
+   "id": "teryt2209022",
+   "name": "Skórcz",
+   "people": 5,
+   "teryt": "2209022"
+  },
+  {
+   "id": "teryt2209033",
+   "name": "Lubomierz",
+   "people": 0,
+   "teryt": "2209033"
+  },
+  {
+   "id": "teryt2210",
+   "name": "powiat Korsze",
+   "parties": {},
+   "people": 0,
+   "teryt": "2210"
+  },
+  {
+   "id": "teryt2210013",
+   "name": "Szczecinek",
+   "people": 3,
+   "teryt": "2210013"
+  },
+  {
+   "id": "teryt2210023",
+   "name": "Swarzędz",
+   "people": 5,
+   "teryt": "2210023"
+  },
+  {
+   "id": "teryt2210032",
+   "name": "Szlichtyngowa",
+   "people": 0,
+   "teryt": "2210032"
+  },
+  {
+   "id": "teryt2211",
+   "name": "powiat Czechowice-Dziedzice",
+   "parties": {},
+   "people": 1,
+   "teryt": "2211"
+  },
+  {
+   "id": "teryt2211012",
+   "name": "Augustów",
+   "people": 5,
+   "teryt": "2211012"
+  },
+  {
+   "id": "teryt2211021",
+   "name": "Kudowa-Zdrój",
+   "people": 0,
+   "teryt": "2211021"
+  },
+  {
+   "id": "teryt2211032",
+   "name": "Rychwał",
+   "people": 1,
+   "teryt": "2211032"
+  },
+  {
+   "id": "teryt2212",
+   "name": "powiat Lipiany",
+   "parties": {
+    "Konfederacja": 1,
+    "PSL": 1,
+    "PiS": 1
+   },
+   "people": 3,
+   "teryt": "2212"
+  },
+  {
+   "id": "teryt2212012",
+   "name": "Iwonicz-Zdrój",
+   "people": 2,
+   "teryt": "2212012"
+  },
+  {
+   "id": "teryt2212022",
+   "name": "Hajnówka",
+   "people": 6,
+   "teryt": "2212022"
+  },
+  {
+   "id": "teryt2212031",
+   "name": "Pionki",
+   "people": 5,
+   "teryt": "2212031"
+  },
+  {
+   "id": "teryt2213",
+   "name": "powiat Radomyśl Wielki",
+   "parties": {},
+   "people": 0,
+   "teryt": "2213"
+  },
+  {
+   "id": "teryt2213012",
+   "name": "Milanówek",
+   "people": 2,
+   "teryt": "2213012"
+  },
+  {
+   "id": "teryt2213022",
+   "name": "Trzemeszno",
+   "people": 5,
+   "teryt": "2213022"
+  },
+  {
+   "id": "teryt2213032",
+   "name": "Moryń",
+   "people": 4,
+   "teryt": "2213032"
+  },
+  {
+   "id": "teryt2214",
+   "name": "powiat Białogard",
+   "parties": {},
+   "people": 0,
+   "teryt": "2214"
+  },
+  {
+   "id": "teryt2214012",
+   "name": "Lewin Brzeski",
+   "people": 0,
+   "teryt": "2214012"
+  },
+  {
+   "id": "teryt2214022",
+   "name": "Pajęczno",
+   "people": 2,
+   "teryt": "2214022"
+  },
+  {
+   "id": "teryt2214032",
+   "name": "Piwniczna-Zdrój",
+   "people": 4,
+   "teryt": "2214032"
+  },
+  {
+   "id": "teryt2215",
+   "name": "powiat Stary Sącz",
+   "parties": {
+    "Inne": 1
+   },
+   "people": 1,
+   "teryt": "2215"
+  },
+  {
+   "id": "teryt2215013",
+   "name": "Siechnice",
+   "people": 3,
+   "teryt": "2215013"
+  },
+  {
+   "id": "teryt2215023",
+   "name": "Bełżyce",
+   "people": 5,
+   "teryt": "2215023"
+  },
+  {
+   "id": "teryt2215031",
+   "name": "Babimost",
+   "people": 0,
+   "teryt": "2215031"
+  },
+  {
+   "id": "teryt2216",
+   "name": "powiat Przeworsk",
+   "parties": {
+    "Inne": 2,
+    "PiS": 1
+   },
+   "people": 7,
+   "teryt": "2216"
+  },
+  {
+   "id": "teryt2216013",
+   "name": "Janów Lubelski",
+   "people": 2,
+   "teryt": "2216013"
+  },
+  {
+   "id": "teryt2216023",
+   "name": "Brodnica",
+   "people": 0,
+   "teryt": "2216023"
+  },
+  {
+   "id": "teryt2216033",
+   "name": "Krosno",
+   "people": 1,
+   "teryt": "2216033"
+  },
+  {
+   "id": "teryt2217",
+   "name": "powiat Chorzele",
+   "parties": {
+    "Konfederacja": 1
+   },
+   "people": 1,
+   "teryt": "2217"
+  },
+  {
+   "id": "teryt2217012",
+   "name": "Jedlina-Zdrój",
+   "people": 0,
+   "teryt": "2217012"
+  },
+  {
+   "id": "teryt2217021",
+   "name": "Kobylin",
+   "people": 1,
+   "teryt": "2217021"
+  },
+  {
+   "id": "teryt2217033",
+   "name": "Olecko",
+   "people": 0,
+   "teryt": "2217033"
+  },
+  {
+   "id": "teryt2218",
+   "name": "powiat Kolno",
+   "parties": {
+    "PSL": 1,
+    "PiS": 1
+   },
+   "people": 4,
+   "teryt": "2218"
+  },
+  {
+   "id": "teryt2218012",
+   "name": "Sępólno Krajeńskie",
+   "people": 7,
+   "teryt": "2218012"
+  },
+  {
+   "id": "teryt2218021",
+   "name": "Łapy",
+   "people": 3,
+   "teryt": "2218021"
+  },
+  {
+   "id": "teryt2218031",
+   "name": "Głogów",
+   "people": 4,
+   "teryt": "2218031"
+  },
+  {
+   "id": "teryt2219",
+   "name": "powiat Recz",
+   "parties": {},
+   "people": 2,
+   "teryt": "2219"
+  },
+  {
+   "id": "teryt2219011",
+   "name": "Nowy Dwór Mazowiecki",
+   "people": 0,
+   "teryt": "2219011"
+  },
+  {
+   "id": "teryt2219023",
+   "name": "Ciechanów",
+   "people": 5,
+   "teryt": "2219023"
+  },
+  {
+   "id": "teryt2219032",
+   "name": "Jedlina-Zdrój",
+   "people": 1,
+   "teryt": "2219032"
+  },
+  {
+   "id": "teryt2220",
+   "name": "powiat Ząbkowice Śląskie",
+   "parties": {},
+   "people": 0,
+   "teryt": "2220"
+  },
+  {
+   "id": "teryt2220012",
+   "name": "Szczecin",
+   "people": 1,
+   "teryt": "2220012"
+  },
+  {
+   "id": "teryt2220022",
+   "name": "Błonie",
+   "people": 4,
+   "teryt": "2220022"
+  },
+  {
+   "id": "teryt2220032",
+   "name": "Zakopane",
+   "people": 1,
+   "teryt": "2220032"
+  },
+  {
+   "id": "teryt24",
+   "name": "woj. podlaskie",
+   "people": 5,
+   "teryt": "24"
+  },
+  {
+   "id": "teryt2401",
+   "name": "powiat Sztum",
+   "parties": {
+    "Konfederacja": 1,
+    "PO": 2,
+    "PiS": 1
+   },
+   "people": 5,
+   "teryt": "2401"
+  },
+  {
+   "id": "teryt2401013",
+   "name": "Halinów",
+   "people": 0,
+   "teryt": "2401013"
+  },
+  {
+   "id": "teryt2401021",
+   "name": "Płońsk",
+   "people": 0,
+   "teryt": "2401021"
+  },
+  {
+   "id": "teryt2401032",
+   "name": "Świętochłowice",
+   "people": 11,
+   "teryt": "2401032"
+  },
+  {
+   "id": "teryt2402",
+   "name": "powiat Węgorzewo",
+   "parties": {},
+   "people": 0,
+   "teryt": "2402"
+  },
+  {
+   "id": "teryt2402012",
+   "name": "Ińsko",
+   "people": 3,
+   "teryt": "2402012"
+  },
+  {
+   "id": "teryt2402023",
+   "name": "Kamień Pomorski",
+   "people": 0,
+   "teryt": "2402023"
+  },
+  {
+   "id": "teryt2402033",
+   "name": "Łęczyca",
+   "people": 3,
+   "teryt": "2402033"
+  },
+  {
+   "id": "teryt2403",
+   "name": "powiat Radomsko",
+   "parties": {
+    "Inne": 1,
+    "PO": 1
+   },
+   "people": 4,
+   "teryt": "2403"
+  },
+  {
+   "id": "teryt2403011",
+   "name": "Połczyn-Zdrój",
+   "people": 2,
+   "teryt": "2403011"
+  },
+  {
+   "id": "teryt2403022",
+   "name": "Pełczyce",
+   "people": 5,
+   "teryt": "2403022"
+  },
+  {
+   "id": "teryt2403031",
+   "name": "Skoczów",
+   "people": 5,
+   "teryt": "2403031"
+  },
+  {
+   "id": "teryt2404",
+   "name": "powiat Trzebnica",
+   "parties": {
+    "Inne": 1
+   },
+   "people": 2,
+   "teryt": "2404"
+  },
+  {
+   "id": "teryt2404011",
+   "name": "Chodzież",
+   "people": 3,
+   "teryt": "2404011"
+  },
+  {
+   "id": "teryt2404021",
+   "name": "Przecław",
+   "people": 0,
+   "teryt": "2404021"
+  },
+  {
+   "id": "teryt2404032",
+   "name": "Olszyna",
+   "people": 0,
+   "teryt": "2404032"
+  },
+  {
+   "id": "teryt2405",
+   "name": "powiat Iłowa",
+   "parties": {},
+   "people": 0,
+   "teryt": "2405"
+  },
+  {
+   "id": "teryt2405012",
+   "name": "Pieńsk",
+   "people": 4,
+   "teryt": "2405012"
+  },
+  {
+   "id": "teryt2405022",
+   "name": "Żarów",
+   "people": 4,
+   "teryt": "2405022"
+  },
+  {
+   "id": "teryt2405031",
+   "name": "Rybnik",
+   "people": 2,
+   "teryt": "2405031"
+  },
+  {
+   "id": "teryt2406",
+   "name": "powiat Lubomierz",
+   "parties": {},
+   "people": 0,
+   "teryt": "2406"
+  },
+  {
+   "id": "teryt2406012",
+   "name": "Siechnice",
+   "people": 0,
+   "teryt": "2406012"
+  },
+  {
+   "id": "teryt2406023",
+   "name": "Żmigród",
+   "people": 2,
+   "teryt": "2406023"
+  },
+  {
+   "id": "teryt2406031",
+   "name": "Chrzanów",
+   "people": 0,
+   "teryt": "2406031"
+  },
+  {
+   "id": "teryt2407",
+   "name": "powiat Sieraków",
+   "parties": {},
+   "people": 0,
+   "teryt": "2407"
+  },
+  {
+   "id": "teryt2407012",
+   "name": "Kamień Pomorski",
+   "people": 1,
+   "teryt": "2407012"
+  },
+  {
+   "id": "teryt2407021",
+   "name": "Chełm",
+   "people": 2,
+   "teryt": "2407021"
+  },
+  {
+   "id": "teryt2407033",
+   "name": "Gniezno",
+   "people": 5,
+   "teryt": "2407033"
+  },
+  {
+   "id": "teryt2408",
+   "name": "powiat Końskie",
+   "parties": {},
+   "people": 0,
+   "teryt": "2408"
+  },
+  {
+   "id": "teryt2408011",
+   "name": "Krotoszyn",
+   "people": 0,
+   "teryt": "2408011"
+  },
+  {
+   "id": "teryt2408021",
+   "name": "Nowogard",
+   "people": 0,
+   "teryt": "2408021"
+  },
+  {
+   "id": "teryt2408031",
+   "name": "Szamocin",
+   "people": 6,
+   "teryt": "2408031"
+  },
+  {
+   "id": "teryt2409",
+   "name": "powiat Iłża",
+   "parties": {},
+   "people": 0,
+   "teryt": "2409"
+  },
+  {
+   "id": "teryt2409012",
+   "name": "Ulanów",
+   "people": 0,
+   "teryt": "2409012"
+  },
+  {
+   "id": "teryt2409022",
+   "name": "Oborniki",
+   "people": 6,
+   "teryt": "2409022"
+  },
+  {
+   "id": "teryt2409031",
+   "name": "Kościan",
+   "people": 3,
+   "teryt": "2409031"
+  },
+  {
+   "id": "teryt2410",
+   "name": "powiat Radymno",
+   "parties": {},
+   "people": 0,
+   "teryt": "2410"
+  },
+  {
+   "id": "teryt2410013",
+   "name": "Racibórz",
+   "people": 6,
+   "teryt": "2410013"
+  },
+  {
+   "id": "teryt2410022",
+   "name": "Skarszewy",
+   "people": 2,
+   "teryt": "2410022"
+  },
+  {
+   "id": "teryt2410032",
+   "name": "Brodnica",
+   "people": 1,
+   "teryt": "2410032"
+  },
+  {
+   "id": "teryt2411",
+   "name": "powiat Ostrowiec Świętokrzyski",
+   "parties": {
+    "Inne": 1,
+    "PO": 2,
+    "PSL": 1
+   },
+   "people": 5,
+   "teryt": "2411"
+  },
+  {
+   "id": "teryt2411013",
+   "name": "Gąbin",
+   "people": 2,
+   "teryt": "2411013"
+  },
+  {
+   "id": "teryt2411023",
+   "name": "Gorlice",
+   "people": 0,
+   "teryt": "2411023"
+  },
+  {
+   "id": "teryt2411032",
+   "name": "Chojna",
+   "people": 2,
+   "teryt": "2411032"
+  },
+  {
+   "id": "teryt2412",
+   "name": "powiat Mieroszów",
+   "parties": {},
+   "people": 0,
+   "teryt": "2412"
+  },
+  {
+   "id": "teryt2412013",
+   "name": "Krasnobród",
+   "people": 7,
+   "teryt": "2412013"
+  },
+  {
+   "id": "teryt2412022",
+   "name": "Susz",
+   "people": 6,
+   "teryt": "2412022"
+  },
+  {
+   "id": "teryt2412033",
+   "name": "Imielin",
+   "people": 2,
+   "teryt": "2412033"
+  },
+  {
+   "id": "teryt2413",
+   "name": "powiat Lubień Kujawski",
+   "parties": {},
+   "people": 0,
+   "teryt": "2413"
+  },
+  {
+   "id": "teryt2413011",
+   "name": "Żnin",
+   "people": 9,
+   "teryt": "2413011"
+  },
+  {
+   "id": "teryt2413023",
+   "name": "Olesno",
+   "people": 12,
+   "teryt": "2413023"
+  },
+  {
+   "id": "teryt2413033",
+   "name": "Nowogrodziec",
+   "people": 4,
+   "teryt": "2413033"
+  },
+  {
+   "id": "teryt2414",
+   "name": "powiat Połaniec",
+   "parties": {},
+   "people": 0,
+   "teryt": "2414"
+  },
+  {
+   "id": "teryt2414011",
+   "name": "Sompolno",
+   "people": 4,
+   "teryt": "2414011"
+  },
+  {
+   "id": "teryt2414021",
+   "name": "Śrem",
+   "people": 1,
+   "teryt": "2414021"
+  },
+  {
+   "id": "teryt2414033",
+   "name": "Sanok",
+   "people": 3,
+   "teryt": "2414033"
+  },
+  {
+   "id": "teryt2415",
+   "name": "powiat Bieżuń",
+   "parties": {
+    "Konfederacja": 1,
+    "PiS": 2
+   },
+   "people": 3,
+   "teryt": "2415"
+  },
+  {
+   "id": "teryt2415011",
+   "name": "Jordanów",
+   "people": 1,
+   "teryt": "2415011"
+  },
+  {
+   "id": "teryt2415022",
+   "name": "Chełmno",
+   "people": 3,
+   "teryt": "2415022"
+  },
+  {
+   "id": "teryt2415033",
+   "name": "Opole Lubelskie",
+   "people": 0,
+   "teryt": "2415033"
+  },
+  {
+   "id": "teryt2416",
+   "name": "powiat Knurów",
+   "parties": {
+    "Inne": 1
+   },
+   "people": 2,
+   "teryt": "2416"
+  },
+  {
+   "id": "teryt2416012",
+   "name": "Miechów",
+   "people": 3,
+   "teryt": "2416012"
+  },
+  {
+   "id": "teryt2416022",
+   "name": "Nowe Miasto nad Pilicą",
+   "people": 4,
+   "teryt": "2416022"
+  },
+  {
+   "id": "teryt2416033",
+   "name": "Narol",
+   "people": 1,
+   "teryt": "2416033"
+  },
+  {
+   "id": "teryt2417",
+   "name": "powiat Żmigród",
+   "parties": {},
+   "people": 0,
+   "teryt": "2417"
+  },
+  {
+   "id": "teryt2417013",
+   "name": "Gozdnica",
+   "people": 4,
+   "teryt": "2417013"
+  },
+  {
+   "id": "teryt2417023",
+   "name": "Czarne",
+   "people": 6,
+   "teryt": "2417023"
+  },
+  {
+   "id": "teryt2417033",
+   "name": "Lewin Brzeski",
+   "people": 1,
+   "teryt": "2417033"
+  },
+  {
+   "id": "teryt2418",
+   "name": "powiat Ujazd",
+   "parties": {},
+   "people": 0,
+   "teryt": "2418"
+  },
+  {
+   "id": "teryt2418013",
+   "name": "Szczecin",
+   "people": 2,
+   "teryt": "2418013"
+  },
+  {
+   "id": "teryt2418023",
+   "name": "Knurów",
+   "people": 4,
+   "teryt": "2418023"
+  },
+  {
+   "id": "teryt2418031",
+   "name": "Lubniewice",
+   "people": 1,
+   "teryt": "2418031"
+  },
+  {
+   "id": "teryt2419",
+   "name": "powiat Garwolin",
+   "parties": {},
+   "people": 0,
+   "teryt": "2419"
+  },
+  {
+   "id": "teryt2419013",
+   "name": "Krapkowice",
+   "people": 1,
+   "teryt": "2419013"
+  },
+  {
+   "id": "teryt2419023",
+   "name": "Przasnysz",
+   "people": 0,
+   "teryt": "2419023"
+  },
+  {
+   "id": "teryt2419033",
+   "name": "Daleszyce",
+   "people": 5,
+   "teryt": "2419033"
+  },
+  {
+   "id": "teryt2420",
+   "name": "powiat Trzebinia",
+   "parties": {},
+   "people": 0,
+   "teryt": "2420"
+  },
+  {
+   "id": "teryt2420013",
+   "name": "Muszyna",
+   "people": 6,
+   "teryt": "2420013"
+  },
+  {
+   "id": "teryt2420022",
+   "name": "Stary Sącz",
+   "people": 0,
+   "teryt": "2420022"
+  },
+  {
+   "id": "teryt2420031",
+   "name": "Niemodlin",
+   "people": 5,
+   "teryt": "2420031"
+  },
+  {
+   "id": "teryt26",
+   "name": "woj. mazowieckie",
+   "people": 9,
+   "teryt": "26"
+  },
+  {
+   "id": "teryt2601",
+   "name": "powiat Dobra",
+   "parties": {},
+   "people": 0,
+   "teryt": "2601"
+  },
+  {
+   "id": "teryt2601012",
+   "name": "Brzeszcze",
+   "people": 7,
+   "teryt": "2601012"
+  },
+  {
+   "id": "teryt2601021",
+   "name": "Dąbie",
+   "people": 3,
+   "teryt": "2601021"
+  },
+  {
+   "id": "teryt2601033",
+   "name": "Opalenica",
+   "people": 0,
+   "teryt": "2601033"
+  },
+  {
+   "id": "teryt2602",
+   "name": "powiat Zduny",
+   "parties": {},
+   "people": 0,
+   "teryt": "2602"
+  },
+  {
+   "id": "teryt2602012",
+   "name": "Kolno",
+   "people": 3,
+   "teryt": "2602012"
+  },
+  {
+   "id": "teryt2602022",
+   "name": "Małomice",
+   "people": 5,
+   "teryt": "2602022"
+  },
+  {
+   "id": "teryt2602031",
+   "name": "Przasnysz",
+   "people": 0,
+   "teryt": "2602031"
+  },
+  {
+   "id": "teryt2603",
+   "name": "powiat Grodków",
+   "parties": {},
+   "people": 0,
+   "teryt": "2603"
+  },
+  {
+   "id": "teryt2603012",
+   "name": "Pszów",
+   "people": 2,
+   "teryt": "2603012"
+  },
+  {
+   "id": "teryt2603021",
+   "name": "Brok",
+   "people": 2,
+   "teryt": "2603021"
+  },
+  {
+   "id": "teryt2603033",
+   "name": "Mikołajki",
+   "people": 0,
+   "teryt": "2603033"
+  },
+  {
+   "id": "teryt2604",
+   "name": "powiat Braniewo",
+   "parties": {},
+   "people": 0,
+   "teryt": "2604"
+  },
+  {
+   "id": "teryt2604013",
+   "name": "Braniewo",
+   "people": 1,
+   "teryt": "2604013"
+  },
+  {
+   "id": "teryt2604023",
+   "name": "Żabno",
+   "people": 3,
+   "teryt": "2604023"
+  },
+  {
+   "id": "teryt2604031",
+   "name": "Dęblin",
+   "people": 9,
+   "teryt": "2604031"
+  },
+  {
+   "id": "teryt2605",
+   "name": "powiat Czeladź",
+   "parties": {},
+   "people": 0,
+   "teryt": "2605"
+  },
+  {
+   "id": "teryt2605011",
+   "name": "Chorzele",
+   "people": 4,
+   "teryt": "2605011"
+  },
+  {
+   "id": "teryt2605023",
+   "name": "Brusy",
+   "people": 0,
+   "teryt": "2605023"
+  },
+  {
+   "id": "teryt2605032",
+   "name": "Żychlin",
+   "people": 5,
+   "teryt": "2605032"
+  },
+  {
+   "id": "teryt2606",
+   "name": "powiat Szczytno",
+   "parties": {},
+   "people": 0,
+   "teryt": "2606"
+  },
+  {
+   "id": "teryt2606012",
+   "name": "Knyszyn",
+   "people": 1,
+   "teryt": "2606012"
+  },
+  {
+   "id": "teryt2606022",
+   "name": "Nowy Staw",
+   "people": 0,
+   "teryt": "2606022"
+  },
+  {
+   "id": "teryt2606032",
+   "name": "Czyżew",
+   "people": 5,
+   "teryt": "2606032"
+  },
+  {
+   "id": "teryt2607",
+   "name": "powiat Wałbrzych",
+   "parties": {},
+   "people": 0,
+   "teryt": "2607"
+  },
+  {
+   "id": "teryt2607012",
+   "name": "Goleniów",
+   "people": 7,
+   "teryt": "2607012"
+  },
+  {
+   "id": "teryt2607022",
+   "name": "Łasin",
+   "people": 0,
+   "teryt": "2607022"
+  },
+  {
+   "id": "teryt2607033",
+   "name": "Skawina",
+   "people": 2,
+   "teryt": "2607033"
+  },
+  {
+   "id": "teryt2608",
+   "name": "powiat Stąporków",
+   "parties": {
+    "Konfederacja": 1,
+    "PSL": 1
+   },
+   "people": 5,
+   "teryt": "2608"
+  },
+  {
+   "id": "teryt2608011",
+   "name": "Łaskarzew",
+   "people": 2,
+   "teryt": "2608011"
+  },
+  {
+   "id": "teryt2608022",
+   "name": "Będzin",
+   "people": 6,
+   "teryt": "2608022"
+  },
+  {
+   "id": "teryt2608031",
+   "name": "Stalowa Wola",
+   "people": 3,
+   "teryt": "2608031"
+  },
+  {
+   "id": "teryt2609",
+   "name": "powiat Dąbrowa Górnicza",
+   "parties": {},
+   "people": 0,
+   "teryt": "2609"
+  },
+  {
+   "id": "teryt2609012",
+   "name": "Grajewo",
+   "people": 2,
+   "teryt": "2609012"
+  },
+  {
+   "id": "teryt2609021",
+   "name": "Janikowo",
+   "people": 0,
+   "teryt": "2609021"
+  },
+  {
+   "id": "teryt2609033",
+   "name": "Szamotuły",
+   "people": 1,
+   "teryt": "2609033"
+  },
+  {
+   "id": "teryt2610",
+   "name": "powiat Zawidów",
+   "parties": {},
+   "people": 0,
+   "teryt": "2610"
+  },
+  {
+   "id": "teryt2610012",
+   "name": "Cieszyn",
+   "people": 0,
+   "teryt": "2610012"
+  },
+  {
+   "id": "teryt2610022",
+   "name": "Międzychód",
+   "people": 3,
+   "teryt": "2610022"
+  },
+  {
+   "id": "teryt2610033",
+   "name": "Chojnice",
+   "people": 0,
+   "teryt": "2610033"
+  },
+  {
+   "id": "teryt2611",
+   "name": "powiat Mysłowice",
+   "parties": {},
+   "people": 0,
+   "teryt": "2611"
+  },
+  {
+   "id": "teryt2611011",
+   "name": "Korfantów",
+   "people": 2,
+   "teryt": "2611011"
+  },
+  {
+   "id": "teryt2611023",
+   "name": "Mońki",
+   "people": 4,
+   "teryt": "2611023"
+  },
+  {
+   "id": "teryt2611032",
+   "name": "Lubań",
+   "people": 5,
+   "teryt": "2611032"
+  },
+  {
+   "id": "teryt2612",
+   "name": "powiat Mikołajki",
+   "parties": {
+    "Inne": 1
+   },
+   "people": 1,
+   "teryt": "2612"
+  },
+  {
+   "id": "teryt2612013",
+   "name": "Wasilków",
+   "people": 0,
+   "teryt": "2612013"
+  },
+  {
+   "id": "teryt2612023",
+   "name": "Sulechów",
+   "people": 9,
+   "teryt": "2612023"
+  },
+  {
+   "id": "teryt2612031",
+   "name": "Ropczyce",
+   "people": 0,
+   "teryt": "2612031"
+  },
+  {
+   "id": "teryt2613",
+   "name": "powiat Malbork",
+   "parties": {},
+   "people": 0,
+   "teryt": "2613"
+  },
+  {
+   "id": "teryt2613011",
+   "name": "Świnoujście",
+   "people": 2,
+   "teryt": "2613011"
+  },
+  {
+   "id": "teryt2613021",
+   "name": "Węgorzyno",
+   "people": 4,
+   "teryt": "2613021"
+  },
+  {
+   "id": "teryt2613032",
+   "name": "Prusice",
+   "people": 3,
+   "teryt": "2613032"
+  },
+  {
+   "id": "teryt2614",
+   "name": "powiat Rabka-Zdrój",
+   "parties": {},
+   "people": 0,
+   "teryt": "2614"
+  },
+  {
+   "id": "teryt2614013",
+   "name": "Prudnik",
+   "people": 2,
+   "teryt": "2614013"
+  },
+  {
+   "id": "teryt2614022",
+   "name": "Brzesko",
+   "people": 0,
+   "teryt": "2614022"
+  },
+  {
+   "id": "teryt2614032",
+   "name": "Dobrzyń nad Wisłą",
+   "people": 1,
+   "teryt": "2614032"
+  },
+  {
+   "id": "teryt2615",
+   "name": "powiat Skoki",
+   "parties": {},
+   "people": 0,
+   "teryt": "2615"
+  },
+  {
+   "id": "teryt2615012",
+   "name": "Rawicz",
+   "people": 2,
+   "teryt": "2615012"
+  },
+  {
+   "id": "teryt2615021",
+   "name": "Cedynia",
+   "people": 5,
+   "teryt": "2615021"
+  },
+  {
+   "id": "teryt2615033",
+   "name": "Brzozów",
+   "people": 0,
+   "teryt": "2615033"
+  },
+  {
+   "id": "teryt2616",
+   "name": "powiat Brzostek",
+   "parties": {},
+   "people": 0,
+   "teryt": "2616"
+  },
+  {
+   "id": "teryt2616011",
+   "name": "Zator",
+   "people": 4,
+   "teryt": "2616011"
+  },
+  {
+   "id": "teryt2616023",
+   "name": "Krośniewice",
+   "people": 1,
+   "teryt": "2616023"
+  },
+  {
+   "id": "teryt2616031",
+   "name": "Kraśnik",
+   "people": 0,
+   "teryt": "2616031"
+  },
+  {
+   "id": "teryt2617",
+   "name": "powiat Stryków",
+   "parties": {},
+   "people": 0,
+   "teryt": "2617"
+  },
+  {
+   "id": "teryt2617012",
+   "name": "Głowno",
+   "people": 1,
+   "teryt": "2617012"
+  },
+  {
+   "id": "teryt2617021",
+   "name": "Chojnów",
+   "people": 1,
+   "teryt": "2617021"
+  },
+  {
+   "id": "teryt2617032",
+   "name": "Stary Sącz",
+   "people": 0,
+   "teryt": "2617032"
+  },
+  {
+   "id": "teryt2618",
+   "name": "powiat Jutrosin",
+   "parties": {},
+   "people": 0,
+   "teryt": "2618"
+  },
+  {
+   "id": "teryt2618011",
+   "name": "Bytom Odrzański",
+   "people": 0,
+   "teryt": "2618011"
+  },
+  {
+   "id": "teryt2618023",
+   "name": "Kietrz",
+   "people": 0,
+   "teryt": "2618023"
+  },
+  {
+   "id": "teryt2618033",
+   "name": "Połczyn-Zdrój",
+   "people": 4,
+   "teryt": "2618033"
+  },
+  {
+   "id": "teryt2619",
+   "name": "powiat Lębork",
+   "parties": {},
+   "people": 0,
+   "teryt": "2619"
+  },
+  {
+   "id": "teryt2619011",
+   "name": "Czeladź",
+   "people": 3,
+   "teryt": "2619011"
+  },
+  {
+   "id": "teryt2619022",
+   "name": "Stryków",
+   "people": 8,
+   "teryt": "2619022"
+  },
+  {
+   "id": "teryt2619032",
+   "name": "Nowy Wiśnicz",
+   "people": 7,
+   "teryt": "2619032"
+  },
+  {
+   "id": "teryt2620",
+   "name": "powiat Błażowa",
+   "parties": {},
+   "people": 0,
+   "teryt": "2620"
+  },
+  {
+   "id": "teryt2620013",
+   "name": "Syców",
+   "people": 0,
+   "teryt": "2620013"
+  },
+  {
+   "id": "teryt2620021",
+   "name": "Złotów",
+   "people": 0,
+   "teryt": "2620021"
+  },
+  {
+   "id": "teryt2620032",
+   "name": "Parczew",
+   "people": 6,
+   "teryt": "2620032"
+  },
+  {
+   "id": "teryt28",
+   "name": "woj. śląskie",
+   "people": 7,
+   "teryt": "28"
+  },
+  {
+   "id": "teryt2801",
+   "name": "powiat Szczyrk",
+   "parties": {},
+   "people": 0,
+   "teryt": "2801"
+  },
+  {
+   "id": "teryt2801012",
+   "name": "Człopa",
+   "people": 0,
+   "teryt": "2801012"
+  },
+  {
+   "id": "teryt2801022",
+   "name": "Wolin",
+   "people": 1,
+   "teryt": "2801022"
+  },
+  {
+   "id": "teryt2801031",
+   "name": "Lądek-Zdrój",
+   "people": 2,
+   "teryt": "2801031"
+  },
+  {
+   "id": "teryt2802",
+   "name": "powiat Łowicz",
+   "parties": {},
+   "people": 0,
+   "teryt": "2802"
+  },
+  {
+   "id": "teryt2802012",
+   "name": "Pniewy",
+   "people": 5,
+   "teryt": "2802012"
+  },
+  {
+   "id": "teryt2802023",
+   "name": "Janikowo",
+   "people": 0,
+   "teryt": "2802023"
+  },
+  {
+   "id": "teryt2802031",
+   "name": "Golub-Dobrzyń",
+   "people": 2,
+   "teryt": "2802031"
+  },
+  {
+   "id": "teryt2803",
+   "name": "powiat Wałbrzych",
+   "parties": {},
+   "people": 0,
+   "teryt": "2803"
+  },
+  {
+   "id": "teryt2803012",
+   "name": "Kąty Wrocławskie",
+   "people": 3,
+   "teryt": "2803012"
+  },
+  {
+   "id": "teryt2803023",
+   "name": "Trzebinia",
+   "people": 2,
+   "teryt": "2803023"
+  },
+  {
+   "id": "teryt2803033",
+   "name": "Włodawa",
+   "people": 1,
+   "teryt": "2803033"
+  },
+  {
+   "id": "teryt2804",
+   "name": "powiat Jawor",
+   "parties": {
+    "PiS": 1
+   },
+   "people": 2,
+   "teryt": "2804"
+  },
+  {
+   "id": "teryt2804013",
+   "name": "Mikołów",
+   "people": 0,
+   "teryt": "2804013"
+  },
+  {
+   "id": "teryt2804023",
+   "name": "Skała",
+   "people": 0,
+   "teryt": "2804023"
+  },
+  {
+   "id": "teryt2804033",
+   "name": "Pyrzyce",
+   "people": 3,
+   "teryt": "2804033"
+  },
+  {
+   "id": "teryt2805",
+   "name": "powiat Gdynia",
+   "parties": {},
+   "people": 0,
+   "teryt": "2805"
+  },
+  {
+   "id": "teryt2805012",
+   "name": "Żagań",
+   "people": 0,
+   "teryt": "2805012"
+  },
+  {
+   "id": "teryt2805023",
+   "name": "Błonie",
+   "people": 0,
+   "teryt": "2805023"
+  },
+  {
+   "id": "teryt2805031",
+   "name": "Ćmielów",
+   "people": 6,
+   "teryt": "2805031"
+  },
+  {
+   "id": "teryt2806",
+   "name": "powiat Sierpc",
+   "parties": {},
+   "people": 0,
+   "teryt": "2806"
+  },
+  {
+   "id": "teryt2806013",
+   "name": "Grabów nad Prosną",
+   "people": 0,
+   "teryt": "2806013"
+  },
+  {
+   "id": "teryt2806022",
+   "name": "Świnoujście",
+   "people": 2,
+   "teryt": "2806022"
+  },
+  {
+   "id": "teryt2806033",
+   "name": "Oleśnica",
+   "people": 0,
+   "teryt": "2806033"
+  },
+  {
+   "id": "teryt2807",
+   "name": "powiat Piastów",
+   "parties": {
+    "PO": 1,
+    "PSL": 1
+   },
+   "people": 3,
+   "teryt": "2807"
+  },
+  {
+   "id": "teryt2807012",
+   "name": "Kleczew",
+   "people": 1,
+   "teryt": "2807012"
+  },
+  {
+   "id": "teryt2807022",
+   "name": "Różan",
+   "people": 0,
+   "teryt": "2807022"
+  },
+  {
+   "id": "teryt2807033",
+   "name": "Prudnik",
+   "people": 2,
+   "teryt": "2807033"
+  },
+  {
+   "id": "teryt2808",
+   "name": "powiat Starachowice",
+   "parties": {
+    "Inne": 2,
+    "Konfederacja": 1,
+    "PO": 1
+   },
+   "people": 5,
+   "teryt": "2808"
+  },
+  {
+   "id": "teryt2808011",
+   "name": "Mikstat",
+   "people": 5,
+   "teryt": "2808011"
+  },
+  {
+   "id": "teryt2808021",
+   "name": "Jasień",
+   "people": 2,
+   "teryt": "2808021"
+  },
+  {
+   "id": "teryt2808033",
+   "name": "Żmigród",
+   "people": 2,
+   "teryt": "2808033"
+  },
+  {
+   "id": "teryt2809",
+   "name": "powiat Chojnów",
+   "parties": {
+    "Konfederacja": 1,
+    "PSL": 2
+   },
+   "people": 4,
+   "teryt": "2809"
+  },
+  {
+   "id": "teryt2809012",
+   "name": "Szadek",
+   "people": 0,
+   "teryt": "2809012"
+  },
+  {
+   "id": "teryt2809021",
+   "name": "Orneta",
+   "people": 4,
+   "teryt": "2809021"
+  },
+  {
+   "id": "teryt2809033",
+   "name": "Podkowa Leśna",
+   "people": 0,
+   "teryt": "2809033"
+  },
+  {
+   "id": "teryt2810",
+   "name": "powiat Głuszyca",
+   "parties": {
+    "PO": 1,
+    "PiS": 1
+   },
+   "people": 3,
+   "teryt": "2810"
+  },
+  {
+   "id": "teryt2810012",
+   "name": "Suchedniów",
+   "people": 0,
+   "teryt": "2810012"
+  },
+  {
+   "id": "teryt2810022",
+   "name": "Annopol",
+   "people": 1,
+   "teryt": "2810022"
+  },
+  {
+   "id": "teryt2810033",
+   "name": "Bierutów",
+   "people": 1,
+   "teryt": "2810033"
+  },
+  {
+   "id": "teryt2811",
+   "name": "powiat Słubice",
+   "parties": {},
+   "people": 0,
+   "teryt": "2811"
+  },
+  {
+   "id": "teryt2811011",
+   "name": "Zawichost",
+   "people": 4,
+   "teryt": "2811011"
+  },
+  {
+   "id": "teryt2811022",
+   "name": "Korsze",
+   "people": 2,
+   "teryt": "2811022"
+  },
+  {
+   "id": "teryt2811031",
+   "name": "Knurów",
+   "people": 2,
+   "teryt": "2811031"
+  },
+  {
+   "id": "teryt2812",
+   "name": "powiat Tyszowce",
+   "parties": {
+    "PO": 1
+   },
+   "people": 1,
+   "teryt": "2812"
+  },
+  {
+   "id": "teryt2812013",
+   "name": "Kunów",
+   "people": 0,
+   "teryt": "2812013"
+  },
+  {
+   "id": "teryt2812022",
+   "name": "Sieniawa",
+   "people": 1,
+   "teryt": "2812022"
+  },
+  {
+   "id": "teryt2812033",
+   "name": "Pieniężno",
+   "people": 6,
+   "teryt": "2812033"
+  },
+  {
+   "id": "teryt2813",
+   "name": "powiat Lipsk",
+   "parties": {},
+   "people": 0,
+   "teryt": "2813"
+  },
+  {
+   "id": "teryt2813012",
+   "name": "Rychwał",
+   "people": 0,
+   "teryt": "2813012"
+  },
+  {
+   "id": "teryt2813021",
+   "name": "Polanów",
+   "people": 3,
+   "teryt": "2813021"
+  },
+  {
+   "id": "teryt2813032",
+   "name": "Suraż",
+   "people": 0,
+   "teryt": "2813032"
+  },
+  {
+   "id": "teryt2814",
+   "name": "powiat Chociwel",
+   "parties": {
+    "Inne": 1,
+    "PSL": 1,
+    "PiS": 1
+   },
+   "people": 6,
+   "teryt": "2814"
+  },
+  {
+   "id": "teryt2814012",
+   "name": "Mosina",
+   "people": 4,
+   "teryt": "2814012"
+  },
+  {
+   "id": "teryt2814022",
+   "name": "Brzeg",
+   "people": 7,
+   "teryt": "2814022"
+  },
+  {
+   "id": "teryt2814032",
+   "name": "Ostroróg",
+   "people": 1,
+   "teryt": "2814032"
+  },
+  {
+   "id": "teryt2815",
+   "name": "powiat Ostrołęka",
+   "parties": {},
+   "people": 0,
+   "teryt": "2815"
+  },
+  {
+   "id": "teryt2815012",
+   "name": "Rajgród",
+   "people": 6,
+   "teryt": "2815012"
+  },
+  {
+   "id": "teryt2815023",
+   "name": "Kalwaria Zebrzydowska",
+   "people": 1,
+   "teryt": "2815023"
+  },
+  {
+   "id": "teryt2815033",
+   "name": "Nasielsk",
+   "people": 0,
+   "teryt": "2815033"
+  },
+  {
+   "id": "teryt2816",
+   "name": "powiat Bychawa",
+   "parties": {
+    "Inne": 2,
+    "PO": 1
+   },
+   "people": 4,
+   "teryt": "2816"
+  },
+  {
+   "id": "teryt2816011",
+   "name": "Kościerzyna",
+   "people": 0,
+   "teryt": "2816011"
+  },
+  {
+   "id": "teryt2816023",
+   "name": "Sandomierz",
+   "people": 1,
+   "teryt": "2816023"
+  },
+  {
+   "id": "teryt2816033",
+   "name": "Nowe Skalmierzyce",
+   "people": 2,
+   "teryt": "2816033"
+  },
+  {
+   "id": "teryt2817",
+   "name": "powiat Małomice",
+   "parties": {},
+   "people": 0,
+   "teryt": "2817"
+  },
+  {
+   "id": "teryt2817011",
+   "name": "Kosów Lacki",
+   "people": 7,
+   "teryt": "2817011"
+  },
+  {
+   "id": "teryt2817022",
+   "name": "Chełmża",
+   "people": 0,
+   "teryt": "2817022"
+  },
+  {
+   "id": "teryt2817031",
+   "name": "Pilica",
+   "people": 0,
+   "teryt": "2817031"
+  },
+  {
+   "id": "teryt2818",
+   "name": "powiat Skierniewice",
+   "parties": {},
+   "people": 0,
+   "teryt": "2818"
+  },
+  {
+   "id": "teryt2818013",
+   "name": "Woźniki",
+   "people": 0,
+   "teryt": "2818013"
+  },
+  {
+   "id": "teryt2818022",
+   "name": "Łeba",
+   "people": 0,
+   "teryt": "2818022"
+  },
+  {
+   "id": "teryt2818032",
+   "name": "Suchowola",
+   "people": 1,
+   "teryt": "2818032"
+  },
+  {
+   "id": "teryt2819",
+   "name": "powiat Czchów",
+   "parties": {
+    "Inne": 1
+   },
+   "people": 1,
+   "teryt": "2819"
+  },
+  {
+   "id": "teryt2819012",
+   "name": "Świętochłowice",
+   "people": 2,
+   "teryt": "2819012"
+  },
+  {
+   "id": "teryt2819022",
+   "name": "Otwock",
+   "people": 2,
+   "teryt": "2819022"
+  },
+  {
+   "id": "teryt2819032",
+   "name": "Głowno",
+   "people": 4,
+   "teryt": "2819032"
+  },
+  {
+   "id": "teryt2820",
+   "name": "powiat Krzeszowice",
+   "parties": {
+    "Konfederacja": 1
+   },
+   "people": 2,
+   "teryt": "2820"
+  },
+  {
+   "id": "teryt2820012",
+   "name": "Białogard",
+   "people": 0,
+   "teryt": "2820012"
+  },
+  {
+   "id": "teryt2820021",
+   "name": "Świdnik",
+   "people": 0,
+   "teryt": "2820021"
+  },
+  {
+   "id": "teryt2820031",
+   "name": "Nowe Warpno",
+   "people": 2,
+   "teryt": "2820031"
+  },
+  {
+   "id": "teryt30",
+   "name": "woj. łódzkie",
+   "people": 3,
+   "teryt": "30"
+  },
+  {
+   "id": "teryt3001",
+   "name": "powiat Wysokie Mazowieckie",
+   "parties": {},
+   "people": 1,
+   "teryt": "3001"
+  },
+  {
+   "id": "teryt3001011",
+   "name": "Łomża",
+   "people": 4,
+   "teryt": "3001011"
+  },
+  {
+   "id": "teryt3001023",
+   "name": "Tarczyn",
+   "people": 2,
+   "teryt": "3001023"
+  },
+  {
+   "id": "teryt3001031",
+   "name": "Szczawnica",
+   "people": 0,
+   "teryt": "3001031"
+  },
+  {
+   "id": "teryt3002",
+   "name": "powiat Międzyzdroje",
+   "parties": {
+    "PiS": 2
+   },
+   "people": 5,
+   "teryt": "3002"
+  },
+  {
+   "id": "teryt3002012",
+   "name": "Daleszyce",
+   "people": 2,
+   "teryt": "3002012"
+  },
+  {
+   "id": "teryt3002021",
+   "name": "Skalbmierz",
+   "people": 0,
+   "teryt": "3002021"
+  },
+  {
+   "id": "teryt3002032",
+   "name": "Maków Podhalański",
+   "people": 3,
+   "teryt": "3002032"
+  },
+  {
+   "id": "teryt3003",
+   "name": "powiat Skała",
+   "parties": {},
+   "people": 1,
+   "teryt": "3003"
+  },
+  {
+   "id": "teryt3003013",
+   "name": "Drzewica",
+   "people": 0,
+   "teryt": "3003013"
+  },
+  {
+   "id": "teryt3003022",
+   "name": "Dąbie",
+   "people": 3,
+   "teryt": "3003022"
+  },
+  {
+   "id": "teryt3003033",
+   "name": "Pyskowice",
+   "people": 2,
+   "teryt": "3003033"
+  },
+  {
+   "id": "teryt3004",
+   "name": "powiat Zator",
+   "parties": {},
+   "people": 0,
+   "teryt": "3004"
+  },
+  {
+   "id": "teryt3004011",
+   "name": "Borne Sulinowo",
+   "people": 3,
+   "teryt": "3004011"
+  },
+  {
+   "id": "teryt3004021",
+   "name": "Jędrzejów",
+   "people": 5,
+   "teryt": "3004021"
+  },
+  {
+   "id": "teryt3004031",
+   "name": "Wieliczka",
+   "people": 5,
+   "teryt": "3004031"
+  },
+  {
+   "id": "teryt3005",
+   "name": "powiat Jastrowie",
+   "parties": {},
+   "people": 0,
+   "teryt": "3005"
+  },
+  {
+   "id": "teryt3005011",
+   "name": "Stalowa Wola",
+   "people": 0,
+   "teryt": "3005011"
+  },
+  {
+   "id": "teryt3005022",
+   "name": "Strzelce Krajeńskie",
+   "people": 2,
+   "teryt": "3005022"
+  },
+  {
+   "id": "teryt3005031",
+   "name": "Muszyna",
+   "people": 3,
+   "teryt": "3005031"
+  },
+  {
+   "id": "teryt3006",
+   "name": "powiat Bieruń",
+   "parties": {},
+   "people": 0,
+   "teryt": "3006"
+  },
+  {
+   "id": "teryt3006011",
+   "name": "Wieliczka",
+   "people": 3,
+   "teryt": "3006011"
+  },
+  {
+   "id": "teryt3006021",
+   "name": "Oborniki",
+   "people": 1,
+   "teryt": "3006021"
+  },
+  {
+   "id": "teryt3006032",
+   "name": "Krasnobród",
+   "people": 0,
+   "teryt": "3006032"
+  },
+  {
+   "id": "teryt3007",
+   "name": "powiat Węgorzewo",
+   "parties": {},
+   "people": 0,
+   "teryt": "3007"
+  },
+  {
+   "id": "teryt3007011",
+   "name": "Radlin",
+   "people": 1,
+   "teryt": "3007011"
+  },
+  {
+   "id": "teryt3007023",
+   "name": "Ostrołęka",
+   "people": 9,
+   "teryt": "3007023"
+  },
+  {
+   "id": "teryt3007033",
+   "name": "Bojanowo",
+   "people": 0,
+   "teryt": "3007033"
+  },
+  {
+   "id": "teryt3008",
+   "name": "powiat Łaziska Górne",
+   "parties": {},
+   "people": 0,
+   "teryt": "3008"
+  },
+  {
+   "id": "teryt3008011",
+   "name": "Skaryszew",
+   "people": 0,
+   "teryt": "3008011"
+  },
+  {
+   "id": "teryt3008023",
+   "name": "Jedlina-Zdrój",
+   "people": 5,
+   "teryt": "3008023"
+  },
+  {
+   "id": "teryt3008032",
+   "name": "Gołańcz",
+   "people": 1,
+   "teryt": "3008032"
+  },
+  {
+   "id": "teryt3009",
+   "name": "powiat Ostrów Mazowiecka",
+   "parties": {},
+   "people": 0,
+   "teryt": "3009"
+  },
+  {
+   "id": "teryt3009012",
+   "name": "Zgorzelec",
+   "people": 1,
+   "teryt": "3009012"
+  },
+  {
+   "id": "teryt3009022",
+   "name": "Kraśnik",
+   "people": 3,
+   "teryt": "3009022"
+  },
+  {
+   "id": "teryt3009031",
+   "name": "Dolsk",
+   "people": 4,
+   "teryt": "3009031"
+  },
+  {
+   "id": "teryt3010",
+   "name": "powiat Gubin",
+   "parties": {},
+   "people": 0,
+   "teryt": "3010"
+  },
+  {
+   "id": "teryt3010011",
+   "name": "Tolkmicko",
+   "people": 0,
+   "teryt": "3010011"
+  },
+  {
+   "id": "teryt3010022",
+   "name": "Nowy Dwór Gdański",
+   "people": 8,
+   "teryt": "3010022"
+  },
+  {
+   "id": "teryt3010031",
+   "name": "Trzebiatów",
+   "people": 5,
+   "teryt": "3010031"
+  },
+  {
+   "id": "teryt3011",
+   "name": "powiat Sieniawa",
+   "parties": {
+    "PSL": 1,
+    "PiS": 1
+   },
+   "people": 5,
+   "teryt": "3011"
+  },
+  {
+   "id": "teryt3011011",
+   "name": "Sandomierz",
+   "people": 7,
+   "teryt": "3011011"
+  },
+  {
+   "id": "teryt3011022",
+   "name": "Bytom Odrzański",
+   "people": 0,
+   "teryt": "3011022"
+  },
+  {
+   "id": "teryt3011032",
+   "name": "Mszczonów",
+   "people": 0,
+   "teryt": "3011032"
+  },
+  {
+   "id": "teryt3012",
+   "name": "powiat Dzierzgoń",
+   "parties": {},
+   "people": 0,
+   "teryt": "3012"
+  },
+  {
+   "id": "teryt3012013",
+   "name": "Tolkmicko",
+   "people": 3,
+   "teryt": "3012013"
+  },
+  {
+   "id": "teryt3012023",
+   "name": "Mikstat",
+   "people": 2,
+   "teryt": "3012023"
+  },
+  {
+   "id": "teryt3012032",
+   "name": "Pszów",
+   "people": 0,
+   "teryt": "3012032"
+  },
+  {
+   "id": "teryt3013",
+   "name": "powiat Olsztynek",
+   "parties": {},
+   "people": 0,
+   "teryt": "3013"
+  },
+  {
+   "id": "teryt3013011",
+   "name": "Nowe Brzesko",
+   "people": 4,
+   "teryt": "3013011"
+  },
+  {
+   "id": "teryt3013023",
+   "name": "Mikołajki",
+   "people": 4,
+   "teryt": "3013023"
+  },
+  {
+   "id": "teryt3013031",
+   "name": "Sulechów",
+   "people": 4,
+   "teryt": "3013031"
+  },
+  {
+   "id": "teryt3014",
+   "name": "powiat Gorlice",
+   "parties": {
+    "Konfederacja": 2
+   },
+   "people": 3,
+   "teryt": "3014"
+  },
+  {
+   "id": "teryt3014011",
+   "name": "Działoszyn",
+   "people": 6,
+   "teryt": "3014011"
+  },
+  {
+   "id": "teryt3014021",
+   "name": "Sopot",
+   "people": 0,
+   "teryt": "3014021"
+  },
+  {
+   "id": "teryt3014032",
+   "name": "Gostynin",
+   "people": 1,
+   "teryt": "3014032"
+  },
+  {
+   "id": "teryt3015",
+   "name": "powiat Ujazd",
+   "parties": {
+    "Inne": 1,
+    "PiS": 1
+   },
+   "people": 3,
+   "teryt": "3015"
+  },
+  {
+   "id": "teryt3015013",
+   "name": "Tuszyn",
+   "people": 0,
+   "teryt": "3015013"
+  },
+  {
+   "id": "teryt3015021",
+   "name": "Mieroszów",
+   "people": 8,
+   "teryt": "3015021"
+  },
+  {
+   "id": "teryt3015033",
+   "name": "Stronie Śląskie",
+   "people": 4,
+   "teryt": "3015033"
+  },
+  {
+   "id": "teryt3016",
+   "name": "powiat Biały Bór",
+   "parties": {
+    "Inne": 1,
+    "PO": 1,
+    "PiS": 1
+   },
+   "people": 6,
+   "teryt": "3016"
+  },
+  {
+   "id": "teryt3016011",
+   "name": "Milicz",
+   "people": 1,
+   "teryt": "3016011"
+  },
+  {
+   "id": "teryt3016023",
+   "name": "Olecko",
+   "people": 4,
+   "teryt": "3016023"
+  },
+  {
+   "id": "teryt3016032",
+   "name": "Ciechanowiec",
+   "people": 1,
+   "teryt": "3016032"
+  },
+  {
+   "id": "teryt3017",
+   "name": "powiat Pyskowice",
+   "parties": {
+    "Inne": 1,
+    "PO": 1
+   },
+   "people": 3,
+   "teryt": "3017"
+  },
+  {
+   "id": "teryt3017013",
+   "name": "Lewin Brzeski",
+   "people": 0,
+   "teryt": "3017013"
+  },
+  {
+   "id": "teryt3017023",
+   "name": "Zbąszynek",
+   "people": 12,
+   "teryt": "3017023"
+  },
+  {
+   "id": "teryt3017031",
+   "name": "Nowy Dwór Gdański",
+   "people": 0,
+   "teryt": "3017031"
+  },
+  {
+   "id": "teryt3018",
+   "name": "powiat Kcynia",
+   "parties": {},
+   "people": 0,
+   "teryt": "3018"
+  },
+  {
+   "id": "teryt3018013",
+   "name": "Pabianice",
+   "people": 1,
+   "teryt": "3018013"
+  },
+  {
+   "id": "teryt3018022",
+   "name": "Swarzędz",
+   "people": 0,
+   "teryt": "3018022"
+  },
+  {
+   "id": "teryt3018032",
+   "name": "Wleń",
+   "people": 1,
+   "teryt": "3018032"
+  },
+  {
+   "id": "teryt3019",
+   "name": "powiat Oborniki",
+   "parties": {
+    "Inne": 2,
+    "PSL": 1,
+    "PiS": 1
+   },
+   "people": 10,
+   "teryt": "3019"
+  },
+  {
+   "id": "teryt3019011",
+   "name": "Rychwał",
+   "people": 10,
+   "teryt": "3019011"
+  },
+  {
+   "id": "teryt3019023",
+   "name": "Koło",
+   "people": 3,
+   "teryt": "3019023"
+  },
+  {
+   "id": "teryt3019033",
+   "name": "Wielichowo",
+   "people": 2,
+   "teryt": "3019033"
+  },
+  {
+   "id": "teryt3020",
+   "name": "powiat Kańczuga",
+   "parties": {
+    "Konfederacja": 1,
+    "PSL": 1,
+    "PiS": 1
+   },
+   "people": 4,
+   "teryt": "3020"
+  },
+  {
+   "id": "teryt3020013",
+   "name": "Dębica",
+   "people": 0,
+   "teryt": "3020013"
+  },
+  {
+   "id": "teryt3020021",
+   "name": "Głogówek",
+   "people": 8,
+   "teryt": "3020021"
+  },
+  {
+   "id": "teryt3020033",
+   "name": "Pułtusk",
+   "people": 10,
+   "teryt": "3020033"
+  },
+  {
+   "id": "teryt32",
+   "name": "woj. lubelskie",
+   "people": 5,
+   "teryt": "32"
+  },
+  {
+   "id": "teryt3201",
+   "name": "powiat Małomice",
+   "parties": {},
+   "people": 0,
+   "teryt": "3201"
+  },
+  {
+   "id": "teryt3201012",
+   "name": "Bytów",
+   "people": 3,
+   "teryt": "3201012"
+  },
+  {
+   "id": "teryt3201023",
+   "name": "Szczawno-Zdrój",
+   "people": 9,
+   "teryt": "3201023"
+  },
+  {
+   "id": "teryt3201032",
+   "name": "Zduńska Wola",
+   "people": 7,
+   "teryt": "3201032"
+  },
+  {
+   "id": "teryt3202",
+   "name": "powiat Łaszczów",
+   "parties": {},
+   "people": 0,
+   "teryt": "3202"
+  },
+  {
+   "id": "teryt3202013",
+   "name": "Radomyśl Wielki",
+   "people": 7,
+   "teryt": "3202013"
+  },
+  {
+   "id": "teryt3202022",
+   "name": "Dzierzgoń",
+   "people": 0,
+   "teryt": "3202022"
+  },
+  {
+   "id": "teryt3202033",
+   "name": "Łochów",
+   "people": 3,
+   "teryt": "3202033"
+  },
+  {
+   "id": "teryt3203",
+   "name": "powiat Dynów",
+   "parties": {},
+   "people": 0,
+   "teryt": "3203"
+  },
+  {
+   "id": "teryt3203011",
+   "name": "Ostrołęka",
+   "people": 0,
+   "teryt": "3203011"
+  },
+  {
+   "id": "teryt3203022",
+   "name": "Siedlce",
+   "people": 0,
+   "teryt": "3203022"
+  },
+  {
+   "id": "teryt3203033",
+   "name": "Bydgoszcz",
+   "people": 7,
+   "teryt": "3203033"
+  },
+  {
+   "id": "teryt3204",
+   "name": "powiat Skaryszew",
+   "parties": {},
+   "people": 0,
+   "teryt": "3204"
+  },
+  {
+   "id": "teryt3204011",
+   "name": "Trzciel",
+   "people": 12,
+   "teryt": "3204011"
+  },
+  {
+   "id": "teryt3204023",
+   "name": "Olesno",
+   "people": 0,
+   "teryt": "3204023"
+  },
+  {
+   "id": "teryt3204033",
+   "name": "Koluszki",
+   "people": 3,
+   "teryt": "3204033"
+  },
+  {
+   "id": "teryt3205",
+   "name": "powiat Mirsk",
+   "parties": {},
+   "people": 0,
+   "teryt": "3205"
+  },
+  {
+   "id": "teryt3205013",
+   "name": "Mikołajki",
+   "people": 2,
+   "teryt": "3205013"
+  },
+  {
+   "id": "teryt3205022",
+   "name": "Nakło nad Notecią",
+   "people": 1,
+   "teryt": "3205022"
+  },
+  {
+   "id": "teryt3205033",
+   "name": "Kowal",
+   "people": 7,
+   "teryt": "3205033"
+  },
+  {
+   "id": "teryt3206",
+   "name": "powiat Garwolin",
+   "parties": {
+    "Inne": 1,
+    "PO": 2,
+    "PSL": 2,
+    "PiS": 2
+   },
+   "people": 10,
+   "teryt": "3206"
+  },
+  {
+   "id": "teryt3206013",
+   "name": "Śrem",
+   "people": 1,
+   "teryt": "3206013"
+  },
+  {
+   "id": "teryt3206021",
+   "name": "Jabłonowo Pomorskie",
+   "people": 1,
+   "teryt": "3206021"
+  },
+  {
+   "id": "teryt3206031",
+   "name": "Krasnystaw",
+   "people": 0,
+   "teryt": "3206031"
+  },
+  {
+   "id": "teryt3207",
+   "name": "powiat Mieroszów",
+   "parties": {},
+   "people": 0,
+   "teryt": "3207"
+  },
+  {
+   "id": "teryt3207013",
+   "name": "Pszów",
+   "people": 4,
+   "teryt": "3207013"
+  },
+  {
+   "id": "teryt3207022",
+   "name": "Krosno Odrzańskie",
+   "people": 0,
+   "teryt": "3207022"
+  },
+  {
+   "id": "teryt3207033",
+   "name": "Mirsk",
+   "people": 2,
+   "teryt": "3207033"
+  },
+  {
+   "id": "teryt3208",
+   "name": "powiat Złotów",
+   "parties": {
+    "Inne": 1
+   },
+   "people": 1,
+   "teryt": "3208"
+  },
+  {
+   "id": "teryt3208012",
+   "name": "Czerwionka-Leszczyny",
+   "people": 2,
+   "teryt": "3208012"
+  },
+  {
+   "id": "teryt3208023",
+   "name": "Korfantów",
+   "people": 0,
+   "teryt": "3208023"
+  },
+  {
+   "id": "teryt3208033",
+   "name": "Brzeziny",
+   "people": 5,
+   "teryt": "3208033"
+  },
+  {
+   "id": "teryt3209",
+   "name": "powiat Gąbin",
+   "parties": {},
+   "people": 0,
+   "teryt": "3209"
+  },
+  {
+   "id": "teryt3209013",
+   "name": "Hajnówka",
+   "people": 5,
+   "teryt": "3209013"
+  },
+  {
+   "id": "teryt3209023",
+   "name": "Karlino",
+   "people": 1,
+   "teryt": "3209023"
+  },
+  {
+   "id": "teryt3209032",
+   "name": "Rumia",
+   "people": 7,
+   "teryt": "3209032"
+  },
+  {
+   "id": "teryt3210",
+   "name": "powiat Nowe Brzesko",
+   "parties": {
+    "Inne": 1,
+    "PiS": 1
+   },
+   "people": 5,
+   "teryt": "3210"
+  },
+  {
+   "id": "teryt3210011",
+   "name": "Górzno",
+   "people": 4,
+   "teryt": "3210011"
+  },
+  {
+   "id": "teryt3210021",
+   "name": "Kłodzko",
+   "people": 2,
+   "teryt": "3210021"
+  },
+  {
+   "id": "teryt3210032",
+   "name": "Wyrzysk",
+   "people": 3,
+   "teryt": "3210032"
+  },
+  {
+   "id": "teryt3211",
+   "name": "powiat Twardogóra",
+   "parties": {},
+   "people": 0,
+   "teryt": "3211"
+  },
+  {
+   "id": "teryt3211013",
+   "name": "Sulejówek",
+   "people": 6,
+   "teryt": "3211013"
+  },
+  {
+   "id": "teryt3211022",
+   "name": "Jelenia Góra",
+   "people": 7,
+   "teryt": "3211022"
+  },
+  {
+   "id": "teryt3211033",
+   "name": "Radziejów",
+   "people": 3,
+   "teryt": "3211033"
+  },
+  {
+   "id": "teryt3212",
+   "name": "powiat Ostrołęka",
+   "parties": {},
+   "people": 0,
+   "teryt": "3212"
+  },
+  {
+   "id": "teryt3212011",
+   "name": "Miechów",
+   "people": 3,
+   "teryt": "3212011"
+  },
+  {
+   "id": "teryt3212022",
+   "name": "Tuchola",
+   "people": 4,
+   "teryt": "3212022"
+  },
+  {
+   "id": "teryt3212032",
+   "name": "Lewin Brzeski",
+   "people": 0,
+   "teryt": "3212032"
+  },
+  {
+   "id": "teryt3213",
+   "name": "powiat Złocieniec",
+   "parties": {
+    "PO": 2
+   },
+   "people": 4,
+   "teryt": "3213"
+  },
+  {
+   "id": "teryt3213011",
+   "name": "Łęczna",
+   "people": 2,
+   "teryt": "3213011"
+  },
+  {
+   "id": "teryt3213021",
+   "name": "Skwierzyna",
+   "people": 0,
+   "teryt": "3213021"
+  },
+  {
+   "id": "teryt3213033",
+   "name": "Karlino",
+   "people": 9,
+   "teryt": "3213033"
+  },
+  {
+   "id": "teryt3214",
+   "name": "powiat Trzciel",
+   "parties": {
+    "PO": 1,
+    "PiS": 2
+   },
+   "people": 7,
+   "teryt": "3214"
+  },
+  {
+   "id": "teryt3214011",
+   "name": "Wilamowice",
+   "people": 4,
+   "teryt": "3214011"
+  },
+  {
+   "id": "teryt3214023",
+   "name": "Szczebrzeszyn",
+   "people": 3,
+   "teryt": "3214023"
+  },
+  {
+   "id": "teryt3214031",
+   "name": "Ząbkowice Śląskie",
+   "people": 8,
+   "teryt": "3214031"
+  },
+  {
+   "id": "teryt3215",
+   "name": "powiat Siewierz",
+   "parties": {},
+   "people": 0,
+   "teryt": "3215"
+  },
+  {
+   "id": "teryt3215011",
+   "name": "Świątniki Górne",
+   "people": 11,
+   "teryt": "3215011"
+  },
+  {
+   "id": "teryt3215021",
+   "name": "Tychowo",
+   "people": 5,
+   "teryt": "3215021"
+  },
+  {
+   "id": "teryt3215031",
+   "name": "Rypin",
+   "people": 1,
+   "teryt": "3215031"
+  },
+  {
+   "id": "teryt3216",
+   "name": "powiat Olesno",
+   "parties": {},
+   "people": 0,
+   "teryt": "3216"
+  },
+  {
+   "id": "teryt3216011",
+   "name": "Janowiec Wielkopolski",
+   "people": 1,
+   "teryt": "3216011"
+  },
+  {
+   "id": "teryt3216021",
+   "name": "Mińsk Mazowiecki",
+   "people": 4,
+   "teryt": "3216021"
+  },
+  {
+   "id": "teryt3216031",
+   "name": "Pilzno",
+   "people": 4,
+   "teryt": "3216031"
+  },
+  {
+   "id": "teryt3217",
+   "name": "powiat Kleczew",
+   "parties": {},
+   "people": 0,
+   "teryt": "3217"
+  },
+  {
+   "id": "teryt3217011",
+   "name": "Sławno",
+   "people": 6,
+   "teryt": "3217011"
+  },
+  {
+   "id": "teryt3217021",
+   "name": "Wiązów",
+   "people": 0,
+   "teryt": "3217021"
+  },
+  {
+   "id": "teryt3217033",
+   "name": "Radomyśl Wielki",
+   "people": 0,
+   "teryt": "3217033"
+  },
+  {
+   "id": "teryt3218",
+   "name": "powiat Pieniężno",
+   "parties": {},
+   "people": 0,
+   "teryt": "3218"
+  },
+  {
+   "id": "teryt3218013",
+   "name": "Głowno",
+   "people": 1,
+   "teryt": "3218013"
+  },
+  {
+   "id": "teryt3218021",
+   "name": "Izbica Kujawska",
+   "people": 3,
+   "teryt": "3218021"
+  },
+  {
+   "id": "teryt3218033",
+   "name": "Bierutów",
+   "people": 0,
+   "teryt": "3218033"
+  },
+  {
+   "id": "teryt3219",
+   "name": "powiat Pasłęk",
+   "parties": {
+    "Inne": 1,
+    "PSL": 1
+   },
+   "people": 6,
+   "teryt": "3219"
+  },
+  {
+   "id": "teryt3219013",
+   "name": "Toszek",
+   "people": 1,
+   "teryt": "3219013"
+  },
+  {
+   "id": "teryt3219022",
+   "name": "Brwinów",
+   "people": 2,
+   "teryt": "3219022"
+  },
+  {
+   "id": "teryt3219033",
+   "name": "Pilzno",
+   "people": 2,
+   "teryt": "3219033"
+  },
+  {
+   "id": "teryt3220",
+   "name": "powiat Czarna Woda",
+   "parties": {},
+   "people": 0,
+   "teryt": "3220"
+  },
+  {
+   "id": "teryt3220011",
+   "name": "Więcbork",
+   "people": 11,
+   "teryt": "3220011"
+  },
+  {
+   "id": "teryt3220023",
+   "name": "Świątniki Górne",
+   "people": 5,
+   "teryt": "3220023"
+  },
+  {
+   "id": "teryt3220033",
+   "name": "Otwock",
+   "people": 4,
+   "teryt": "3220033"
+  }
+ ]
+}

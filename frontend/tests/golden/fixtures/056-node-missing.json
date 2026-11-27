@@ -1,0 +1,17 @@
+{
+ "step": 56,
+ "name": "node missing",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes/nie-ma-takiej-strony",
+  "as": "anon"
+ },
+ "status": 404,
+ "body": {
+  "error": true,
+  "message": "Node not found for id=nie-ma-takiej-strony and latest=false",
+  "statusCode": 404,
+  "statusMessage": "Server Error",
+  "url": "http://127.0.0.1:23200/api/nodes/nie-ma-takiej-strony"
+ }
+}

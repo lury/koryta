@@ -1,0 +1,14 @@
+{
+ "step": 165,
+ "name": "declarations found",
+ "request": {
+  "method": "GET",
+  "path": "/api/declarations/found",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "people": [],
+  "total": 0
+ }
+}

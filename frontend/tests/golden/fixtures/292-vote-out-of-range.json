@@ -1,0 +1,39 @@
+{
+ "step": 292,
+ "name": "vote out of range",
+ "request": {
+  "method": "PUT",
+  "path": "/api/votes/fakeperson109",
+  "as": "user",
+  "body": {
+   "categoryVotes": {
+    "interesting": 6
+   }
+  }
+ },
+ "status": 400,
+ "body": {
+  "data": {
+   "issues": [
+    {
+     "code": "too_big",
+     "exact": false,
+     "inclusive": true,
+     "maximum": 5,
+     "message": "Number must be less than or equal to 5",
+     "path": [
+      "categoryVotes",
+      "interesting"
+     ],
+     "type": "number"
+    }
+   ],
+   "name": "ZodError"
+  },
+  "error": true,
+  "message": "[\n  {\n    \"code\": \"too_big\",\n    \"maximum\": 5,\n    \"type\": \"number\",\n    \"inclusive\": true,\n    \"exact\": false,\n    \"message\": \"Number must be less than or equal to 5\",\n    \"path\": [\n      \"categoryVotes\",\n      \"interesting\"\n    ]\n  }\n]",
+  "statusCode": 400,
+  "statusMessage": "Validation Error",
+  "url": "http://127.0.0.1:23200/api/votes/fakeperson109"
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "step": 247,
+ "name": "feedback list",
+ "request": {
+  "method": "GET",
+  "path": "/api/feedback/list?limit=20",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "feedback": [],
+  "openTruncated": false
+ }
+}

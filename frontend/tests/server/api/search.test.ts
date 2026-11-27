@@ -1,39 +1,24 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import handler from "../../../server/api/search.get";
 
-const { mockCollection, mockWhere, mockOrderBy, mockLimit, mockGet } =
-  vi.hoisted(() => {
-    globalThis.defineCachedEventHandler = (fn: any) => fn;
-    globalThis.defineCachedFunction = (fn: any) => fn;
-    globalThis.useEvent = () => ({ path: "/mock" });
-    globalThis.defineEventHandler = (fn: any) => fn;
-    globalThis.setResponseHeader = () => {};
-    globalThis.getQuery = (event: any) => event.query ?? {};
+const { searchChunk, searchKrs, byChunk } = vi.hoisted(() => {
+  globalThis.defineCachedEventHandler = (fn: any) => fn;
+  globalThis.defineCachedFunction = (fn: any) => fn;
+  globalThis.useEvent = () => ({ path: "/mock" });
+  globalThis.defineEventHandler = (fn: any) => fn;
+  globalThis.setResponseHeader = () => {};
+  globalThis.getQuery = (event: any) => event.query ?? {};
+  return {
+    searchChunk: vi.fn(),
+    searchKrs: vi.fn(),
+    byChunk: { value: {} as Record<string, any[]> },
+  };
+});
 
-    const mockGet = vi.fn();
-    const query = {
-      where: vi.fn(),
-      orderBy: vi.fn(),
-      limit: vi.fn(),
-      get: mockGet,
-    };
-    query.where.mockReturnValue(query);
-    query.orderBy.mockReturnValue(query);
-    query.limit.mockReturnValue(query);
-    const mockCollection = vi.fn().mockReturnValue(query);
-
-    return {
-      mockCollection,
-      mockWhere: query.where,
-      mockOrderBy: query.orderBy,
-      mockLimit: query.limit,
-      mockGet,
-    };
-  });
-
-vi.mock("firebase-admin/firestore", () => ({
-  getFirestore: vi.fn().mockReturnValue({ collection: mockCollection }),
-}));
+// The reads by chunk and by KRS number are the SQL of server/db/search.ts,
+// tested on Postgres in tests/server/db/search.pg.test.ts; here the question
+// is what the route asks them and what it makes of their rows.
+vi.mock("../../../server/db/search", () => ({ searchChunk, searchKrs }));
 
 vi.mock("h3", () => ({
   getValidatedQuery: async (event: any, parser: any) => parser(event.query),
@@ -48,36 +33,30 @@ vi.mock("../../../server/utils/auth", () => ({
     event.headers?.authorization ? { uid: "reader" } : null,
 }));
 
-/** A node as `parseNodeDoc` will see it coming back from Firestore. */
-const doc = (
-  id: string,
-  name: string,
-  extra: Record<string, unknown> = {},
-) => ({
-  id,
-  data: () => ({ name, type: "person", published: true, ...extra }),
-});
-
-/** The docs each `array-contains` chunk answers with, so a test can describe
- * the index rather than the order the endpoint happens to query it in. A
- * lookup by KRS number answers from the key `krsNumber=<number>`. */
-const respondWith = (byChunk: Record<string, ReturnType<typeof doc>[]>) => {
-  let chunk = "";
-  mockWhere.mockImplementation((field: string, _op: string, value: string) => {
-    if (field === "nameChunksLower") chunk = value;
-    if (field === "krsNumber") chunk = `krsNumber=${value}`;
-    return {
-      where: mockWhere,
-      orderBy: mockOrderBy,
-      limit: mockLimit,
-      get: mockGet,
-    };
-  });
-  mockGet.mockImplementation(async () => {
-    const docs = byChunk[chunk] ?? [];
-    return { docs, size: docs.length };
-  });
+/** A row as `searchChunk` hands it back: the served document, and whether
+ * it was merged away. */
+const doc = (id: string, name: string, extra: Record<string, unknown> = {}) => {
+  const data: Record<string, unknown> = {
+    name,
+    type: "person",
+    published: true,
+    ...extra,
+  };
+  return {
+    node: { id, ...data, visibility: data.published === true },
+    deleted: data.deleted === true,
+  };
 };
+
+/** The rows each chunk answers with, so a test can describe the index rather
+ * than the order the endpoint happens to query it in. A lookup by KRS number
+ * answers from the key `krsNumber=<number>`. */
+const respondWith = (rows: Record<string, ReturnType<typeof doc>[]>) => {
+  byChunk.value = rows;
+};
+
+/** The chunks the route asked for, in order. */
+const chunksAsked = () => searchChunk.mock.calls.map(([chunk]) => chunk);
 
 const search = (q: string) => handler({ query: { q }, context: {} } as any);
 
@@ -93,18 +72,13 @@ const searchSignedIn = (q: string) =>
 describe("/api/search", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockOrderBy.mockReturnValue({
-      where: mockWhere,
-      orderBy: mockOrderBy,
-      limit: mockLimit,
-      get: mockGet,
-    });
-    mockLimit.mockReturnValue({
-      where: mockWhere,
-      orderBy: mockOrderBy,
-      limit: mockLimit,
-      get: mockGet,
-    });
+    byChunk.value = {};
+    searchChunk.mockImplementation(
+      async (chunk: string) => byChunk.value[chunk] ?? [],
+    );
+    searchKrs.mockImplementation(
+      async (krs: string) => byChunk.value[`krsNumber=${krs}`] ?? [],
+    );
   });
 
   it("finds a person by first and last name past their middle one", async () => {
@@ -121,9 +95,7 @@ describe("/api/search", () => {
     respondWith({ namysło: [doc("a1", "Andrzej Józef Namysło")] });
     await search("Andrzej Namysło");
 
-    const chunks = mockWhere.mock.calls
-      .filter(([field]) => field === "nameChunksLower")
-      .map(([, , value]) => value);
+    const chunks = chunksAsked();
     expect(chunks).toEqual(["andrzej namysło", "namysło", "@namysło"]);
   });
 
@@ -160,9 +132,7 @@ describe("/api/search", () => {
 
     const results = await search("Namysło");
 
-    const chunks = mockWhere.mock.calls
-      .filter(([field]) => field === "nameChunksLower")
-      .map(([, , value]) => value);
+    const chunks = chunksAsked();
     expect(chunks).toEqual(["namysło"]);
     expect(results).toHaveLength(1);
   });
@@ -193,9 +163,7 @@ describe("/api/search", () => {
 
     const results = await search("Kupczak-Wiśniowska");
 
-    const chunks = mockWhere.mock.calls
-      .filter(([field]) => field === "nameChunksLower")
-      .map(([, , value]) => value);
+    const chunks = chunksAsked();
     expect(chunks).toEqual(["kupczak-wiśniowska", "wiśniowska", "@wiśniowska"]);
     expect(results.map((r) => r.id)).toEqual(["a1", "a2"]);
   });
@@ -212,9 +180,7 @@ describe("/api/search", () => {
 
     const results = await search("Przedsiębiorstwo Usługowo-Produkcyjne");
 
-    const chunks = mockWhere.mock.calls
-      .filter(([field]) => field === "nameChunksLower")
-      .map(([, , value]) => value);
+    const chunks = chunksAsked();
     expect(chunks).toEqual([
       "przedsiębiorstwo usługowo-produkcyjne",
       "produkcyjne",
@@ -234,9 +200,7 @@ describe("/api/search", () => {
 
     const results = await search("sanikom lubawka");
 
-    const chunks = mockWhere.mock.calls
-      .filter(([field]) => field === "nameChunksLower")
-      .map(([, , value]) => value);
+    const chunks = chunksAsked();
     expect(chunks).toEqual(["sanikom lubawka", "lubawka", "@lubawka"]);
     expect(results.map((r) => r.id)).toEqual(["pgk"]);
   });
@@ -318,9 +282,7 @@ describe("/api/search", () => {
 
     const results = await search("paged warszawa");
 
-    const chunks = mockWhere.mock.calls
-      .filter(([field]) => field === "nameChunksLower")
-      .map(([, , value]) => value);
+    const chunks = chunksAsked();
     expect(chunks).toEqual([
       "paged warszawa",
       "warszawa",
@@ -338,9 +300,7 @@ describe("/api/search", () => {
 
     await search("paged warszawa");
 
-    const chunks = mockWhere.mock.calls
-      .filter(([field]) => field === "nameChunksLower")
-      .map(([, , value]) => value);
+    const chunks = chunksAsked();
     expect(chunks).toEqual(["paged warszawa", "warszawa", "@warszawa"]);
   });
 
@@ -350,9 +310,7 @@ describe("/api/search", () => {
 
     await search("Kraków");
 
-    const chunks = mockWhere.mock.calls
-      .filter(([field]) => field === "nameChunksLower")
-      .map(([, , value]) => value);
+    const chunks = chunksAsked();
     expect(chunks).toEqual(["kraków"]);
   });
 
@@ -373,7 +331,7 @@ describe("/api/search", () => {
 
     const results = await search("KRS 0000029741");
 
-    expect(mockWhere).toHaveBeenCalledWith("krsNumber", "==", "0000029741");
+    expect(searchKrs).toHaveBeenCalledWith("0000029741");
     expect(results).toEqual([
       expect.objectContaining({ id: "pgk", krsNumber: "0000029741" }),
     ]);
@@ -412,11 +370,7 @@ describe("/api/search", () => {
     await search("Andrzej Namysło");
     await search("00000297");
 
-    expect(mockWhere).not.toHaveBeenCalledWith(
-      "krsNumber",
-      expect.anything(),
-      expect.anything(),
-    );
+    expect(searchKrs).not.toHaveBeenCalled();
   });
 
   it("ignores the padding around a typed query", async () => {
@@ -501,7 +455,9 @@ describe("/api/search", () => {
       "added-by-hand",
       "imported",
     ]);
-    expect(mockCollection).not.toHaveBeenCalledWith("revisions");
+    // No history read: only the two passes of the name.
+    expect(searchChunk).toHaveBeenCalledTimes(3);
+    expect(searchKrs).not.toHaveBeenCalled();
   });
 
   it("keeps every other unpublished page from a logged out reader", async () => {
@@ -554,12 +510,12 @@ describe("/api/search", () => {
     respondWith({ kowalski: [doc("live", "Jan Kowalski")] });
 
     await search("Kowalski");
-    expect(mockLimit).toHaveBeenCalledWith(200);
+    expect(searchChunk).toHaveBeenCalledWith("kowalski", 200);
 
     vi.clearAllMocks();
     respondWith({ kowalski: [doc("live", "Jan Kowalski")] });
     await searchSignedIn("Kowalski");
-    expect(mockLimit).toHaveBeenCalledWith(20);
+    expect(searchChunk).toHaveBeenCalledWith("kowalski", 20);
   });
 
   describe("the line under a person", () => {
@@ -616,7 +572,7 @@ describe("/api/search", () => {
       });
       // The three passes of a two-word query and nothing more: the line costs
       // no read of its own.
-      expect(mockGet).toHaveBeenCalledTimes(3);
+      expect(searchChunk).toHaveBeenCalledTimes(3);
     });
 
     it("tells a logged out reader of a draft only what its teaser shows", async () => {

@@ -1,0 +1,416 @@
+{
+ "step": 208,
+ "name": "edges serviceMilestones",
+ "request": {
+  "method": "GET",
+  "path": "/api/edges/serviceMilestones?limit=20",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "milestones": [
+   {
+    "alsoHeld": 2,
+    "companyId": "fakeplace931",
+    "companyIsPublic": true,
+    "companyName": "STACHURA S.A. SP. Z O.O.",
+    "date": "2026-11-26",
+    "daysFromToday": 0,
+    "id": "fakeperson1368:20",
+    "institutions": 4,
+    "parties": [
+     "Polska2050",
+     "PiS"
+    ],
+    "personId": "fakeperson1368",
+    "personName": "Lidia Długosz",
+    "projected": true,
+    "role": "Przewodniczący Rady Nadzorczej",
+    "spells": 1,
+    "years": 20
+   },
+   {
+    "alsoHeld": 2,
+    "companyCategories": [
+     "szpitale"
+    ],
+    "companyId": "fakeplace638",
+    "companyIsPublic": true,
+    "companyName": "Centrum Medyczne „help” w Reszel",
+    "date": "2026-11-27",
+    "daysFromToday": 1,
+    "id": "fakeperson2251:24",
+    "institutions": 4,
+    "parties": [],
+    "personId": "fakeperson2251",
+    "personName": "Walenty Szymczyk-Lipiński",
+    "projected": true,
+    "role": "Członek Zarządu",
+    "spells": 1,
+    "years": 24
+   },
+   {
+    "alsoHeld": 2,
+    "companyId": "fakeplace1167",
+    "companyIsPublic": true,
+    "companyName": "NAWROCKI-ROSIŃSKI SP. Z O.O.",
+    "date": "2026-11-27",
+    "daysFromToday": 1,
+    "id": "fakeperson770:19",
+    "institutions": 4,
+    "parties": [],
+    "personId": "fakeperson770",
+    "personName": "Fryderyk Chmielewski",
+    "projected": true,
+    "role": "Zastępca Dyrektora",
+    "spells": 1,
+    "years": 19
+   },
+   {
+    "alsoHeld": 1,
+    "companyCategories": [
+     "szpitale"
+    ],
+    "companyId": "fakeplace1129",
+    "companyIsPublic": true,
+    "companyName": "Wojewódzki Szpital Specjalistyczny im. Luiza Lisiecki w Sokołów Podlaski",
+    "date": "2026-11-28",
+    "daysFromToday": 2,
+    "id": "fakeperson1875:25",
+    "institutions": 3,
+    "parties": [
+     "Lewica",
+     "Konfederacja"
+    ],
+    "personId": "fakeperson1875",
+    "personName": "Edward Piwowarczyk",
+    "projected": true,
+    "role": "Prezes Zarządu",
+    "spells": 1,
+    "years": 25
+   },
+   {
+    "alsoHeld": 0,
+    "companyId": "fakeplace1057",
+    "companyIsPublic": true,
+    "companyName": "KOSIŃSKI-BARTNIK SP. Z O.O.",
+    "date": "2026-11-28",
+    "daysFromToday": 2,
+    "id": "fakeperson781:15",
+    "institutions": 2,
+    "parties": [
+     "PiS"
+    ],
+    "personId": "fakeperson781",
+    "personName": "Elżbieta Olejnik",
+    "projected": true,
+    "role": "Członek Rady Nadzorczej",
+    "spells": 1,
+    "years": 15
+   },
+   {
+    "alsoHeld": 1,
+    "companyId": "fakeplace760",
+    "companyIsPublic": true,
+    "companyName": "KARPIŃSKI S.C. SP. Z O.O.",
+    "date": "2026-12-01",
+    "daysFromToday": 5,
+    "id": "fakeperson1428:22",
+    "institutions": 5,
+    "parties": [],
+    "personId": "fakeperson1428",
+    "personName": "Janusz Pakuła",
+    "projected": true,
+    "role": "Przewodniczący Rady Nadzorczej",
+    "spells": 1,
+    "years": 22
+   },
+   {
+    "alsoHeld": 0,
+    "companyCategories": [
+     "cieplownictwo"
+    ],
+    "companyId": "fakeplace297",
+    "companyIsPublic": true,
+    "companyName": "TRACZ, RACZYŃSKI AND PAŁKA SP. Z O.O.",
+    "date": "2026-12-01",
+    "daysFromToday": 5,
+    "id": "fakeperson2562:20",
+    "institutions": 5,
+    "parties": [],
+    "personId": "fakeperson2562",
+    "personName": "Hilarion Kwieciński",
+    "projected": true,
+    "role": "Prezes Zarządu",
+    "spells": 3,
+    "years": 20
+   },
+   {
+    "alsoHeld": 0,
+    "companyId": "fakeplace1148",
+    "companyIsPublic": true,
+    "companyName": "BUJAK SP. J. SP. Z O.O.",
+    "date": "2026-12-01",
+    "daysFromToday": 5,
+    "id": "fakeperson1279:16",
+    "institutions": 3,
+    "parties": [
+     "PiS"
+    ],
+    "personId": "fakeperson1279",
+    "personName": "Rajnold Jagielski",
+    "projected": true,
+    "role": "Prokurent",
+    "spells": 2,
+    "years": 16
+   },
+   {
+    "alsoHeld": 0,
+    "companyCategories": [
+     "w-upadlosci"
+    ],
+    "companyId": "fakeplace904",
+    "companyIsPublic": true,
+    "companyName": "NIEDZIELSKI, KUCIŃSKI AND PŁONKA SP. Z O.O.",
+    "date": "2026-12-02",
+    "daysFromToday": 6,
+    "id": "fakeperson1547:13",
+    "institutions": 2,
+    "parties": [
+     "Polska2050"
+    ],
+    "personId": "fakeperson1547",
+    "personName": "Roman Piotrowicz",
+    "projected": true,
+    "role": "Zastępca Dyrektora",
+    "spells": 1,
+    "years": 13
+   },
+   {
+    "alsoHeld": 1,
+    "companyId": "fakeplace1060",
+    "companyIsPublic": true,
+    "companyName": "WOLSKI-TOMCZAK SP. Z O.O.",
+    "date": "2026-12-05",
+    "daysFromToday": 9,
+    "id": "fakeperson1532:26",
+    "institutions": 5,
+    "parties": [
+     "PiS",
+     "PO"
+    ],
+    "personId": "fakeperson1532",
+    "personName": "Angela Iwański",
+    "projected": true,
+    "role": "Dyrektor",
+    "spells": 1,
+    "years": 26
+   },
+   {
+    "alsoHeld": 1,
+    "companyId": "fakeplace1128",
+    "companyIsPublic": true,
+    "companyName": "ŁUKASZEWSKI SP. K. SP. Z O.O.",
+    "date": "2026-12-05",
+    "daysFromToday": 9,
+    "id": "fakeperson360:22",
+    "institutions": 5,
+    "parties": [
+     "Polska2050"
+    ],
+    "personId": "fakeperson360",
+    "personName": "Onufry Drozd",
+    "projected": true,
+    "role": "Członek Rady Nadzorczej",
+    "spells": 1,
+    "years": 22
+   },
+   {
+    "alsoHeld": 2,
+    "companyId": "fakeplace155",
+    "companyIsPublic": true,
+    "companyName": "GÓRA-FRANKOWSKI SP. Z O.O.",
+    "date": "2026-12-07",
+    "daysFromToday": 11,
+    "id": "fakeperson2491:26",
+    "institutions": 4,
+    "parties": [],
+    "personId": "fakeperson2491",
+    "personName": "Edgar Wąsik",
+    "projected": true,
+    "role": "Zastępca Dyrektora",
+    "spells": 1,
+    "years": 26
+   },
+   {
+    "alsoHeld": 0,
+    "companyId": "fakeplace930",
+    "companyIsPublic": true,
+    "companyName": "WITKOWSKI S.C. SP. Z O.O.",
+    "date": "2026-12-07",
+    "daysFromToday": 11,
+    "id": "fakeperson2680:25",
+    "institutions": 4,
+    "parties": [
+     "Konfederacja",
+     "Inne"
+    ],
+    "personId": "fakeperson2680",
+    "personName": "Filipa Szymczyk",
+    "projected": true,
+    "role": "Członek Zarządu",
+    "spells": 1,
+    "years": 25
+   },
+   {
+    "alsoHeld": 1,
+    "companyCategories": [
+     "szpitale"
+    ],
+    "companyId": "fakeplace788",
+    "companyIsPublic": true,
+    "companyName": "Szpital Powiatowy w Recz Sp. z o.o.",
+    "date": "2026-12-07",
+    "daysFromToday": 11,
+    "id": "fakeperson2126:25",
+    "institutions": 6,
+    "parties": [],
+    "personId": "fakeperson2126",
+    "personName": "Judyta Banaś",
+    "projected": true,
+    "role": "Zastępca Dyrektora",
+    "spells": 1,
+    "years": 25
+   },
+   {
+    "alsoHeld": 1,
+    "companyId": "fakeplace306",
+    "companyIsPublic": true,
+    "companyName": "CIEŚLA, KAWA AND SZULC SP. Z O.O.",
+    "date": "2026-12-07",
+    "daysFromToday": 11,
+    "id": "fakeperson828:8",
+    "institutions": 2,
+    "parties": [
+     "PO",
+     "Inne"
+    ],
+    "personId": "fakeperson828",
+    "personName": "Cyrus Górka",
+    "projected": true,
+    "role": "Prokurent",
+    "spells": 1,
+    "years": 8
+   },
+   {
+    "alsoHeld": 2,
+    "companyId": "fakeplace1040",
+    "companyIsPublic": true,
+    "companyName": "KUBICA-KOSOWSKI SP. Z O.O.",
+    "date": "2026-12-09",
+    "daysFromToday": 13,
+    "id": "fakeperson2523:14",
+    "institutions": 5,
+    "parties": [
+     "PSL",
+     "Polska2050"
+    ],
+    "personId": "fakeperson2523",
+    "personName": "Marek Zakrzewski",
+    "projected": true,
+    "role": "Dyrektor",
+    "spells": 2,
+    "years": 14
+   },
+   {
+    "alsoHeld": 1,
+    "companyId": "fakeplace365",
+    "companyIsPublic": true,
+    "companyName": "SZCZĘSNY SP. J. SP. Z O.O.",
+    "date": "2026-12-11",
+    "daysFromToday": 15,
+    "id": "fakeperson204:22",
+    "institutions": 6,
+    "parties": [
+     "PSL",
+     "PO"
+    ],
+    "personId": "fakeperson204",
+    "personName": "Sylwia Maciąg",
+    "projected": true,
+    "role": "Prokurent",
+    "spells": 1,
+    "years": 22
+   },
+   {
+    "alsoHeld": 3,
+    "companyCategories": [
+     "szpitale"
+    ],
+    "companyId": "fakeplace1164",
+    "companyIsPublic": true,
+    "companyName": "Szpital Powiatowy w Opole Sp. z o.o.",
+    "date": "2026-12-13",
+    "daysFromToday": 17,
+    "id": "fakeperson347:17",
+    "institutions": 8,
+    "parties": [],
+    "personId": "fakeperson347",
+    "personName": "Patrycja Domański",
+    "projected": true,
+    "role": "Prezes Zarządu",
+    "spells": 1,
+    "years": 17
+   },
+   {
+    "alsoHeld": 2,
+    "companyId": "fakeplace795",
+    "companyIsPublic": true,
+    "companyName": "SZCZERBA SKA SP. Z O.O.",
+    "date": "2026-12-14",
+    "daysFromToday": 18,
+    "id": "fakeperson2000:23",
+    "institutions": 5,
+    "parties": [
+     "Lewica",
+     "Konfederacja"
+    ],
+    "personId": "fakeperson2000",
+    "personName": "Ginewra Jagodziński",
+    "projected": true,
+    "role": "Przewodniczący Rady Nadzorczej",
+    "spells": 1,
+    "years": 23
+   },
+   {
+    "alsoHeld": 3,
+    "companyCategories": [
+     "komunikacja-miejska"
+    ],
+    "companyId": "fakeplace956",
+    "companyIsPublic": true,
+    "companyName": "BOCHENEK, GŁĄB AND CZERWIŃSKI SP. Z O.O.",
+    "date": "2026-12-15",
+    "daysFromToday": 19,
+    "id": "fakeperson2730:24",
+    "institutions": 6,
+    "parties": [
+     "Konfederacja",
+     "PSL"
+    ],
+    "personId": "fakeperson2730",
+    "personName": "Terencjusz Cebula",
+    "projected": true,
+    "role": "Przewodniczący Rady Nadzorczej",
+    "spells": 1,
+    "years": 24
+   }
+  ],
+  "nextOffset": 20,
+  "past": 28,
+  "scope": "upcoming",
+  "today": "2026-11-26",
+  "total": 32,
+  "upcoming": 32
+ }
+}

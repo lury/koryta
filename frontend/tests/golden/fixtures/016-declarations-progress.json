@@ -1,0 +1,14 @@
+{
+ "step": 16,
+ "name": "declarations progress",
+ "request": {
+  "method": "GET",
+  "path": "/api/declarations/progress",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "settled": 0,
+  "votes": false
+ }
+}

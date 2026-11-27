@@ -51,7 +51,7 @@ test.describe("Correcting an article's title from its page", () => {
     page,
   }) => {
     test.setTimeout(180_000);
-    // Unique per run: the emulator keeps every proposal an earlier run filed.
+    // Unique per run: the database keeps every proposal an earlier run filed.
     const title = `Poprawiony tytuł artykułu ${Date.now()}`;
 
     await logIn(page, USERS.normal, ARTICLE_URL);

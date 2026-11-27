@@ -1,0 +1,13 @@
+{
+ "step": 130,
+ "name": "node url",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes/fakeperson1066/url",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "url": "/osoba/berta-dabkowski-fakeperson1066"
+ }
+}

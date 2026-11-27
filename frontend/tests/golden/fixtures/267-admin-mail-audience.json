@@ -1,0 +1,70 @@
+{
+ "step": 267,
+ "name": "admin mail audience",
+ "request": {
+  "method": "GET",
+  "path": "/api/admin/mail/audience",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "community": {
+   "days": 30,
+   "publications": 0,
+   "toCheck": 221,
+   "voters": 31,
+   "votes": 173
+  },
+  "generatedAt": "<now>",
+  "members": [
+   {
+    "activity": {
+     "counts": {
+      "noteSource": 0,
+      "publication": 0,
+      "reading": 0,
+      "revision": 0,
+      "vote": 0
+     },
+     "total": 0
+    },
+    "admin": true,
+    "createdAt": "<now>",
+    "disabled": false,
+    "displayName": "Admin User",
+    "email": "admin@koryta.pl",
+    "emailVerified": true,
+    "lastSeenAt": "<now>",
+    "lastSignInAt": "<now>",
+    "newAdmin": false,
+    "owner": true,
+    "preferences": {},
+    "uid": "test-admin"
+   },
+   {
+    "activity": {
+     "counts": {
+      "noteSource": 0,
+      "publication": 0,
+      "reading": 0,
+      "revision": 0,
+      "vote": 0
+     },
+     "total": 0
+    },
+    "admin": false,
+    "createdAt": "<now>",
+    "disabled": false,
+    "displayName": "Normal User",
+    "email": "user@koryta.pl",
+    "emailVerified": true,
+    "lastSeenAt": "<now>",
+    "lastSignInAt": "<now>",
+    "newAdmin": false,
+    "owner": false,
+    "preferences": {},
+    "uid": "test-user"
+   }
+  ]
+ }
+}

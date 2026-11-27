@@ -1,0 +1,52 @@
+{
+ "step": 309,
+ "name": "ingest person again",
+ "request": {
+  "method": "POST",
+  "path": "/api/ingest/person",
+  "as": "admin",
+  "body": {
+   "autoapprove": true,
+   "birthDate": "1960-01-10",
+   "companies": [
+    {
+     "krs": "0000100372",
+     "role": "Członek Rady Nadzorczej",
+     "start": "2021-03-01"
+    }
+   ],
+   "content": "Osoba z testu wzorcowego nr 0.",
+   "name": "Złota OsobaA Wzorcowa0",
+   "parties": [
+    "PiS"
+   ],
+   "reportUnplacedEmployments": true,
+   "sources": [
+    "https://example.test/wzorzec/0"
+   ]
+  }
+ },
+ "status": 200,
+ "body": {
+  "articles": [
+   {
+    "created": false,
+    "edgeId": "edge_<id>_<id>_mentions",
+    "nodeId": "<id>"
+   }
+  ],
+  "companies": [
+   {
+    "created": false,
+    "edgeId": "edge_<id>_fakeplace1006_employed_jrIJi0zO42",
+    "krs": "0000100372",
+    "nodeId": "fakeplace1006",
+    "published": false
+   }
+  ],
+  "elections": [],
+  "person": "unchanged",
+  "personId": "<id>",
+  "status": "ok"
+ }
+}

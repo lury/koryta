@@ -1,0 +1,20 @@
+{
+ "step": 277,
+ "name": "revision create to reject",
+ "request": {
+  "method": "POST",
+  "path": "/api/revisions/create",
+  "as": "user",
+  "body": {
+   "content": "x",
+   "name": "Odrzucona Zmiana",
+   "node_id": "fakeperson1068"
+  }
+ },
+ "status": 200,
+ "body": {
+  "duplicate": false,
+  "id": "proposal_fakeperson1068_test-user_NvLWzm5Mni",
+  "node_id": "fakeperson1068"
+ }
+}

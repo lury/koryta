@@ -1,10 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { waitForLoginFormHydrated } from "./helpers/login";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
-
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
-process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
+import { putDoc } from "./helpers/db";
 
 test.describe("Admin notes queue", () => {
   test("lists the newest entries, filters them and opens the side panel", async ({
@@ -12,56 +8,44 @@ test.describe("Admin notes queue", () => {
   }) => {
     test.setTimeout(90000); // Seeds, logs in and loads a paginated table
 
-    const app =
-      getApps().length === 0
-        ? initializeApp({ projectId: "demo-koryta-pl" })
-        : getApp();
-    const db = getFirestore(app, "koryta-pl");
-
     const stamp = Date.now();
     const personId = `notes-person-${stamp}`;
     const companyId = `notes-company-${stamp}`;
 
-    await db
-      .collection("nodes")
-      .doc(personId)
-      .set({ name: `Zenon Notatkowy ${stamp}`, type: "person" });
-    await db
-      .collection("nodes")
-      .doc(companyId)
-      .set({ name: `Spółka Notatkowa ${stamp}`, type: "place" });
+    await putDoc("nodes", personId, {
+      name: `Zenon Notatkowy ${stamp}`,
+      type: "person",
+    });
+    await putDoc("nodes", companyId, {
+      name: `Spółka Notatkowa ${stamp}`,
+      type: "place",
+    });
 
     // The queue is ordered by `createdAt` - when the note was written, not when
     // an admin last touched it - so the company note is the newer of the two
     // and has to come first. A note seeded without that field is undated and
     // sorts below every dated one, whatever `updatedAt` says.
-    await db
-      .collection("notes")
-      .doc(`${personId}_test-user`)
-      .set({
-        nodeId: personId,
-        userUid: "test-user",
-        createdAt: new Date(stamp - 60_000).toISOString(),
-        sources: [
-          { note: `stara notatka ${stamp}`, kind: "source" },
-          {
-            note: `rozwiązana notatka ${stamp}`,
-            kind: "change_request",
-            adminStatus: "resolved",
-          },
-        ],
-      });
-    await db
-      .collection("notes")
-      .doc(`${companyId}_test-user`)
-      .set({
-        nodeId: companyId,
-        userUid: "test-user",
-        createdAt: new Date(stamp).toISOString(),
-        sources: [{ note: `nowa notatka ${stamp}`, kind: "missing" }],
-      });
+    await putDoc("notes", `${personId}_test-user`, {
+      nodeId: personId,
+      userUid: "test-user",
+      createdAt: new Date(stamp - 60_000).toISOString(),
+      sources: [
+        { note: `stara notatka ${stamp}`, kind: "source" },
+        {
+          note: `rozwiązana notatka ${stamp}`,
+          kind: "change_request",
+          adminStatus: "resolved",
+        },
+      ],
+    });
+    await putDoc("notes", `${companyId}_test-user`, {
+      nodeId: companyId,
+      userUid: "test-user",
+      createdAt: new Date(stamp).toISOString(),
+      sources: [{ note: `nowa notatka ${stamp}`, kind: "missing" }],
+    });
 
-    // Every view is narrowed to this run's stamp. The emulator is shared with
+    // Every view is narrowed to this run's stamp. The database is shared with
     // whatever else seeded notes, so "the newest note" is not this spec's to
     // claim - but "the newest of the two carrying this stamp" is.
     const queue = `/admin/notatki?q=${stamp}`;

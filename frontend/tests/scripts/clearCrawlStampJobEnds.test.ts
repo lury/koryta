@@ -2,11 +2,10 @@ import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, it, expect } from "vitest";
-// The class `firebase-admin/firestore` re-exports. Imported from its source
+// The Timestamp class firebase-admin re-exports. Imported from its source
 // because under the Nuxt test environment firebase-admin's lazy exports read
 // as undefined.
 import { Timestamp } from "@google-cloud/firestore";
-import type { Firestore } from "firebase-admin/firestore";
 import {
   dayOf,
   decide,
@@ -558,7 +557,7 @@ describe("revisionsOfEach", () => {
           },
         }),
       }),
-    } as unknown as Firestore;
+    } as unknown as Parameters<typeof revisionsOfEach>[0];
     return { db, asked };
   }
 

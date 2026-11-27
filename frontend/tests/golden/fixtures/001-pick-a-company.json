@@ -1,0 +1,293 @@
+{
+ "step": 1,
+ "name": "pick a company",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes?type=place&category=szpitale&limit=5",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "matched": {
+   "fakeplace1006": [
+    "fakeplace1006"
+   ],
+   "fakeplace1012": [
+    "fakeplace1012"
+   ],
+   "fakeplace1017": [
+    "fakeplace1017"
+   ],
+   "fakeplace1027": [
+    "fakeplace1027"
+   ],
+   "fakeplace1035": [
+    "fakeplace1035"
+   ]
+  },
+  "matchedPlaces": {
+   "fakeplace1006": "Centrum Medyczne „colonialism” w Orzesze",
+   "fakeplace1012": "Szpital Powiatowy w Miejska Górka Sp. z o.o.",
+   "fakeplace1017": "Szpital Powiatowy w Płock Sp. z o.o.",
+   "fakeplace1027": "Wojewódzki Szpital Specjalistyczny im. Irena Szymański w Sokołów Małopolski",
+   "fakeplace1035": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Chorzów"
+  },
+  "nodes": {
+   "fakeplace1006": {
+    "categories": [
+     "szpitale"
+    ],
+    "id": "fakeplace1006",
+    "isPublic": true,
+    "krsNumber": "0000100372",
+    "name": "Centrum Medyczne „colonialism” w Orzesze",
+    "published": true,
+    "revision_id": "rev_fakeplace1006",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace1006",
+     "latest_time": "2026-03-24T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1006",
+        "fakeplace523",
+        "teryt1405013"
+       ],
+       "elections": [],
+       "experienceMonths": 16.8,
+       "latestEmploymentStart": "2021-05-04",
+       "seatNodeIds": [
+        "fakeplace1006"
+       ],
+       "targetNodeIds": [
+        "fakeplace1006",
+        "fakeplace523",
+        "teryt1405013"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 18,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "place",
+    "visibility": true
+   },
+   "fakeplace1012": {
+    "categories": [
+     "szpitale"
+    ],
+    "id": "fakeplace1012",
+    "isPublic": true,
+    "krsNumber": "0000889036",
+    "name": "Szpital Powiatowy w Miejska Górka Sp. z o.o.",
+    "published": true,
+    "revision_id": "rev_fakeplace1012",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace1012",
+     "latest_time": "2026-05-26T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1012",
+        "teryt2610022"
+       ],
+       "elections": [],
+       "experienceMonths": 21,
+       "latestEmploymentStart": "2011-08-06",
+       "seatNodeIds": [
+        "fakeplace1012"
+       ],
+       "targetNodeIds": [
+        "fakeplace1012",
+        "teryt2610022"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 10,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "place",
+    "visibility": true
+   },
+   "fakeplace1017": {
+    "categories": [
+     "szpitale"
+    ],
+    "id": "fakeplace1017",
+    "isPublic": true,
+    "krsNumber": "0000675098",
+    "name": "Szpital Powiatowy w Płock Sp. z o.o.",
+    "published": true,
+    "revision_id": "rev_fakeplace1017",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace1017",
+     "latest_time": "2025-06-10T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1017",
+        "teryt2007",
+        "teryt2202031"
+       ],
+       "elections": [],
+       "experienceMonths": 8,
+       "latestEmploymentStart": "2019-05-12",
+       "seatNodeIds": [
+        "fakeplace1017"
+       ],
+       "targetNodeIds": [
+        "fakeplace1017",
+        "teryt2007",
+        "teryt2202031"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 16,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "place",
+    "visibility": true
+   },
+   "fakeplace1027": {
+    "categories": [
+     "szpitale"
+    ],
+    "id": "fakeplace1027",
+    "isPublic": true,
+    "krsNumber": "0001146344",
+    "name": "Wojewódzki Szpital Specjalistyczny im. Irena Szymański w Sokołów Małopolski",
+    "published": true,
+    "revision_id": "rev_fakeplace1027",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace1027",
+     "latest_time": "2026-03-10T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": true,
+       "currentlyEmployedTargetNodeIds": [
+        "fakeplace1027",
+        "teryt1214032",
+        "teryt3214"
+       ],
+       "elections": [],
+       "experienceMonths": 22.6,
+       "latestEmploymentStart": "2021-02-02",
+       "seatNodeIds": [
+        "fakeplace1027"
+       ],
+       "targetNodeIds": [
+        "fakeplace1027",
+        "teryt1214032",
+        "teryt3214"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 22,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "place",
+    "visibility": true
+   },
+   "fakeplace1035": {
+    "categories": [
+     "szpitale"
+    ],
+    "id": "fakeplace1035",
+    "isPublic": true,
+    "krsNumber": "0000383824",
+    "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Chorzów",
+    "published": true,
+    "revision_id": "rev_fakeplace1035",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace1035",
+     "latest_time": "2025-12-01T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "edges": {
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [
+        "fakeplace1035"
+       ],
+       "targetNodeIds": [
+        "fakeplace1035",
+        "teryt1002",
+        "teryt2615033"
+       ]
+      },
+      "hiddenTargets": 0
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 14,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "place",
+    "visibility": true
+   }
+  },
+  "total": 144
+ }
+}

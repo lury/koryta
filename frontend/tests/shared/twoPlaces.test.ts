@@ -9,7 +9,7 @@ import {
 } from "../../shared/twoPlaces";
 import type { Edge } from "../../shared/model";
 import type { NodeRelation } from "../../server/api/edges/byNode.get";
-import { clashingCandidacies } from "../../server/utils/declarationPublish";
+import { clashingCandidacies } from "../../server/utils/declarationRules";
 
 /** A candidacy of one person's unless told otherwise, with an id to read the
  * answers back by. */

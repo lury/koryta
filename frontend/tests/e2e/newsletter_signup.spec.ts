@@ -1,30 +1,16 @@
 import { test, expect, type Page } from "@playwright/test";
-import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
-import type { Firestore } from "firebase-admin/firestore";
 import { logIn, USERS } from "./helpers/auth";
-
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
-process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
+import { readDoc, readDocs } from "./helpers/db";
 
 /** The newsletter for readers without an account: the form on the home
  * page, the confirmation mail (server/utils/newsletterSubscribers.ts),
  * the page that confirms, and the way out from a campaign's footer. */
 
-function adminDb(): Firestore {
-  const app =
-    getApps().length === 0
-      ? initializeApp({ projectId: "demo-koryta-pl" })
-      : getApp();
-  return getFirestore(app, "koryta-pl");
-}
-
 async function confirmationMails(email: string) {
-  const snapshot = await adminDb()
-    .collection("mail")
-    .where("kind", "==", "newsletterConfirmation")
-    .get();
-  return snapshot.docs.filter((doc) => doc.data().to?.[0] === email);
+  return readDocs("mail", {
+    kind: "newsletterConfirmation",
+    to: [email],
+  });
 }
 
 async function signUpOnTheHomePage(page: Page, email: string) {
@@ -59,15 +45,14 @@ test.describe("Newsletter without an account", () => {
       const [mail] = await confirmationMails(email);
       expect(mail).toBeTruthy();
       link = /https?:\/\/\S+\/newsletter\/potwierdz\?\S+/.exec(
-        mail!.data().message.text,
+        mail!.data.message.text,
       )![0];
     }).toPass({ timeout: 30_000 });
     const confirmUrl = new URL(link);
     const id = confirmUrl.searchParams.get("s")!;
-    expect(
-      (await adminDb().collection("newsletterSubscribers").doc(id).get()).data()
-        ?.status,
-    ).toBe("pending");
+    expect((await readDoc("newsletterSubscribers", id))?.status).toBe(
+      "pending",
+    );
 
     // Opening the link changes nothing; the button does.
     await page.goto(confirmUrl.pathname + confirmUrl.search, {
@@ -76,23 +61,19 @@ test.describe("Newsletter without an account", () => {
     await expect(page.locator("[data-confirm-button]")).toBeVisible({
       timeout: 30_000,
     });
-    expect(
-      (await adminDb().collection("newsletterSubscribers").doc(id).get()).data()
-        ?.status,
-    ).toBe("pending");
+    expect((await readDoc("newsletterSubscribers", id))?.status).toBe(
+      "pending",
+    );
     await page.locator("[data-confirm-button]").click();
     await expect(page.locator("[data-confirm-done]")).toBeVisible({
       timeout: 30_000,
     });
-    expect(
-      (await adminDb().collection("newsletterSubscribers").doc(id).get()).data()
-        ?.status,
-    ).toBe("confirmed");
+    expect((await readDoc("newsletterSubscribers", id))?.status).toBe(
+      "confirmed",
+    );
 
     // The way out a campaign's footer gives a subscriber.
-    const token = (
-      await adminDb().collection("mailTokens").doc(`sub_${id}`).get()
-    ).data()!.token as string;
+    const token = (await readDoc("mailTokens", `sub_${id}`))!.token as string;
     await page.goto(
       `/wypisz?u=sub_${id}&t=${encodeURIComponent(token)}&k=callsToAction`,
       { waitUntil: "domcontentloaded" },
@@ -102,10 +83,10 @@ test.describe("Newsletter without an account", () => {
       "Nie wyślemy już na ten adres",
       { timeout: 30_000 },
     );
-    expect(
-      (await adminDb().collection("newsletterSubscribers").doc(id).get()).data()
-        ?.topics,
-    ).toEqual({ callsToAction: false, recentPeople: true });
+    expect((await readDoc("newsletterSubscribers", id))?.topics).toEqual({
+      callsToAction: false,
+      recentPeople: true,
+    });
   });
 
   test("a second request for the same address soon after sends no second mail", async ({

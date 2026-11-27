@@ -11,11 +11,11 @@ const vuetify = createVuetify({
   directives,
 });
 
-vi.mock("~/composables/entity", () => ({
-  useEntities: () => ({
+vi.mock("~/composables/nameMatches", () => ({
+  useNameMatches: () => ({
     entities: ref({
-      "1": { name: "Similar Name", type: "company" },
-      "2": { name: "Different", type: "company" },
+      "1": { name: "Similar Name" },
+      "2": { name: "Different" },
     }),
   }),
 }));

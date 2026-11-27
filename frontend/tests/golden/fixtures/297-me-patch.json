@@ -1,0 +1,30 @@
+{
+ "step": 297,
+ "name": "me patch",
+ "request": {
+  "method": "PATCH",
+  "path": "/api/me",
+  "as": "user",
+  "body": {
+   "displayName": "Wzorcowy Czytelnik",
+   "newsletter": {
+    "callsToAction": true
+   },
+   "newsletterVia": "prompt"
+  }
+ },
+ "status": 200,
+ "body": {
+  "config": {
+   "displayName": "Wzorcowy Czytelnik",
+   "id": "test-user",
+   "newsletter": {
+    "callsToAction": true
+   },
+   "newsletterUpdated": {
+    "at": "<now>",
+    "via": "prompt"
+   }
+  }
+ }
+}

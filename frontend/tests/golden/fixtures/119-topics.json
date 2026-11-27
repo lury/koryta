@@ -1,0 +1,13 @@
+{
+ "step": 119,
+ "name": "topics",
+ "request": {
+  "method": "GET",
+  "path": "/api/topics",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "topics": []
+ }
+}

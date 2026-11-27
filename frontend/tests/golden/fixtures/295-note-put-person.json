@@ -1,0 +1,33 @@
+{
+ "step": 295,
+ "name": "note put person",
+ "request": {
+  "method": "PUT",
+  "path": "/api/notes/fakeperson109",
+  "as": "user",
+  "body": {
+   "sources": [
+    {
+     "kind": "source",
+     "note": "druga notatka"
+    }
+   ]
+  }
+ },
+ "status": 200,
+ "body": {
+  "note": {
+   "createdAt": "<now>",
+   "id": "fakeperson109_test-user",
+   "nodeId": "fakeperson109",
+   "sources": [
+    {
+     "kind": "source",
+     "note": "druga notatka"
+    }
+   ],
+   "updatedAt": "<now>",
+   "userUid": "test-user"
+  }
+ }
+}

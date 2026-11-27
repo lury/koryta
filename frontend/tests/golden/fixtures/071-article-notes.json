@@ -1,0 +1,17 @@
+{
+ "step": 71,
+ "name": "article notes",
+ "request": {
+  "method": "GET",
+  "path": "/api/articles/fakearticle0/notes",
+  "as": "anon"
+ },
+ "status": 401,
+ "body": {
+  "error": true,
+  "message": "Błąd uwierzytelniania: brak tokenu. Proszę się zalogować.",
+  "statusCode": 401,
+  "statusMessage": "Server Error",
+  "url": "http://127.0.0.1:23200/api/articles/fakearticle0/notes"
+ }
+}

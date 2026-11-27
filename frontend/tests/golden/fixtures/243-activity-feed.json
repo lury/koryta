@@ -1,0 +1,1982 @@
+{
+ "step": 243,
+ "name": "activity feed",
+ "request": {
+  "method": "GET",
+  "path": "/api/activity/feed?days=7",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "actors": [
+   {
+    "isSelf": false,
+    "key": "voter11",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter11"
+   },
+   {
+    "isSelf": false,
+    "key": "voter18",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter18"
+   },
+   {
+    "isSelf": false,
+    "key": "voter23",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter23"
+   },
+   {
+    "isSelf": false,
+    "key": "voter14",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter14"
+   },
+   {
+    "isSelf": false,
+    "key": "voter27",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter27"
+   },
+   {
+    "isSelf": false,
+    "key": "voter28",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter28"
+   },
+   {
+    "isSelf": false,
+    "key": "voter5",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter5"
+   },
+   {
+    "isSelf": false,
+    "key": "voter6",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter6"
+   },
+   {
+    "isSelf": false,
+    "key": "voter13",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter13"
+   },
+   {
+    "isSelf": false,
+    "key": "voter9",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter9"
+   },
+   {
+    "isSelf": false,
+    "key": "voter30",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter30"
+   },
+   {
+    "isSelf": false,
+    "key": "voter15",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter15"
+   },
+   {
+    "isSelf": false,
+    "key": "voter16",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter16"
+   },
+   {
+    "isSelf": false,
+    "key": "voter26",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter26"
+   },
+   {
+    "isSelf": false,
+    "key": "voter0",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter0"
+   },
+   {
+    "isSelf": false,
+    "key": "voter21",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter21"
+   },
+   {
+    "isSelf": false,
+    "key": "voter3",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter3"
+   },
+   {
+    "isSelf": false,
+    "key": "voter29",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter29"
+   },
+   {
+    "isSelf": false,
+    "key": "voter4",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter4"
+   },
+   {
+    "isSelf": false,
+    "key": "voter7",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter7"
+   },
+   {
+    "isSelf": false,
+    "key": "voter8",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter8"
+   },
+   {
+    "isSelf": false,
+    "key": "voter17",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter17"
+   },
+   {
+    "isSelf": false,
+    "key": "voter10",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter10"
+   },
+   {
+    "isSelf": false,
+    "key": "voter2",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter2"
+   },
+   {
+    "isSelf": false,
+    "key": "voter22",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter22"
+   },
+   {
+    "isSelf": false,
+    "key": "voter12",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter12"
+   },
+   {
+    "isSelf": false,
+    "key": "voter25",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter25"
+   },
+   {
+    "isSelf": false,
+    "key": "voter1",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter1"
+   },
+   {
+    "isSelf": false,
+    "key": "voter19",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter19"
+   },
+   {
+    "isSelf": false,
+    "key": "voter20",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter20"
+   },
+   {
+    "isSelf": false,
+    "key": "voter24",
+    "name": "Bez nazwy",
+    "named": true,
+    "newAdmin": false,
+    "photoURL": null,
+    "uid": "voter24"
+   }
+  ],
+  "batches": [
+   {
+    "actorKey": "voter11",
+    "alongEdges": 0,
+    "count": 6,
+    "firstAt": "<now>",
+    "id": "voter11:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 6
+    },
+    "targets": [
+     {
+      "href": "/osoba/archibald-chojnacki-fakeperson2742",
+      "key": "person:fakeperson2742",
+      "name": "Archibald Chojnacki",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/koralia-zygmunt-fakeperson2507",
+      "key": "person:fakeperson2507",
+      "name": "Koralia Zygmunt",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/eugenia-borowiec-fakeperson990",
+      "key": "person:fakeperson990",
+      "name": "Eugenia Borowiec",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/renata-raczynski-fakeperson859",
+      "key": "person:fakeperson859",
+      "name": "Renata Raczyński",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/amanda-fraczek-fakeperson825",
+      "key": "person:fakeperson825",
+      "name": "Amanda Frączek",
+      "type": "person"
+     },
+     {
+      "deleted": true,
+      "href": null,
+      "key": "person:fakeperson289",
+      "name": "Ryszard Jarząbek",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter18",
+    "alongEdges": 0,
+    "count": 9,
+    "firstAt": "<now>",
+    "id": "voter18:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 9
+    },
+    "targets": [
+     {
+      "href": "/osoba/archibald-chojnacki-fakeperson2742",
+      "key": "person:fakeperson2742",
+      "name": "Archibald Chojnacki",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/nina-sochacki-fakeperson1484",
+      "key": "person:fakeperson1484",
+      "name": "Nina Sochacki",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/jakubina-radomski-fakeperson1394",
+      "key": "person:fakeperson1394",
+      "name": "Jakubina Radomski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/lucja-malinowski-fakeperson1177",
+      "key": "person:fakeperson1177",
+      "name": "Łucja Malinowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/kleopatra-pawlicki-fakeperson871",
+      "key": "person:fakeperson871",
+      "name": "Kleopatra Pawlicki",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/teresa-panek-fakeperson846",
+      "key": "person:fakeperson846",
+      "name": "Teresa Panek",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/terencjusz-drzewiecki-fakeperson595",
+      "key": "person:fakeperson595",
+      "name": "Terencjusz Drzewiecki",
+      "type": "person"
+     },
+     {
+      "deleted": true,
+      "href": null,
+      "key": "person:fakeperson289",
+      "name": "Ryszard Jarząbek",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/tacjana-tkaczyk-fakeperson235",
+      "key": "person:fakeperson235",
+      "name": "Tacjana Tkaczyk",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter23",
+    "alongEdges": 0,
+    "count": 6,
+    "firstAt": "<now>",
+    "id": "voter23:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 6
+    },
+    "targets": [
+     {
+      "href": "/osoba/archibald-chojnacki-fakeperson2742",
+      "key": "person:fakeperson2742",
+      "name": "Archibald Chojnacki",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/bruno-maslowski-fakeperson2211",
+      "key": "person:fakeperson2211",
+      "name": "Bruno Masłowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/angela-korzeniowski-fakeperson1832",
+      "key": "person:fakeperson1832",
+      "name": "Angela Korzeniowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/edward-jurkiewicz-fakeperson1256",
+      "key": "person:fakeperson1256",
+      "name": "Edward Jurkiewicz",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/kira-partyka-fakeperson652",
+      "key": "person:fakeperson652",
+      "name": "Kira Partyka",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/laurencja-turek-fakeperson116",
+      "key": "person:fakeperson116",
+      "name": "Laurencja Turek",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter14",
+    "alongEdges": 0,
+    "count": 9,
+    "firstAt": "<now>",
+    "id": "voter14:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 9
+    },
+    "targets": [
+     {
+      "href": "/osoba/franciszka-dobrowolski-fakeperson2690",
+      "key": "person:fakeperson2690",
+      "name": "Franciszka Dobrowolski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/lilla-trzeciak-fakeperson2029",
+      "key": "person:fakeperson2029",
+      "name": "Lilla Trzeciak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/cezary-golebiowski-fakeperson1388",
+      "key": "person:fakeperson1388",
+      "name": "Cezary Gołębiowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/penelopa-borowiec-fakeperson1191",
+      "key": "person:fakeperson1191",
+      "name": "Penelopa Borowiec",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/teresa-panek-fakeperson846",
+      "key": "person:fakeperson846",
+      "name": "Teresa Panek",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/polikarp-koziel-fakeperson836",
+      "key": "person:fakeperson836",
+      "name": "Polikarp Kozieł",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/dariusz-onufry-swierczynski-fakeperson705",
+      "key": "person:fakeperson705",
+      "name": "Dariusz Onufry Świerczyński",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/stella-szulc-fakeperson270",
+      "key": "person:fakeperson270",
+      "name": "Stella Szulc",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/rebeka-bochenek-fakeperson120",
+      "key": "person:fakeperson120",
+      "name": "Rebeka Bochenek",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter27",
+    "alongEdges": 0,
+    "count": 2,
+    "firstAt": "<now>",
+    "id": "voter27:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 2
+    },
+    "targets": [
+     {
+      "href": "/osoba/szczepan-niewiadomski-fakeperson2711",
+      "key": "person:fakeperson2711",
+      "name": "Szczepan Niewiadomski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/rebeka-czarnecki-fakeperson1355",
+      "key": "person:fakeperson1355",
+      "name": "Rebeka Czarnecki",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter28",
+    "alongEdges": 0,
+    "count": 8,
+    "firstAt": "<now>",
+    "id": "voter28:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 8
+    },
+    "targets": [
+     {
+      "href": "/osoba/alina-kubiak-fakeperson2623",
+      "key": "person:fakeperson2623",
+      "name": "Alina Kubiak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/wincenty-kucinski-fakeperson2601",
+      "key": "person:fakeperson2601",
+      "name": "Wincenty Kuciński",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/edward-piwowarczyk-fakeperson1875",
+      "key": "person:fakeperson1875",
+      "name": "Edward Piwowarczyk",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/daria-jagodzinski-fakeperson1779",
+      "key": "person:fakeperson1779",
+      "name": "Daria Jagodziński",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/lilia-falkowski-fakeperson845",
+      "key": "person:fakeperson845",
+      "name": "Lilia Falkowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/robert-nowacki-fakeperson789",
+      "key": "person:fakeperson789",
+      "name": "Robert Nowacki",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/natan-skrzypek-fakeperson494",
+      "key": "person:fakeperson494",
+      "name": "Natan Skrzypek",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/adrian-fijalkowski-fakeperson301",
+      "key": "person:fakeperson301",
+      "name": "Adrian Fijałkowski",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter5",
+    "alongEdges": 0,
+    "count": 5,
+    "firstAt": "<now>",
+    "id": "voter5:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 5
+    },
+    "targets": [
+     {
+      "href": "/osoba/alina-kubiak-fakeperson2623",
+      "key": "person:fakeperson2623",
+      "name": "Alina Kubiak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/krystyna-maslanka-fakeperson1901",
+      "key": "person:fakeperson1901",
+      "name": "Krystyna Maślanka",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/olga-palacz-fakeperson1678",
+      "key": "person:fakeperson1678",
+      "name": "Olga Palacz",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/dorian-majcher-fakeperson1009",
+      "key": "person:fakeperson1009",
+      "name": "Dorian Majcher",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/nina-gorecki-fakeperson737",
+      "key": "person:fakeperson737",
+      "name": "Nina Górecki",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter6",
+    "alongEdges": 0,
+    "count": 5,
+    "firstAt": "<now>",
+    "id": "voter6:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 5
+    },
+    "targets": [
+     {
+      "href": "/osoba/renata-gorski-fakeperson2638",
+      "key": "person:fakeperson2638",
+      "name": "Renata Górski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/gerazym-marzec-fakeperson2548",
+      "key": "person:fakeperson2548",
+      "name": "Gerazym Marzec",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/lea-stepien-fakeperson1628",
+      "key": "person:fakeperson1628",
+      "name": "Lea Stępień",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/sylwia-maria-kulik-fakeperson1558",
+      "key": "person:fakeperson1558",
+      "name": "Sylwia Maria Kulik",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/miron-kaszuba-fakeperson1462",
+      "key": "person:fakeperson1462",
+      "name": "Miron Kaszuba",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter13",
+    "alongEdges": 0,
+    "count": 4,
+    "firstAt": "<now>",
+    "id": "voter13:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 4
+    },
+    "targets": [
+     {
+      "href": "/osoba/wincenty-kucinski-fakeperson2601",
+      "key": "person:fakeperson2601",
+      "name": "Wincenty Kuciński",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/julita-grzegorczyk-fakeperson1987",
+      "key": "person:fakeperson1987",
+      "name": "Julita Grzegorczyk",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/wirginia-kubacki-fakeperson1024",
+      "key": "person:fakeperson1024",
+      "name": "Wirginia Kubacki",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/ryszard-michalek-fakeperson549",
+      "key": "person:fakeperson549",
+      "name": "Ryszard Michałek",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter9",
+    "alongEdges": 0,
+    "count": 8,
+    "firstAt": "<now>",
+    "id": "voter9:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 8
+    },
+    "targets": [
+     {
+      "href": "/osoba/wincenty-kucinski-fakeperson2601",
+      "key": "person:fakeperson2601",
+      "name": "Wincenty Kuciński",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/karolina-sabina-kowal-fakeperson2343",
+      "key": "person:fakeperson2343",
+      "name": "Karolina Sabina Kowal",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/sylwia-maria-kulik-fakeperson1558",
+      "key": "person:fakeperson1558",
+      "name": "Sylwia Maria Kulik",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/lucja-malinowski-fakeperson1177",
+      "key": "person:fakeperson1177",
+      "name": "Łucja Malinowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/bertrand-sikorski-fakeperson1054",
+      "key": "person:fakeperson1054",
+      "name": "Bertrand Sikorski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/tomasz-bartczak-fakeperson901",
+      "key": "person:fakeperson901",
+      "name": "Tomasz Bartczak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/amanda-fraczek-fakeperson825",
+      "key": "person:fakeperson825",
+      "name": "Amanda Frączek",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/emilia-bednarz-fakeperson541",
+      "key": "person:fakeperson541",
+      "name": "Emilia Bednarz",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter30",
+    "alongEdges": 0,
+    "count": 9,
+    "firstAt": "<now>",
+    "id": "voter30:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 9
+    },
+    "targets": [
+     {
+      "href": "/osoba/gerazym-marzec-fakeperson2548",
+      "key": "person:fakeperson2548",
+      "name": "Gerazym Marzec",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/beniamin-szyszka-fakeperson2074",
+      "key": "person:fakeperson2074",
+      "name": "Beniamin Szyszka",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/julita-grzegorczyk-fakeperson1987",
+      "key": "person:fakeperson1987",
+      "name": "Julita Grzegorczyk",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/leonard-tarnowski-fakeperson1907",
+      "key": "person:fakeperson1907",
+      "name": "Leonard Tarnowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/kamila-mucha-fakeperson874",
+      "key": "person:fakeperson874",
+      "name": "Kamila Mucha",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/terencjusz-niedziela-fakeperson854",
+      "key": "person:fakeperson854",
+      "name": "Terencjusz Niedziela",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/bertram-urbanski-fakeperson814",
+      "key": "person:fakeperson814",
+      "name": "Bertram Urbański",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/terencjusz-drzewiecki-fakeperson595",
+      "key": "person:fakeperson595",
+      "name": "Terencjusz Drzewiecki",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/gertruda-lis-fakeperson569",
+      "key": "person:fakeperson569",
+      "name": "Gertruda Lis",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter15",
+    "alongEdges": 0,
+    "count": 2,
+    "firstAt": "<now>",
+    "id": "voter15:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 2
+    },
+    "targets": [
+     {
+      "href": "/osoba/wladyslaw-balcerzak-fakeperson2543",
+      "key": "person:fakeperson2543",
+      "name": "Władysław Balcerzak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/gertruda-jezierski-fakeperson371",
+      "key": "person:fakeperson371",
+      "name": "Gertruda Jezierski",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter16",
+    "alongEdges": 0,
+    "count": 3,
+    "firstAt": "<now>",
+    "id": "voter16:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 3
+    },
+    "targets": [
+     {
+      "href": "/osoba/wladyslaw-balcerzak-fakeperson2543",
+      "key": "person:fakeperson2543",
+      "name": "Władysław Balcerzak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/edward-piwowarczyk-fakeperson1875",
+      "key": "person:fakeperson1875",
+      "name": "Edward Piwowarczyk",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/joanna-siedlecki-fakeperson1801",
+      "key": "person:fakeperson1801",
+      "name": "Joanna Siedlecki",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter26",
+    "alongEdges": 0,
+    "count": 10,
+    "firstAt": "<now>",
+    "id": "voter26:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 10
+    },
+    "targets": [
+     {
+      "href": "/osoba/wladyslaw-balcerzak-fakeperson2543",
+      "key": "person:fakeperson2543",
+      "name": "Władysław Balcerzak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/arkadiusz-bednarczyk-fakeperson2431",
+      "key": "person:fakeperson2431",
+      "name": "Arkadiusz Bednarczyk",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/krystyna-maslanka-fakeperson1901",
+      "key": "person:fakeperson1901",
+      "name": "Krystyna Maślanka",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/izolda-cholewa-fakeperson1412",
+      "key": "person:fakeperson1412",
+      "name": "Izolda Cholewa",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/olaf-kasprzak-fakeperson1391",
+      "key": "person:fakeperson1391",
+      "name": "Olaf Kasprzak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/edward-jurkiewicz-fakeperson1256",
+      "key": "person:fakeperson1256",
+      "name": "Edward Jurkiewicz",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/klementyna-bilski-fakeperson905",
+      "key": "person:fakeperson905",
+      "name": "Klementyna Bilski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/terencjusz-niedziela-fakeperson854",
+      "key": "person:fakeperson854",
+      "name": "Terencjusz Niedziela",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/gertruda-lis-fakeperson569",
+      "key": "person:fakeperson569",
+      "name": "Gertruda Lis",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/rachela-lech-fakeperson231",
+      "key": "person:fakeperson231",
+      "name": "Rachela Lech",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter0",
+    "alongEdges": 0,
+    "count": 6,
+    "firstAt": "<now>",
+    "id": "voter0:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 6
+    },
+    "targets": [
+     {
+      "href": "/osoba/arystarch-komorowski-frackowiak-fakeperson2505",
+      "key": "person:fakeperson2505",
+      "name": "Arystarch Komorowski-Frąckowiak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/szymon-gadomski-kielbasa-fakeperson2220",
+      "key": "person:fakeperson2220",
+      "name": "Szymon Gadomski-Kiełbasa",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/jakubina-radomski-fakeperson1394",
+      "key": "person:fakeperson1394",
+      "name": "Jakubina Radomski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/wirginia-kubacki-fakeperson1024",
+      "key": "person:fakeperson1024",
+      "name": "Wirginia Kubacki",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/romeo-cieslik-fakeperson533",
+      "key": "person:fakeperson533",
+      "name": "Romeo Cieślik",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/ida-skiba-fakeperson75",
+      "key": "person:fakeperson75",
+      "name": "Ida Skiba",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter21",
+    "alongEdges": 0,
+    "count": 5,
+    "firstAt": "<now>",
+    "id": "voter21:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 5
+    },
+    "targets": [
+     {
+      "href": "/osoba/arkadiusz-bednarczyk-fakeperson2431",
+      "key": "person:fakeperson2431",
+      "name": "Arkadiusz Bednarczyk",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/chloe-plonka-fakeperson2387",
+      "key": "person:fakeperson2387",
+      "name": "Chloe Płonka",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/aaron-fratczak-fakeperson1173",
+      "key": "person:fakeperson1173",
+      "name": "Aaron Frątczak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/gertruda-jezierski-fakeperson371",
+      "key": "person:fakeperson371",
+      "name": "Gertruda Jezierski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/tacjana-tkaczyk-fakeperson235",
+      "key": "person:fakeperson235",
+      "name": "Tacjana Tkaczyk",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter3",
+    "alongEdges": 0,
+    "count": 4,
+    "firstAt": "<now>",
+    "id": "voter3:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 4
+    },
+    "targets": [
+     {
+      "href": "/osoba/arkadiusz-bednarczyk-fakeperson2431",
+      "key": "person:fakeperson2431",
+      "name": "Arkadiusz Bednarczyk",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/chloe-plonka-fakeperson2387",
+      "key": "person:fakeperson2387",
+      "name": "Chloe Płonka",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/karolina-skrzypczak-fakeperson334",
+      "key": "person:fakeperson334",
+      "name": "Karolina Skrzypczak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/stella-szulc-fakeperson270",
+      "key": "person:fakeperson270",
+      "name": "Stella Szulc",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter29",
+    "alongEdges": 0,
+    "count": 9,
+    "firstAt": "<now>",
+    "id": "voter29:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 9
+    },
+    "targets": [
+     {
+      "href": "/osoba/cyrus-lisowski-fakeperson2376",
+      "key": "person:fakeperson2376",
+      "name": "Cyrus Lisowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/beniamin-szyszka-fakeperson2074",
+      "key": "person:fakeperson2074",
+      "name": "Beniamin Szyszka",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/lilla-trzeciak-fakeperson2029",
+      "key": "person:fakeperson2029",
+      "name": "Lilla Trzeciak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/angela-korzeniowski-fakeperson1832",
+      "key": "person:fakeperson1832",
+      "name": "Angela Korzeniowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/sylwia-maria-kulik-fakeperson1558",
+      "key": "person:fakeperson1558",
+      "name": "Sylwia Maria Kulik",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/ginewra-kucharski-fakeperson1382",
+      "key": "person:fakeperson1382",
+      "name": "Ginewra Kucharski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/izabela-tomys-fakeperson1068",
+      "key": "person:fakeperson1068",
+      "name": "Izabela Tomys",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/emilia-bednarz-fakeperson541",
+      "key": "person:fakeperson541",
+      "name": "Emilia Bednarz",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/romeo-cieslik-fakeperson533",
+      "key": "person:fakeperson533",
+      "name": "Romeo Cieślik",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter4",
+    "alongEdges": 0,
+    "count": 5,
+    "firstAt": "<now>",
+    "id": "voter4:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 5
+    },
+    "targets": [
+     {
+      "deleted": true,
+      "href": null,
+      "key": "person:fakeperson2390",
+      "name": "Magnus Piątkowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/ilona-sieradzki-fakeperson2176",
+      "key": "person:fakeperson2176",
+      "name": "Ilona Sieradzki",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/ginewra-kucharski-fakeperson1382",
+      "key": "person:fakeperson1382",
+      "name": "Ginewra Kucharski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/klementyna-wozniak-fakeperson1192",
+      "key": "person:fakeperson1192",
+      "name": "Klementyna Woźniak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/gertruda-lis-fakeperson569",
+      "key": "person:fakeperson569",
+      "name": "Gertruda Lis",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter7",
+    "alongEdges": 0,
+    "count": 6,
+    "firstAt": "<now>",
+    "id": "voter7:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 6
+    },
+    "targets": [
+     {
+      "href": "/osoba/chloe-plonka-fakeperson2387",
+      "key": "person:fakeperson2387",
+      "name": "Chloe Płonka",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/cyrus-lisowski-fakeperson2376",
+      "key": "person:fakeperson2376",
+      "name": "Cyrus Lisowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/patryk-wierzbicki-fakeperson2190",
+      "key": "person:fakeperson2190",
+      "name": "Patryk Wierzbicki",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/joanna-siedlecki-fakeperson1801",
+      "key": "person:fakeperson1801",
+      "name": "Joanna Siedlecki",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/emilia-bednarz-fakeperson541",
+      "key": "person:fakeperson541",
+      "name": "Emilia Bednarz",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/laurencja-turek-fakeperson116",
+      "key": "person:fakeperson116",
+      "name": "Laurencja Turek",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter8",
+    "alongEdges": 0,
+    "count": 8,
+    "firstAt": "<now>",
+    "id": "voter8:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 8
+    },
+    "targets": [
+     {
+      "deleted": true,
+      "href": null,
+      "key": "person:fakeperson2390",
+      "name": "Magnus Piątkowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/cyrus-lisowski-fakeperson2376",
+      "key": "person:fakeperson2376",
+      "name": "Cyrus Lisowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/bruno-maslowski-fakeperson2211",
+      "key": "person:fakeperson2211",
+      "name": "Bruno Masłowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/porfiriusz-orzechowski-fakeperson1078",
+      "key": "person:fakeperson1078",
+      "name": "Porfiriusz Orzechowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/robert-nowacki-fakeperson789",
+      "key": "person:fakeperson789",
+      "name": "Robert Nowacki",
+      "type": "person"
+     },
+     {
+      "deleted": true,
+      "href": null,
+      "key": "person:fakeperson289",
+      "name": "Ryszard Jarząbek",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/rebeka-bochenek-fakeperson120",
+      "key": "person:fakeperson120",
+      "name": "Rebeka Bochenek",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/laurencja-turek-fakeperson116",
+      "key": "person:fakeperson116",
+      "name": "Laurencja Turek",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter17",
+    "alongEdges": 0,
+    "count": 6,
+    "firstAt": "<now>",
+    "id": "voter17:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 6
+    },
+    "targets": [
+     {
+      "href": "/osoba/klaudiusz-cebula-fakeperson2303",
+      "key": "person:fakeperson2303",
+      "name": "Klaudiusz Cebula",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/bernard-rakowski-fakeperson2236",
+      "key": "person:fakeperson2236",
+      "name": "Bernard Rakowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/lucja-malinowski-fakeperson1177",
+      "key": "person:fakeperson1177",
+      "name": "Łucja Malinowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/ryszard-michalek-fakeperson549",
+      "key": "person:fakeperson549",
+      "name": "Ryszard Michałek",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/oliwia-pluta-fakeperson238",
+      "key": "person:fakeperson238",
+      "name": "Oliwia Pluta",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/eugenia-mroz-fakeperson86",
+      "key": "person:fakeperson86",
+      "name": "Eugenia Mróz",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter10",
+    "alongEdges": 0,
+    "count": 1,
+    "firstAt": "<now>",
+    "id": "voter10:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 1
+    },
+    "targets": [
+     {
+      "href": "/osoba/natan-kot-fakeperson2253",
+      "key": "person:fakeperson2253",
+      "name": "Natan Kot",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter2",
+    "alongEdges": 0,
+    "count": 6,
+    "firstAt": "<now>",
+    "id": "voter2:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 6
+    },
+    "targets": [
+     {
+      "href": "/osoba/olga-adamski-fakeperson2045",
+      "key": "person:fakeperson2045",
+      "name": "Olga Adamski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/klementyna-kolodziejski-fakeperson1828",
+      "key": "person:fakeperson1828",
+      "name": "Klementyna Kołodziejski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/olga-palacz-fakeperson1678",
+      "key": "person:fakeperson1678",
+      "name": "Olga Palacz",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/aaron-jakubiak-fakeperson1132",
+      "key": "person:fakeperson1132",
+      "name": "Aaron Jakubiak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/amanda-fraczek-fakeperson825",
+      "key": "person:fakeperson825",
+      "name": "Amanda Frączek",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/gertruda-jezierski-fakeperson371",
+      "key": "person:fakeperson371",
+      "name": "Gertruda Jezierski",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter22",
+    "alongEdges": 0,
+    "count": 6,
+    "firstAt": "<now>",
+    "id": "voter22:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 6
+    },
+    "targets": [
+     {
+      "href": "/osoba/lilla-trzeciak-fakeperson2029",
+      "key": "person:fakeperson2029",
+      "name": "Lilla Trzeciak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/edward-piwowarczyk-fakeperson1875",
+      "key": "person:fakeperson1875",
+      "name": "Edward Piwowarczyk",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/klementyna-bilski-fakeperson905",
+      "key": "person:fakeperson905",
+      "name": "Klementyna Bilski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/bertram-urbanski-fakeperson814",
+      "key": "person:fakeperson814",
+      "name": "Bertram Urbański",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/natan-skrzypek-fakeperson494",
+      "key": "person:fakeperson494",
+      "name": "Natan Skrzypek",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/wiktor-ciesielski-fakeperson392",
+      "key": "person:fakeperson392",
+      "name": "Wiktor Ciesielski",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter12",
+    "alongEdges": 0,
+    "count": 3,
+    "firstAt": "<now>",
+    "id": "voter12:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 3
+    },
+    "targets": [
+     {
+      "href": "/osoba/nina-sochacki-fakeperson1484",
+      "key": "person:fakeperson1484",
+      "name": "Nina Sochacki",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/izolda-cholewa-fakeperson1412",
+      "key": "person:fakeperson1412",
+      "name": "Izolda Cholewa",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/adrian-fijalkowski-fakeperson301",
+      "key": "person:fakeperson301",
+      "name": "Adrian Fijałkowski",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter25",
+    "alongEdges": 0,
+    "count": 1,
+    "firstAt": "<now>",
+    "id": "voter25:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 1
+    },
+    "targets": [
+     {
+      "href": "/osoba/ginewra-kucharski-fakeperson1382",
+      "key": "person:fakeperson1382",
+      "name": "Ginewra Kucharski",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter1",
+    "alongEdges": 0,
+    "count": 2,
+    "firstAt": "<now>",
+    "id": "voter1:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 2
+    },
+    "targets": [
+     {
+      "href": "/osoba/bertrand-sikorski-fakeperson1054",
+      "key": "person:fakeperson1054",
+      "name": "Bertrand Sikorski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/aleksy-kozlowski-fakeperson713",
+      "key": "person:fakeperson713",
+      "name": "Aleksy Kozłowski",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter19",
+    "alongEdges": 0,
+    "count": 4,
+    "firstAt": "<now>",
+    "id": "voter19:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 4
+    },
+    "targets": [
+     {
+      "href": "/osoba/wirginia-kubacki-fakeperson1024",
+      "key": "person:fakeperson1024",
+      "name": "Wirginia Kubacki",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/tomasz-bartczak-fakeperson901",
+      "key": "person:fakeperson901",
+      "name": "Tomasz Bartczak",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/kira-partyka-fakeperson652",
+      "key": "person:fakeperson652",
+      "name": "Kira Partyka",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/stella-szulc-fakeperson270",
+      "key": "person:fakeperson270",
+      "name": "Stella Szulc",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter20",
+    "alongEdges": 0,
+    "count": 3,
+    "firstAt": "<now>",
+    "id": "voter20:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 3
+    },
+    "targets": [
+     {
+      "href": "/osoba/teresa-panek-fakeperson846",
+      "key": "person:fakeperson846",
+      "name": "Teresa Panek",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/dariusz-onufry-swierczynski-fakeperson705",
+      "key": "person:fakeperson705",
+      "name": "Dariusz Onufry Świerczyński",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/bibiana-karczewski-fakeperson246",
+      "key": "person:fakeperson246",
+      "name": "Bibiana Karczewski",
+      "type": "person"
+     }
+    ]
+   },
+   {
+    "actorKey": "voter24",
+    "alongEdges": 0,
+    "count": 2,
+    "firstAt": "<now>",
+    "id": "voter24:vote:<now>",
+    "kind": "vote",
+    "lastAt": "<now>",
+    "moreTargets": 0,
+    "objects": {
+     "person": 2
+    },
+    "targets": [
+     {
+      "href": "/osoba/aleksy-kozlowski-fakeperson713",
+      "key": "person:fakeperson713",
+      "name": "Aleksy Kozłowski",
+      "type": "person"
+     },
+     {
+      "href": "/osoba/adrian-fijalkowski-fakeperson301",
+      "key": "person:fakeperson301",
+      "name": "Adrian Fijałkowski",
+      "type": "person"
+     }
+    ]
+   }
+  ],
+  "identified": true,
+  "newAdmins": [],
+  "siteChanges": [
+   {
+    "area": "contributor",
+    "at": "<now>",
+    "description": "Przeglądarka nie pisze już sama do bazy: głos, notatka, ustawienia na /profil i ocena na /qa idą przez serwer, który pilnuje tych samych zasad co dotąd (jeden głos na osobę, wartości od -5 do 5, notatkę zmienia tylko autor). Wygląd się nie zmienia; liczniki i strzałki mają działać jak wcześniej.",
+    "id": "glosy-notatki-profil-przez-api",
+    "link": "/profil",
+    "title": "Głosy, notatki, profil i oceny QA zapisują się przez serwer"
+   },
+   {
+    "area": "public",
+    "at": "<now>",
+    "description": "Karta otwierała /graf bez wybranej instytucji, gdzie był tylko napis „Wybierz miejsce”. Graf instytucji dalej otwiera przycisk „Graf połączeń” na jej stronie.",
+    "id": "eksploruj-bez-karty-grafu",
+    "link": "/eksploruj",
+    "title": "Na /eksploruj nie ma już karty „Graf połączeń”"
+   },
+   {
+    "area": "contributor",
+    "at": "<now>",
+    "description": "W /eksploruj/nowe imię i nazwisko w wierszu tabeli jest linkiem do strony osoby. Po powrocie przyciskiem Wstecz kolejka pokazuje tę samą osobę.",
+    "id": "kolejka-imie-prowadzi-do-strony-osoby",
+    "link": "/eksploruj/nowe",
+    "title": "Imię w kolejce prowadzi na stronę osoby"
+   },
+   {
+    "area": "contributor",
+    "at": "<now>",
+    "description": "Karta „Twoje propozycje zmian” to teraz „Twoje interakcje”: obok propozycji są Twoje ostatnie głosy, każdy z osobą i głosem słowami skali. Chip „Głosy” zostawia same głosy.",
+    "id": "profil-twoje-interakcje",
+    "link": "/profil",
+    "title": "„Twoje interakcje” na /profil: propozycje zmian i głosy"
+   },
+   {
+    "area": "contributor",
+    "at": "<now>",
+    "description": "Adres /eksploruj/nowe ma identyfikator pokazanej osoby. „Następna osoba” dodaje wpis w historii przeglądarki, więc Wstecz wraca do poprzedniej osoby, a odświeżenie strony albo link otwierają tę samą.",
+    "id": "eksploruj-nowe-osoba-w-adresie",
+    "link": "/eksploruj/nowe",
+    "title": "Kolejka pamięta w adresie, kogo pokazuje"
+   },
+   {
+    "area": "contributor",
+    "at": "<now>",
+    "description": "Część wyniku od modeli to teraz szansa, że sprawdzenie osoby skończy się publikacją: 5 od 90%, 4 od 75%, 3 od 50%, 2 od 15%. Pozostałe modele zostają w „Skąd ten wynik” jako powody. Działa po nocnym przeliczeniu.",
+    "id": "wynik-modeli-to-szansa-publikacji",
+    "link": "/eksploruj/tabela?visibility=private&hideVoted=no_votes&sortBy=latestEmploymentStart&sortDesc=true&minVotes=4",
+    "title": "Wynik modeli to szansa publikacji"
+   },
+   {
+    "area": "contributor",
+    "at": "<now>",
+    "description": "Osoba z posadą w spółce z powiatu, w którym kandydowała (przy Sejmie, Senacie i sejmiku z województwa), dostaje od modeli co najmniej 4, a z najnowszymi takimi posadami 5. Oceny pojawią się po nocnym przeliczeniu.",
+    "id": "model-posada-w-miejscu-kandydowania",
+    "link": "/eksploruj/tabela?visibility=private&hideVoted=no_votes&sortBy=latestEmploymentStart&sortDesc=true&minVotes=4",
+    "title": "Model: posada w miejscu kandydowania"
+   },
+   {
+    "area": "public",
+    "at": "<now>",
+    "description": "Za „Skarb Państwa” na liście kategorii są „W likwidacji” i „W upadłości”: spółki, którym rejestr dopisał to do nazwy. Spółka ma je obok sektora i właściciela, a wykres „Branże” ich nie liczy. Spółki dostają je z nocnymi aktualizacjami spółek.",
+    "id": "kategoria-w-likwidacji",
+    "link": "/eksploruj/tabela?category=w-likwidacji",
+    "title": "Spółki w likwidacji i w upadłości w filtrze kategorii"
+   },
+   {
+    "area": "public",
+    "at": "<now>",
+    "description": "Na telefonie wybrane filtry mają własny wiersz pod „Filtry”, zamiast ściskać się do samych ikon. „Udostępnij” jest obok tytułu.",
+    "id": "pasek-tabeli-na-telefonie",
+    "link": "/eksploruj/tabela",
+    "title": "Wybrane filtry tabeli czytelne na telefonie"
+   },
+   {
+    "area": "contributor",
+    "at": "<now>",
+    "description": "Zalogowani widzą pod danymi nieopublikowanej osoby ramkę z jej oświadczeniami majątkowymi z BIP: czy wycinek czeka na czytelników, czy strona czeka na publikację albo czemu jest wstrzymana, sam wycinek i link do całego oświadczenia. Gdy wycinka nie ma, ramka wymienia wygrane od 2014 roku wybory samorządowe, co przy każdych znalazło zadanie w BIP, i ma pole na link do oświadczenia znalezionego ręcznie.",
+    "id": "oswiadczenia-na-stronie-szkicu",
+    "title": "Oświadczenia majątkowe na stronie nieopublikowanej osoby"
+   },
+   {
+    "area": "public",
+    "at": "<now>",
+    "description": "Wykres stanowisk jest ostatnią zakładką i strona główna nie otwiera się już na nim. Połowa czytelników widzi na start mapę, połowa oświadczenia.",
+    "id": "stanowiska-trzecia-zakladka",
+    "link": "/",
+    "title": "„Stanowiska” jako trzecia zakładka na głównej"
+   },
+   {
+    "area": "public",
+    "at": "<now>",
+    "description": "Karty okrągłego stażu liczą się raz na dobę zamiast co godzinę, co obniża koszt bazy. Osoba opublikowana dziś trafi na nie jutro, a zdjęta ze strony znika w ciągu godziny.",
+    "id": "staz-liczony-raz-dziennie",
+    "link": "/eksploruj/staz",
+    "title": "Okrągłe staże liczone raz dziennie"
+   },
+   {
+    "area": "public",
+    "at": "<now>",
+    "description": "Licznik na /oswiadczenia kończy się cienką linią: ile osób już odczytano, ile czeka, a na końcu odczytanych Twoje odczyty. Liczby pokazuje po najechaniu albo dotknięciu.",
+    "id": "linia-postepu-pod-licznikiem",
+    "link": "/oswiadczenia",
+    "title": "Linia postępu na dole licznika na /oswiadczenia"
+   },
+   {
+    "area": "public",
+    "at": "<now>",
+    "description": "Statystyki liczą teraz skany oświadczeń odczytane na /oswiadczenia, osobno od zmian w danych: mają swój kafelek, swój pasek pod wykresem dni i zakładkę „Skany” w rankingu, otwieraną jako pierwszą. Liczą się skany zalogowanych, bez pominiętych; skany bez konta dochodzą, gdy przejmie je konto. Podsumowanie miesiąca na /aktywnosc liczy działania, skany razem ze zmianami.",
+    "id": "odczyty-oswiadczen-w-statystykach",
+    "link": "/eksploruj/statystyki",
+    "title": "Skany z /oswiadczenia w statystykach, osobno od zmian"
+   },
+   {
+    "area": "public",
+    "at": "<now>",
+    "description": "/eksploruj zbiera w kartach tabelę, nowe osoby, okrągły staż, rady szpitali, statystyki, wykresy, tematy i źródła. W stopce zastąpiła „Rady szpitali” i „Okrągły staż”, a stopka ma teraz kolumny „Na stronie” i „O projekcie”.",
+    "id": "strona-eksploruj",
+    "link": "/eksploruj",
+    "title": "Strona /eksploruj ze wszystkimi sposobami przeglądania"
+   },
+   {
+    "area": "public",
+    "at": "<now>",
+    "description": "Na /eksploruj/statystyki prowadzą teraz stopka, liczby na stronie głównej i /o-nas. Z góry /pomoc zniknęły liczba sprawdzonych osób i notka o koncie.",
+    "id": "linki-do-statystyk",
+    "link": "/",
+    "title": "Linki do statystyk"
+   },
+   {
+    "area": "admin",
+    "at": "<now>",
+    "description": "Merge prowadzi gałąź i pokazuje, ile z niej jest na main. Decyzja ma pytanie i odpowiedzi do kliknięcia; po wyborze jest w toku w „Podjęte decyzje”, a zamyka się sama, gdy zamknięte jest wszystko, co z niej wynika. Status, priorytet, „Na mapie”, Edytuj i Kopiuj są u góry otwartego zadania. Stronę widzi tylko właściciel serwisu.",
+    "id": "zadania-merge-decyzje-akcje-u-gory",
+    "link": "/admin/zadania",
+    "title": "Zadania: merge z gałęzią, decyzje z przyciskami odpowiedzi"
+   },
+   {
+    "area": "admin",
+    "at": "<now>",
+    "description": "Strona opublikowana ręcznie, gdy datę z oświadczenia ustalił administrator, pokazuje teraz notkę z oświadczeniem. Automat nadal na takiej dacie nie publikuje.",
+    "id": "oswiadczenie-z-data-administratora",
+    "link": "/admin/oswiadczenia",
+    "title": "Oświadczenie na stronie także z datą ustaloną przez administratora"
+   },
+   {
+    "area": "admin",
+    "at": "<now>",
+    "description": "Strona bez zatwierdzonej wersji wychodzi w najnowszej. Gdy to czyjaś propozycja zmiany, a nie wersja z importu, okno publikacji teraz to mówi.",
+    "id": "okno-publikacji-propozycja-zmiany",
+    "link": "/admin/oswiadczenia",
+    "title": "Okno publikacji mówi, gdy pokaże czyjąś propozycję zmiany"
+   },
+   {
+    "area": "admin",
+    "at": "<now>",
+    "description": "Przy kandydaturach w dwóch miejscach naraz okno publikacji podaje partię każdej z nich i ostrzega, gdy partię na stronie daje tylko niezaznaczona kandydatura. Publikacja pokazałaby ją na stronie.",
+    "id": "partia-imiennika-w-oknie-publikacji",
+    "link": "/admin/oswiadczenia",
+    "title": "Okno publikacji pokazuje partię kandydatury w dwóch miejscach"
+   },
+   {
+    "area": "admin",
+    "at": "<now>",
+    "description": "Sekcja „Wstrzymane publikacje” na /admin/oswiadczenia pokazuje wszystkie wstrzymane osoby, nie 20 najnowszych, z filtrem powodu, a wiersze mają przyciski decyzji. Osoby bez płatnego stanowiska i odłożone są w nowej sekcji „Nie do publikacji”. Strona opublikowana ręcznie znika z listy i pokazuje oświadczenie.",
+    "id": "wstrzymane-publikacje-decyzje",
+    "link": "/admin/oswiadczenia",
+    "title": "Wstrzymane publikacje: opublikuj ręcznie, sprawdź ponownie albo odłóż"
+   },
+   {
+    "area": "admin",
+    "at": "<now>",
+    "description": "Okno publikacji i znaczek „dwa miejsca” nie łączyły różnych urzędów, więc rada gminy obok sejmiku w innym województwie wyglądała na zwykłe wiersze, choć automat wstrzymuje za to stronę. Teraz liczą się wybory, jak w automacie.",
+    "id": "dwa-miejsca-wedlug-wyborow",
+    "link": "/admin/oswiadczenia",
+    "title": "„Dwa miejsca” także przy różnych urzędach w jednych wyborach"
+   },
+   {
+    "area": "public",
+    "at": "<now>",
+    "description": "Powiat ma kolor partii, którą ma najwięcej jego osób, tym ciemniejszy, im większy jej udział. Nad mapą każda partia ma swoją mapę udziału. Kolory partii pojawiają się po nocnym przeliczeniu, wcześniej mapa pokazuje liczbę osób w sześciu odcieniach czerwieni.",
+    "id": "mapa-w-kolorach-partii",
+    "link": "/?widok=mapa",
+    "title": "Mapa na stronie głównej w kolorach partii"
+   },
+   {
+    "area": "public",
+    "at": "<now>",
+    "description": "Pod każdą osobą jest linijka: miasto, partia, stanowisko. Imienników da się odróżnić.",
+    "id": "wyszukiwarka-linia-pod-osoba",
+    "title": "Linijka pod osobą w wyszukiwarce"
+   },
+   {
+    "area": "public",
+    "at": "<now>",
+    "description": "Opublikowana osoba z kandydowaniem i płatną posadą w publicznej spółce ma partię. Gdy jej komitet, np. KWW, nie wskazuje żadnej z naszych, jest to szare „Inne”.",
+    "id": "inne-dla-kandydatow-z-posada",
+    "link": "/osoba/anna-jedynak-rykala-<id>",
+    "title": "Kandydaci z płatną posadą mają co najmniej „Inne”"
+   },
+   {
+    "area": "contributor",
+    "at": "<now>",
+    "description": "Osoba, której jedynym publicznym stanowiskiem jest miejsce w radzie społecznej szpitala, dostaje od modeli najwyżej 2, czyli mniej niż próg kolejki.",
+    "id": "sama-rada-spoleczna-ponizej-progu-kolejki",
+    "link": "/eksploruj/nowe?order=votes",
+    "title": "Osoby tylko z radą społeczną poniżej progu kolejki"
+   },
+   {
+    "area": "admin",
+    "at": "<now>",
+    "description": "Wejścia przez koryta.pl/start mają w Plausible kampanię „start”. Źródło (Instagram, Facebook, wykop) zostaje.",
+    "id": "start-kampania-w-plausible",
+    "link": "/start",
+    "title": "Wejścia przez koryta.pl/start widać w Plausible"
+   },
+   {
+    "area": "contributor",
+    "at": "<now>",
+    "description": "Każda nowa wersja koryta.pl jest na /aktywnosc pod dniem, w którym weszła, z tytułami jej wpisów z /qa.",
+    "id": "aktywnosc-zmiany-na-stronie",
+    "link": "/aktywnosc",
+    "title": "Aktywność mówi też, co zmieniło się na stronie"
+   },
+   {
+    "area": "public",
+    "at": "<now>",
+    "description": "Pod danymi osoby było za dużo pustego miejsca. Historia zaczyna się teraz wyżej, a ramka z prośbą o skany jest niższa i stoi tuż pod danymi.",
+    "id": "mniej-miejsca-pod-danymi-osoby",
+    "title": "Mniej pustego miejsca pod danymi osoby"
+   }
+  ],
+  "truncated": [],
+  "window": {
+   "days": 7,
+   "since": "<now>",
+   "until": "<now>"
+  }
+ }
+}

@@ -85,18 +85,23 @@ vi.mock("firebase-admin/auth", () => ({
   }),
 }));
 
-vi.mock("firebase-admin/firestore", () => ({
-  getFirestore: () => ({
-    collection: (name: string) => ({
-      doc: (id: string) => ({ collection: name, id }),
-    }),
-    // Drops the trailing `ReadOptions` (the `publicProfile` field mask).
-    getAll: async (...args: { collection?: string; id?: string }[]) =>
-      args
-        .filter((arg): arg is { collection: string; id: string } => !!arg.id)
-        .map((ref) => ({ id: ref.id, data: () => userDocs.get(ref.id) })),
-  }),
-}));
+// The `users` read: one flag per uid, defaulted as the profile page does.
+vi.mock("~~/server/db/activity", async () => {
+  const { publicProfileEnabled } = await vi.importActual<
+    typeof import("../../../shared/profile")
+  >("../../../shared/profile");
+  return {
+    readPublicProfilesFromDb: async (uids: string[]) =>
+      Object.fromEntries(
+        uids.map((uid) => [
+          uid,
+          publicProfileEnabled(
+            userDocs.get(uid)?.publicProfile as boolean | undefined,
+          ),
+        ]),
+      ),
+  };
+});
 
 vi.mock("~~/server/utils/auth", () => ({ getUser: mockGetUser }));
 
@@ -364,7 +369,7 @@ describe("/api/activity/feed", () => {
 
     const result = await call({ days: "30" });
 
-    expect(mockBuild).toHaveBeenCalledWith(expect.anything(), {
+    expect(mockBuild).toHaveBeenCalledWith({
       sinceIso: "2026-08-23T12:00:00.000Z",
       untilIso: "2026-09-22T12:10:00.000Z",
       newAdminUids: [TRIAL],
@@ -469,7 +474,7 @@ describe("/api/activity/feed", () => {
         },
       ]);
       // A leftover `newAdmin` without `admin` is not a trial.
-      expect(mockBuild.mock.calls[0]![1].newAdminUids).toEqual([TRIAL]);
+      expect(mockBuild.mock.calls[0]![0].newAdminUids).toEqual([TRIAL]);
     });
 
     it("sees rejections and imports", async () => {

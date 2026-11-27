@@ -1,0 +1,37 @@
+{
+ "step": 136,
+ "name": "edges successions company",
+ "request": {
+  "method": "GET",
+  "path": "/api/edges/successions?companyId=fakeplace1006",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "current": [
+   {
+    "edgeId": "fakejob1069_3",
+    "parties": [],
+    "personId": "fakeperson1069",
+    "personName": "Brygida Karpiński",
+    "published": true,
+    "role": "Członek Zarządu",
+    "start": "2021-05-04"
+   },
+   {
+    "edgeId": "fakejob390_0",
+    "parties": [
+     "PiS",
+     "PO"
+    ],
+    "personId": "fakeperson390",
+    "personName": "Miron Smoliński",
+    "published": true,
+    "role": "Dyrektor",
+    "start": "2018-06-07"
+   }
+  ],
+  "hidden": 0,
+  "successions": []
+ }
+}

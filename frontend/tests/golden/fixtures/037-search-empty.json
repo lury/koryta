@@ -1,0 +1,251 @@
+{
+ "step": 37,
+ "name": "search empty",
+ "request": {
+  "method": "GET",
+  "path": "/api/search?q=",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": [
+  {
+   "id": "fakeperson153",
+   "line": {
+    "parties": [
+     "Konfederacja"
+    ],
+    "what": "SŁAWIŃSKI, KĘPA AND NIEDŹWIECKI SP. Z O.O.",
+    "where": "Lipsk"
+   },
+   "name": "Noemi Szwarc",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson1068",
+   "line": {
+    "what": "MADEJ SP. K. SP. Z O.O.",
+    "where": "Orneta"
+   },
+   "name": "Izabela Tomys",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson772",
+   "line": {
+    "what": "PILCH SP. J. SP. Z O.O.",
+    "where": "Stalowa Wola"
+   },
+   "name": "Samuel Jędrzejczak",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson34",
+   "line": {
+    "parties": [
+     "Polska2050"
+    ],
+    "what": "Wojewódzki Szpital Specjalistyczny im. Monika Głąb w Olsztyn",
+    "where": "Goleniów"
+   },
+   "name": "Bibianna Trojanowski",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson2004",
+   "line": {
+    "parties": [
+     "PiS"
+    ],
+    "what": "ORZECHOWSKI SP. K. SP. Z O.O.",
+    "where": "Proszowice"
+   },
+   "name": "Gabriel Czerwiński",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson212",
+   "line": {
+    "parties": [
+     "Polska2050"
+    ],
+    "what": "BĄK, RYBICKI AND PILCH SP. Z O.O.",
+    "where": "Dąbrowa Górnicza"
+   },
+   "name": "Emilia Pasternak",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson105",
+   "line": {
+    "what": "SZCZEPAŃSKI, JACKOWSKI AND KOZIOŁ FACERE CORPORIS OCCAECATI ILLO DOLORES OFFICIIS OMNIS TENETUR REPELLAT IPSAM MAGNAM NULLA SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
+    "where": "Korfantów"
+   },
+   "name": "Rafał Brzeziński",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson35",
+   "line": {
+    "what": "BIERNACKI S.A. SP. Z O.O.",
+    "where": "Reda"
+   },
+   "name": "Izaak Wolski",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson2125",
+   "line": {
+    "parties": [
+     "PO"
+    ],
+    "what": "ROSA, JAGIEŁŁO AND FALKOWSKI SP. Z O.O.",
+    "where": "Kolno"
+   },
+   "name": "Magdalena Gruszka",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson179",
+   "line": {
+    "parties": [
+     "PSL",
+     "Konfederacja"
+    ],
+    "what": "GRZYB-PIECZEK SP. Z O.O.",
+    "where": "Żukowo"
+   },
+   "name": "Wilhelm Prokop",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson1708",
+   "line": {
+    "what": "Sejmik",
+    "when": "2024",
+    "where": "woj. lubelskie"
+   },
+   "name": "Barbara Bieniek",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson75",
+   "line": {
+    "what": "RZEPKA, WITEK AND WRÓBLEWSKI SP. Z O.O.",
+    "where": "Świnoujście"
+   },
+   "name": "Ida Skiba",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson1949",
+   "line": {
+    "what": "BEDNAREK-DROZDOWSKI SP. Z O.O.",
+    "where": "Rudnik nad Sanem"
+   },
+   "name": "Noemi Sobieraj",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson466",
+   "line": {
+    "parties": [
+     "PiS",
+     "Lewica"
+    ],
+    "what": "FIJAŁKOWSKI, ROSA AND BRODA SP. Z O.O.",
+    "where": "Bielsk Podlaski"
+   },
+   "name": "Henryka Kujawski",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson348",
+   "line": {
+    "what": "LACH S.C. SP. Z O.O.",
+    "where": "Lądek-Zdrój"
+   },
+   "name": "Tacjana Bielawski",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson269",
+   "line": {
+    "parties": [
+     "Konfederacja"
+    ],
+    "what": "BŁASZCZYK SKA SP. Z O.O.",
+    "where": "Pabianice"
+   },
+   "name": "Samuel Kawa",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson2562",
+   "line": {
+    "what": "TRACZ, RACZYŃSKI AND PAŁKA SP. Z O.O.",
+    "where": "Świdwin"
+   },
+   "name": "Hilarion Kwieciński",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson204",
+   "line": {
+    "parties": [
+     "PSL",
+     "PO"
+    ],
+    "what": "KOPCZYŃSKI, GRZEŚKOWIAK AND ADAMIAK SP. Z O.O.",
+    "where": "Czarnków"
+   },
+   "name": "Sylwia Maciąg",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson590",
+   "line": {
+    "parties": [
+     "PSL",
+     "PiS"
+    ],
+    "what": "PIĄTEK Z O.O SP. Z O.O.",
+    "where": "Tuchola"
+   },
+   "name": "Alfred Młynarczyk",
+   "published": true,
+   "type": "person"
+  },
+  {
+   "id": "fakeperson840",
+   "line": {
+    "parties": [
+     "Lewica",
+     "PiS"
+    ],
+    "what": "MILLER SP. J. SP. Z O.O.",
+    "where": "Kobylin"
+   },
+   "name": "Martyna Piórkowski",
+   "published": true,
+   "type": "person"
+  }
+ ]
+}

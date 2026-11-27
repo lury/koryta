@@ -1,0 +1,14 @@
+{
+ "step": 252,
+ "name": "revisions pendingEdges",
+ "request": {
+  "method": "GET",
+  "path": "/api/revisions/pendingEdges",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "revisions": [],
+  "total": 0
+ }
+}

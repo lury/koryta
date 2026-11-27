@@ -1,0 +1,23 @@
+{
+ "step": 329,
+ "name": "after: me",
+ "request": {
+  "method": "GET",
+  "path": "/api/me",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "config": {
+   "displayName": "Wzorcowy Czytelnik",
+   "id": "test-user",
+   "newsletter": {
+    "callsToAction": true
+   },
+   "newsletterUpdated": {
+    "at": "<now>",
+    "via": "prompt"
+   }
+  }
+ }
+}

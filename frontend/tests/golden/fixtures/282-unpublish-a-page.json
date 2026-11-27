@@ -1,0 +1,27 @@
+{
+ "step": 282,
+ "name": "unpublish a page",
+ "request": {
+  "method": "POST",
+  "path": "/api/nodes/publish",
+  "as": "admin",
+  "body": {
+   "node_id": "fakeperson1069",
+   "published": false
+  }
+ },
+ "status": 200,
+ "body": {
+  "approvedRevisionId": null,
+  "hiddenEdges": [
+   "fakeconn1069",
+   "fakejob1069_0",
+   "fakejob1069_1",
+   "fakejob1069_2",
+   "fakejob1069_3",
+   "fakejob1069_4"
+  ],
+  "id": "fakeperson1069",
+  "published": false
+ }
+}

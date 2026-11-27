@@ -1,0 +1,11 @@
+{
+ "step": 116,
+ "name": "nodes articles index",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes/articles",
+  "as": "user"
+ },
+ "status": 200,
+ "body": []
+}

@@ -1,0 +1,27 @@
+{
+ "step": 290,
+ "name": "vote person",
+ "request": {
+  "method": "PUT",
+  "path": "/api/votes/fakeperson109",
+  "as": "user",
+  "body": {
+   "categoryVotes": {
+    "interesting": 3,
+    "quality": -1
+   }
+  }
+ },
+ "status": 200,
+ "body": {
+  "vote": {
+   "categoryVotes": {
+    "interesting": 3,
+    "quality": -1
+   },
+   "nodeId": "fakeperson109",
+   "updatedAt": "<now>",
+   "userUid": "test-user"
+  }
+ }
+}

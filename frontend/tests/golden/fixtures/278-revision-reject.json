@@ -1,0 +1,18 @@
+{
+ "step": 278,
+ "name": "revision reject",
+ "request": {
+  "method": "POST",
+  "path": "/api/revisions/reject",
+  "as": "admin",
+  "body": {
+   "reason": "Brak źródła",
+   "revision_id": "proposal_fakeperson1068_test-user_NvLWzm5Mni"
+  }
+ },
+ "status": 200,
+ "body": {
+  "revision_id": "proposal_fakeperson1068_test-user_NvLWzm5Mni",
+  "status": "rejected"
+ }
+}

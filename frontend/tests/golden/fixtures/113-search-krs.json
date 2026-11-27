@@ -1,0 +1,11 @@
+{
+ "step": 113,
+ "name": "search krs",
+ "request": {
+  "method": "GET",
+  "path": "/api/search?q=0000",
+  "as": "user"
+ },
+ "status": 200,
+ "body": []
+}

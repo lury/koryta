@@ -1,0 +1,178 @@
+{
+ "step": 322,
+ "name": "after: revisions queue",
+ "request": {
+  "method": "GET",
+  "path": "/api/revisions/queue?status=pending&limit=50",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "flagOnly": true,
+  "pinned": null,
+  "revisions": [
+   {
+    "author": {
+     "displayName": "Admin User",
+     "email": "admin@koryta.pl",
+     "photoURL": null
+    },
+    "automatic": false,
+    "changeCount": 0,
+    "changes": [],
+    "deleteReason": null,
+    "id": "<id>",
+    "kind": "create",
+    "published": false,
+    "rejectReason": null,
+    "reviewTime": null,
+    "reviewUser": null,
+    "stale": false,
+    "status": "pending",
+    "statusDerived": false,
+    "subject": {
+     "id": "fakeperson1077",
+     "name": "Gabriel Grudzień",
+     "path": "/osoba/gabriel-grudzien-fakeperson1077",
+     "published": true,
+     "type": "person"
+    },
+    "targetCollection": "edges",
+    "targetExists": true,
+    "targetId": "<id>",
+    "targetName": "Artykuł wzorcowy → Gabriel Grudzień",
+    "targetPath": "/artykul/artykul-wzorcowy-<id>",
+    "targetType": null,
+    "updateTime": "<now>",
+    "updateUser": "test-admin"
+   },
+   {
+    "author": {
+     "displayName": "Admin User",
+     "email": "admin@koryta.pl",
+     "photoURL": null
+    },
+    "automatic": false,
+    "changeCount": 0,
+    "changes": [],
+    "deleteReason": null,
+    "id": "<id>",
+    "kind": "create",
+    "published": false,
+    "rejectReason": null,
+    "reviewTime": null,
+    "reviewUser": null,
+    "stale": false,
+    "status": "pending",
+    "statusDerived": false,
+    "subject": {
+     "id": "fakeperson1066",
+     "name": "Zmieniona Osoba Wzorca",
+     "path": "/osoba/zmieniona-osoba-wzorca-fakeperson1066",
+     "published": true,
+     "type": "person"
+    },
+    "targetCollection": "edges",
+    "targetExists": true,
+    "targetId": "<id>",
+    "targetName": "Artykuł wzorcowy → Zmieniona Osoba Wzorca",
+    "targetPath": "/artykul/artykul-wzorcowy-<id>",
+    "targetType": null,
+    "updateTime": "<now>",
+    "updateUser": "test-admin"
+   },
+   {
+    "author": {
+     "displayName": "Admin User",
+     "email": "admin@koryta.pl",
+     "photoURL": null
+    },
+    "automatic": false,
+    "changeCount": 1,
+    "changes": [
+     {
+      "field": "references",
+      "from": "",
+      "label": "źródła",
+      "to": "fakearticle0"
+     }
+    ],
+    "deleteReason": null,
+    "id": "<id>",
+    "kind": "edit",
+    "published": true,
+    "rejectReason": null,
+    "reviewTime": null,
+    "reviewUser": null,
+    "stale": false,
+    "status": "pending",
+    "statusDerived": false,
+    "subject": {
+     "id": "fakeperson1077",
+     "name": "Gabriel Grudzień",
+     "path": "/osoba/gabriel-grudzien-fakeperson1077",
+     "published": true,
+     "type": "person"
+    },
+    "targetCollection": "edges",
+    "targetExists": true,
+    "targetId": "edge_fakeperson1077_fakeplace1006_employed_SDuvEXhwx3",
+    "targetName": "Gabriel Grudzień → Centrum Medyczne „colonialism” w Orzesze (Prezes Zarządu)",
+    "targetPath": "/osoba/gabriel-grudzien-fakeperson1077",
+    "targetType": null,
+    "updateTime": "<now>",
+    "updateUser": "test-admin"
+   },
+   {
+    "author": {
+     "displayName": "Normal User",
+     "email": "user@koryta.pl",
+     "photoURL": null
+    },
+    "automatic": false,
+    "changeCount": 2,
+    "changes": [
+     {
+      "field": "start_date",
+      "from": "2022-02-01",
+      "label": "data od",
+      "to": "2022-01-01"
+     },
+     {
+      "field": "name",
+      "from": "Prezes Zarządu",
+      "label": "nazwa",
+      "to": "Członek Zarządu"
+     }
+    ],
+    "deleteReason": null,
+    "id": "<id>",
+    "kind": "edit",
+    "published": true,
+    "rejectReason": null,
+    "reviewTime": null,
+    "reviewUser": null,
+    "stale": true,
+    "status": "pending",
+    "statusDerived": false,
+    "subject": {
+     "id": "fakeperson1077",
+     "name": "Gabriel Grudzień",
+     "path": "/osoba/gabriel-grudzien-fakeperson1077",
+     "published": true,
+     "type": "person"
+    },
+    "targetCollection": "edges",
+    "targetExists": true,
+    "targetId": "edge_fakeperson1077_fakeplace1006_employed_SDuvEXhwx3",
+    "targetName": "Gabriel Grudzień → Centrum Medyczne „colonialism” w Orzesze (Członek Zarządu)",
+    "targetPath": "/osoba/gabriel-grudzien-fakeperson1077",
+    "targetType": null,
+    "updateTime": "<now>",
+    "updateUser": "test-user"
+   }
+  ],
+  "total": 4,
+  "truncated": false
+ }
+}

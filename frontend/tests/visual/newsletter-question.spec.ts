@@ -1,12 +1,12 @@
 import { expect, type Page, type TestInfo } from "@playwright/test";
 import { initializeApp, getApps, getApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
 import { test } from "./test";
 import { readyForFullPage } from "./fullPage";
 import { pageTag } from "./pageTags";
 import { expectFitsThePhone } from "./phoneWidth";
 import { waitForLoginFormHydrated } from "../e2e/helpers/login";
+import { deleteDocs } from "../e2e/helpers/db";
 
 /** The newsletter question (components/mail/NewsletterQuestion.vue) where it
  * is put to a reader: on /login right after creating an account or signing
@@ -18,7 +18,6 @@ import { waitForLoginFormHydrated } from "../e2e/helpers/login";
  * addresses in the pictures never change. The day of the last change on
  * /profil comes from the server's clock and is masked. */
 
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
 process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
 
 const LOGIN = { tag: pageTag("login") };
@@ -41,10 +40,7 @@ async function forget(email: string) {
   try {
     const { uid } = await auth.getUserByEmail(email);
     await auth.deleteUser(uid);
-    await getFirestore(admin(), "koryta-pl")
-      .collection("users")
-      .doc(uid)
-      .delete();
+    await deleteDocs("users", [uid]);
   } catch {
     // Nobody has it yet.
   }

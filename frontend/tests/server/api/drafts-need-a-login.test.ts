@@ -3,9 +3,8 @@ import revisionById from "../../../server/api/revisions/[id].get";
 import revisionsByNode from "../../../server/api/revisions/byNode.get";
 import nodesWithRevisions from "../../../server/api/nodes/revisions.get";
 import pendingNodes from "../../../server/api/nodes/pending.get";
-import pendingEdges from "../../../server/api/edges/pending.get";
 
-/** Whether Firestore was reached at all, and what the routes said about
+/** Whether Postgres was reached at all, and what the routes said about
  * caching. Hoisted with the nitro globals the routes reach for unimported. */
 const state = vi.hoisted(() => {
   const state = {
@@ -29,37 +28,22 @@ const state = vi.hoisted(() => {
   return state;
 });
 
-/** A Firestore that answers every query with nothing, and counts the asking. */
-function emptyQuery(): unknown {
-  const query = {
-    where: () => query,
-    orderBy: () => query,
-    limit: () => query,
-    offset: () => query,
-    count: () => ({ get: async () => ({ data: () => ({ count: 0 }) }) }),
-    get: async () => {
+/** A Postgres pool whose every statement finds nothing, and counts the asking:
+ * a statement counts once it is awaited, a fragment inside one never is. */
+vi.mock("../../../server/db/client", () => {
+  const statement = () => ({
+    then: (resolve: (rows: unknown[]) => unknown) => {
       state.reads += 1;
-      return { docs: [], empty: true, size: 0 };
+      return Promise.resolve([]).then(resolve);
     },
-    doc: () => ({
-      get: async () => {
-        state.reads += 1;
-        return { exists: false, data: () => undefined };
-      },
-    }),
-  };
-  return query;
-}
-
-vi.mock("firebase-admin/firestore", () => ({
-  getFirestore: () => ({ collection: () => emptyQuery() }),
-  Timestamp: { now: () => "now" },
-  FieldValue: { delete: () => "DELETED" },
-}));
-vi.mock("firebase-admin/app", () => ({ getApp: () => ({}) }));
-vi.mock("../../../server/utils/revisions", () => ({
-  getRevisionsForNodes: async () => ({}),
-}));
+  });
+  const sql = (first: unknown) =>
+    Array.isArray(first) && "raw" in (first as object)
+      ? statement()
+      : { identifier: first };
+  Object.assign(sql, { unsafe: (text: string) => ({ unsafe: text }) });
+  return { useDb: () => sql };
+});
 // `getUser` as it behaves: a bearer header is a reader, no header is a 401.
 vi.mock("../../../server/utils/auth", () => ({
   getUser: async (event: { headers?: Record<string, string> }) => {
@@ -86,7 +70,6 @@ const routes = {
   "/api/revisions/byNode": revisionsByNode,
   "/api/nodes/revisions": nodesWithRevisions,
   "/api/nodes/pending": pendingNodes,
-  "/api/edges/pending": pendingEdges,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

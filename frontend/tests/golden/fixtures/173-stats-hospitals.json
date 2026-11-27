@@ -1,0 +1,1537 @@
+{
+ "step": 173,
+ "name": "stats hospitals",
+ "request": {
+  "method": "GET",
+  "path": "/api/stats/hospitals",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "generatedAt": "<now>",
+  "hospitals": 130,
+  "other": {
+   "byParty": [],
+   "byRegion": [
+    {
+     "byParty": [],
+     "groupHospitals": 8,
+     "hospitals": 8,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. kujawsko-pomorskie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "14",
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "groupHospitals": 13,
+     "hospitals": 13,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. lubelskie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "32",
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "groupHospitals": 9,
+     "hospitals": 9,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. lubuskie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "22",
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "groupHospitals": 9,
+     "hospitals": 9,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. łódzkie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "04",
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "groupHospitals": 8,
+     "hospitals": 8,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. łódzkie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "30",
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "groupHospitals": 4,
+     "hospitals": 4,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. łódzkie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "20",
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "groupHospitals": 13,
+     "hospitals": 13,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. małopolskie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "10",
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "groupHospitals": 8,
+     "hospitals": 8,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. małopolskie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "18",
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "groupHospitals": 5,
+     "hospitals": 5,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. małopolskie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "02",
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "groupHospitals": 11,
+     "hospitals": 11,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. mazowieckie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "26",
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "groupHospitals": 5,
+     "hospitals": 5,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. mazowieckie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "16",
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "groupHospitals": 7,
+     "hospitals": 7,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. mazowieckie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "06",
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "groupHospitals": 8,
+     "hospitals": 8,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. opolskie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "08",
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "groupHospitals": 8,
+     "hospitals": 8,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. podlaskie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "24",
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "groupHospitals": 4,
+     "hospitals": 4,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. śląskie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "28",
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "groupHospitals": 10,
+     "hospitals": 10,
+     "hospitalsWithSeats": 0,
+     "name": "Województwo woj. zachodniopomorskie",
+     "seats": 0,
+     "seatsWithParty": 0,
+     "teryt": "12",
+     "unreviewed": 0
+    }
+   ],
+   "endedSeats": 0,
+   "hospitals": 130,
+   "hospitalsWithSeats": 0,
+   "kinds": [
+    "komisja_rewizyjna",
+    "inny",
+    "nieznany",
+    "brak"
+   ],
+   "rows": [
+    {
+     "byParty": [],
+     "id": "fakeplace1202",
+     "legalForm": null,
+     "name": "Centrum Medyczne „acquaintance” w Golub-Dobrzyń",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace762",
+     "legalForm": null,
+     "name": "Centrum Medyczne „allocation” w Woźniki",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace713",
+     "legalForm": null,
+     "name": "Centrum Medyczne „beret” w Stary Sącz",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace561",
+     "legalForm": null,
+     "name": "Centrum Medyczne „celsius” w Miłosław",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1006",
+     "legalForm": null,
+     "name": "Centrum Medyczne „colonialism” w Orzesze",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace676",
+     "legalForm": null,
+     "name": "Centrum Medyczne „dash” w Szczebrzeszyn",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace423",
+     "legalForm": null,
+     "name": "Centrum Medyczne „dress” w Mirsk",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace484",
+     "legalForm": null,
+     "name": "Centrum Medyczne „dusk” w Radlin",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1177",
+     "legalForm": null,
+     "name": "Centrum Medyczne „epic” w Dąbrowa Tarnowska",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace301",
+     "legalForm": null,
+     "name": "Centrum Medyczne „event” w Lipiany",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace937",
+     "legalForm": null,
+     "name": "Centrum Medyczne „feather” w Kolbuszowa",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace928",
+     "legalForm": null,
+     "name": "Centrum Medyczne „flat” w Chęciny",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace32",
+     "legalForm": null,
+     "name": "Centrum Medyczne „fledgling” w Ożarów Mazowiecki",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace512",
+     "legalForm": null,
+     "name": "Centrum Medyczne „fold” w Suraż",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace98",
+     "legalForm": null,
+     "name": "Centrum Medyczne „gradient” w Barcin",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace986",
+     "legalForm": null,
+     "name": "Centrum Medyczne „guacamole” w Opoczno",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace638",
+     "legalForm": null,
+     "name": "Centrum Medyczne „help” w Reszel",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1234",
+     "legalForm": null,
+     "name": "Centrum Medyczne „hexagon” w Wąsosz",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace869",
+     "legalForm": null,
+     "name": "Centrum Medyczne „knickers” w Wyszków",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace446",
+     "legalForm": null,
+     "name": "Centrum Medyczne „makeover” w Kałuszyn",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace575",
+     "legalForm": null,
+     "name": "Centrum Medyczne „metabolite” w Sulmierzyce",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace647",
+     "legalForm": null,
+     "name": "Centrum Medyczne „parsnip” w Choroszcz",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace554",
+     "legalForm": null,
+     "name": "Centrum Medyczne „patroller” w Żary",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace47",
+     "legalForm": null,
+     "name": "Centrum Medyczne „plumber” w Częstochowa",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace780",
+     "legalForm": null,
+     "name": "Centrum Medyczne „pupil” w Kalisz Pomorski",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1137",
+     "legalForm": null,
+     "name": "Centrum Medyczne „section” w Lubsko",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace25",
+     "legalForm": null,
+     "name": "Centrum Medyczne „shark” w Marki",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace467",
+     "legalForm": null,
+     "name": "Centrum Medyczne „sock” w Poznań",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1193",
+     "legalForm": null,
+     "name": "Centrum Medyczne „step-mother” w Kętrzyn",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace911",
+     "legalForm": null,
+     "name": "Centrum Medyczne „sticker” w Lewin Brzeski",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace741",
+     "legalForm": null,
+     "name": "Centrum Medyczne „tomb” w Zielonka",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1215",
+     "legalForm": null,
+     "name": "Centrum Medyczne „trick” w Annopol",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace681",
+     "legalForm": null,
+     "name": "Centrum Medyczne „turret” w Sokołów Podlaski",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace240",
+     "legalForm": null,
+     "name": "Centrum Medyczne „tusk” w Borne Sulinowo",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace534",
+     "legalForm": null,
+     "name": "Centrum Medyczne „validity” w Ogrodzieniec",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace855",
+     "legalForm": null,
+     "name": "Centrum Medyczne „vicinity” w Kórnik",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1090",
+     "legalForm": null,
+     "name": "Centrum Medyczne „yin” w Sieraków",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace978",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Barlinek",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1035",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Chorzów",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace263",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Drohiczyn",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace666",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Głuchołazy",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1071",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Inowrocław",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1080",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Jedlicze",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace955",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Kalisz",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace894",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Kostrzyn nad Odrą",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace302",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Kozienice",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace704",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Krzanowice",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace532",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Kutno",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1145",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Kwidzyn",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace483",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Lipsk",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace487",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Mszczonów",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace340",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Nidzica",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace792",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Niemcza",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace192",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Olszyna",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace54",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Ożarów Mazowiecki",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace486",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Pakość",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace451",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Raszków",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace849",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Ryglice",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace997",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Siemiatycze",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace908",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Słubice",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace884",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Stargard",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace952",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Trzebinia",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace354",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Warta",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace865",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Więcbork",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace749",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Wieliczka",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace88",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Wisła",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace123",
+     "legalForm": null,
+     "name": "Samodzielny Publiczny Zakład Opieki Zdrowotnej w Wojkowice",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace388",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Barcin Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace685",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Będzin Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace783",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Białogard Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1063",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Boguszów-Gorce Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace639",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Busko-Zdrój Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace111",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Bytom Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace697",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Drezdenko Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace413",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Grajewo Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1109",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Gryfino Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace75",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Janikowo Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace246",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Jarocin Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace53",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Kazimierza Wielka Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace336",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Kowary Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace68",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Krapkowice Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace435",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Międzyzdroje Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1012",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Miejska Górka Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace866",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Milanówek Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace694",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Obrzycko Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace151",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Opatów Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace7",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Opoczno Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1164",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Opole Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace46",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Ostrów Mazowiecka Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace117",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Parczew Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1017",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Płock Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace504",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Przysucha Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace414",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Racibórz Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace133",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Radom Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace788",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Recz Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace840",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Skwierzyna Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace691",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Supraśl Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace982",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Szepietowo Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace632",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Ustrzyki Dolne Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace929",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Węgorzyno Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace516",
+     "legalForm": null,
+     "name": "Szpital Powiatowy w Wieliczka Sp. z o.o.",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace189",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Alfred Pałka w Ostrów Mazowiecka",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace616",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Anastazja Bednarek w Barlinek",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1114",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Chloe Prus w Choroszcz",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace26",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Dariusz Głąb w Lipsko",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1231",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Elwira Krzyżanowski w Rzgów",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace200",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Emil Baran w Zawichost",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace949",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Eugeniusz Bober w Zelów",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace456",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Eugeniusz Sokołowski w Kosów Lacki",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace108",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Greta Sobieraj w Baranów Sandomierski",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1092",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Igor Niemiec w Kowary",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1027",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Irena Szymański w Sokołów Małopolski",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1154",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Izajasz Żurek w Mszczonów",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace188",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Justyn Łukasik w Szamotuły",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace875",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Krystyna Czyż w Kostrzyn nad Odrą",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace158",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Ksenofont Janicki w Mikołajki",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1130",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Laurencja Jakubowski w Gościno",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1129",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Luiza Lisiecki w Sokołów Podlaski",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace148",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Modest Zagórski w Lubliniec",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace644",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Monika Głąb w Olsztyn",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace513",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Paula Górecki w Sokółka",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace640",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Piotr Kowalczyk w Jedwabne",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace5",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Polikarp Kurowski w Supraśl",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace389",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Rebeka Kulig w Skórcz",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1246",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Roksana Łuczak w Koprzywnica",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace304",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Romeo Górski w Lesko",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace426",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Stefania Balcerzak w Mirosławiec",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace326",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Sybilla Aleksandrowicz w Rybnik",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace844",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Tekla Szczerba w Olsztynek",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    },
+    {
+     "byParty": [],
+     "id": "fakeplace1121",
+     "legalForm": null,
+     "name": "Wojewódzki Szpital Specjalistyczny im. Włodzimierz Tomala w Zgierz",
+     "parties": [],
+     "seats": 0,
+     "supervisoryOrgan": null,
+     "unreviewed": 0
+    }
+   ],
+   "seats": 0,
+   "seatsWithParty": 0,
+   "unreviewed": 0
+  },
+  "paid": {
+   "byParty": [],
+   "byRegion": [],
+   "endedSeats": 0,
+   "hospitals": 0,
+   "hospitalsWithSeats": 0,
+   "kinds": [
+    "rada_nadzorcza"
+   ],
+   "rows": [],
+   "seats": 0,
+   "seatsWithParty": 0,
+   "unreviewed": 0
+  },
+  "unpaid": {
+   "byParty": [],
+   "byRegion": [],
+   "endedSeats": 0,
+   "hospitals": 0,
+   "hospitalsWithSeats": 0,
+   "kinds": [
+    "rada_spoleczna"
+   ],
+   "rows": [],
+   "seats": 0,
+   "seatsWithParty": 0,
+   "unreviewed": 0
+  }
+ }
+}

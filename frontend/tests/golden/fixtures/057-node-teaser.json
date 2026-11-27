@@ -1,0 +1,28 @@
+{
+ "step": 57,
+ "name": "node teaser",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes/fakeperson1066/teaser",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "employmentCount": 1,
+  "id": "fakeperson1066",
+  "name": "Berta Dąbkowski",
+  "post": {
+   "company": {
+    "categories": [
+     "sport"
+    ],
+    "id": "fakeplace444",
+    "name": "GOLEC Z O.O SP. Z O.O.",
+    "visibility": true
+   },
+   "id": "fakejob1066_0",
+   "name": "Przewodniczący Rady Nadzorczej",
+   "start_date": "2005-04-08"
+  }
+ }
+}

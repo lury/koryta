@@ -1,0 +1,63 @@
+{
+ "step": 125,
+ "name": "node place",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes/fakeplace1006",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "node": {
+   "categories": [
+    "szpitale"
+   ],
+   "id": "fakeplace1006",
+   "isPublic": true,
+   "krsNumber": "0000100372",
+   "name": "Centrum Medyczne „colonialism” w Orzesze",
+   "published": true,
+   "revision_id": "rev_fakeplace1006",
+   "revisions": {
+    "has_unapproved": false,
+    "latest_id": "rev_fakeplace1006",
+    "latest_time": "2026-03-24T12:00:00Z",
+    "total": 1
+   },
+   "stats": {
+    "edges": {
+     "approved": {
+      "currentlyEmployed": true,
+      "currentlyEmployedTargetNodeIds": [
+       "fakeplace1006",
+       "fakeplace523",
+       "teryt1405013"
+      ],
+      "elections": [],
+      "experienceMonths": 16.8,
+      "latestEmploymentStart": "2021-05-04",
+      "seatNodeIds": [
+       "fakeplace1006"
+      ],
+      "targetNodeIds": [
+       "fakeplace1006",
+       "fakeplace523",
+       "teryt1405013"
+      ]
+     },
+     "hiddenTargets": 0
+    },
+    "factsCount": 0,
+    "isApproved": true,
+    "nodeGroupSize": 18,
+    "notesCount": 0,
+    "votes": {
+     "humanVoted": false,
+     "interesting": 0,
+     "quality": 0
+    }
+   },
+   "type": "place"
+  }
+ }
+}

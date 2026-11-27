@@ -7,9 +7,8 @@ import {
   edgeSemantics,
   edgeRelation,
   enrichedEdge,
-  findEdgeMatches,
-  findEdges,
-  findEdge,
+  edgeMatches,
+  sameEdges,
   isSameRun,
   misfiledRunOf,
   misfiledSejmikRunOf,
@@ -124,41 +123,34 @@ describe("edgeDocumentId", () => {
   });
 });
 
+/** Stored siblings of one (source, target, type), as `edgesOfPairsPg` reads
+ * them. */
 function dbWith(stored: EdgeLike[]) {
-  return {
-    collection: () => ({
-      where: function () {
-        return this;
-      },
-      get: async () => ({
-        docs: stored.map((edge, index) => ({
-          id: `stored-${index}`,
-          data: () => edge,
-        })),
-      }),
-    }),
-  } as unknown as FirebaseFirestore.Firestore;
+  return stored.map((edge, index) => ({
+    id: `stored-${index}`,
+    data: edge as Record<string, unknown>,
+  }));
 }
 
-describe("findEdges", () => {
+describe("sameEdges", () => {
   it("finds an edge asserting the same thing", async () => {
-    await expect(findEdge(dbWith([spell]), spell)).resolves.toBe("stored-0");
+    expect(sameEdges(spell, dbWith([spell]))[0]).toBe("stored-0");
   });
 
   it("does not match a different spell", async () => {
     const other = { ...spell, start_date: "2015-06-01" };
-    await expect(findEdge(dbWith([other]), spell)).resolves.toBeUndefined();
+    expect(sameEdges(spell, dbWith([other]))[0]).toBeUndefined();
   });
 
   it("matches a state edge on the pair alone", async () => {
     const stored = { ...owns, start_date: "2020-01-01", name: "whatever" };
-    await expect(findEdge(dbWith([stored]), owns)).resolves.toBe("stored-0");
+    expect(sameEdges(owns, dbWith([stored]))[0]).toBe("stored-0");
   });
 
   it("returns every copy, so the n-th payload row can take the n-th", async () => {
     // Two indistinguishable candidacies already stored: re-sending the payload
     // has to map its two rows onto these two rather than create more.
-    const found = await findEdges(dbWith([candidacy, candidacy]), candidacy);
+    const found = sameEdges(candidacy, dbWith([candidacy, candidacy]));
     expect(found).toEqual(["stored-0", "stored-1"]);
   });
 });
@@ -444,7 +436,7 @@ describe("withRecordedFacts", () => {
 describe("preferredCopy", () => {
   const won: EdgeLike = { ...candidacy, elected: true };
   const committee = "Komitet Wyborczy Prawo i Sprawiedliwość";
-  /** A stored copy, labelled the way `findEdgeMatches` labels it for `row`. */
+  /** A stored copy, labelled the way `edgeMatches` labels it for `row`. */
   const copy = (
     id: string,
     stored: Record<string, unknown>,
@@ -568,11 +560,11 @@ describe("enrichedEdge", () => {
   });
 });
 
-describe("findEdgeMatches", () => {
+describe("edgeMatches", () => {
   it("separates what already says this from what could be made to", async () => {
-    const { same, enrichable } = await findEdgeMatches(
-      dbWith([withCommittee, candidacy]),
+    const { same, enrichable } = edgeMatches(
       withCommittee,
+      dbWith([withCommittee, candidacy]),
     );
     expect(same).toEqual(["stored-0"]);
     expect(enrichable.map((c) => c.id)).toEqual(["stored-1"]);
@@ -583,18 +575,15 @@ describe("findEdgeMatches", () => {
     // a second round trip against a collection this request has uncommitted
     // writes for.
     const stored = { ...candidacy, term: "2024-2029" };
-    const { enrichable } = await findEdgeMatches(
-      dbWith([stored]),
-      withCommittee,
-    );
+    const { enrichable } = edgeMatches(withCommittee, dbWith([stored]));
     expect(enrichable[0]?.stored).toEqual(stored);
   });
 
   it("finds nothing to enrich once the committee is stored", async () => {
     // Re-running the pipeline must be a no-op, not a second revision per run.
-    const { same, enrichable } = await findEdgeMatches(
-      dbWith([withCommittee]),
+    const { same, enrichable } = edgeMatches(
       withCommittee,
+      dbWith([withCommittee]),
     );
     expect(same).toEqual(["stored-0"]);
     expect(enrichable).toEqual([]);
@@ -604,9 +593,9 @@ describe("findEdgeMatches", () => {
     // Which of three indistinguishable candidacies gets which committee is
     // arbitrary; being arbitrary differently on a re-run is what would write a
     // second revision every night.
-    const { enrichable } = await findEdgeMatches(
-      dbWith([candidacy, candidacy, candidacy]),
+    const { enrichable } = edgeMatches(
       withCommittee,
+      dbWith([candidacy, candidacy, candidacy]),
     );
     expect(enrichable.map((c) => c.id)).toEqual([
       "stored-0",
@@ -628,9 +617,9 @@ describe("findEdgeMatches", () => {
       committee: "",
       start_date: null,
     };
-    const { same, enrichable } = await findEdgeMatches(
-      dbWith([blank as unknown as EdgeLike]),
+    const { same, enrichable } = edgeMatches(
       withCommittee,
+      dbWith([blank as unknown as EdgeLike]),
     );
     expect(same).toEqual([]);
     expect(enrichable).toEqual([]);
@@ -642,27 +631,27 @@ describe("findEdgeMatches", () => {
     // Promise.all, where the claim cannot be made before the read.
     expect(edgeSemantics("employed").enrichable).toBe(false);
     const undated = { source: "p", target: "c", type: "employed" as const };
-    const { same, enrichable } = await findEdgeMatches(dbWith([undated]), {
-      ...undated,
-      start_date: "2010-03-01",
-    });
+    const { same, enrichable } = edgeMatches(
+      { ...undated, start_date: "2010-03-01" },
+      dbWith([undated]),
+    );
     expect(same).toEqual([]);
     expect(enrichable).toEqual([]);
   });
 
   it("finds the pipeline's candidacy in one a reviewer narrowed down", async () => {
-    const { same, enrichable } = await findEdgeMatches(
-      dbWith([{ ...candidacy, position: "Sejmik" } as EdgeLike]),
+    const { same, enrichable } = edgeMatches(
       candidacy,
+      dbWith([{ ...candidacy, position: "Sejmik" } as EdgeLike]),
     );
     expect(same).toEqual(["stored-0"]);
     expect(enrichable).toEqual([]);
   });
 
   it("reports every sibling, so a new edge is not created on top of one", async () => {
-    const { ids } = await findEdgeMatches(
-      dbWith([candidacy, withCommittee]),
+    const { ids } = edgeMatches(
       withCommittee,
+      dbWith([candidacy, withCommittee]),
     );
     expect(ids).toEqual(new Set(["stored-0", "stored-1"]));
   });
@@ -671,9 +660,9 @@ describe("findEdgeMatches", () => {
     // Still `same`, not `enrichable`: which stored spell a row takes is decided
     // by the occurrence count, as for any exact match, and the caller fills the
     // end in on the one it takes.
-    const { same, enrichable, documents } = await findEdgeMatches(
-      dbWith([spell]),
+    const { same, enrichable, documents } = edgeMatches(
       { ...spell, end_date: "2026-08-25" },
+      dbWith([spell]),
     );
     expect(same).toEqual(["stored-0"]);
     expect(enrichable).toEqual([]);

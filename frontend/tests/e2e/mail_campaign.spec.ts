@@ -2,23 +2,20 @@ import { test, expect } from "@playwright/test";
 import { logIn, USERS } from "./helpers/auth";
 import { waitForLoginFormHydrated } from "./helpers/login";
 import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
-import type { Firestore } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
+import { putDoc, readDoc, readDocs } from "./helpers/db";
 
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
 process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
 
-function adminDb(): Firestore {
-  const app =
-    getApps().length === 0
-      ? initializeApp({ projectId: "demo-koryta-pl" })
-      : getApp();
-  return getFirestore(app, "koryta-pl");
+/** The Auth emulator's admin app, made on first use. */
+function app() {
+  return getApps().length === 0
+    ? initializeApp({ projectId: "demo-koryta-pl" })
+    : getApp();
 }
 
 /** An account of its own per test, so a run never depends on what an earlier
- * one left in the emulator. */
+ * one left behind. */
 async function account(
   stamp: number,
   name: string,
@@ -26,7 +23,7 @@ async function account(
 ) {
   const uid = `mail-${name}-${stamp}`;
   const email = `${uid}@example.com`;
-  await getAuth().createUser({
+  await getAuth(app()).createUser({
     uid,
     email,
     emailVerified: options.emailVerified,
@@ -34,10 +31,7 @@ async function account(
     displayName: `Czytelnik ${stamp}`,
   });
   if (options.newsletter) {
-    await adminDb()
-      .collection("users")
-      .doc(uid)
-      .set({ newsletter: options.newsletter });
+    await putDoc("users", uid, { newsletter: options.newsletter });
   }
   return { uid, email, password: "password123" };
 }
@@ -49,13 +43,12 @@ test.describe("Campaign mail", () => {
     // Signing in, a fresh audience per send, and the unsubscribe page.
     test.setTimeout(300_000);
     const stamp = Date.now();
-    const db = adminDb();
     const reader = await account(stamp, "reader", {
       emailVerified: true,
       newsletter: { callsToAction: true },
     });
     // A test goes to the owner's own address, which has to be confirmed.
-    await getAuth().updateUser("test-admin", { emailVerified: true });
+    await getAuth(app()).updateUser("test-admin", { emailVerified: true });
 
     await logIn(page, USERS.admin, "/admin/mailing");
     await expect(
@@ -74,12 +67,9 @@ test.describe("Campaign mail", () => {
 
     await page.locator("[data-campaign-test]").click();
     await expect(async () => {
-      const tests = await db
-        .collection("mail")
-        .where("campaignTest", "==", campaignId)
-        .get();
-      expect(tests.docs).toHaveLength(1);
-      const data = tests.docs[0]!.data();
+      const tests = await readDocs("mail", { campaignTest: campaignId });
+      expect(tests).toHaveLength(1);
+      const data = tests[0]!.data;
       expect(data.to).toEqual([USERS.admin.email]);
       expect(data.message.subject).toBe(`[Test] ${subject}`);
     }).toPass({ timeout: 30_000 });
@@ -94,12 +84,12 @@ test.describe("Campaign mail", () => {
 
     let unsubscribeLink = "";
     await expect(async () => {
-      const mail = await db
-        .collection("mail")
-        .doc(`campaign_${campaignId}_${reader.uid}`)
-        .get();
-      expect(mail.exists).toBe(true);
-      const data = mail.data()!;
+      const mail = await readDoc(
+        "mail",
+        `campaign_${campaignId}_${reader.uid}`,
+      );
+      expect(mail).toBeDefined();
+      const data = mail!;
       expect(data.to).toEqual([reader.email]);
       expect(data.message.subject).toBe(subject);
       expect(data.headers["List-Unsubscribe-Post"]).toBe(
@@ -110,8 +100,8 @@ test.describe("Campaign mail", () => {
       unsubscribeLink = match![1]!;
     }).toPass({ timeout: 30_000 });
 
-    const campaign = await db.collection("mailCampaigns").doc(campaignId).get();
-    expect(campaign.data()?.recipients).toEqual([reader.uid]);
+    const campaign = await readDoc("mailCampaigns", campaignId);
+    expect(campaign?.recipients).toEqual([reader.uid]);
 
     // The reader follows the link from their inbox: the page asks, and only
     // the button takes them off.
@@ -124,10 +114,10 @@ test.describe("Campaign mail", () => {
       timeout: 30_000,
     });
 
-    const user = await db.collection("users").doc(reader.uid).get();
-    expect(user.data()?.newsletter?.callsToAction).toBe(false);
-    const after = await db.collection("mailCampaigns").doc(campaignId).get();
-    expect(after.data()?.unsubscribed).toEqual([reader.uid]);
+    const user = await readDoc("users", reader.uid);
+    expect(user?.newsletter?.callsToAction).toBe(false);
+    const after = await readDoc("mailCampaigns", campaignId);
+    expect(after?.unsubscribed).toEqual([reader.uid]);
   });
 
   test("a reader who walks away from the question is asked once more, in the corner", async ({
@@ -135,7 +125,6 @@ test.describe("Campaign mail", () => {
   }) => {
     test.setTimeout(240_000);
     const stamp = Date.now() + 1;
-    const db = adminDb();
     const reader = await account(stamp, "asked", { emailVerified: true });
 
     await page.goto("/login?redirect=%2Fpomoc", {
@@ -158,12 +147,12 @@ test.describe("Campaign mail", () => {
     await expect(prompt).toBeHidden();
 
     await expect(async () => {
-      const user = await db.collection("users").doc(reader.uid).get();
-      expect(user.data()?.newsletter).toEqual({
+      const user = await readDoc("users", reader.uid);
+      expect(user?.newsletter).toEqual({
         callsToAction: true,
         recentPeople: true,
       });
-      expect(user.data()?.newsletterUpdated?.via).toBe("prompt");
+      expect(user?.newsletterUpdated?.via).toBe("prompt");
     }).toPass({ timeout: 30_000 });
 
     // Answered is answered: a reload does not ask again.

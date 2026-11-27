@@ -1,0 +1,33 @@
+{
+ "step": 294,
+ "name": "note put",
+ "request": {
+  "method": "PUT",
+  "path": "/api/notes/fakeplace1006",
+  "as": "user",
+  "body": {
+   "sources": [
+    {
+     "kind": "source",
+     "note": "wzorcowe źródło"
+    }
+   ]
+  }
+ },
+ "status": 200,
+ "body": {
+  "note": {
+   "createdAt": "<now>",
+   "id": "fakeplace1006_test-user",
+   "nodeId": "fakeplace1006",
+   "sources": [
+    {
+     "kind": "source",
+     "note": "wzorcowe źródło"
+    }
+   ],
+   "updatedAt": "<now>",
+   "userUid": "test-user"
+  }
+ }
+}

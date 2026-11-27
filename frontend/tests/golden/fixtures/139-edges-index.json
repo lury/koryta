@@ -1,0 +1,20 @@
+{
+ "step": 139,
+ "name": "edges index",
+ "request": {
+  "method": "GET",
+  "path": "/api/edges?nodeId=fakeperson1066",
+  "as": "user"
+ },
+ "status": 404,
+ "body": {
+  "data": {
+   "path": "/api/edges?nodeId=fakeperson1066"
+  },
+  "error": true,
+  "message": "Page Not Found: /api/edges?nodeId=fakeperson1066",
+  "statusCode": 404,
+  "statusMessage": "Page Not Found: /api/edges?nodeId=fakeperson1066",
+  "url": "http://127.0.0.1:23200/api/edges?nodeId=fakeperson1066"
+ }
+}

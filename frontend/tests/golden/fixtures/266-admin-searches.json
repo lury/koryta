@@ -1,0 +1,18 @@
+{
+ "step": 266,
+ "name": "admin searches",
+ "request": {
+  "method": "GET",
+  "path": "/api/admin/searches?days=7",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "daily": [],
+  "days": 7,
+  "queries": [],
+  "signedOut": 0,
+  "total": 0,
+  "truncated": false
+ }
+}

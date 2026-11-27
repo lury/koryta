@@ -1,18 +1,16 @@
 import { test, expect } from "@playwright/test";
 import { initializeApp, getApps, getApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
-import type { Firestore } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
 import { waitForLoginFormHydrated } from "./helpers/login";
+import { putDoc, readDoc } from "./helpers/db";
 
-process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
 process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
 
 /** The newsletter question put to a reader right after signing in or creating
  * an account (components/mail/NewsletterQuestion.vue), and the /profil card
  * that manages the answer. The corner card is in mail_campaign.spec.ts. */
 
-/** The emulator's admin app, made on first use: a spec cannot count on
+/** The Auth emulator's admin app, made on first use: a spec cannot count on
  * another one in the same worker having made it. */
 function admin() {
   return getApps().length === 0
@@ -20,12 +18,8 @@ function admin() {
     : getApp();
 }
 
-function adminDb(): Firestore {
-  return getFirestore(admin(), "koryta-pl");
-}
-
 /** An account of its own per test, so a run never depends on what an earlier
- * one left in the emulator. */
+ * one left behind. */
 async function account(
   name: string,
   newsletter?: { callsToAction: boolean; recentPeople: boolean },
@@ -41,13 +35,13 @@ async function account(
     displayName: `Czytelnik ${stamp}`,
   });
   if (newsletter) {
-    await adminDb().collection("users").doc(uid).set({ newsletter });
+    await putDoc("users", uid, { newsletter });
   }
   return { uid, email, password: "password123" };
 }
 
 async function userDoc(uid: string) {
-  return (await adminDb().collection("users").doc(uid).get()).data();
+  return readDoc("users", uid);
 }
 
 test.describe("Newsletter question", () => {

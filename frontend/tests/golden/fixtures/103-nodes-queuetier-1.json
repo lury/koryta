@@ -1,0 +1,14 @@
+{
+ "step": 103,
+ "name": "nodes queueTier 1",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes?type=person&queueTier=1&limit=10000",
+  "as": "user"
+ },
+ "status": 200,
+ "body": {
+  "nodes": {},
+  "total": 0
+ }
+}

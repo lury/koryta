@@ -1,0 +1,2965 @@
+{
+ "step": 185,
+ "name": "nodes article",
+ "request": {
+  "method": "GET",
+  "path": "/api/nodes?type=article&limit=50",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "nodes": {
+   "fakearticle0": {
+    "id": "fakearticle0",
+    "name": "Labore fuga unde enim doloribus quo harum quasi.",
+    "published": true,
+    "publishedDate": "2016-09-03T00:00:00.000Z",
+    "revision_id": "rev_fakearticle0",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle0",
+     "latest_time": "2026-03-16T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://orange-toaster.miasta.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1576",
+        "fakeperson2333",
+        "fakeperson2376",
+        "fakeperson2606",
+        "fakeperson570"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1576",
+        "fakeperson2333",
+        "fakeperson2376",
+        "fakeperson2606",
+        "fakeperson570"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle1": {
+    "id": "fakearticle1",
+    "name": "Ab odit ex ab sunt dolor distinctio vitae.",
+    "published": true,
+    "publishedDate": "2024-07-04T00:00:00.000Z",
+    "revision_id": "rev_fakearticle1",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle1",
+     "latest_time": "2026-02-08T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://noted-whale.auto.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1165",
+        "fakeperson119",
+        "fakeperson1437",
+        "fakeperson1790",
+        "fakeperson2308"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1165",
+        "fakeperson119",
+        "fakeperson1437",
+        "fakeperson1790",
+        "fakeperson2308"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle10": {
+    "id": "fakearticle10",
+    "name": "Facilis aliquam repellat doloremque itaque quasi quaerat necessitatibus dolorem quae.",
+    "published": true,
+    "publishedDate": "2023-01-18T00:00:00.000Z",
+    "revision_id": "rev_fakearticle10",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle10",
+     "latest_time": "2026-06-29T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://forceful-guacamole.miasta.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson2001",
+        "fakeperson2100",
+        "fakeperson2500",
+        "fakeperson592",
+        "fakeperson924"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson2001",
+        "fakeperson2100",
+        "fakeperson2500",
+        "fakeperson592",
+        "fakeperson924"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle11": {
+    "id": "fakearticle11",
+    "name": "Reiciendis nihil nulla quae aliquid ipsum fugiat vel.",
+    "published": true,
+    "publishedDate": "2019-01-01T00:00:00.000Z",
+    "revision_id": "rev_fakearticle11",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle11",
+     "latest_time": "2026-07-19T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://rapid-haircut.gov.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1864",
+        "fakeperson2428",
+        "fakeperson2721",
+        "fakeperson2729",
+        "fakeperson900"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1864",
+        "fakeperson2428",
+        "fakeperson2721",
+        "fakeperson2729",
+        "fakeperson900"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle12": {
+    "id": "fakearticle12",
+    "name": "Qui atque animi iusto quaerat quaerat quod delectus harum.",
+    "published": true,
+    "publishedDate": "2015-03-18T00:00:00.000Z",
+    "revision_id": "rev_fakearticle12",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle12",
+     "latest_time": "2025-11-28T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://glass-cod.gmina.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson2493",
+        "fakeperson330",
+        "fakeperson495",
+        "fakeperson70",
+        "fakeperson753"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson2493",
+        "fakeperson330",
+        "fakeperson495",
+        "fakeperson70",
+        "fakeperson753"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle13": {
+    "id": "fakearticle13",
+    "name": "Non animi consequuntur in dolor corrupti architecto cupiditate.",
+    "published": true,
+    "publishedDate": "2016-03-06T00:00:00.000Z",
+    "revision_id": "rev_fakearticle13",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle13",
+     "latest_time": "2025-07-17T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://key-unit.edu.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson25",
+        "fakeperson401",
+        "fakeperson631",
+        "fakeperson650",
+        "fakeperson921"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson25",
+        "fakeperson401",
+        "fakeperson631",
+        "fakeperson650",
+        "fakeperson921"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle14": {
+    "id": "fakearticle14",
+    "name": "Laboriosam sapiente voluptates perferendis possimus.",
+    "published": true,
+    "publishedDate": "2022-02-26T00:00:00.000Z",
+    "revision_id": "rev_fakearticle14",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle14",
+     "latest_time": "2026-05-05T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://mysterious-inspection.turystyka.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1365",
+        "fakeperson2585",
+        "fakeperson304",
+        "fakeperson338",
+        "fakeperson443"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1365",
+        "fakeperson2585",
+        "fakeperson304",
+        "fakeperson338",
+        "fakeperson443"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle15": {
+    "id": "fakearticle15",
+    "name": "Unde vitae totam tenetur odit magni est amet eligendi repudiandae.",
+    "published": true,
+    "publishedDate": "2021-06-26T00:00:00.000Z",
+    "revision_id": "rev_fakearticle15",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle15",
+     "latest_time": "2026-06-06T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://gloomy-moment.net.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1942",
+        "fakeperson2074",
+        "fakeperson211",
+        "fakeperson2231",
+        "fakeperson775"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1942",
+        "fakeperson2074",
+        "fakeperson211",
+        "fakeperson2231",
+        "fakeperson775"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle16": {
+    "id": "fakearticle16",
+    "name": "Itaque officia enim mollitia eos quidem vero a qui natus maiores.",
+    "published": true,
+    "publishedDate": "2016-01-03T00:00:00.000Z",
+    "revision_id": "rev_fakearticle16",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle16",
+     "latest_time": "2025-09-21T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://watery-hundred.sklep.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1227",
+        "fakeperson156",
+        "fakeperson2360",
+        "fakeperson324",
+        "fakeperson770"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1227",
+        "fakeperson156",
+        "fakeperson2360",
+        "fakeperson324",
+        "fakeperson770"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle17": {
+    "id": "fakearticle17",
+    "name": "Optio eius omnis consequuntur ex corrupti.",
+    "published": true,
+    "publishedDate": "2022-08-30T00:00:00.000Z",
+    "revision_id": "rev_fakearticle17",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle17",
+     "latest_time": "2026-03-23T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://tight-adult.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson2448",
+        "fakeperson561",
+        "fakeperson75",
+        "fakeperson773",
+        "fakeperson97"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson2448",
+        "fakeperson561",
+        "fakeperson75",
+        "fakeperson773",
+        "fakeperson97"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle18": {
+    "id": "fakearticle18",
+    "name": "Eius accusamus illum amet consectetur eos ratione tempore adipisci.",
+    "published": true,
+    "publishedDate": "2015-06-03T00:00:00.000Z",
+    "revision_id": "rev_fakearticle18",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle18",
+     "latest_time": "2025-11-25T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://wide-eyed-awareness.nieruchomosci.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1012",
+        "fakeperson1484",
+        "fakeperson1624",
+        "fakeperson1905",
+        "fakeperson2586"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1012",
+        "fakeperson1484",
+        "fakeperson1624",
+        "fakeperson1905",
+        "fakeperson2586"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle19": {
+    "id": "fakearticle19",
+    "name": "Possimus repudiandae est ex suscipit reiciendis magnam qui explicabo corrupti facilis dignissimos.",
+    "published": true,
+    "publishedDate": "2022-10-13T00:00:00.000Z",
+    "revision_id": "rev_fakearticle19",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle19",
+     "latest_time": "2025-09-01T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://short-community.turystyka.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1077",
+        "fakeperson1214",
+        "fakeperson1267",
+        "fakeperson1746",
+        "fakeperson2638"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1077",
+        "fakeperson1214",
+        "fakeperson1267",
+        "fakeperson1746",
+        "fakeperson2638"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle2": {
+    "id": "fakearticle2",
+    "name": "Nihil ad incidunt in eum quasi incidunt.",
+    "published": true,
+    "publishedDate": "2024-11-17T00:00:00.000Z",
+    "revision_id": "rev_fakearticle2",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle2",
+     "latest_time": "2026-02-17T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://glittering-lamp.nieruchomosci.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1274",
+        "fakeperson1954",
+        "fakeperson2378",
+        "fakeperson2641",
+        "fakeperson542"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1274",
+        "fakeperson1954",
+        "fakeperson2378",
+        "fakeperson2641",
+        "fakeperson542"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle20": {
+    "id": "fakearticle20",
+    "name": "Laboriosam saepe sapiente cum eius natus numquam sint laboriosam.",
+    "published": true,
+    "publishedDate": "2018-01-28T00:00:00.000Z",
+    "revision_id": "rev_fakearticle20",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle20",
+     "latest_time": "2026-06-24T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://unlucky-advancement.targi.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1698",
+        "fakeperson436",
+        "fakeperson620",
+        "fakeperson642",
+        "fakeperson953"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1698",
+        "fakeperson436",
+        "fakeperson620",
+        "fakeperson642",
+        "fakeperson953"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle21": {
+    "id": "fakearticle21",
+    "name": "Dicta aspernatur est repellat doloribus ducimus optio error.",
+    "published": true,
+    "publishedDate": "2026-07-12T00:00:00.000Z",
+    "revision_id": "rev_fakearticle21",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle21",
+     "latest_time": "2025-12-21T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://unsightly-schedule.edu.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1082",
+        "fakeperson1807",
+        "fakeperson1843",
+        "fakeperson1862",
+        "fakeperson66"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1082",
+        "fakeperson1807",
+        "fakeperson1843",
+        "fakeperson1862",
+        "fakeperson66"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle22": {
+    "id": "fakearticle22",
+    "name": "Aut quis quibusdam eius eos recusandae amet.",
+    "published": true,
+    "publishedDate": "2022-06-19T00:00:00.000Z",
+    "revision_id": "rev_fakearticle22",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle22",
+     "latest_time": "2025-07-15T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://great-bob.edu.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson108",
+        "fakeperson1347",
+        "fakeperson1969",
+        "fakeperson443",
+        "fakeperson803"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson108",
+        "fakeperson1347",
+        "fakeperson1969",
+        "fakeperson443",
+        "fakeperson803"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle23": {
+    "id": "fakearticle23",
+    "name": "Ipsam quisquam doloremque cupiditate sapiente sint cum fugit.",
+    "published": true,
+    "publishedDate": "2021-11-07T00:00:00.000Z",
+    "revision_id": "rev_fakearticle23",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle23",
+     "latest_time": "2026-03-03T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://gifted-procurement.com.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1585",
+        "fakeperson1848",
+        "fakeperson2016",
+        "fakeperson2052",
+        "fakeperson2553"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1585",
+        "fakeperson1848",
+        "fakeperson2016",
+        "fakeperson2052",
+        "fakeperson2553"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle24": {
+    "id": "fakearticle24",
+    "name": "Ducimus quidem adipisci ratione et ex inventore.",
+    "published": true,
+    "publishedDate": "2019-05-12T00:00:00.000Z",
+    "revision_id": "rev_fakearticle24",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle24",
+     "latest_time": "2025-12-12T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://uncommon-nerve.turystyka.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1546",
+        "fakeperson1563",
+        "fakeperson1597",
+        "fakeperson2244",
+        "fakeperson2367"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1546",
+        "fakeperson1563",
+        "fakeperson1597",
+        "fakeperson2244",
+        "fakeperson2367"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle25": {
+    "id": "fakearticle25",
+    "name": "Ratione rerum atque dicta enim cumque itaque molestiae expedita aperiam.",
+    "published": true,
+    "publishedDate": "2020-08-20T00:00:00.000Z",
+    "revision_id": "rev_fakearticle25",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle25",
+     "latest_time": "2025-08-26T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://measly-yeast.turystyka.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1409",
+        "fakeperson1876",
+        "fakeperson2046",
+        "fakeperson2083",
+        "fakeperson507"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1409",
+        "fakeperson1876",
+        "fakeperson2046",
+        "fakeperson2083",
+        "fakeperson507"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle26": {
+    "id": "fakearticle26",
+    "name": "Dolores molestiae pariatur aliquam ab voluptatibus distinctio sed esse cupiditate repudiandae labore.",
+    "published": true,
+    "publishedDate": "2026-03-13T00:00:00.000Z",
+    "revision_id": "rev_fakearticle26",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle26",
+     "latest_time": "2025-12-30T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://able-sustenance.priv.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson2202",
+        "fakeperson2224",
+        "fakeperson2675",
+        "fakeperson395",
+        "fakeperson640"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson2202",
+        "fakeperson2224",
+        "fakeperson2675",
+        "fakeperson395",
+        "fakeperson640"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle27": {
+    "id": "fakearticle27",
+    "name": "Optio esse error quis molestiae illum ducimus harum.",
+    "published": true,
+    "publishedDate": "2021-06-16T00:00:00.000Z",
+    "revision_id": "rev_fakearticle27",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle27",
+     "latest_time": "2026-01-12T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://robust-brush.org.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1413",
+        "fakeperson1604",
+        "fakeperson2205",
+        "fakeperson2287",
+        "fakeperson701"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1413",
+        "fakeperson1604",
+        "fakeperson2205",
+        "fakeperson2287",
+        "fakeperson701"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle28": {
+    "id": "fakearticle28",
+    "name": "Quaerat inventore numquam debitis id delectus doloremque exercitationem ea veniam numquam.",
+    "published": true,
+    "publishedDate": "2017-07-21T00:00:00.000Z",
+    "revision_id": "rev_fakearticle28",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle28",
+     "latest_time": "<now>",
+     "total": 1
+    },
+    "sourceURL": "https://remarkable-conservative.sklep.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1059",
+        "fakeperson1618",
+        "fakeperson2160",
+        "fakeperson2760",
+        "fakeperson897"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1059",
+        "fakeperson1618",
+        "fakeperson2160",
+        "fakeperson2760",
+        "fakeperson897"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle29": {
+    "id": "fakearticle29",
+    "name": "Dolorum culpa magnam suscipit blanditiis non nesciunt delectus.",
+    "published": true,
+    "publishedDate": "2016-11-06T00:00:00.000Z",
+    "revision_id": "rev_fakearticle29",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle29",
+     "latest_time": "2025-08-26T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://growing-slime.priv.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1068",
+        "fakeperson1569",
+        "fakeperson2036",
+        "fakeperson2275",
+        "fakeperson467"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1068",
+        "fakeperson1569",
+        "fakeperson2036",
+        "fakeperson2275",
+        "fakeperson467"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle3": {
+    "id": "fakearticle3",
+    "name": "Incidunt esse est officiis tenetur impedit similique.",
+    "published": true,
+    "publishedDate": "2020-03-03T00:00:00.000Z",
+    "revision_id": "rev_fakearticle3",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle3",
+     "latest_time": "2025-06-15T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://primary-request.szkola.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1049",
+        "fakeperson1403",
+        "fakeperson1796",
+        "fakeperson1897",
+        "fakeperson435"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1049",
+        "fakeperson1403",
+        "fakeperson1796",
+        "fakeperson1897",
+        "fakeperson435"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle30": {
+    "id": "fakearticle30",
+    "name": "Facilis consequatur possimus porro cum delectus consequatur assumenda nihil.",
+    "published": true,
+    "publishedDate": "2017-03-14T00:00:00.000Z",
+    "revision_id": "rev_fakearticle30",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle30",
+     "latest_time": "2025-08-15T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://amused-backburn.biz.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1866",
+        "fakeperson423",
+        "fakeperson597",
+        "fakeperson854",
+        "fakeperson941"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1866",
+        "fakeperson423",
+        "fakeperson597",
+        "fakeperson854",
+        "fakeperson941"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle31": {
+    "id": "fakearticle31",
+    "name": "A assumenda nobis veritatis eveniet voluptatibus illo temporibus.",
+    "published": true,
+    "publishedDate": "2016-04-24T00:00:00.000Z",
+    "revision_id": "rev_fakearticle31",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle31",
+     "latest_time": "2026-06-10T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://glass-planula.gmina.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1550",
+        "fakeperson1815",
+        "fakeperson20",
+        "fakeperson2180",
+        "fakeperson2207"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1550",
+        "fakeperson1815",
+        "fakeperson20",
+        "fakeperson2180",
+        "fakeperson2207"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle32": {
+    "id": "fakearticle32",
+    "name": "Iure sint officiis quo mollitia fugit non exercitationem itaque impedit.",
+    "published": true,
+    "publishedDate": "2021-12-22T00:00:00.000Z",
+    "revision_id": "rev_fakearticle32",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle32",
+     "latest_time": "2026-01-15T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://smart-dividend.biz.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1006",
+        "fakeperson1269",
+        "fakeperson218",
+        "fakeperson2696",
+        "fakeperson470"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1006",
+        "fakeperson1269",
+        "fakeperson218",
+        "fakeperson2696",
+        "fakeperson470"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle33": {
+    "id": "fakearticle33",
+    "name": "Omnis commodi alias iure in consectetur nulla voluptas vitae quibusdam animi eaque.",
+    "published": true,
+    "publishedDate": "2016-02-25T00:00:00.000Z",
+    "revision_id": "rev_fakearticle33",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle33",
+     "latest_time": "2025-08-06T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://wise-suitcase.szkola.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1292",
+        "fakeperson2021",
+        "fakeperson2036",
+        "fakeperson2730",
+        "fakeperson2742"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1292",
+        "fakeperson2021",
+        "fakeperson2036",
+        "fakeperson2730",
+        "fakeperson2742"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle34": {
+    "id": "fakearticle34",
+    "name": "Quo ad animi odio reprehenderit molestiae necessitatibus quis id voluptatibus veniam quidem.",
+    "published": true,
+    "publishedDate": "2016-03-04T00:00:00.000Z",
+    "revision_id": "rev_fakearticle34",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle34",
+     "latest_time": "2025-08-08T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://tinted-soup.com.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1338",
+        "fakeperson1347",
+        "fakeperson2070",
+        "fakeperson2412",
+        "fakeperson2479"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1338",
+        "fakeperson1347",
+        "fakeperson2070",
+        "fakeperson2412",
+        "fakeperson2479"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle35": {
+    "id": "fakearticle35",
+    "name": "Pariatur tempora quae labore natus pariatur tempora inventore.",
+    "published": true,
+    "publishedDate": "2023-03-29T00:00:00.000Z",
+    "revision_id": "rev_fakearticle35",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle35",
+     "latest_time": "2026-01-10T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://vibrant-hovercraft.gov.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1265",
+        "fakeperson1929",
+        "fakeperson1933",
+        "fakeperson223",
+        "fakeperson332"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1265",
+        "fakeperson1929",
+        "fakeperson1933",
+        "fakeperson223",
+        "fakeperson332"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle36": {
+    "id": "fakearticle36",
+    "name": "Odit quae ea repellendus amet sint qui mollitia sequi corporis.",
+    "published": true,
+    "publishedDate": "2025-08-03T00:00:00.000Z",
+    "revision_id": "rev_fakearticle36",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle36",
+     "latest_time": "2025-08-19T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://prudent-hubris.gov.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1317",
+        "fakeperson1374",
+        "fakeperson2385",
+        "fakeperson24",
+        "fakeperson922"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1317",
+        "fakeperson1374",
+        "fakeperson2385",
+        "fakeperson24",
+        "fakeperson922"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle37": {
+    "id": "fakearticle37",
+    "name": "Velit aut totam modi in quaerat aliquam soluta facere tempore voluptatum.",
+    "published": true,
+    "publishedDate": "2023-09-28T00:00:00.000Z",
+    "revision_id": "rev_fakearticle37",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle37",
+     "latest_time": "2025-11-25T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://wise-electronics.auto.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson229",
+        "fakeperson2604",
+        "fakeperson65",
+        "fakeperson756",
+        "fakeperson948"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson229",
+        "fakeperson2604",
+        "fakeperson65",
+        "fakeperson756",
+        "fakeperson948"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle38": {
+    "id": "fakearticle38",
+    "name": "Assumenda in ipsum eligendi sed aspernatur veritatis illo voluptate dolorem modi.",
+    "published": true,
+    "publishedDate": "2016-09-19T00:00:00.000Z",
+    "revision_id": "rev_fakearticle38",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle38",
+     "latest_time": "2026-04-28T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://knotty-earth.turystyka.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson115",
+        "fakeperson1764",
+        "fakeperson2351",
+        "fakeperson2521",
+        "fakeperson96"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson115",
+        "fakeperson1764",
+        "fakeperson2351",
+        "fakeperson2521",
+        "fakeperson96"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle39": {
+    "id": "fakearticle39",
+    "name": "Porro ab aperiam odio expedita aliquid possimus assumenda consequuntur ab.",
+    "published": true,
+    "publishedDate": "2022-11-04T00:00:00.000Z",
+    "revision_id": "rev_fakearticle39",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle39",
+     "latest_time": "2026-07-13T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://dim-self-confidence.nieruchomosci.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1590",
+        "fakeperson1655",
+        "fakeperson1728",
+        "fakeperson1867",
+        "fakeperson2393"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1590",
+        "fakeperson1655",
+        "fakeperson1728",
+        "fakeperson1867",
+        "fakeperson2393"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle4": {
+    "id": "fakearticle4",
+    "name": "Earum quisquam facere quidem inventore maiores ab ullam maxime.",
+    "published": true,
+    "publishedDate": "2021-09-08T00:00:00.000Z",
+    "revision_id": "rev_fakearticle4",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle4",
+     "latest_time": "2026-03-04T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://prestigious-teammate.sklep.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1644",
+        "fakeperson1684",
+        "fakeperson1916",
+        "fakeperson584",
+        "fakeperson659"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1644",
+        "fakeperson1684",
+        "fakeperson1916",
+        "fakeperson584",
+        "fakeperson659"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle40": {
+    "id": "fakearticle40",
+    "name": "Illo labore voluptatem at dignissimos assumenda cupiditate vitae inventore doloremque ut recusandae.",
+    "published": true,
+    "publishedDate": "2025-05-31T00:00:00.000Z",
+    "revision_id": "rev_fakearticle40",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle40",
+     "latest_time": "2026-07-15T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://fussy-formation.nieruchomosci.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson2444",
+        "fakeperson2701",
+        "fakeperson42",
+        "fakeperson674",
+        "fakeperson900"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson2444",
+        "fakeperson2701",
+        "fakeperson42",
+        "fakeperson674",
+        "fakeperson900"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle41": {
+    "id": "fakearticle41",
+    "name": "Possimus nostrum quidem recusandae atque quos facilis explicabo expedita.",
+    "published": true,
+    "publishedDate": "2024-06-11T00:00:00.000Z",
+    "revision_id": "rev_fakearticle41",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle41",
+     "latest_time": "2025-11-18T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://whirlwind-conservation.miasta.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1448",
+        "fakeperson188",
+        "fakeperson2014",
+        "fakeperson2035",
+        "fakeperson291"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1448",
+        "fakeperson188",
+        "fakeperson2014",
+        "fakeperson2035",
+        "fakeperson291"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle42": {
+    "id": "fakearticle42",
+    "name": "Explicabo libero minima dolore dolore.",
+    "published": true,
+    "publishedDate": "2023-12-21T00:00:00.000Z",
+    "revision_id": "rev_fakearticle42",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle42",
+     "latest_time": "2025-08-24T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://meaty-bidet.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1305",
+        "fakeperson2197",
+        "fakeperson636",
+        "fakeperson900",
+        "fakeperson903"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1305",
+        "fakeperson2197",
+        "fakeperson636",
+        "fakeperson900",
+        "fakeperson903"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle43": {
+    "id": "fakearticle43",
+    "name": "Commodi libero adipisci molestiae recusandae ab et est ipsa voluptate in consectetur.",
+    "published": true,
+    "publishedDate": "2025-04-05T00:00:00.000Z",
+    "revision_id": "rev_fakearticle43",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle43",
+     "latest_time": "2025-12-31T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://plump-bob.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1232",
+        "fakeperson1410",
+        "fakeperson2510",
+        "fakeperson31",
+        "fakeperson58"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1232",
+        "fakeperson1410",
+        "fakeperson2510",
+        "fakeperson31",
+        "fakeperson58"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle44": {
+    "id": "fakearticle44",
+    "name": "Molestiae sint eveniet dolor.",
+    "published": true,
+    "publishedDate": "2018-08-28T00:00:00.000Z",
+    "revision_id": "rev_fakearticle44",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle44",
+     "latest_time": "2026-06-24T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://murky-bungalow.turystyka.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1045",
+        "fakeperson1908",
+        "fakeperson2171",
+        "fakeperson2292",
+        "fakeperson326"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1045",
+        "fakeperson1908",
+        "fakeperson2171",
+        "fakeperson2292",
+        "fakeperson326"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle45": {
+    "id": "fakearticle45",
+    "name": "Velit deleniti possimus iste dolorem quod repellendus repudiandae temporibus culpa quam.",
+    "published": true,
+    "publishedDate": "2018-12-30T00:00:00.000Z",
+    "revision_id": "rev_fakearticle45",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle45",
+     "latest_time": "2025-09-12T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://worse-interviewer.priv.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson115",
+        "fakeperson1998",
+        "fakeperson2053",
+        "fakeperson2332",
+        "fakeperson2514"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson115",
+        "fakeperson1998",
+        "fakeperson2053",
+        "fakeperson2332",
+        "fakeperson2514"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle46": {
+    "id": "fakearticle46",
+    "name": "Tempora porro expedita doloribus voluptates quae explicabo repellat iste quasi minima.",
+    "published": true,
+    "publishedDate": "2023-05-08T00:00:00.000Z",
+    "revision_id": "rev_fakearticle46",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle46",
+     "latest_time": "2026-09-05T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://bleak-oil.targi.pl/",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1428",
+        "fakeperson194",
+        "fakeperson2244",
+        "fakeperson2556",
+        "fakeperson2714"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1428",
+        "fakeperson194",
+        "fakeperson2244",
+        "fakeperson2556",
+        "fakeperson2714"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle47": {
+    "id": "fakearticle47",
+    "name": "Optio numquam ea maxime.",
+    "published": true,
+    "publishedDate": "2024-04-15T00:00:00.000Z",
+    "revision_id": "rev_fakearticle47",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle47",
+     "latest_time": "2026-06-14T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://steep-marimba.com.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1397",
+        "fakeperson1540",
+        "fakeperson155",
+        "fakeperson1965",
+        "fakeperson2064"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1397",
+        "fakeperson1540",
+        "fakeperson155",
+        "fakeperson1965",
+        "fakeperson2064"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle48": {
+    "id": "fakearticle48",
+    "name": "In sit deserunt eligendi voluptas ea dolores deserunt quo.",
+    "published": true,
+    "publishedDate": "2023-01-21T00:00:00.000Z",
+    "revision_id": "rev_fakearticle48",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle48",
+     "latest_time": "2025-08-30T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://proud-supplier.targi.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1800",
+        "fakeperson2313",
+        "fakeperson320",
+        "fakeperson579",
+        "fakeperson603"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1800",
+        "fakeperson2313",
+        "fakeperson320",
+        "fakeperson579",
+        "fakeperson603"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle49": {
+    "id": "fakearticle49",
+    "name": "Praesentium dicta laboriosam nesciunt.",
+    "published": true,
+    "publishedDate": "2015-08-04T00:00:00.000Z",
+    "revision_id": "rev_fakearticle49",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle49",
+     "latest_time": "2025-07-22T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://accurate-giggle.agro.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1079",
+        "fakeperson1507",
+        "fakeperson2166",
+        "fakeperson386",
+        "fakeperson759"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1079",
+        "fakeperson1507",
+        "fakeperson2166",
+        "fakeperson386",
+        "fakeperson759"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle5": {
+    "id": "fakearticle5",
+    "name": "Deleniti quasi fugit nulla quaerat molestias nihil laudantium facilis optio reiciendis.",
+    "published": true,
+    "publishedDate": "2021-05-16T00:00:00.000Z",
+    "revision_id": "rev_fakearticle5",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle5",
+     "latest_time": "2025-06-06T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://genuine-patroller.org.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson185",
+        "fakeperson2234",
+        "fakeperson2582",
+        "fakeperson495",
+        "fakeperson760"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson185",
+        "fakeperson2234",
+        "fakeperson2582",
+        "fakeperson495",
+        "fakeperson760"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle50": {
+    "id": "fakearticle50",
+    "name": "Autem tenetur repudiandae aliquid mollitia quisquam eos voluptatum architecto blanditiis explicabo impedit.",
+    "published": true,
+    "publishedDate": "2023-11-26T00:00:00.000Z",
+    "revision_id": "rev_fakearticle50",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle50",
+     "latest_time": "2025-11-14T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://pure-developmental.org.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1041",
+        "fakeperson1065",
+        "fakeperson2497",
+        "fakeperson2619",
+        "fakeperson992"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1041",
+        "fakeperson1065",
+        "fakeperson2497",
+        "fakeperson2619",
+        "fakeperson992"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle51": {
+    "id": "fakearticle51",
+    "name": "Iste modi quo doloribus voluptatibus dicta.",
+    "published": true,
+    "publishedDate": "2019-02-18T00:00:00.000Z",
+    "revision_id": "rev_fakearticle51",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle51",
+     "latest_time": "2026-01-20T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://pure-retention.info.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1488",
+        "fakeperson1823",
+        "fakeperson2542",
+        "fakeperson2757",
+        "fakeperson449"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1488",
+        "fakeperson1823",
+        "fakeperson2542",
+        "fakeperson2757",
+        "fakeperson449"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle52": {
+    "id": "fakearticle52",
+    "name": "Assumenda et fuga culpa.",
+    "published": true,
+    "publishedDate": "2015-12-07T00:00:00.000Z",
+    "revision_id": "rev_fakearticle52",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle52",
+     "latest_time": "2025-10-25T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://ugly-going.targi.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1130",
+        "fakeperson1468",
+        "fakeperson2573",
+        "fakeperson515",
+        "fakeperson839"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1130",
+        "fakeperson1468",
+        "fakeperson2573",
+        "fakeperson515",
+        "fakeperson839"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   },
+   "fakearticle53": {
+    "id": "fakearticle53",
+    "name": "Itaque natus et vel quas cum voluptates repellat ea accusamus assumenda cupiditate.",
+    "published": true,
+    "publishedDate": "2020-12-21T00:00:00.000Z",
+    "revision_id": "rev_fakearticle53",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakearticle53",
+     "latest_time": "2026-06-20T12:00:00Z",
+     "total": 1
+    },
+    "sourceURL": "https://worse-ghost.miasta.pl",
+    "stats": {
+     "edges": {
+      "all": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1058",
+        "fakeperson1449",
+        "fakeperson1660",
+        "fakeperson1682",
+        "fakeperson174"
+       ]
+      },
+      "approved": {
+       "currentlyEmployed": false,
+       "currentlyEmployedTargetNodeIds": [],
+       "elections": [],
+       "experienceMonths": 0,
+       "latestEmploymentStart": null,
+       "seatNodeIds": [],
+       "targetNodeIds": [
+        "fakeperson1058",
+        "fakeperson1449",
+        "fakeperson1660",
+        "fakeperson1682",
+        "fakeperson174"
+       ]
+      }
+     },
+     "factsCount": 0,
+     "isApproved": true,
+     "nodeGroupSize": 0,
+     "notesCount": 0,
+     "votes": {
+      "humanVoted": false,
+      "interesting": 0,
+      "quality": 0
+     }
+    },
+    "type": "article",
+    "visibility": true
+   }
+  },
+  "total": 93
+ }
+}

@@ -1,0 +1,855 @@
+{
+ "step": 228,
+ "name": "graph article",
+ "request": {
+  "method": "GET",
+  "path": "/api/graph/article/fakearticle0",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "edges": [
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1576_0",
+    "label": "Przewodniczący Rady Nadzorczej",
+    "name": "Przewodniczący Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1576",
+    "start_date": "2015-05-30",
+    "target": "fakeplace644",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2019-12-08",
+    "id": "fakejob1576_1",
+    "label": "Członek Zarządu",
+    "name": "Członek Zarządu",
+    "references": [],
+    "source": "fakeperson1576",
+    "start_date": "2010-09-03",
+    "target": "fakeplace151",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1576_2",
+    "label": "Prezes Zarządu",
+    "name": "Prezes Zarządu",
+    "references": [],
+    "source": "fakeperson1576",
+    "start_date": "2014-02-21",
+    "target": "fakeplace724",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2016-11-04",
+    "id": "fakejob1576_3",
+    "label": "Członek Rady Nadzorczej",
+    "name": "Członek Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1576",
+    "start_date": "2014-07-25",
+    "target": "fakeplace522",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2026-07-21",
+    "id": "fakejob1576_4",
+    "label": "Prokurent",
+    "name": "Prokurent",
+    "references": [],
+    "source": "fakeperson1576",
+    "start_date": "2024-06-07",
+    "target": "fakeplace1101",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2026-09-07",
+    "id": "fakejob1576_5",
+    "label": "Prokurent",
+    "name": "Prokurent",
+    "references": [],
+    "source": "fakeperson1576",
+    "start_date": "2026-08-05",
+    "target": "fakeplace605",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1576_6",
+    "label": "Przewodniczący Rady Nadzorczej",
+    "name": "Przewodniczący Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1576",
+    "start_date": "2011-11-17",
+    "target": "fakeplace736",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1576_7",
+    "label": "Członek Zarządu",
+    "name": "Członek Zarządu",
+    "references": [],
+    "source": "fakeperson1576",
+    "start_date": "2010-03-20",
+    "target": "fakeplace544",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob1576_8",
+    "label": "Przewodniczący Rady Nadzorczej",
+    "name": "Przewodniczący Rady Nadzorczej",
+    "references": [],
+    "source": "fakeperson1576",
+    "start_date": "2020-11-22",
+    "target": "fakeplace801",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob2606_0",
+    "label": "Prokurent",
+    "name": "Prokurent",
+    "references": [],
+    "source": "fakeperson2606",
+    "start_date": "2011-02-01",
+    "target": "fakeplace937",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob2606_1",
+    "label": "Prokurent",
+    "name": "Prokurent",
+    "references": [],
+    "source": "fakeperson2606",
+    "start_date": "2016-02-28",
+    "target": "fakeplace937",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob2606_2",
+    "label": "Prezes Zarządu",
+    "name": "Prezes Zarządu",
+    "references": [],
+    "source": "fakeperson2606",
+    "start_date": "2001-03-02",
+    "target": "fakeplace1234",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2019-03-03",
+    "id": "fakejob2606_3",
+    "label": "Prokurent",
+    "name": "Prokurent",
+    "references": [],
+    "source": "fakeperson2606",
+    "start_date": "2014-10-19",
+    "target": "fakeplace112",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": null,
+    "id": "fakejob2606_4",
+    "label": "Zastępca Dyrektora",
+    "name": "Zastępca Dyrektora",
+    "references": [],
+    "source": "fakeperson2606",
+    "start_date": "2009-08-15",
+    "target": "fakeplace14",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   },
+   {
+    "content": "",
+    "end_date": "2026-05-27",
+    "id": "fakejob2606_5",
+    "label": "Prokurent",
+    "name": "Prokurent",
+    "references": [],
+    "source": "fakeperson2606",
+    "start_date": "2000-04-07",
+    "target": "fakeplace1024",
+    "traverse": {
+     "backward": "dead_end",
+     "forward": "active"
+    },
+    "type": "employed",
+    "visibility": true
+   }
+  ],
+  "nodeGroups": [
+   {
+    "connected": [
+     "fakeperson2606",
+     "fakeperson1576",
+     "fakeplace644",
+     "fakeplace151",
+     "fakeplace724",
+     "fakeplace522",
+     "fakeplace1101",
+     "fakeplace605",
+     "fakeplace736",
+     "fakeplace544",
+     "fakeplace801",
+     "fakeplace937",
+     "fakeplace1234",
+     "fakeplace112",
+     "fakeplace14",
+     "fakeplace1024"
+    ],
+    "id": "",
+    "name": "Wszystkie",
+    "stats": {
+     "people": 2
+    }
+   },
+   {
+    "connected": [
+     "fakeplace644",
+     "fakeperson1576"
+    ],
+    "id": "fakeplace644",
+    "name": "Wojewódzki Szpital Specjalistyczny im. Monika Głąb w Olsztyn",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace151",
+     "fakeperson1576"
+    ],
+    "id": "fakeplace151",
+    "name": "Szpital Powiatowy w Opatów Sp. z o.o.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace724",
+     "fakeperson1576"
+    ],
+    "id": "fakeplace724",
+    "name": "WINIARSKI, LISOWSKI AND PIECHOTA SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace522",
+     "fakeperson1576"
+    ],
+    "id": "fakeplace522",
+    "name": "JAŚKIEWICZ SP. P. SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace1101",
+     "fakeperson1576"
+    ],
+    "id": "fakeplace1101",
+    "name": "KOPEĆ, KLIMEK AND MALICKI SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace605",
+     "fakeperson1576"
+    ],
+    "id": "fakeplace605",
+    "name": "BUDZIŃSKI-PIECZEK SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace736",
+     "fakeperson1576"
+    ],
+    "id": "fakeplace736",
+    "name": "WIĘCKOWSKI, LIPSKI AND JAGIEŁŁO SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace544",
+     "fakeperson1576"
+    ],
+    "id": "fakeplace544",
+    "name": "JAGIELSKI, SZCZĘSNY AND WYSZYŃSKI SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace801",
+     "fakeperson1576"
+    ],
+    "id": "fakeplace801",
+    "name": "KRAJEWSKI, SZYSZKA AND ŚWIERCZYŃSKI SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace937",
+     "fakeperson2606"
+    ],
+    "id": "fakeplace937",
+    "name": "Centrum Medyczne „feather” w Kolbuszowa",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace1234",
+     "fakeperson2606"
+    ],
+    "id": "fakeplace1234",
+    "name": "Centrum Medyczne „hexagon” w Wąsosz",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace112",
+     "fakeperson2606"
+    ],
+    "id": "fakeplace112",
+    "name": "GŁOWACKI S.A. SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace14",
+     "fakeperson2606"
+    ],
+    "id": "fakeplace14",
+    "name": "MATUSIAK-MILLER SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeplace1024",
+     "fakeperson2606"
+    ],
+    "id": "fakeplace1024",
+    "name": "ŚLIWIŃSKI, SOSNOWSKI AND JURKOWSKI SP. Z O.O.",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeperson2606",
+     "fakeplace937",
+     "fakeperson2606",
+     "fakeplace1234",
+     "fakeplace112",
+     "fakeplace14",
+     "fakeplace1024"
+    ],
+    "id": "fakeperson2606",
+    "name": "Lilla Przybyła",
+    "stats": {
+     "people": 1
+    }
+   },
+   {
+    "connected": [
+     "fakeperson1576",
+     "fakeplace644",
+     "fakeperson1576",
+     "fakeplace151",
+     "fakeplace724",
+     "fakeplace522",
+     "fakeplace1101",
+     "fakeplace605",
+     "fakeplace736",
+     "fakeplace544",
+     "fakeplace801"
+    ],
+    "id": "fakeperson1576",
+    "name": "Bertram Kubiak",
+    "stats": {
+     "people": 1
+    }
+   }
+  ],
+  "nodes": {
+   "fakeperson1576": {
+    "color": "#073b76",
+    "entityType": "person",
+    "id": "fakeperson1576",
+    "name": "Bertram Kubiak",
+    "parties": [
+     "Lewica",
+     "PiS"
+    ],
+    "published": true,
+    "revision_id": "rev_fakeperson1576",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson1576",
+     "latest_time": "2025-11-06T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeperson2606": {
+    "color": "#898781",
+    "entityType": "person",
+    "id": "fakeperson2606",
+    "name": "Lilla Przybyła",
+    "parties": [],
+    "published": true,
+    "revision_id": "rev_fakeperson2606",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeperson2606",
+     "latest_time": "<now>",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "circle",
+    "visibility": true
+   },
+   "fakeplace1024": {
+    "categories": [
+     "w-upadlosci"
+    ],
+    "color": "#6b7a83",
+    "entityType": "place",
+    "id": "fakeplace1024",
+    "isPublic": false,
+    "krsNumber": "0001038000",
+    "name": "ŚLIWIŃSKI, SOSNOWSKI AND JURKOWSKI SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace1024",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace1024",
+     "latest_time": "2025-12-29T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace1101": {
+    "categories": [],
+    "color": "#6b7a83",
+    "entityType": "place",
+    "id": "fakeplace1101",
+    "isPublic": true,
+    "krsNumber": "0000022809",
+    "name": "KOPEĆ, KLIMEK AND MALICKI SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace1101",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace1101",
+     "latest_time": "2026-09-28T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace112": {
+    "categories": [],
+    "color": "#6b7a83",
+    "entityType": "place",
+    "id": "fakeplace112",
+    "isPublic": false,
+    "krsNumber": "0000462070",
+    "name": "GŁOWACKI S.A. SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace112",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace112",
+     "latest_time": "2026-04-24T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace1234": {
+    "categories": [
+     "szpitale"
+    ],
+    "color": "#6b7a83",
+    "entityType": "place",
+    "id": "fakeplace1234",
+    "isPublic": true,
+    "krsNumber": "0001005194",
+    "name": "Centrum Medyczne „hexagon” w Wąsosz",
+    "published": true,
+    "revision_id": "rev_fakeplace1234",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace1234",
+     "latest_time": "2026-03-30T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace14": {
+    "categories": [],
+    "color": "#6b7a83",
+    "entityType": "place",
+    "id": "fakeplace14",
+    "isPublic": false,
+    "krsNumber": "0001125979",
+    "name": "MATUSIAK-MILLER SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace14",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace14",
+     "latest_time": "<now>",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace151": {
+    "categories": [
+     "szpitale"
+    ],
+    "color": "#6b7a83",
+    "entityType": "place",
+    "id": "fakeplace151",
+    "isPublic": true,
+    "krsNumber": "0001169713",
+    "name": "Szpital Powiatowy w Opatów Sp. z o.o.",
+    "published": true,
+    "revision_id": "rev_fakeplace151",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace151",
+     "latest_time": "2026-02-24T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace522": {
+    "categories": [
+     "odpady"
+    ],
+    "color": "#6b7a83",
+    "entityType": "place",
+    "id": "fakeplace522",
+    "isPublic": true,
+    "krsNumber": "0000480715",
+    "name": "JAŚKIEWICZ SP. P. SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace522",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace522",
+     "latest_time": "2025-10-24T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace544": {
+    "categories": [],
+    "color": "#6b7a83",
+    "entityType": "place",
+    "id": "fakeplace544",
+    "isPublic": false,
+    "krsNumber": "0000832362",
+    "name": "JAGIELSKI, SZCZĘSNY AND WYSZYŃSKI SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace544",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace544",
+     "latest_time": "<now>",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace605": {
+    "categories": [],
+    "color": "#6b7a83",
+    "entityType": "place",
+    "id": "fakeplace605",
+    "isPublic": true,
+    "krsNumber": "0000222268",
+    "name": "BUDZIŃSKI-PIECZEK SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace605",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace605",
+     "latest_time": "2025-10-07T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace644": {
+    "categories": [
+     "szpitale"
+    ],
+    "color": "#6b7a83",
+    "entityType": "place",
+    "id": "fakeplace644",
+    "isPublic": true,
+    "krsNumber": "0000912963",
+    "name": "Wojewódzki Szpital Specjalistyczny im. Monika Głąb w Olsztyn",
+    "published": true,
+    "revision_id": "rev_fakeplace644",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace644",
+     "latest_time": "2026-08-01T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace724": {
+    "categories": [
+     "w-upadlosci"
+    ],
+    "color": "#6b7a83",
+    "entityType": "place",
+    "id": "fakeplace724",
+    "isPublic": false,
+    "krsNumber": "0000934410",
+    "name": "WINIARSKI, LISOWSKI AND PIECHOTA SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace724",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace724",
+     "latest_time": "2026-01-03T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace736": {
+    "categories": [
+     "energetyka"
+    ],
+    "color": "#6b7a83",
+    "entityType": "place",
+    "id": "fakeplace736",
+    "isPublic": true,
+    "krsNumber": "0000727350",
+    "name": "WIĘCKOWSKI, LIPSKI AND JAGIEŁŁO SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace736",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace736",
+     "latest_time": "2025-07-22T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace801": {
+    "categories": [],
+    "color": "#6b7a83",
+    "entityType": "place",
+    "id": "fakeplace801",
+    "isPublic": true,
+    "krsNumber": "0000151946",
+    "name": "KRAJEWSKI, SZYSZKA AND ŚWIERCZYŃSKI SP. Z O.O.",
+    "published": true,
+    "revision_id": "rev_fakeplace801",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace801",
+     "latest_time": "2026-07-02T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   },
+   "fakeplace937": {
+    "categories": [
+     "szpitale"
+    ],
+    "color": "#6b7a83",
+    "entityType": "place",
+    "id": "fakeplace937",
+    "isPublic": true,
+    "krsNumber": "0000208616",
+    "name": "Centrum Medyczne „feather” w Kolbuszowa",
+    "published": true,
+    "revision_id": "rev_fakeplace937",
+    "revisions": {
+     "has_unapproved": false,
+     "latest_id": "rev_fakeplace937",
+     "latest_time": "2026-06-05T12:00:00Z",
+     "total": 1
+    },
+    "stats": {
+     "people": 1
+    },
+    "type": "rect",
+    "visibility": true
+   }
+  }
+ }
+}

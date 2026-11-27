@@ -1,0 +1,19 @@
+{
+ "step": 280,
+ "name": "revision approve new page",
+ "request": {
+  "method": "POST",
+  "path": "/api/revisions/approve",
+  "as": "admin",
+  "body": {
+   "revision_id": "<id>"
+  }
+ },
+ "status": 200,
+ "body": {
+  "collection": "nodes",
+  "id": "<id>",
+  "published": false,
+  "revision_id": "<id>"
+ }
+}

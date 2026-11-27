@@ -1,0 +1,24 @@
+{
+ "step": 259,
+ "name": "users lookup",
+ "request": {
+  "method": "GET",
+  "path": "/api/users/lookup?uids=test-user%2Ctest-admin",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "users": {
+   "test-admin": {
+    "displayName": "Admin User",
+    "email": "admin@koryta.pl",
+    "photoURL": null
+   },
+   "test-user": {
+    "displayName": "Normal User",
+    "email": "user@koryta.pl",
+    "photoURL": null
+   }
+  }
+ }
+}

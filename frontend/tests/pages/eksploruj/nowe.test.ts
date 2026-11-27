@@ -145,13 +145,6 @@ vi.mock("~/composables/companyLocations", () => ({
   })),
 }));
 
-// `useAuthState` names the database it wants rather than taking vuefire's
-// default-database handle, so the vuefire stub below is not enough on its own.
-vi.mock("firebase/firestore", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("firebase/firestore")>();
-  return { ...actual, getFirestore: vi.fn(() => ({})) };
-});
-
 vi.mock("vuefire", () => ({
   useCurrentUser: vi.fn(() => computed(() => authUser.value)),
   useFirestore: vi.fn(() => ({})),

@@ -1,0 +1,14 @@
+{
+ "step": 74,
+ "name": "extractions",
+ "request": {
+  "method": "GET",
+  "path": "/api/extractions?limit=20",
+  "as": "anon"
+ },
+ "status": 200,
+ "body": {
+  "facts": [],
+  "total": 101
+ }
+}

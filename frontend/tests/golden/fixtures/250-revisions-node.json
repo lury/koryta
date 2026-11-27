@@ -1,0 +1,48 @@
+{
+ "step": 250,
+ "name": "revisions node",
+ "request": {
+  "method": "GET",
+  "path": "/api/revisions/node?nodeId=fakeperson1066",
+  "as": "admin"
+ },
+ "status": 200,
+ "body": {
+  "approvedRevisionId": "rev_fakeperson1066",
+  "exists": true,
+  "published": true,
+  "revisions": [
+   {
+    "author": null,
+    "automatic": false,
+    "changeCount": 0,
+    "changes": [],
+    "deleteReason": null,
+    "id": "rev_fakeperson1066",
+    "kind": "edit",
+    "published": true,
+    "rejectReason": null,
+    "reviewTime": null,
+    "reviewUser": null,
+    "stale": false,
+    "status": "approved",
+    "statusDerived": true,
+    "subject": {
+     "id": "fakeperson1066",
+     "name": "Berta Dąbkowski",
+     "path": "/osoba/berta-dabkowski-fakeperson1066",
+     "published": true,
+     "type": "person"
+    },
+    "targetCollection": "nodes",
+    "targetExists": true,
+    "targetId": "fakeperson1066",
+    "targetName": "Berta Dąbkowski",
+    "targetPath": "/osoba/berta-dabkowski-fakeperson1066",
+    "targetType": "person",
+    "updateTime": "2026-08-10T12:00:00Z",
+    "updateUser": "admin@koryta.pl"
+   }
+  ]
+ }
+}
