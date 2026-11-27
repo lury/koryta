@@ -15,6 +15,7 @@
    - Frontend: `frontend/CLAUDE.md` and the skills in `frontend/.claude/skills`;
      also `frontend/server/db/CLAUDE.md`.
    - Pipelines: `data/pipelines/CLAUDE.md` and the skills in `data/pipelines/.claude/skills`.
+   - Compressor: `data/compressor/CLAUDE.md`.
 
 1. **Failure Protocol**:
    - If the checks fail, do NOT ask for review. Analyze the error, fix the code, and re-run the tests.
