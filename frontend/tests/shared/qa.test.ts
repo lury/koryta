@@ -34,9 +34,9 @@ describe("QA_ITEMS", () => {
     }
   });
 
-  // Nothing here can check that the newest entry is on top: the order of the
-  // array is the only record of it, so there is no second source to compare
-  // against. It is a review question, not a test.
+  // Nothing here can check that the newest entry is on top: its `order` is
+  // the only record of it, so there is no second source to compare against.
+  // It is a review question, not a test.
   it("says how to check every entry", () => {
     for (const item of QA_ITEMS) {
       expect(item.title.length).toBeGreaterThan(0);

@@ -186,7 +186,7 @@ test.describe("Kolejka zgłoszeń", () => {
   }) => {
     test.skip(
       !CLAIM,
-      "Żaden wpis w shared/qa.ts nie wskazuje jeszcze zgłoszenia.",
+      "Żaden wpis w shared/qa/items/ nie wskazuje jeszcze zgłoszenia.",
     );
     test.setTimeout(120_000);
 

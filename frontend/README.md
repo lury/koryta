@@ -122,26 +122,33 @@ npm run quick-check:failsafe
 
 ## QA changelog
 
-Every user visible change gets an entry at the top of `shared/qa.ts`, in the
-same commit as the change itself - unless all it does is what a report asked
+Every user visible change gets an entry in `shared/qa/items/`, one file per
+entry named after its id, in the same commit as the change itself - unless all it does is what a report asked
 for, which can be claimed in `shared/reportFixes.ts` instead (see below):
 
+```bash
+npm run qa:new -- person-places-map   # --area contributor|admin, default public
+```
+
 ```ts
-{
-  id: "person-places-map",       // never renamed or reused - stored verdicts point at it
+export const order = 1795874400; // written by qa:new; larger is newer
+
+export default {
+  id: "person-places-map", // never renamed or reused - stored verdicts point at it
   title: "Mapa miejsc osoby w panelu bocznym",
   description: "Co się zmieniło, w języku osoby korzystającej ze strony.",
   steps: ["Wejdź na /eksploruj/tabela", "Kliknij wiersz z osobą"],
-  link: "/eksploruj/tabela",     // optional
-  area: "public",                // public | contributor | admin
+  link: "/eksploruj/tabela", // optional
+  area: "public", // public | contributor | admin
   fixes: ["Kx8V2mQpZrT4bN7cYh1A"], // optional - reports from /admin/opinie this answers
-}
+} satisfies QaItem;
 ```
 
-There is no date on an entry: the order of the array is what says which change
-is newest, so prepend rather than inserting, and after a rebase move your entry
-back to the top instead of leaving it where the merge put it. Nothing checks
-this - the array is the only record of it.
+There is no date on an entry. `order` is a sort key: `qa:new` writes the Unix
+time in seconds, so two branches never pick the same one and a new entry sorts
+above everything already on main. `shared/qa.ts` assembles `QA_ITEMS` from
+`shared/qa/items.ts`, a generated list of the files, one line per entry sorted
+by id; if a merge conflicts there, run `npm run qa:index`.
 
 Logged in users work through that list at `/qa`: an entry they have not been
 through shows up under "Do sprawdzenia" with its instructions open, and they
@@ -416,7 +423,7 @@ feedback queue from `/admin/opinie`:
 - `feedback_queue` — open reports in the page's order (not yet in the queue,
   then the queue from the top), or the newest closed ones; one line each.
 - `feedback_get` — whole reports by id or `#fb-<id>` link, with their place in
-  the queue and what the claims in `shared/qa.ts` and `shared/reportFixes.ts`
+  the queue and what the claims in `shared/qa/items/` and `shared/reportFixes.ts`
   say.
 
 It can only read. Reads go out as `firestore-reader@koryta-pl.iam.gserviceaccount.com`,

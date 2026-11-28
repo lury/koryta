@@ -81,7 +81,7 @@ server.registerTool(
       "first), then the queue (worked from the top, #1 first); or the newest " +
       "closed ones. One line per report plus the start of its message - " +
       "feedback_get has the rest. `on /qa:` marks a verdict written on /qa; " +
-      "`fix:` names the frontend/shared/qa.ts entry whose `fixes` claims the " +
+      "`fix:` names the frontend/shared/qa/items/ entry whose `fixes` claims the " +
       "report, and what checkers found; `fix in code:` quotes a claim from " +
       "frontend/shared/reportFixes.ts, a change with no QA entry, which an " +
       "admin checks and closes. " +
@@ -126,7 +126,7 @@ server.registerTool(
     description:
       "Whole feedback reports from koryta.pl production, up to 20 at a time: " +
       "the message, status, place in the queue, the page it was written on, " +
-      "the admin's note, and - when a frontend/shared/qa.ts entry or a " +
+      "the admin's note, and - when a frontend/shared/qa/items/ entry or a " +
       "frontend/shared/reportFixes.ts change claims to fix it - the claim, " +
       "what checkers found and whether the page would offer closing it. " +
       REPORTERS_EXPLAINED +
